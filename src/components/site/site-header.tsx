@@ -1,14 +1,42 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { LanguageSwitcher } from "./language-switcher";
+import { MobileNav } from "./mobile-nav";
 
-const NAV_ITEMS = [
-  "About",
-  "Services",
-  "Doctors",
-  "Technology",
-  "International",
-  "Contact",
+type NavChild = { label: string; href: string };
+type NavItem = { label: string; href: string; children?: NavChild[] };
+
+const NAV_ITEMS: NavItem[] = [
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+  {
+    label: "Services",
+    href: "/services",
+    children: [
+      { label: "Dental Implants", href: "/services#implants" },
+      { label: "Implant Bridges", href: "/services#implant-bridges" },
+      { label: "All-on-4 / All-on-6", href: "/services#all-on-4" },
+      { label: "Dental Crowns", href: "/services#crowns" },
+      { label: "Full Mouth Reconstruction", href: "/services#reconstruction" },
+      { label: "Oral Surgery", href: "/services#surgery" },
+      { label: "Cosmetic Dentistry", href: "/services#cosmetic" },
+      { label: "Teeth Whitening", href: "/services#whitening" },
+      { label: "Orthodontics & Braces", href: "/services#orthodontics" },
+      { label: "Pediatric Dentistry", href: "/services#pediatric" },
+      { label: "Snoring & Sleep Apnea", href: "/services#sleep-apnea" },
+    ],
+  },
+  {
+    label: "Doctors",
+    href: "/team",
+  },
+  { label: "Technology", href: "/technology" },
+  { label: "International", href: "/international" },
+  { label: "Pricing", href: "/pricing" },
+  { label: "Clinical Results", href: "/clinical-results" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export function SiteHeader() {
@@ -17,48 +45,78 @@ export function SiteHeader() {
       aria-label="Roomchang Dental Hospital"
       className="sticky top-0 z-50 border-b border-black/5 bg-[color:rgba(255,250,251,0.92)] backdrop-blur-xl"
     >
-      <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
-        <Link href="/" className="flex min-w-0 items-center gap-3" aria-label="Roomchang Dental Hospital home">
-          <Image
-            src="/brand/roomchang-mark.jpeg"
-            alt="Roomchang flower mark"
-            width={52}
-            height={52}
-            className="h-12 w-12 rounded-full border border-black/5 object-cover shadow-sm"
-          />
-          <div className="min-w-0">
-            <p className="font-display text-lg leading-none tracking-[0.18em] text-[--brand-deep] sm:text-xl">
-              ROOMCHANG
-            </p>
-            <p className="mt-1 text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[--text-soft] sm:text-[0.72rem]">
-              Dental Hospital Since 1996
-            </p>
+      <div className="flex w-full items-center justify-between gap-4 px-4 py-3 sm:px-6 sm:py-4 lg:px-8 lg:py-4">
+        <Link href="/" className="flex min-w-0 items-center" aria-label="Roomchang Dental Hospital home">
+          <div className="relative h-[64px] w-[125px] sm:h-[74px] sm:w-[145px] lg:h-[84px] lg:w-[164px]">
+            <Image
+              src="/brand/roomchang-logo-header-padded.png"
+              alt="Roomchang Dental Hospital logo"
+              fill
+              priority
+              className="object-contain object-left"
+            />
           </div>
         </Link>
 
+        {/* Desktop nav */}
         <div className="hidden items-center gap-6 lg:flex">
-          <nav aria-label="Primary" className="flex items-center gap-5">
-            {NAV_ITEMS.map((item) => (
-              <a
-                key={item}
-                href="#"
-                className="text-sm font-semibold text-[--text-soft] transition hover:text-[--brand-deep]"
-              >
-                {item}
-              </a>
-            ))}
+          <nav aria-label="Primary" className="flex items-center gap-1">
+            {NAV_ITEMS.map((item) =>
+              item.children ? (
+                <div key={item.label} className="group relative">
+                  <Link
+                    href={item.href}
+                    className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-semibold text-[color:var(--text-soft)] transition-colors hover:bg-[color:var(--brand-soft)] hover:text-[color:var(--brand-deep)]"
+                  >
+                    {item.label}
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 12 12"
+                      fill="none"
+                      aria-hidden="true"
+                      className="mt-px transition-transform duration-200 group-hover:rotate-180"
+                    >
+                      <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </Link>
+
+                  {/* Dropdown */}
+                  <div className="invisible absolute left-0 top-[calc(100%+0.25rem)] z-50 min-w-52 opacity-0 transition-all duration-150 group-hover:visible group-hover:opacity-100">
+                    <div className="rounded-2xl border border-[--border-strong] bg-white/98 p-1.5 shadow-[0_20px_50px_rgba(61,24,47,0.14)] backdrop-blur">
+                      {item.children.map((child) => (
+                        <Link
+                          key={child.href}
+                          href={child.href}
+                          className="flex items-center rounded-xl px-3 py-2.5 text-sm font-medium text-[--text-main] transition-colors hover:bg-[color:var(--brand-soft)] hover:text-[color:var(--brand-deep)]"
+                        >
+                          {child.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  className="rounded-lg px-3 py-2 text-sm font-semibold text-[color:var(--text-soft)] transition-colors hover:bg-[color:var(--brand-soft)] hover:text-[color:var(--brand-deep)]"
+                >
+                  {item.label}
+                </Link>
+              )
+            )}
           </nav>
           <LanguageSwitcher />
-          <a href="#book" className="btn-primary">
+          <Link href="/contact" className="btn-primary">
             Book Appointment
-          </a>
+          </Link>
         </div>
 
+        {/* Mobile nav */}
         <div className="flex items-center gap-3 lg:hidden">
           <LanguageSwitcher />
-          <a href="#book" className="btn-primary px-4 py-2 text-sm">
-            Book
-          </a>
+          <MobileNav />
         </div>
       </div>
     </header>

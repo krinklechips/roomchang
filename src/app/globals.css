@@ -7,6 +7,7 @@
   --surface: #fffdfd;
   --surface-strong: #fff1f5;
   --border-strong: rgba(133, 49, 91, 0.12);
+  --brand-light: #ef9ab9;
   --brand: #cc3771;
   --brand-deep: #7e2f66;
   --brand-soft: #f7d6e2;
@@ -64,9 +65,9 @@ a {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-deep) 100%);
+  background: var(--brand);
   color: white;
-  box-shadow: var(--shadow-soft);
+  box-shadow: 0 16px 42px rgba(204, 55, 113, 0.18);
 }
 
 .btn-secondary {
@@ -78,6 +79,24 @@ a {
 .btn-primary:hover,
 .btn-secondary:hover {
   transform: translateY(-1px);
+}
+
+.btn-primary:hover {
+  background: #b92f66;
+}
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 28s linear infinite;
 }
 
 .panel-card {
