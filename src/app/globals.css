@@ -1,26 +1,89 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fff9fa;
+  --foreground: #1f1720;
+  --canvas: #fff9fa;
+  --surface: #fffdfd;
+  --surface-strong: #fff1f5;
+  --border-strong: rgba(133, 49, 91, 0.12);
+  --brand: #cc3771;
+  --brand-deep: #7e2f66;
+  --brand-soft: #f7d6e2;
+  --text-main: #2c1a28;
+  --text-soft: #705569;
+  --shadow-soft: 0 18px 50px rgba(126, 47, 102, 0.11);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-manrope);
+  --font-display: var(--font-cormorant);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background:
+    radial-gradient(circle at top left, rgba(204, 55, 113, 0.1), transparent 30%),
+    linear-gradient(180deg, #fffdfd 0%, #fff7fa 100%);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  background: transparent;
+  color: var(--text-main);
+  font-family: var(--font-manrope), sans-serif;
+}
+
+a {
+  text-decoration: none;
+}
+
+.font-display {
+  font-family: var(--font-cormorant), serif;
+}
+
+.btn-primary,
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  padding: 0.9rem 1.35rem;
+  font-size: 0.92rem;
+  font-weight: 700;
+  transition:
+    transform 150ms ease,
+    box-shadow 150ms ease,
+    background-color 150ms ease,
+    color 150ms ease;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-deep) 100%);
+  color: white;
+  box-shadow: var(--shadow-soft);
+}
+
+.btn-secondary {
+  border: 1px solid var(--border-strong);
+  background: rgba(255, 255, 255, 0.82);
+  color: var(--text-main);
+}
+
+.btn-primary:hover,
+.btn-secondary:hover {
+  transform: translateY(-1px);
+}
+
+.panel-card {
+  border: 1px solid var(--border-strong);
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(18px);
+  border-radius: 2rem;
 }
