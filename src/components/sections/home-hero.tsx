@@ -9,8 +9,10 @@ const heroSlides: HeroSlide[] = [
     description: "A broad, credible team that signals scale, continuity, and specialist coverage.",
     imageSrc: "/hero/roomchang-team-hero.jpg",
     imageAlt: "Roomchang Dental Hospital team portrait",
-    imagePosition: "bottom center",
+    imagePosition: "center center",
     imageSize: "100% auto",
+    mobileImagePosition: "center 34%",
+    mobileImageSize: "auto 76%",
     preserveFullImage: true,
   },
   {
@@ -42,7 +44,7 @@ export function HomeHero() {
           showCaption={false}
           flush
           className="rounded-none border-0 shadow-none"
-          mediaClassName="min-h-[calc(100svh-5.5rem)] rounded-none sm:min-h-[calc(100svh-6.625rem)] lg:min-h-[calc(100svh-7.25rem)]"
+          mediaClassName="min-h-0 rounded-none aspect-square sm:min-h-0 sm:aspect-[16/10] lg:min-h-0 lg:aspect-[2325/950]"
         />
 
         {/* Bottom: brand-pink fade to blend team photo into page */}
@@ -50,23 +52,23 @@ export function HomeHero() {
 
         {/* Trust pill */}
         <div className="absolute left-4 top-4 z-10 sm:left-7 sm:top-7">
-          <p className="inline-flex rounded-full border border-[--brand]/20 bg-white/80 px-3.5 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-[--brand-deep] shadow-[0_8px_24px_rgba(29,19,27,0.10)] backdrop-blur-md">
-            Trusted Since 1996
+          <p className="inline-flex rounded-full border border-white/45 bg-[color:rgba(255,255,255,0.26)] px-3.5 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-white shadow-[0_10px_28px_rgba(29,19,27,0.14)] backdrop-blur-md">
+            Since 1996 • Phnom Penh
           </p>
         </div>
 
         {/* CTA dock */}
         <div
           data-testid="hero-cta-dock"
-          className="absolute inset-x-0 bottom-5 z-10 flex justify-center px-4 sm:bottom-6"
+          className="absolute inset-x-0 bottom-8 z-10 flex justify-center px-4 sm:bottom-10"
         >
-          <div className="flex w-full max-w-xs flex-col gap-1.5 rounded-[1.5rem] border border-white/20 bg-[color:rgba(20,10,18,0.22)] p-1.5 shadow-[0_16px_40px_rgba(20,10,18,0.2)] backdrop-blur-md sm:max-w-none sm:w-auto sm:flex-row sm:rounded-full">
-            <Link href="/contact" className="btn-primary whitespace-nowrap !py-2.5 !px-5 !text-xs">
+          <div className="flex w-full max-w-xs flex-col gap-1.5 rounded-[1.5rem] border border-white/18 bg-[color:rgba(20,10,18,0.16)] p-1.5 shadow-[0_10px_30px_rgba(20,10,18,0.14)] backdrop-blur-md sm:max-w-none sm:w-auto sm:flex-row sm:rounded-full">
+            <Link href="/contact" className="btn-primary justify-center text-center whitespace-nowrap !py-2.5 !px-5 !text-xs">
               Request An Appointment
             </Link>
             <Link
               href="/services"
-              className="inline-flex items-center justify-center whitespace-nowrap rounded-full border border-white/22 bg-[color:rgba(255,255,255,0.1)] px-5 py-2.5 text-xs font-semibold text-white transition hover:bg-[color:rgba(255,255,255,0.22)] hover:-translate-y-px"
+              className="inline-flex items-center justify-center whitespace-nowrap rounded-full border border-white/22 bg-[color:rgba(255,255,255,0.12)] px-5 py-2.5 text-xs font-semibold text-white transition hover:bg-[color:rgba(255,255,255,0.22)] hover:-translate-y-px"
             >
               Explore Services
             </Link>

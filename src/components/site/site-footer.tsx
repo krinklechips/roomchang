@@ -70,6 +70,7 @@ export function SiteFooter() {
                 src="/brand/roomchang-logo-header-padded.png"
                 alt="Roomchang Dental Hospital"
                 fill
+                sizes="120px"
                 className="object-contain object-left"
               />
             </div>
