@@ -198,9 +198,9 @@ export default function ContactPage() {
                   <input
                     id="date"
                     name="date"
-                    type="text"
-                    className="w-full rounded-xl border border-[--border-strong] bg-white px-4 py-3 text-sm text-[--text-main] placeholder-[--text-soft]/50 outline-none transition focus:border-[--brand] focus:ring-2 focus:ring-[--brand]/20"
-                    placeholder="e.g. Any Monday morning, or a specific date"
+                    type="date"
+                    min={new Date().toISOString().split("T")[0]}
+                    className="w-full rounded-xl border border-[--border-strong] bg-white px-4 py-3 text-sm text-[--text-main] outline-none transition focus:border-[--brand] focus:ring-2 focus:ring-[--brand]/20 [color-scheme:light]"
                   />
                 </div>
 
