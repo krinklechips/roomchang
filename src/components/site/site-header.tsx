@@ -53,6 +53,7 @@ export function SiteHeader() {
               alt="Roomchang Dental Hospital logo"
               fill
               priority
+              sizes="(max-width: 640px) 125px, (max-width: 1024px) 145px, 164px"
               className="object-contain object-left"
             />
           </div>
