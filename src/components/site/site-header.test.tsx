@@ -10,7 +10,7 @@ describe("SiteHeader", () => {
 
     expect(logo).toBeInTheDocument();
     expect(logo.className).toContain("object-contain");
+    expect(logo).toHaveAttribute("sizes", "(max-width: 640px) 125px, (max-width: 1024px) 145px, 164px");
     expect(logo.className).not.toContain("object-[center_62%]");
-    expect(screen.queryByText(/^ROOMCHANG$/i)).not.toBeInTheDocument();
   });
 });

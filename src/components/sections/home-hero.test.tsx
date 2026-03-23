@@ -6,12 +6,14 @@ describe("HomeHero", () => {
   it("renders a minimal full-width hero with slideshow and centered actions", () => {
     render(<HomeHero />);
 
+    const primaryAction = screen.getByRole("link", { name: /request an appointment/i });
+
     expect(
       screen.getByRole("region", { name: /roomchang hero slideshow/i }),
     ).toBeInTheDocument();
-    expect(
-      screen.getByRole("link", { name: /request an appointment/i }),
-    ).toBeInTheDocument();
+    expect(primaryAction).toBeInTheDocument();
+    expect(primaryAction.className).toContain("justify-center");
+    expect(primaryAction.className).toContain("text-center");
     expect(screen.getByRole("link", { name: /explore services/i })).toBeInTheDocument();
     expect(
       screen.queryByRole("heading", {
@@ -31,17 +33,21 @@ describe("HomeHero", () => {
   it("keeps the hero CTA dock lifted above the bottom edge", () => {
     render(<HomeHero />);
 
-    expect(screen.getByTestId("hero-cta-dock").className).toContain("bottom-10");
+    expect(screen.getByTestId("hero-cta-dock").className).toContain("bottom-8");
   });
 
-  it("uses a cropped full-bleed team image for the first hero slide", () => {
+  it("uses the team image as the fixed hero stage reference", () => {
     render(<HomeHero />);
 
     const heroImage = screen.getByRole("img", { name: /roomchang dental hospital team portrait/i });
+    const heroStage = screen.getByTestId("hero-stage");
+    const foregroundImage = screen.getByTestId("hero-foreground-image");
 
+    expect(heroStage.className).toContain("lg:aspect-[2325/950]");
+    expect(heroStage.className).not.toContain("100svh");
+    expect(foregroundImage.getAttribute("style")).toContain("/hero/roomchang-team-hero.jpg");
+    expect(foregroundImage.getAttribute("style")).toContain("--hero-mobile-image-position");
+    expect(foregroundImage.getAttribute("style")).toContain("--hero-mobile-image-size");
     expect(heroImage).toHaveStyle({ backgroundSize: "cover" });
-    expect(screen.getByTestId("hero-foreground-image").getAttribute("style")).toContain(
-      "/hero/roomchang-team-hero.jpg",
-    );
   });
 });

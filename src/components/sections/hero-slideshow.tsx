@@ -1,5 +1,6 @@
 "use client";
 
+import type { CSSProperties } from "react";
 import { startTransition, useEffect, useState } from "react";
 
 export type HeroSlide = {
@@ -11,6 +12,8 @@ export type HeroSlide = {
   imageAlt: string;
   imagePosition?: string;
   imageSize?: string;
+  mobileImagePosition?: string;
+  mobileImageSize?: string;
   preserveFullImage?: boolean;
 };
 
@@ -64,6 +67,17 @@ export function HeroSlideshow({
 
   const activeSlide = slides[activeIndex];
   const shouldPreserveFullImage = Boolean(activeSlide.preserveFullImage);
+  const preserveImageStyle = shouldPreserveFullImage
+    ? ({
+        backgroundImage: `url(${activeSlide.imageSrc})`,
+        backgroundRepeat: "no-repeat",
+        "--hero-mobile-image-position":
+          activeSlide.mobileImagePosition ?? activeSlide.imagePosition ?? "center center",
+        "--hero-image-position": activeSlide.imagePosition ?? "center center",
+        "--hero-mobile-image-size": activeSlide.mobileImageSize ?? activeSlide.imageSize ?? "contain",
+        "--hero-image-size": activeSlide.imageSize ?? "contain",
+      } as CSSProperties)
+    : undefined;
 
   const dots = (
     <div className="flex items-center gap-2">
@@ -98,12 +112,17 @@ export function HeroSlideshow({
         const touchEndX = event.changedTouches[0]?.clientX ?? touchStartX;
         const delta = touchStartX - touchEndX;
         if (Math.abs(delta) >= SWIPE_THRESHOLD) {
-          delta > 0 ? showNext() : showPrevious();
+          if (delta > 0) {
+            showNext();
+          } else {
+            showPrevious();
+          }
         }
         setTouchStartX(null);
       }}
     >
       <div
+        data-testid="hero-stage"
         role="img"
         aria-label={activeSlide.imageAlt}
         className={`relative min-h-[23rem] overflow-hidden rounded-[1.6rem] bg-[--surface-strong] sm:min-h-[28rem] lg:min-h-[31rem] ${mediaClassName}`}
@@ -125,13 +144,8 @@ export function HeroSlideshow({
         {shouldPreserveFullImage && (
           <div
             data-testid="hero-foreground-image"
-            className="absolute inset-0"
-            style={{
-              backgroundImage: `url(${activeSlide.imageSrc})`,
-              backgroundPosition: activeSlide.imagePosition ?? "center center",
-              backgroundSize: activeSlide.imageSize ?? "contain",
-              backgroundRepeat: "no-repeat",
-            }}
+            className="absolute inset-0 bg-no-repeat [background-position:var(--hero-mobile-image-position)] [background-size:var(--hero-mobile-image-size)] sm:[background-position:var(--hero-image-position)] sm:[background-size:var(--hero-image-size)]"
+            style={preserveImageStyle}
           />
         )}
 

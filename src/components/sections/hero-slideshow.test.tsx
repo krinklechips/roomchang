@@ -63,8 +63,8 @@ describe("HeroSlideshow", () => {
     render(<HeroSlideshow slides={slides} />);
 
     expect(screen.getByTestId("hero-foreground-image")).toHaveStyle({
-      backgroundPosition: "center bottom",
-      backgroundSize: "contain",
+      "--hero-image-position": "center bottom",
+      "--hero-image-size": "contain",
     });
   });
 
@@ -73,7 +73,27 @@ describe("HeroSlideshow", () => {
 
     expect(screen.getByTestId("hero-foreground-image")).toHaveStyle({
       backgroundImage: 'url("/hero/placeholder-team.svg")',
-      backgroundSize: "contain",
+      "--hero-image-size": "contain",
+    });
+  });
+
+  it("supports mobile-specific image framing for preserved hero slides", () => {
+    render(
+      <HeroSlideshow
+        slides={[
+          {
+            ...slides[0],
+            mobileImagePosition: "center 34%",
+            mobileImageSize: "auto 72%",
+          },
+          slides[1],
+        ]}
+      />,
+    );
+
+    expect(screen.getByTestId("hero-foreground-image")).toHaveStyle({
+      "--hero-mobile-image-position": "center 34%",
+      "--hero-mobile-image-size": "auto 72%",
     });
   });
 });
