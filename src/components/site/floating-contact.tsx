@@ -106,6 +106,7 @@ export function FloatingContact() {
             width={36}
             height={36}
             className="rounded-full object-cover"
+            style={{ width: "auto", height: "auto" }}
           />
         </span>
       </button>
