@@ -3,11 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 
 const STATS = [
-  { value: 28, suffix: " yrs", label: "Established Experience" },
+  { value: 30, suffix: " yrs", label: "Established Experience" },
   { value: 30, suffix: "+", label: "Specialist Dentists" },
   { value: 5, suffix: "", label: "Phnom Penh Branches" },
   { value: 20, suffix: "+", label: "Countries Served" },
-  { value: 10000, suffix: "+", label: "Patients Per Month" },
+  { value: 100000, suffix: "+", label: "Patients Served Worldwide" },
 ];
 
 function easeOut(t: number) {
@@ -67,11 +67,13 @@ export function HomeStats() {
   return (
     <div ref={ref} className="border-y border-[--border-strong] bg-[--surface]">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 divide-x divide-y divide-[--border-strong] sm:grid-cols-3 lg:grid-cols-5 lg:divide-y-0">
-          {STATS.map((stat) => (
+        <div className="grid grid-cols-2 gap-px bg-[--border-strong] sm:grid-cols-3 lg:grid-cols-5">
+          {STATS.map((stat, index) => (
             <div
               key={stat.label}
-              className="flex flex-col items-center justify-center gap-1 px-4 py-8 text-center sm:px-6"
+              className={`flex flex-col items-center justify-center gap-1 bg-[--surface] px-4 py-8 text-center sm:px-6 ${
+                index === STATS.length - 1 ? "col-span-2 sm:col-span-1" : ""
+              }`}
             >
               <p className="font-display text-[2.6rem] leading-none text-[--brand-deep] lg:text-[3rem]">
                 <CountUp target={stat.value} suffix={stat.suffix} started={started} />
