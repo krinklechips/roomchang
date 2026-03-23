@@ -67,17 +67,33 @@ export function HeroSlideshow({
 
   const activeSlide = slides[activeIndex];
   const shouldPreserveFullImage = Boolean(activeSlide.preserveFullImage);
+  const mobileImagePosition = activeSlide.mobileImagePosition ?? activeSlide.imagePosition ?? "center center";
+  const imagePosition = activeSlide.imagePosition ?? "center center";
+  const mobileImageSize = activeSlide.mobileImageSize ?? activeSlide.imageSize ?? "contain";
+  const imageSize = activeSlide.imageSize ?? "cover";
   const preserveImageStyle = shouldPreserveFullImage
     ? ({
         backgroundImage: `url(${activeSlide.imageSrc})`,
         backgroundRepeat: "no-repeat",
-        "--hero-mobile-image-position":
-          activeSlide.mobileImagePosition ?? activeSlide.imagePosition ?? "center center",
-        "--hero-image-position": activeSlide.imagePosition ?? "center center",
-        "--hero-mobile-image-size": activeSlide.mobileImageSize ?? activeSlide.imageSize ?? "contain",
+        "--hero-mobile-image-position": mobileImagePosition,
+        "--hero-image-position": imagePosition,
+        "--hero-mobile-image-size": mobileImageSize,
         "--hero-image-size": activeSlide.imageSize ?? "contain",
       } as CSSProperties)
     : undefined;
+  const stageStyle = {
+    backgroundColor: shouldPreserveFullImage ? "white" : undefined,
+    backgroundImage: shouldPreserveFullImage
+      ? "none"
+      : `linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(44, 26, 40, 0.18)), url(${activeSlide.imageSrc})`,
+    backgroundPosition: shouldPreserveFullImage ? "center" : undefined,
+    backgroundSize: shouldPreserveFullImage ? "cover" : undefined,
+    backgroundRepeat: shouldPreserveFullImage ? "no-repeat" : undefined,
+    "--hero-mobile-image-position": mobileImagePosition,
+    "--hero-image-position": imagePosition,
+    "--hero-mobile-image-size": mobileImageSize,
+    "--hero-image-size": imageSize,
+  } as CSSProperties;
 
   const dots = (
     <div className="flex items-center gap-2">
@@ -125,20 +141,8 @@ export function HeroSlideshow({
         data-testid="hero-stage"
         role="img"
         aria-label={activeSlide.imageAlt}
-        className={`relative min-h-[23rem] overflow-hidden rounded-[1.6rem] bg-[--surface-strong] sm:min-h-[28rem] lg:min-h-[31rem] ${mediaClassName}`}
-        style={{
-          backgroundColor: shouldPreserveFullImage ? "white" : undefined,
-          backgroundImage: shouldPreserveFullImage
-            ? "none"
-            : `linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(44, 26, 40, 0.18)), url(${activeSlide.imageSrc})`,
-          backgroundPosition: shouldPreserveFullImage
-            ? "center"
-            : (activeSlide.imagePosition ?? "center"),
-          backgroundSize: shouldPreserveFullImage
-            ? "cover"
-            : (activeSlide.imageSize ?? "cover"),
-          backgroundRepeat: "no-repeat",
-        }}
+        className={`relative min-h-0 overflow-hidden rounded-[1.6rem] bg-[--surface-strong] bg-no-repeat [background-position:var(--hero-mobile-image-position)] [background-size:var(--hero-mobile-image-size)] sm:min-h-[28rem] sm:[background-position:var(--hero-image-position)] sm:[background-size:var(--hero-image-size)] lg:min-h-[31rem] ${mediaClassName}`}
+        style={stageStyle}
       >
         {/* Foreground image layer for preserve mode — rendered first so overlays sit on top */}
         {shouldPreserveFullImage && (
@@ -171,24 +175,22 @@ export function HeroSlideshow({
         )}
 
         {/* Prev / Next controls */}
-        <div className="absolute right-4 top-4 flex items-center gap-2 sm:right-5 sm:top-5">
-          <button
-            type="button"
-            aria-label="Show previous slide"
-            onClick={showPrevious}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-[color:rgba(255,255,255,0.18)] text-lg text-white backdrop-blur transition hover:bg-[color:rgba(255,255,255,0.28)]"
-          >
-            ‹
-          </button>
-          <button
-            type="button"
-            aria-label="Show next slide"
-            onClick={showNext}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-[color:rgba(255,255,255,0.18)] text-lg text-white backdrop-blur transition hover:bg-[color:rgba(255,255,255,0.28)]"
-          >
-            ›
-          </button>
-        </div>
+        <button
+          type="button"
+          aria-label="Show previous slide"
+          onClick={showPrevious}
+          className="absolute left-4 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/24 bg-[color:rgba(255,255,255,0.12)] text-[1.75rem] text-white backdrop-blur-md transition hover:bg-[color:rgba(255,255,255,0.24)] sm:flex"
+        >
+          ‹
+        </button>
+        <button
+          type="button"
+          aria-label="Show next slide"
+          onClick={showNext}
+          className="absolute right-4 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/24 bg-[color:rgba(255,255,255,0.12)] text-[1.75rem] text-white backdrop-blur-md transition hover:bg-[color:rgba(255,255,255,0.24)] sm:flex"
+        >
+          ›
+        </button>
 
         {/* Dots inside the image when flush (so CTA dock positions correctly) */}
         {flush && (

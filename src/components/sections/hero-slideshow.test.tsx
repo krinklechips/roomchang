@@ -96,4 +96,46 @@ describe("HeroSlideshow", () => {
       "--hero-mobile-image-size": "auto 72%",
     });
   });
+
+  it("supports mobile-specific image framing for standard photo slides too", () => {
+    render(
+      <HeroSlideshow
+        slides={[
+          slides[0],
+          {
+            ...slides[1],
+            mobileImagePosition: "center top",
+            mobileImageSize: "contain",
+          },
+        ]}
+      />,
+    );
+
+    act(() => {
+      screen.getByRole("button", { name: /show next slide/i }).click();
+    });
+
+    expect(screen.getByTestId("hero-stage")).toHaveStyle({
+      "--hero-mobile-image-position": "center top",
+      "--hero-mobile-image-size": "contain",
+      "--hero-image-size": "cover",
+    });
+  });
+
+  it("uses side chevrons for desktop navigation while keeping mobile swipe-first", () => {
+    render(<HeroSlideshow slides={slides} flush />);
+
+    const previousButton = screen.getByRole("button", { name: /show previous slide/i });
+    const nextButton = screen.getByRole("button", { name: /show next slide/i });
+
+    expect(previousButton.className).toContain("hidden");
+    expect(previousButton.className).toContain("sm:flex");
+    expect(previousButton.className).toContain("left-4");
+    expect(previousButton.textContent).toContain("‹");
+
+    expect(nextButton.className).toContain("hidden");
+    expect(nextButton.className).toContain("sm:flex");
+    expect(nextButton.className).toContain("right-4");
+    expect(nextButton.textContent).toContain("›");
+  });
 });
