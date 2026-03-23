@@ -117,7 +117,7 @@ export function HeroSlideshow({
   return (
     <section
       aria-label="Roomchang hero slideshow"
-      className={`${flush ? "" : "panel-card p-3 sm:p-4"} relative overflow-hidden ${className}`}
+      className={`${flush ? "" : "panel-card p-3 sm:p-4"} relative overflow-hidden lg:h-full ${className}`}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onFocusCapture={() => setIsPaused(true)}

@@ -34,10 +34,14 @@ describe("HomeHero", () => {
     render(<HomeHero />);
 
     const trustPill = screen.getByTestId("hero-trust-pill");
+    const trustPillText = screen.getByText(/trusted since 1996/i);
 
     expect(trustPill.className).toContain("relative");
     expect(trustPill.className).toContain("sm:absolute");
     expect(trustPill.className).toContain("mb-3");
+    expect(trustPillText.className).not.toContain("sm:text-white");
+    expect(trustPillText.className).toContain("sm:bg-white/94");
+    expect(trustPillText.className).toContain("text-[color:var(--text-main)]");
   });
 
   it("keeps the hero CTA dock below the image on mobile and floating on larger screens", () => {
@@ -58,11 +62,18 @@ describe("HomeHero", () => {
   it("uses the team image as the fixed hero stage reference", () => {
     render(<HomeHero />);
 
+    const shell = screen.getByTestId("hero-mobile-shell");
+    const heroSection = shell.closest("section");
     const heroImage = screen.getByRole("img", { name: /roomchang dental hospital team portrait/i });
     const heroStage = screen.getByTestId("hero-stage");
     const foregroundImage = screen.getByTestId("hero-foreground-image");
 
+    expect(heroSection?.className).toContain("lg:h-[calc(100svh-7.3125rem)]");
+    expect(shell.className).toContain("lg:h-full");
+    expect(shell.className).toContain("lg:flex");
     expect(heroStage.className).toContain("aspect-[2325/950]");
+    expect(heroStage.className).toContain("lg:aspect-auto");
+    expect(heroStage.className).toContain("lg:h-full");
     expect(heroStage.className).not.toContain("100svh");
     expect(foregroundImage.getAttribute("style")).toContain("/hero/roomchang-team-hero.jpg");
     expect(foregroundImage.getAttribute("style")).toContain("--hero-mobile-image-position");
