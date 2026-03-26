@@ -87,7 +87,7 @@ export function SiteHeader() {
                     <div className="rounded-2xl border border-[--border-strong] bg-white/98 p-1.5 shadow-[0_20px_50px_rgba(61,24,47,0.14)] backdrop-blur">
                       {item.children.map((child) => (
                         <Link
-                          key={child.href}
+                          key={child.label}
                           href={child.href}
                           className="flex items-center rounded-xl px-3 py-2.5 text-sm font-medium text-[--text-main] transition-colors hover:bg-[color:var(--brand-soft)] hover:text-[color:var(--brand-deep)]"
                         >
