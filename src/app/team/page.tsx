@@ -200,7 +200,7 @@ export default function TeamPage() {
           {DOCTORS.map((doctor) => (
             <article
               key={doctor.id}
-              className="overflow-hidden rounded-[2rem] border border-[--border-strong] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)]"
+              className="flex flex-col overflow-hidden rounded-[2rem] border border-[--border-strong] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)]"
             >
               {/* Avatar */}
               <div className="flex items-center gap-5 border-b border-[--border-strong] px-6 py-6">
@@ -220,7 +220,7 @@ export default function TeamPage() {
                 </div>
               </div>
 
-              <div className="space-y-4 p-6">
+              <div className="flex flex-1 flex-col gap-4 p-6">
                 {/* Specialties */}
                 <div>
                   <p className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[--text-soft]">
@@ -251,7 +251,7 @@ export default function TeamPage() {
                 )}
                 <Link
                   href="/contact"
-                  className="inline-flex items-center gap-2 text-sm font-semibold text-[--brand-deep] transition hover:text-[--brand]"
+                  className="mt-auto inline-flex items-center gap-2 text-sm font-semibold text-[--brand-deep] transition hover:text-[--brand]"
                 >
                   Book with this doctor →
                 </Link>
