@@ -1,0 +1,121 @@
+{
+  "categories": [
+    {
+      "id": "exams",
+      "title": "Examinations & X-Rays",
+      "icon": "🔍",
+      "items": [
+        { "ada": "13", "name": "Oral Exam — limited", "price": "Free", "aus": "71.00" },
+        { "ada": "14", "name": "Consultation / Specialized", "price": "15.00–25.00", "aus": "127.00" },
+        { "ada": "71", "name": "Diagnostic model — per model", "price": "25.00", "aus": "97.00" },
+        { "ada": "72", "name": "Photographic records — intraoral", "price": "Free", "aus": "70.00" },
+        { "ada": "141", "name": "Oral hygiene instruction", "price": "Free", "aus": "62.00" },
+        { "ada": "22", "name": "X-Ray — per film (periapical/bitewing)", "price": "8.00", "aus": "55.00" },
+        { "ada": "37", "name": "X-Ray — panoramic (OPG)", "price": "20.00", "aus": "130.00" },
+        { "ada": "", "name": "Cephalometric X-Ray", "price": "20.00", "aus": "" },
+        { "ada": "", "name": "3D CBCT Scan", "price": "125.00", "aus": "" }
+      ]
+    },
+    {
+      "id": "cleaning",
+      "title": "Cleaning & Prevention",
+      "icon": "✦",
+      "items": [
+        { "ada": "111", "name": "Removal of plaque/stain (general dentist)", "price": "25.00–50.00", "aus": "98.00" },
+        { "ada": "114", "name": "Removal of calculus (senior dentist)", "price": "40.00–50.00", "aus": "155.00" },
+        { "ada": "111", "name": "Deep Cleaning", "price": "30.00", "aus": "" },
+        { "ada": "", "name": "Fluoride Varnish", "price": "25.00", "aus": "" },
+        { "ada": "222", "name": "Root planing and curettage", "price": "50.00 per quadrant", "aus": "72.17 per tooth" },
+        { "ada": "161", "name": "Fissure sealing — per tooth", "price": "15.00", "aus": "82.00" }
+      ]
+    },
+    {
+      "id": "fillings",
+      "title": "Fillings & Cosmetic",
+      "icon": "✶",
+      "items": [
+        { "ada": "", "name": "Composite Filling — first surface", "price": "35.00", "aus": "" },
+        { "ada": "", "name": "Composite Filling — additional surface", "price": "10.00–20.00", "aus": "" },
+        { "ada": "", "name": "Glass-Ionomer Restorative", "price": "25.00", "aus": "" },
+        { "ada": "", "name": "Fissure Sealant", "price": "20.00", "aus": "" },
+        { "ada": "", "name": "Composite Veneer / Aesthetic Veneer", "price": "55.00–150.00", "aus": "" },
+        { "ada": "", "name": "Diastema / Space Closing", "price": "70.00–150.00", "aus": "" },
+        { "ada": "", "name": "Icon Filling (resin infiltration)", "price": "80.00–150.00", "aus": "" },
+        { "ada": "", "name": "Beyond® Whitening — Chairside", "price": "250.00", "aus": "" },
+        { "ada": "", "name": "Beyond® Whitening — Home Kit", "price": "150.00", "aus": "" },
+        { "ada": "", "name": "Beyond® Whitening — Combo", "price": "350.00", "aus": "" }
+      ]
+    },
+    {
+      "id": "crowns",
+      "title": "Crowns & Bridges",
+      "icon": "◉",
+      "items": [
+        { "ada": "", "name": "Ceramic Fused to Alloy (PFM)", "price": "300.00", "aus": "" },
+        { "ada": "", "name": "Zirconium Crown", "price": "600.00", "aus": "" },
+        { "ada": "", "name": "All Ceramic E-Max CAD/CAM Crown", "price": "600.00", "aus": "" }
+      ]
+    },
+    {
+      "id": "root-canal",
+      "title": "Root Canal Treatment",
+      "icon": "⊕",
+      "items": [
+        { "ada": "", "name": "Root Canal — Anterior tooth", "price": "150.00", "aus": "" },
+        { "ada": "", "name": "Root Canal — Premolar", "price": "200.00", "aus": "" },
+        { "ada": "", "name": "Root Canal — Molar", "price": "250.00–300.00", "aus": "" },
+        { "ada": "", "name": "Root Canal Retreatment", "price": "180.00–500.00", "aus": "" }
+      ]
+    },
+    {
+      "id": "implants",
+      "title": "Dental Implants",
+      "icon": "🦷",
+      "items": [
+        { "ada": "", "name": "myplant two® Implant", "price": "1,200.00", "aus": "" },
+        { "ada": "", "name": "Zirconium Crown on Implant", "price": "1,000.00–1,200.00", "aus": "" },
+        { "ada": "", "name": "Metal Ceramic Crown + Implant + Metal Abutment", "price": "2,000.00", "aus": "" },
+        { "ada": "", "name": "E-Max Crown + Implant + Metal Abutment", "price": "2,200.00", "aus": "" },
+        { "ada": "", "name": "E-Max Crown + Implant + Zirconium Abutment", "price": "2,400.00", "aus": "" },
+        { "ada": "", "name": "3-Crown Bridge on 2 Implants (Metal Ceramic)", "price": "4,300.00", "aus": "" },
+        { "ada": "", "name": "3-Crown Bridge on 2 Implants (E-Max)", "price": "5,000.00–5,400.00", "aus": "" },
+        { "ada": "", "name": "All-on-4 Overdenture (per arch)", "price": "9,000.00", "aus": "" },
+        { "ada": "", "name": "All-on-6 Overdenture (per arch)", "price": "13,200.00", "aus": "" }
+      ]
+    },
+    {
+      "id": "orthodontics",
+      "title": "Orthodontics",
+      "icon": "◎",
+      "items": [
+        { "ada": "", "name": "Metal Braces", "price": "2,300.00–3,500.00", "aus": "" },
+        { "ada": "", "name": "Ceramic Braces", "price": "2,800.00–4,500.00", "aus": "" },
+        { "ada": "", "name": "CA® Clear Aligners", "price": "1,000.00–4,000.00", "aus": "" },
+        { "ada": "", "name": "Invisalign®", "price": "5,000.00–9,000.00", "aus": "" }
+      ]
+    },
+    {
+      "id": "surgery",
+      "title": "Oral Surgery",
+      "icon": "⚕",
+      "items": [
+        { "ada": "311", "name": "Extraction — 1 tooth or part(s)", "price": "30.00–80.00", "aus": "167.46" },
+        { "ada": "314", "name": "Wisdom Tooth Extraction", "price": "100.00–200.00", "aus": "" },
+        { "ada": "322", "name": "Surgical Extraction", "price": "200.00", "aus": "" },
+        { "ada": "323", "name": "Impacted Tooth Removal", "price": "250.00–400.00", "aus": "" },
+        { "ada": "232", "name": "Perio flap surgery", "price": "100.00 per quadrant", "aus": "233.55 per tooth" }
+      ]
+    }
+  ],
+  "comparisons": [
+    { "treatment": "Single Implant + Crown (myplant two®)", "roomchang": "$2,000", "australia": "$4,500–$6,000", "uk": "$3,500–$5,000" },
+    { "treatment": "All-on-4 (per arch)", "roomchang": "$9,000", "australia": "$18,000–$25,000", "uk": "$14,000–$20,000" },
+    { "treatment": "E-Max Crown", "roomchang": "$600", "australia": "$1,500–$2,200", "uk": "$900–$1,400" },
+    { "treatment": "Composite Veneer", "roomchang": "$55–150", "australia": "$300–$600", "uk": "$200–$500" },
+    { "treatment": "Metal Braces (full)", "roomchang": "$2,300–3,500", "australia": "$5,000–$8,000", "uk": "$3,500–$6,000" },
+    { "treatment": "Invisalign® (full)", "roomchang": "$5,000–9,000", "australia": "$6,500–$9,000", "uk": "$4,500–$7,000" },
+    { "treatment": "Beyond® Teeth Whitening", "roomchang": "$250", "australia": "$600–$1,200", "uk": "$500–$900" },
+    { "treatment": "Root Canal (molar)", "roomchang": "$250–300", "australia": "$900–$1,600", "uk": "$700–$1,200" }
+  ],
+  "lastUpdated": "2026-03-27"
+}
