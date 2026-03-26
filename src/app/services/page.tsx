@@ -16,7 +16,7 @@ const SERVICE_CATEGORIES = [
     description:
       "Permanent tooth replacement using titanium implants. Single implants, implant bridges, and All-on-4, 6 & 8 full-arch solutions available.",
     tags: ["Single Implant", "Implant Bridge", "All-on-4", "All-on-6", "All-on-8"],
-    href: "/contact",
+    href: "/services/dental-implants",
     icon: "🦷",
   },
   {
@@ -25,7 +25,7 @@ const SERVICE_CATEGORIES = [
     description:
       "High-strength E-Max and zirconia crowns with digital design and in-house milling for precision fit and natural appearance.",
     tags: ["E-Max Crown", "Zirconia", "CAD/CAM Milled"],
-    href: "/contact",
+    href: "/services/dental-crowns",
     icon: "✦",
   },
   {
@@ -34,7 +34,7 @@ const SERVICE_CATEGORIES = [
     description:
       "Straighten teeth discreetly with our CA® Clear Aligner, Invisalign, or traditional metal and ceramic braces.",
     tags: ["CA® Clear Aligner", "Invisalign", "Metal Braces", "Ceramic Braces"],
-    href: "/contact",
+    href: "/services/orthodontics",
     icon: "◎",
   },
   {
@@ -43,7 +43,7 @@ const SERVICE_CATEGORIES = [
     description:
       "Transform your smile with porcelain veneers, teeth whitening, smile design, and aesthetic composite bonding.",
     tags: ["Veneers", "Teeth Whitening", "Smile Design", "Bonding"],
-    href: "/contact",
+    href: "/services/cosmetic-dentistry",
     icon: "✶",
   },
   {
@@ -52,7 +52,7 @@ const SERVICE_CATEGORIES = [
     description:
       "Comprehensive treatment planning for patients who need to restore or rebuild the entire mouth using a combination of advanced techniques.",
     tags: ["Full Arch", "Combined Treatment", "Digital Planning"],
-    href: "/contact",
+    href: "/services/full-mouth-reconstruction",
     icon: "⊕",
   },
   {
@@ -61,7 +61,7 @@ const SERVICE_CATEGORIES = [
     description:
       "Wisdom tooth extraction, bone grafting, sinus lifts, and other surgical procedures performed by our specialist oral surgeons.",
     tags: ["Wisdom Tooth", "Bone Graft", "Sinus Lift", "Extraction"],
-    href: "/contact",
+    href: "/services/oral-surgery",
     icon: "⚕",
   },
   {
@@ -70,7 +70,7 @@ const SERVICE_CATEGORIES = [
     description:
       "Child-friendly dental care from infancy through adolescence. Preventive care, fillings, sealants, and early orthodontic assessment.",
     tags: ["Children", "Preventive", "Sealants", "Early Orthodontics"],
-    href: "/contact",
+    href: "/services/pediatric-dentistry",
     icon: "♡",
   },
   {
@@ -79,7 +79,7 @@ const SERVICE_CATEGORIES = [
     description:
       "Non-surgical oral appliance therapy and splints to reduce snoring and treat mild-to-moderate obstructive sleep apnea.",
     tags: ["Oral Appliance", "Sleep Splint", "Non-surgical"],
-    href: "/contact",
+    href: "/services/sleep-apnea",
     icon: "◐",
   },
   {
@@ -149,7 +149,7 @@ export default function ServicesPage() {
                   href={service.href}
                   className="inline-flex items-center gap-2 text-sm font-semibold text-[--brand-deep] transition hover:text-[--brand]"
                 >
-                  Enquire about this treatment
+                  Learn more
                   <span aria-hidden="true" className="transition group-hover:translate-x-1">→</span>
                 </Link>
               </div>
