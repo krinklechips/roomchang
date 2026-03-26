@@ -6,34 +6,41 @@ import { DatePicker } from "@/components/ui/date-picker";
 
 const BRANCHES = [
   {
-    name: "Phsar Thmey (Main Branch)",
-    address: "No.4, Street 184 Keo Chea, Sangkat Phsar Thmey 3, Khan Daun Penh",
+    name: "Main Hospital (Phsar Thmey)",
+    address: "No.4, Street 184, Sangkat Phsar Thmey 3, Khan Daun Penh, Phnom Penh",
     phone: "+855 23 211 338",
-    hours: "Tue – Sun: 8:00 am – 7:00 pm",
+    emergency: "+855 11 811 338 (24/7)",
+    email: "contact@roomchang.com",
+    hours: "Mon – Sat: 8:00 am – 5:30 pm",
   },
   {
-    name: "Fun Mall Branch",
-    address: "2nd Floor, Fun Mall, Street 315, Phnom Penh",
-    phone: "+855 11 811 338",
-    hours: "Tue – Sun: 8:00 am – 8:00 pm",
-  },
-  {
-    name: "Aeon Mall Sen Sok City Branch",
-    address: "1st Floor, Aeon Mall Sen Sok City, Street 1003, Phnom Penh",
-    phone: "+855 11 811 338",
-    hours: "Daily: 8:00 am – 8:00 pm",
-  },
-  {
-    name: "Rose Condo (Bassac Garden City) Branch",
+    name: "Rose Condo (Bassac Garden City)",
     address: "No.10, Block 252, Bassac Garden City, Tonle Bassac, Chamkarmorn",
-    phone: "+855 69 811 338",
-    hours: "Tue – Sun: 8:00 am – 7:00 pm",
+    phone: "+855 86 911 338",
+    email: "rcph@roomchang.com",
+    hours: "Mon – Sat: 8:00 am – 5:30 pm",
   },
   {
-    name: "PH Euro Park Branch",
-    address: "Euro Park, Borey Peng Hout Boeng Snor, National Road 1, Chbar Ampov",
-    phone: "+855 69 811 338",
-    hours: "Tue – Sun: 8:00 am – 7:00 pm",
+    name: "AEON Mall Sen Sok City",
+    address: "1st Floor, AEON Mall Sen Sok City, Phnom Penh",
+    phone: "+855 23 911 338",
+    emergency: "+855 93 911 338",
+    email: "contact@roomchang.com",
+    hours: "Mon – Sun: 10:00 am – 10:00 pm",
+  },
+  {
+    name: "PH Euro Park",
+    address: "PH Euro Park, Borey Peng Huoth Grand Star Platinum, Boeung Snor, Chbar Ampov",
+    phone: "+855 86 911 338",
+    email: "rcph@roomchang.com",
+    hours: "Mon – Sun: 8:00 am – 5:30 pm",
+  },
+  {
+    name: "Fun Mall TK",
+    address: "2nd Floor, Fun Mall, Building 50, Street 315, Beong Kok 2, Toul Kork",
+    phone: "+855 12 911 338",
+    email: "funmall@roomchang.com",
+    hours: "Mon – Sun: 9:00 am – 8:00 pm",
   },
 ];
 
@@ -270,6 +277,12 @@ export default function ContactPage() {
                 <p className="font-semibold text-[--text-main]">{branch.name}</p>
                 <p className="mt-1 text-sm leading-6 text-[--text-soft]">{branch.address}</p>
                 <p className="mt-1 text-sm text-[--text-soft]">{branch.phone}</p>
+                {"emergency" in branch && branch.emergency && (
+                  <p className="text-sm text-[--text-soft]">{branch.emergency}</p>
+                )}
+                {"email" in branch && branch.email && (
+                  <p className="text-sm text-[--text-soft]">{branch.email}</p>
+                )}
                 <p className="mt-1 text-xs text-[--text-soft]/70">{branch.hours}</p>
               </div>
             ))}
