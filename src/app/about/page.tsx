@@ -12,41 +12,55 @@ const STATS = [
   { value: "1996", label: "Year Established" },
   { value: "5", label: "Phnom Penh Branches" },
   { value: "30+", label: "Specialist Dentists" },
-  { value: "6", label: "Languages Spoken" },
+  { value: "58", label: "Dental Chairs" },
+];
+
+const BUILDING_STATS = [
+  { value: "10", label: "Storey building" },
+  { value: "3,400 m²", label: "Clinical space" },
+  { value: "58", label: "Dental chairs" },
+  { value: "6", label: "Surgical theatres" },
 ];
 
 const VALUES = [
   {
-    title: "Patient First",
+    title: "Professionalism",
     description:
-      "Every decision — from treatment planning to the design of our waiting rooms — starts by asking what's best for the patient.",
+      "Our team holds international qualifications and operates to the highest clinical standards — backed by ISO 9001:2015 certification.",
   },
   {
-    title: "Clinical Excellence",
+    title: "Honesty",
     description:
-      "We invest continuously in education, certification, and technology to ensure our standards match international best practice.",
+      "Clear pricing, transparent treatment options, and no hidden fees. We believe informed patients make the best decisions.",
   },
   {
-    title: "Transparency",
+    title: "Teamwork",
     description:
-      "Clear pricing, honest treatment options, and no hidden fees. We believe informed patients make the best decisions.",
+      "A collaborative environment where specialists across disciplines work together to deliver the best outcome for every patient.",
   },
   {
-    title: "Community",
+    title: "Innovation",
     description:
-      "Through charity missions and free treatment programs, Roomchang gives back to the communities of Phnom Penh.",
+      "We invest continuously in technology — from CAD/CAM digital labs to 3D CBCT imaging — to stay at the forefront of dentistry.",
+  },
+  {
+    title: "Excellence",
+    description:
+      "From routine check-ups to complex full-mouth reconstructions, we hold ourselves to the same standard of excellence every time.",
   },
 ];
 
 const FACILITIES = [
-  "Hospital-grade sterilisation systems",
+  "Hospital-grade autoclave sterilisation (134°C)",
   "In-house dental laboratory with CAD/CAM milling",
   "3D cone-beam CT imaging (CBCT)",
   "Digital intraoral scanners",
   "Beyond® professional whitening system",
   "CA® proprietary clear aligner lab",
+  "6 dedicated surgical theatres",
   "Dedicated children's treatment rooms",
-  "Private consultation suites",
+  "Underground parking for 15 cars",
+  "Full wheelchair accessibility",
 ];
 
 export default function AboutPage() {
@@ -86,8 +100,20 @@ export default function AboutPage() {
       </div>
 
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
+        {/* Vision & Mission */}
+        <div className="grid gap-6 sm:grid-cols-2">
+          <div className="rounded-[2rem] border border-[--border-strong] bg-[--surface] p-8">
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[--brand]">Vision</p>
+            <p className="mt-3 font-display text-3xl text-[--text-main]">Enriching lives with quality dentistry.</p>
+          </div>
+          <div className="rounded-[2rem] border border-[--border-strong] bg-[--surface] p-8">
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[--brand]">Mission</p>
+            <p className="mt-3 font-display text-3xl text-[--text-main]">We truly care for your teeth.</p>
+          </div>
+        </div>
+
         {/* History */}
-        <div className="grid gap-12 lg:grid-cols-2 lg:gap-20">
+        <div className="mt-16 grid gap-12 lg:grid-cols-2 lg:gap-20">
           <div>
             <h2 className="font-display text-4xl text-[--text-main]">A Hospital, Not Just a Clinic</h2>
             <div className="mt-6 space-y-4 text-sm leading-7 text-[--text-soft]">
@@ -102,9 +128,13 @@ export default function AboutPage() {
                 laboratory, and a specialist team covering every major dental discipline.
               </p>
               <p>
-                Today, Roomchang treats thousands of patients each year — from routine checkups to
+                Today, Roomchang treats thousands of patients every month — from routine checkups to
                 complex full-mouth reconstructions — and serves international visitors from more
                 than 20 countries who choose Cambodia for high-quality, cost-effective dental care.
+              </p>
+              <p>
+                Roomchang was the first dental facility in Cambodia to achieve ISO 9001 certification
+                — a standard independently audited by Bureau Veritas under UKAS accreditation.
               </p>
             </div>
           </div>
@@ -125,14 +155,27 @@ export default function AboutPage() {
           </div>
         </div>
 
+        {/* Building stats */}
+        <div className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-4">
+          {BUILDING_STATS.map((stat) => (
+            <div
+              key={stat.label}
+              className="rounded-[1.75rem] border border-[--border-strong] bg-[--surface] p-6 text-center"
+            >
+              <p className="font-display text-4xl font-bold text-[color:var(--brand)]">{stat.value}</p>
+              <p className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-[--text-soft]">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+
         {/* Values */}
         <div className="mt-20">
-          <h2 className="font-display text-4xl text-[--text-main]">Vision, Mission & Values</h2>
+          <h2 className="font-display text-4xl text-[--text-main]">Our Values</h2>
           <p className="mt-3 max-w-xl text-sm leading-7 text-[--text-soft]">
-            Four principles shape every interaction at Roomchang, from how we design treatments to
+            Five principles shape every interaction at Roomchang, from how we design treatments to
             how we answer the phone.
           </p>
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
             {VALUES.map((value) => (
               <div
                 key={value.title}

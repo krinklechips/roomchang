@@ -10,59 +10,151 @@ export const metadata: Metadata = {
 
 // CMS-ready stub: replace with API fetch when CMS is live
 const DOCTORS = [
+  // Director
   {
-    id: "dr-chan",
-    name: "Dr. Chan Sotheavy",
-    role: "Oral & Maxillofacial Surgeon",
-    specialties: ["Oral Surgery", "Implantology", "Bone Grafting"],
-    languages: ["Khmer", "English", "French"],
-    imageSrc: null,
-    initials: "CS",
-  },
-  {
-    id: "dr-keo",
-    name: "Dr. Keo Piseth",
-    role: "Implantologist",
-    specialties: ["Dental Implants", "All-on-4", "Full Mouth Reconstruction"],
+    id: "dr-tith",
+    name: "Dr. Tith Hong Yoeu",
+    credentials: "DDS, MSc.",
+    role: "Founder & Director — Oral Surgery & Implantology",
+    specialties: ["Oral Surgery", "Implantology", "Full Mouth Reconstruction"],
+    note: "MSc. in Oral Implantology — Goethe University Frankfurt, Germany",
     languages: ["Khmer", "English"],
-    imageSrc: null,
-    initials: "KP",
+    initials: "TH",
   },
+  // Implantology & Oral Reconstruction
   {
-    id: "dr-lim",
-    name: "Dr. Lim Sokunthea",
-    role: "Orthodontist",
-    specialties: ["Clear Aligners", "Invisalign", "Braces"],
-    languages: ["Khmer", "English", "Mandarin"],
-    imageSrc: null,
-    initials: "LS",
-  },
-  {
-    id: "dr-heng",
-    name: "Dr. Heng Bunrith",
-    role: "Prosthodontist",
-    specialties: ["Crowns & Bridges", "Veneers", "Dentures"],
+    id: "dr-heng-kyhak",
+    name: "Dr. Heng Kyhak",
+    credentials: "DDS, MSc.",
+    role: "Oral Surgery & Reconstruction",
+    specialties: ["Oral Surgery", "Bone Grafting", "Full Mouth Reconstruction"],
     languages: ["Khmer", "English"],
-    imageSrc: null,
+    initials: "HK",
+  },
+  {
+    id: "dr-chav",
+    name: "Dr. Chav Bunhean",
+    credentials: "DDS, MSc.",
+    role: "Periodontist & Implantologist",
+    specialties: ["Periodontal Disease", "Implantology", "Full Mouth Rehabilitation"],
+    languages: ["Khmer", "English"],
+    initials: "CB",
+  },
+  {
+    id: "dr-hy",
+    name: "Dr. Hy Bunhay",
+    credentials: "DDS",
+    role: "Prosthodontist & Implantologist",
+    specialties: ["Prosthodontics", "Aesthetic Dentistry", "Implantology"],
+    languages: ["Khmer", "English"],
     initials: "HB",
   },
   {
-    id: "dr-sok",
-    name: "Dr. Sok Chandy",
-    role: "Cosmetic Dentist",
-    specialties: ["Smile Design", "Teeth Whitening", "Composite Bonding"],
-    languages: ["Khmer", "English", "Japanese"],
-    imageSrc: null,
-    initials: "SC",
+    id: "dr-kong",
+    name: "Dr. Kong Pheakdey",
+    credentials: "DDS, MSc.",
+    role: "Oral Implantologist",
+    specialties: ["Dental Implants", "All-on-4 / All-on-6", "Bone Grafting"],
+    languages: ["Khmer", "English"],
+    initials: "KP",
   },
   {
-    id: "dr-prak",
-    name: "Dr. Prak Rathana",
+    id: "dr-loung",
+    name: "Dr. Loung Lov",
+    credentials: "DDS, MSc.",
+    role: "Implantologist & Sleep Specialist",
+    specialties: ["Implantology", "Snoring & Sleep Apnea"],
+    languages: ["Khmer", "English"],
+    initials: "LL",
+  },
+  {
+    id: "dr-ke",
+    name: "Dr. Ke Chenda",
+    credentials: "DDS, MSc.",
+    role: "General Dentistry & Implantology",
+    specialties: ["Implantology", "Orthodontics", "Cosmetic Dentistry"],
+    languages: ["Khmer", "English"],
+    initials: "KC",
+  },
+  // Cosmetic Dentistry
+  {
+    id: "dr-ob",
+    name: "Dr. Ob Samon",
+    credentials: "DDS",
+    role: "Prosthodontist",
+    specialties: ["General Dentistry", "Prosthodontics", "Smile Design"],
+    languages: ["Khmer", "English"],
+    initials: "OS",
+  },
+  {
+    id: "dr-sann",
+    name: "Dr. Sann Sidaravitou",
+    credentials: "DDS",
+    role: "General Practitioner",
+    specialties: ["General Dentistry", "Cosmetic Dentistry"],
+    languages: ["Khmer", "English"],
+    initials: "SS",
+  },
+  // Orthodontics
+  {
+    id: "dr-phit",
+    name: "Dr. Phit Veasna",
+    credentials: "DDS, MSc.",
+    role: "Orthodontist",
+    specialties: ["Orthodontics", "Braces", "Clear Aligners"],
+    note: "MSc. in Orthodontics — Germany, 2019",
+    languages: ["Khmer", "English"],
+    initials: "PV",
+  },
+  {
+    id: "dr-lao",
+    name: "Dr. Lao Chanvattey",
+    credentials: "DDS, MSc.",
+    role: "Orthodontist",
+    specialties: ["Orthodontics", "Invisalign", "Clear Aligners"],
+    note: "MSc. in Orthodontics — Austria",
+    languages: ["Khmer", "English", "German"],
+    initials: "LC",
+  },
+  {
+    id: "dr-samith-c",
+    name: "Dr. Samith Chanvuthy",
+    credentials: "DDS",
+    role: "Orthodontist",
+    specialties: ["Braces", "Clear Aligners", "Orthodontics"],
+    languages: ["Khmer", "English"],
+    initials: "SC",
+  },
+  // Paediatrics
+  {
+    id: "dr-yos",
+    name: "Dr. Yos Chantho",
+    credentials: "DDS, MSc.",
     role: "Paediatric Dentist",
     specialties: ["Children's Dentistry", "Preventive Care", "Early Orthodontics"],
+    note: "President, Cambodian Association of Pediatric Dentistry",
     languages: ["Khmer", "English"],
-    imageSrc: null,
-    initials: "PR",
+    initials: "YC",
+  },
+  // Senior Consultants
+  {
+    id: "prof-nentwig",
+    name: "Prof. Dr. Georg-Hubertus Nentwig",
+    credentials: "DMD, Dr Med Dent, PhD",
+    role: "Senior Consultant — Oral Surgery",
+    specialties: ["Oral Surgery", "Implantology"],
+    note: "Former Professor, Goethe University Frankfurt; founder of the Masters of Oral Implantology programme",
+    languages: ["English", "German"],
+    initials: "GN",
+  },
+  {
+    id: "dr-yue",
+    name: "Dr. Yue Weng Cheu",
+    credentials: "BDS, FRACDS, MJDF, FICД",
+    role: "Visiting Specialist — TMD",
+    specialties: ["TMD", "Occlusion", "Oral Medicine"],
+    languages: ["English", "Mandarin", "Malay"],
+    initials: "YW",
   },
 ];
 
@@ -116,7 +208,12 @@ export default function TeamPage() {
                   {doctor.initials}
                 </div>
                 <div>
-                  <h2 className="font-display text-xl leading-tight text-[--text-main]">{doctor.name}</h2>
+                  <h2 className="font-display text-xl leading-tight text-[--text-main]">
+                    {doctor.name}
+                    {doctor.credentials && (
+                      <span className="ml-1.5 text-sm font-sans font-normal text-[--text-soft]">{doctor.credentials}</span>
+                    )}
+                  </h2>
                   <p className="mt-0.5 text-xs font-semibold uppercase tracking-[0.18em] text-[--text-soft]">
                     {doctor.role}
                   </p>
@@ -149,6 +246,9 @@ export default function TeamPage() {
                   <p className="mt-1 text-sm text-[--text-main]">{doctor.languages.join(" · ")}</p>
                 </div>
 
+                {doctor.note && (
+                  <p className="text-[0.68rem] leading-5 text-[--text-soft] italic">{doctor.note}</p>
+                )}
                 <Link
                   href="/contact"
                   className="inline-flex items-center gap-2 text-sm font-semibold text-[--brand-deep] transition hover:text-[--brand]"
