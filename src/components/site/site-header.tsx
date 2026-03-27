@@ -10,7 +10,18 @@ type NavItem = { label: string; href: string; children?: NavChild[] };
 
 const NAV_ITEMS: NavItem[] = [
   { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
+  {
+    label: "About",
+    href: "/about",
+    children: [
+      { label: "About Roomchang", href: "/about" },
+      { label: "Our Facilities", href: "/about/facilities" },
+      { label: "Vision, Mission & Values", href: "/about/vision-mission-values" },
+      { label: "Message from Our Director", href: "/about/director-message" },
+      { label: "Community & Charity", href: "/about/community" },
+      { label: "Corporate Partnerships", href: "/about/partnerships" },
+    ],
+  },
   {
     label: "Services",
     href: "/services",
