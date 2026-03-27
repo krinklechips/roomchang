@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { HeroSlideshow, type HeroSlide } from "./hero-slideshow";
+import { getHeroSlides } from "@/lib/data";
 
-const heroSlides: HeroSlide[] = [
+// Fallback slides used if the database returns nothing
+const FALLBACK_SLIDES: HeroSlide[] = [
   {
     id: "team",
     eyebrow: "Roomchang team",
@@ -33,7 +35,24 @@ const heroSlides: HeroSlide[] = [
   },
 ];
 
-export function HomeHero() {
+export async function HomeHero() {
+  const dbSlides = await getHeroSlides();
+
+  const heroSlides: HeroSlide[] =
+    dbSlides.length > 0
+      ? dbSlides.map((s) => ({
+          id: s.id,
+          eyebrow: s.eyebrow ?? "",
+          title: s.title ?? "",
+          description: s.description ?? "",
+          imageSrc: s.imageSrc,
+          imageAlt: s.imageAlt ?? "",
+          imagePosition: s.imagePosition ?? "center center",
+          imageSize: s.imageSize ?? undefined,
+          preserveFullImage: s.preserveFullImage,
+        }))
+      : FALLBACK_SLIDES;
+
   return (
     <section className="relative overflow-hidden sm:min-h-[calc(100svh-6.625rem)] lg:min-h-[calc(100svh-7.25rem)]">
 
@@ -54,7 +73,7 @@ export function HomeHero() {
           mediaClassName="aspect-[3/2] sm:rounded-none sm:h-full sm:aspect-auto"
         />
 
-        {/* Bottom pink fade blending team photo into page */}
+        {/* Bottom pink fade blending into page */}
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[color:var(--brand-soft)] via-[rgba(255,220,235,0.5)] to-transparent sm:h-48" />
 
         {/* Scroll chevron — desktop only */}
