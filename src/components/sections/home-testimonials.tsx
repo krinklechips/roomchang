@@ -3,60 +3,57 @@
 import { startTransition, useEffect, useState } from "react";
 import Link from "next/link";
 
-const TESTIMONIALS = [
-  {
-    id: "russell",
-    quote:
-      "I flew from Melbourne specifically for Roomchang. The full mouth reconstruction they did for me would have cost five times as much at home. The team was professional, warm, and communicated brilliantly throughout.",
-    name: "Russell T.",
-    origin: "Melbourne, Australia",
-    treatment: "Full Mouth Reconstruction",
-    initials: "RT",
-  },
-  {
-    id: "keiko",
-    quote:
-      "I was nervous about getting implants abroad, but the team put me completely at ease. The digital planning process was incredibly thorough and the result is perfect. I wouldn't hesitate to return.",
-    name: "Keiko M.",
-    origin: "Osaka, Japan",
-    treatment: "Dental Implants",
-    initials: "KM",
-  },
-  {
-    id: "sarah",
-    quote:
-      "My clear aligners were designed and made on-site — the turnaround was so much faster than I expected. The doctors took time to explain every stage. I'm so happy with my smile now.",
-    name: "Sarah L.",
-    origin: "Singapore",
-    treatment: "CA® Clear Aligner",
-    initials: "SL",
-  },
-  {
-    id: "david",
-    quote:
-      "Exceptional care from start to finish. The clinic is spotless, the technology is impressive, and the price is genuinely hard to believe for the quality you get. I've already recommended Roomchang to three friends.",
-    name: "David K.",
-    origin: "Perth, Australia",
-    treatment: "All-on-4 Implants",
-    initials: "DK",
-  },
-];
+interface TestimonialData {
+  id: string;
+  authorName: string;
+  authorTitle: string | null;
+  quote: string;
+}
 
-export function HomeTestimonials() {
+function getInitials(name: string): string {
+  return name
+    .split(/\s+/)
+    .map((w) => w[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
+}
+
+function parseOriginAndTreatment(authorTitle: string | null): {
+  origin: string;
+  treatment: string;
+} {
+  if (!authorTitle) return { origin: "", treatment: "" };
+  const parts = authorTitle.split("—").map((s) => s.trim());
+  return {
+    origin: parts[0] ?? "",
+    treatment: parts[1] ?? "",
+  };
+}
+
+export function HomeTestimonials({
+  testimonials,
+}: {
+  testimonials: TestimonialData[];
+}) {
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
 
   useEffect(() => {
-    if (paused) return;
+    if (paused || testimonials.length === 0) return;
     const id = setInterval(() => {
       startTransition(() => {
-        setActive((i) => (i + 1) % TESTIMONIALS.length);
+        setActive((i) => (i + 1) % testimonials.length);
       });
     }, 6000);
     return () => clearInterval(id);
-  }, [paused]);
+  }, [paused, testimonials.length]);
 
-  const current = TESTIMONIALS[active];
+  if (testimonials.length === 0) return null;
+
+  const current = testimonials[active];
+  const { origin, treatment } = parseOriginAndTreatment(current.authorTitle);
+  const initials = getInitials(current.authorName);
 
   return (
     <section
@@ -91,22 +88,24 @@ export function HomeTestimonials() {
 
         {/* Attribution */}
         <div className="mt-8 flex flex-col items-center gap-1">
-          <p className="font-semibold text-[--text-main]">{current.name}</p>
-          <p className="text-sm text-[--text-soft]">{current.origin}</p>
-          <span className="mt-1 rounded-full bg-[--brand-soft] px-3 py-0.5 text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-[--brand-deep]">
-            {current.treatment}
-          </span>
+          <p className="font-semibold text-[--text-main]">{current.authorName}</p>
+          {origin && <p className="text-sm text-[--text-soft]">{origin}</p>}
+          {treatment && (
+            <span className="mt-1 rounded-full bg-[--brand-soft] px-3 py-0.5 text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-[--brand-deep]">
+              {treatment}
+            </span>
+          )}
         </div>
 
         {/* Avatar navigation */}
         <div className="mt-10 flex items-center justify-center gap-3">
-          {TESTIMONIALS.map((t, i) => {
+          {testimonials.map((t, i) => {
             const isActive = i === active;
             return (
               <button
                 key={t.id}
                 type="button"
-                aria-label={`Read testimonial from ${t.name}`}
+                aria-label={`Read testimonial from ${t.authorName}`}
                 onClick={() => {
                   setPaused(true);
                   setActive(i);
@@ -117,7 +116,7 @@ export function HomeTestimonials() {
                     : "h-10 w-10 bg-[color:var(--surface-strong)] text-sm text-[color:var(--text-soft)] hover:bg-[color:var(--brand-soft)] hover:text-[color:var(--brand-deep)]"
                 }`}
               >
-                {t.initials}
+                {getInitials(t.authorName)}
               </button>
             );
           })}

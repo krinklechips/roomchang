@@ -1,0 +1,153 @@
+// Roomchang Dental Hospital — Prisma Schema
+// Database: Supabase (PostgreSQL)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── DOCTORS ─────────────────────────────────────────────────────────────────
+
+model Doctor {
+  id          String     @id @default(cuid())
+  name        String
+  credentials String
+  role        String
+  department  Department
+  specialty   String[]
+  languages   String[]
+  bio         String?    @db.Text
+  note        String?
+  initials    String
+  photoUrl    String?
+  order       Int        @default(0)
+  published   Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@map("doctors")
+}
+
+enum Department {
+  DIRECTOR
+  IMPLANTOLOGY
+  COSMETIC
+  ORTHODONTICS
+  PEDIATRICS
+  GENERAL
+  SENIOR_CONSULTANT
+  PERIODONTICS
+
+  @@map("department")
+}
+
+// ─── PAGES ───────────────────────────────────────────────────────────────────
+
+model Page {
+  id        String       @id @default(cuid())
+  title     String
+  slug      String       @unique
+  template  PageTemplate
+  content   Json         @default("{}")
+  metaTitle String?
+  metaDesc  String?
+  published Boolean      @default(false)
+  order     Int          @default(0)
+  navItemId String?
+  navItem   NavItem?     @relation(fields: [navItemId], references: [id])
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  @@map("pages")
+}
+
+enum PageTemplate {
+  SERVICE
+  ABOUT
+  TEAM
+  CONTACT
+  INTERNATIONAL
+  TECHNOLOGY
+  PRICING
+  CLINICAL_RESULTS
+  CUSTOM
+
+  @@map("page_template")
+}
+
+// ─── NAVIGATION ──────────────────────────────────────────────────────────────
+
+model NavItem {
+  id       String    @id @default(cuid())
+  label    String
+  href     String
+  order    Int       @default(0)
+  parentId String?
+  parent   NavItem?  @relation("NavChildren", fields: [parentId], references: [id])
+  children NavItem[] @relation("NavChildren")
+  pages    Page[]
+
+  @@map("nav_items")
+}
+
+// ─── PRICING ─────────────────────────────────────────────────────────────────
+
+model PricingCategory {
+  id    String        @id @default(cuid())
+  title String
+  icon  String
+  order Int           @default(0)
+  items PricingItem[]
+
+  @@map("pricing_categories")
+}
+
+model PricingItem {
+  id         String          @id @default(cuid())
+  name       String
+  price      String
+  ada        String?
+  aus        String?
+  order      Int             @default(0)
+  categoryId String
+  category   PricingCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@map("pricing_items")
+}
+
+// ─── ENQUIRIES ───────────────────────────────────────────────────────────────
+
+model Enquiry {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  country   String?
+  treatment String?
+  branch    String?
+  date      String?
+  message   String   @db.Text
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@map("enquiries")
+}
+
+// ─── BRANCHES ────────────────────────────────────────────────────────────────
+
+model Branch {
+  id        String  @id @default(cuid())
+  name      String
+  address   String
+  phone     String
+  mobile    String?
+  email     String?
+  hours     String
+  order     Int     @default(0)
+  published Boolean @default(true)
+
+  @@map("branches")
+}

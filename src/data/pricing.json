@@ -108,14 +108,16 @@
     }
   ],
   "comparisons": [
-    { "treatment": "Single Implant + Crown (myplant two®)", "roomchang": "$2,000", "australia": "$4,500–$6,000", "uk": "$3,500–$5,000" },
-    { "treatment": "All-on-4 (per arch)", "roomchang": "$9,000", "australia": "$18,000–$25,000", "uk": "$14,000–$20,000" },
-    { "treatment": "E-Max Crown", "roomchang": "$600", "australia": "$1,500–$2,200", "uk": "$900–$1,400" },
-    { "treatment": "Composite Veneer", "roomchang": "$55–150", "australia": "$300–$600", "uk": "$200–$500" },
-    { "treatment": "Metal Braces (full)", "roomchang": "$2,300–3,500", "australia": "$5,000–$8,000", "uk": "$3,500–$6,000" },
-    { "treatment": "Invisalign® (full)", "roomchang": "$5,000–9,000", "australia": "$6,500–$9,000", "uk": "$4,500–$7,000" },
-    { "treatment": "Beyond® Teeth Whitening", "roomchang": "$250", "australia": "$600–$1,200", "uk": "$500–$900" },
-    { "treatment": "Root Canal (molar)", "roomchang": "$250–300", "australia": "$900–$1,600", "uk": "$700–$1,200" }
+    { "ada": "688", "treatment": "Implant Insertion (myplant two®)", "roomchang": "$1,200", "australia": "AUD $2,277" },
+    { "ada": "672", "treatment": "Full Crown on Implant (veneered)", "roomchang": "$550–600", "australia": "AUD $1,734" },
+    { "ada": "613", "treatment": "Full Crown — Non-metallic (E-Max)", "roomchang": "$550–600", "australia": "AUD $1,642–1,800" },
+    { "ada": "582", "treatment": "Veneer — Direct Composite", "roomchang": "$50–130", "australia": "AUD $326" },
+    { "ada": "583", "treatment": "Veneer — Indirect (Porcelain)", "roomchang": "$550–600", "australia": "AUD $1,087" },
+    { "ada": "114", "treatment": "Removal of Calculus (first visit)", "roomchang": "$35", "australia": "AUD $119" },
+    { "ada": "311", "treatment": "Tooth Removal", "roomchang": "$30–80", "australia": "AUD $205" },
+    { "ada": "37", "treatment": "Panoramic X-Ray (OPG)", "roomchang": "$20", "australia": "AUD $105" },
+    { "ada": "625", "treatment": "Post and Core for Crown", "roomchang": "$50", "australia": "AUD $477" },
+    { "ada": "232", "treatment": "Periodontal Flap Surgery (per quadrant)", "roomchang": "$100", "australia": "AUD $295" }
   ],
   "lastUpdated": "2026-03-27"
 }

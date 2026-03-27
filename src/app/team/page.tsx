@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SiteShell } from "@/components/site/site-shell";
+import { getDoctors } from "@/lib/data";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -8,159 +9,10 @@ export const metadata: Metadata = {
     "Meet the specialist dentists and clinical team at Roomchang Dental Hospital — multilingual experts in implants, orthodontics, cosmetic dentistry, and more.",
 };
 
-// CMS-ready stub: replace with API fetch when CMS is live
-const DOCTORS = [
-  // Director
-  {
-    id: "dr-tith",
-    name: "Dr. Tith Hong Yoeu",
-    credentials: "DDS, MSc.",
-    role: "Founder & Director — Oral Surgery & Implantology",
-    specialties: ["Oral Surgery", "Implantology", "Full Mouth Reconstruction"],
-    note: "MSc. in Oral Implantology — Goethe University Frankfurt, Germany",
-    languages: ["Khmer", "English"],
-    initials: "TH",
-  },
-  // Implantology & Oral Reconstruction
-  {
-    id: "dr-heng-kyhak",
-    name: "Dr. Heng Kyhak",
-    credentials: "DDS, MSc.",
-    role: "Oral Surgery & Reconstruction",
-    specialties: ["Oral Surgery", "Bone Grafting", "Full Mouth Reconstruction"],
-    languages: ["Khmer", "English"],
-    initials: "HK",
-  },
-  {
-    id: "dr-chav",
-    name: "Dr. Chav Bunhean",
-    credentials: "DDS, MSc.",
-    role: "Periodontist & Implantologist",
-    specialties: ["Periodontal Disease", "Implantology", "Full Mouth Rehabilitation"],
-    languages: ["Khmer", "English"],
-    initials: "CB",
-  },
-  {
-    id: "dr-hy",
-    name: "Dr. Hy Bunhay",
-    credentials: "DDS",
-    role: "Prosthodontist & Implantologist",
-    specialties: ["Prosthodontics", "Aesthetic Dentistry", "Implantology"],
-    languages: ["Khmer", "English"],
-    initials: "HB",
-  },
-  {
-    id: "dr-kong",
-    name: "Dr. Kong Pheakdey",
-    credentials: "DDS, MSc.",
-    role: "Oral Implantologist",
-    specialties: ["Dental Implants", "All-on-4 / All-on-6", "Bone Grafting"],
-    languages: ["Khmer", "English"],
-    initials: "KP",
-  },
-  {
-    id: "dr-loung",
-    name: "Dr. Loung Lov",
-    credentials: "DDS, MSc.",
-    role: "Implantologist & Sleep Specialist",
-    specialties: ["Implantology", "Snoring & Sleep Apnea"],
-    languages: ["Khmer", "English"],
-    initials: "LL",
-  },
-  {
-    id: "dr-ke",
-    name: "Dr. Ke Chenda",
-    credentials: "DDS, MSc.",
-    role: "General Dentistry & Implantology",
-    specialties: ["Implantology", "Orthodontics", "Cosmetic Dentistry"],
-    languages: ["Khmer", "English"],
-    initials: "KC",
-  },
-  // Cosmetic Dentistry
-  {
-    id: "dr-ob",
-    name: "Dr. Ob Samon",
-    credentials: "DDS",
-    role: "Prosthodontist",
-    specialties: ["General Dentistry", "Prosthodontics", "Smile Design"],
-    languages: ["Khmer", "English"],
-    initials: "OS",
-  },
-  {
-    id: "dr-sann",
-    name: "Dr. Sann Sidaravitou",
-    credentials: "DDS",
-    role: "General Practitioner",
-    specialties: ["General Dentistry", "Cosmetic Dentistry"],
-    languages: ["Khmer", "English"],
-    initials: "SS",
-  },
-  // Orthodontics
-  {
-    id: "dr-phit",
-    name: "Dr. Phit Veasna",
-    credentials: "DDS, MSc.",
-    role: "Orthodontist",
-    specialties: ["Orthodontics", "Braces", "Clear Aligners"],
-    note: "MSc. in Orthodontics — Germany, 2019",
-    languages: ["Khmer", "English"],
-    initials: "PV",
-  },
-  {
-    id: "dr-lao",
-    name: "Dr. Lao Chanvattey",
-    credentials: "DDS, MSc.",
-    role: "Orthodontist",
-    specialties: ["Orthodontics", "Invisalign", "Clear Aligners"],
-    note: "MSc. in Orthodontics — Austria",
-    languages: ["Khmer", "English", "German"],
-    initials: "LC",
-  },
-  {
-    id: "dr-samith-c",
-    name: "Dr. Samith Chanvuthy",
-    credentials: "DDS",
-    role: "Orthodontist",
-    specialties: ["Braces", "Clear Aligners", "Orthodontics"],
-    languages: ["Khmer", "English"],
-    initials: "SC",
-  },
-  // Paediatrics
-  {
-    id: "dr-yos",
-    name: "Dr. Yos Chantho",
-    credentials: "DDS, MSc.",
-    role: "Paediatric Dentist",
-    specialties: ["Children's Dentistry", "Preventive Care", "Early Orthodontics"],
-    note: "President, Cambodian Association of Pediatric Dentistry",
-    languages: ["Khmer", "English"],
-    initials: "YC",
-  },
-  // Senior Consultants
-  {
-    id: "prof-nentwig",
-    name: "Prof. Dr. Georg-Hubertus Nentwig",
-    credentials: "DMD, Dr Med Dent, PhD",
-    role: "Senior Consultant — Oral Surgery",
-    specialties: ["Oral Surgery", "Implantology"],
-    note: "Former Professor, Goethe University Frankfurt; founder of the Masters of Oral Implantology programme",
-    languages: ["English", "German"],
-    initials: "GN",
-  },
-  {
-    id: "dr-yue",
-    name: "Dr. Yue Weng Cheu",
-    credentials: "BDS, FRACDS, MJDF, FICД",
-    role: "Visiting Specialist — TMD",
-    specialties: ["TMD", "Occlusion", "Oral Medicine"],
-    languages: ["English", "Mandarin", "Malay"],
-    initials: "YW",
-  },
-];
-
 const LANGUAGES = ["Khmer", "English", "Mandarin", "Japanese", "Malay", "French"];
 
-export default function TeamPage() {
+export default async function TeamPage() {
+  const doctors = await getDoctors();
   return (
     <SiteShell>
       {/* Header */}
@@ -197,7 +49,7 @@ export default function TeamPage() {
       {/* Doctor grid */}
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8">
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {DOCTORS.map((doctor) => (
+          {doctors.map((doctor) => (
             <article
               key={doctor.id}
               className="flex flex-col overflow-hidden rounded-[2rem] border border-[--border-strong] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)]"
@@ -227,7 +79,7 @@ export default function TeamPage() {
                     Specialties
                   </p>
                   <div className="mt-2 flex flex-wrap gap-1.5">
-                    {doctor.specialties.map((s) => (
+                    {doctor.specialty.map((s) => (
                       <span
                         key={s}
                         className="rounded-full bg-[--brand-soft] px-2.5 py-0.5 text-[0.68rem] font-semibold text-[--brand-deep]"

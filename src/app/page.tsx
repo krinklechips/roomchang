@@ -5,8 +5,11 @@ import { HomeServices } from "@/components/sections/home-services";
 import { HomeFeatured } from "@/components/sections/home-featured";
 import { HomeTestimonials } from "@/components/sections/home-testimonials";
 import { SiteShell } from "@/components/site/site-shell";
+import { getTestimonials } from "@/lib/data";
 
-export default function Home() {
+export default async function Home() {
+  const testimonials = await getTestimonials();
+
   return (
     <SiteShell>
       <HomeHero />
@@ -14,7 +17,7 @@ export default function Home() {
       <HomeStats />
       <HomeServices />
       <HomeFeatured />
-      <HomeTestimonials />
+      <HomeTestimonials testimonials={testimonials} />
     </SiteShell>
   );
 }
