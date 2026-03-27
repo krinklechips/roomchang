@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SiteShell } from "@/components/site/site-shell";
+import { getClinicalCases } from "@/lib/data";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -8,116 +9,19 @@ export const metadata: Metadata = {
     "Real patient results from Roomchang Dental Hospital — before and after cases for implants, orthodontics, full mouth reconstruction, cosmetic dentistry and more.",
 };
 
-const CATEGORIES = [
-  "All",
-  "Implants",
-  "Orthodontics",
-  "Cosmetic",
-  "Full Mouth",
-  "Crowns & Veneers",
-];
-
-const CASES = [
-  {
-    id: "case-01",
-    title: "Full Mouth Reconstruction",
-    category: "Full Mouth",
-    treatment: "All-on-6 implants + E-Max crowns, upper & lower arches",
-    duration: "3 visits over 6 months",
-    description:
-      "Patient presented with severe bone loss and multiple failing teeth. A full arch restoration using All-on-6 implants with fixed E-Max crowns was completed across both arches.",
-    tag: "Full Mouth",
-  },
-  {
-    id: "case-02",
-    title: "Single Implant Restoration",
-    category: "Implants",
-    treatment: "OSSTEM implant + zirconia crown, lower left molar",
-    duration: "3 months",
-    description:
-      "Missing lower molar replaced with a single OSSTEM implant and custom zirconia crown. Patient regained full chewing function without affecting adjacent teeth.",
-    tag: "Implants",
-  },
-  {
-    id: "case-03",
-    title: "CA® Clear Aligner Correction",
-    category: "Orthodontics",
-    treatment: "CA® proprietary clear aligner, full arch correction",
-    duration: "14 months",
-    description:
-      "Crowding and spacing issues corrected using Roomchang's in-house CA® aligner system. Designed, fabricated, and monitored entirely at Roomchang.",
-    tag: "Orthodontics",
-  },
-  {
-    id: "case-04",
-    title: "Smile Makeover with Veneers",
-    category: "Cosmetic",
-    treatment: "10 × E-Max porcelain veneers (upper arch)",
-    duration: "2 visits",
-    description:
-      "Patient wanted a brighter, more even smile. Ten ultra-thin E-Max veneers were designed using digital smile design and fitted in two appointments.",
-    tag: "Cosmetic",
-  },
-  {
-    id: "case-05",
-    title: "Invisalign Correction",
-    category: "Orthodontics",
-    treatment: "Invisalign Full, mild-moderate crowding",
-    duration: "12 months",
-    description:
-      "International patient visiting from Singapore completed full Invisalign treatment at Roomchang with remote progress monitoring between visits.",
-    tag: "Orthodontics",
-  },
-  {
-    id: "case-06",
-    title: "Crown Lengthening + Veneers",
-    category: "Crowns & Veneers",
-    treatment: "Crown lengthening surgery + 8 × porcelain veneers",
-    duration: "3 months",
-    description:
-      "A gummy smile was corrected with minor crown lengthening surgery followed by porcelain veneers to achieve a balanced, proportional smile.",
-    tag: "Crowns & Veneers",
-  },
-  {
-    id: "case-07",
-    title: "Implant Bridge",
-    category: "Implants",
-    treatment: "2 × implants supporting a 4-unit bridge",
-    duration: "4 months",
-    description:
-      "Multiple missing teeth in the upper arch restored with two implants supporting a fixed 4-unit zirconia bridge. No removable denture required.",
-    tag: "Implants",
-  },
-  {
-    id: "case-08",
-    title: "Beyond® Whitening + Bonding",
-    category: "Cosmetic",
-    treatment: "Beyond® in-clinic whitening + 4 × composite bonding",
-    duration: "1 visit",
-    description:
-      "Single-session whitening followed by composite bonding to close minor gaps and chips. A quick cosmetic refresh with immediate results.",
-    tag: "Cosmetic",
-  },
-  {
-    id: "case-09",
-    title: "E-Max Crown Replacement",
-    category: "Crowns & Veneers",
-    treatment: "8 × E-Max crowns replacing old PFM crowns",
-    duration: "2 visits",
-    description:
-      "Outdated porcelain-on-metal crowns replaced with all-ceramic E-Max crowns for a more natural, translucent appearance using digital CAD/CAM design.",
-    tag: "Crowns & Veneers",
-  },
-];
-
 const STATS = [
   { value: "10,000+", label: "Patients per month" },
-  { value: "20+", label: "Countries served" },
-  { value: "28 yrs", label: "Clinical experience" },
-  { value: "30+", label: "Specialist dentists" },
+  { value: "20+",     label: "Countries served" },
+  { value: "28 yrs",  label: "Clinical experience" },
+  { value: "30+",     label: "Specialist dentists" },
 ];
 
-export default function ClinicalResultsPage() {
+export default async function ClinicalResultsPage() {
+  const cases = await getClinicalCases();
+
+  // Derive unique categories from DB data
+  const categories = ["All", ...Array.from(new Set(cases.map((c) => c.category)))];
+
   return (
     <SiteShell>
       {/* Header */}
@@ -157,11 +61,11 @@ export default function ClinicalResultsPage() {
 
         {/* Category filter hint */}
         <div className="flex flex-wrap gap-2">
-          {CATEGORIES.map((cat) => (
+          {categories.map((cat, i) => (
             <span
               key={cat}
               className={`cursor-default rounded-full border px-4 py-1.5 text-xs font-semibold transition ${
-                cat === "All"
+                i === 0
                   ? "border-[color:var(--brand)] bg-[color:var(--brand)] text-white"
                   : "border-[--border-strong] bg-white text-[color:var(--text-soft)] hover:border-[color:var(--brand)] hover:text-[color:var(--brand)]"
               }`}
@@ -173,7 +77,7 @@ export default function ClinicalResultsPage() {
 
         {/* Cases grid */}
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {CASES.map((c) => (
+          {cases.map((c) => (
             <article
               key={c.id}
               className="flex flex-col overflow-hidden rounded-[2rem] border border-[--border-strong] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_60px_rgba(57,28,45,0.1)]"

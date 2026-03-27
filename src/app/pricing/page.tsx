@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SiteShell } from "@/components/site/site-shell";
+import { getPricingCategories } from "@/lib/data";
 import type { Metadata } from "next";
 import pricingData from "@/data/pricing.json";
 
@@ -9,8 +10,9 @@ export const metadata: Metadata = {
     "Transparent pricing for dental implants, crowns, orthodontics, veneers, and more at Roomchang Dental Hospital in Phnom Penh, Cambodia.",
 };
 
-export default function PricingPage() {
-  const { categories, comparisons } = pricingData;
+export default async function PricingPage() {
+  const categories = await getPricingCategories();
+  const { comparisons } = pricingData;
 
   return (
     <SiteShell>
@@ -84,7 +86,7 @@ export default function PricingPage() {
         <section>
           <h2 className="font-display text-4xl text-[color:var(--text-main)]">Price Comparison</h2>
           <p className="mt-3 max-w-xl text-sm leading-7 text-[color:var(--text-soft)]">
-            See how Roomchang&apos;s prices compare to equivalent treatments in Australia and the UK —
+            See how Roomchang&apos;s prices compare to equivalent treatments in Australia —
             without compromising on quality or safety. Patients save up to 70%.
           </p>
 
@@ -96,24 +98,24 @@ export default function PricingPage() {
                     <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
                       Treatment
                     </th>
+                    <th className="px-6 py-4 text-center text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
+                      ADA
+                    </th>
                     <th className="px-6 py-4 text-right text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--brand-deep)]">
-                      Roomchang
+                      Roomchang (USD)
                     </th>
                     <th className="px-6 py-4 text-right text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
-                      Australia
-                    </th>
-                    <th className="px-6 py-4 text-right text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
-                      UK
+                      Australia (AUD)
                     </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[--border-strong]">
-                  {(comparisons as { treatment: string; roomchang: string; australia: string; uk: string }[]).map((row) => (
-                    <tr key={row.treatment} className="transition hover:bg-[--surface]">
+                  {(comparisons as { ada: string; treatment: string; roomchang: string; australia: string }[]).map((row) => (
+                    <tr key={row.ada} className="transition hover:bg-[--surface]">
                       <td className="px-6 py-4 font-medium text-[color:var(--text-main)]">{row.treatment}</td>
+                      <td className="px-6 py-4 text-center text-xs text-[color:var(--text-soft)]">{row.ada}</td>
                       <td className="px-6 py-4 text-right font-bold text-[color:var(--brand-deep)]">{row.roomchang}</td>
                       <td className="px-6 py-4 text-right text-[color:var(--text-soft)]">{row.australia}</td>
-                      <td className="px-6 py-4 text-right text-[color:var(--text-soft)]">{row.uk}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -121,7 +123,7 @@ export default function PricingPage() {
             </div>
             <div className="border-t border-[--border-strong] bg-[--brand-soft] px-6 py-4">
               <p className="text-xs text-[color:var(--text-soft)]">
-                * Overseas prices are indicative ranges based on ADA 2022 survey data (1 USD = 1.40 AUD). Contact us for a personalised comparison.
+                * ADA codes reference the Australian Dental Association Schedule. Australian prices sourced from ADA survey data. Contact us for a personalised comparison.
               </p>
             </div>
           </div>

@@ -1,6 +1,19 @@
 import Link from "next/link";
 import { SiteShell } from "@/components/site/site-shell";
+import { getServices } from "@/lib/data";
 import type { Metadata } from "next";
+import {
+  CircleDot,
+  Crown,
+  AlignCenter,
+  Sparkles,
+  RefreshCcw,
+  Scissors,
+  Smile,
+  Moon,
+  Zap,
+  type LucideIcon,
+} from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Dental Services | Roomchang Dental Hospital",
@@ -8,92 +21,21 @@ export const metadata: Metadata = {
     "Comprehensive dental treatments at Roomchang — from implants and crowns to orthodontics, cosmetic dentistry, and oral surgery in Phnom Penh.",
 };
 
-// CMS-ready stub: replace with API fetch when CMS is live
-const SERVICE_CATEGORIES = [
-  {
-    id: "implants",
-    title: "Dental Implants",
-    description:
-      "Permanent tooth replacement using titanium implants. Single implants, implant bridges, and All-on-4, 6 & 8 full-arch solutions available.",
-    tags: ["Single Implant", "Implant Bridge", "All-on-4", "All-on-6", "All-on-8"],
-    href: "/services/dental-implants",
-    icon: "🦷",
-  },
-  {
-    id: "crowns",
-    title: "Crowns & Bridges",
-    description:
-      "High-strength E-Max and zirconia crowns with digital design and in-house milling for precision fit and natural appearance.",
-    tags: ["E-Max Crown", "Zirconia", "CAD/CAM Milled"],
-    href: "/services/dental-crowns",
-    icon: "✦",
-  },
-  {
-    id: "orthodontics",
-    title: "Orthodontics",
-    description:
-      "Straighten teeth discreetly with our CA® Clear Aligner, Invisalign, or traditional metal and ceramic braces.",
-    tags: ["CA® Clear Aligner", "Invisalign", "Metal Braces", "Ceramic Braces"],
-    href: "/services/orthodontics",
-    icon: "◎",
-  },
-  {
-    id: "cosmetic",
-    title: "Cosmetic Dentistry",
-    description:
-      "Transform your smile with porcelain veneers, teeth whitening, smile design, and aesthetic composite bonding.",
-    tags: ["Veneers", "Teeth Whitening", "Smile Design", "Bonding"],
-    href: "/services/cosmetic-dentistry",
-    icon: "✶",
-  },
-  {
-    id: "reconstruction",
-    title: "Full Mouth Reconstruction",
-    description:
-      "Comprehensive treatment planning for patients who need to restore or rebuild the entire mouth using a combination of advanced techniques.",
-    tags: ["Full Arch", "Combined Treatment", "Digital Planning"],
-    href: "/services/full-mouth-reconstruction",
-    icon: "⊕",
-  },
-  {
-    id: "surgery",
-    title: "Oral Surgery",
-    description:
-      "Wisdom tooth extraction, bone grafting, sinus lifts, and other surgical procedures performed by our specialist oral surgeons.",
-    tags: ["Wisdom Tooth", "Bone Graft", "Sinus Lift", "Extraction"],
-    href: "/services/oral-surgery",
-    icon: "⚕",
-  },
-  {
-    id: "pediatric",
-    title: "Pediatric Dentistry",
-    description:
-      "Child-friendly dental care from infancy through adolescence. Preventive care, fillings, sealants, and early orthodontic assessment.",
-    tags: ["Children", "Preventive", "Sealants", "Early Orthodontics"],
-    href: "/services/pediatric-dentistry",
-    icon: "♡",
-  },
-  {
-    id: "sleep",
-    title: "Sleep Apnea & Snoring",
-    description:
-      "Non-surgical oral appliance therapy and splints to reduce snoring and treat mild-to-moderate obstructive sleep apnea.",
-    tags: ["Oral Appliance", "Sleep Splint", "Non-surgical"],
-    href: "/services/sleep-apnea",
-    icon: "◐",
-  },
-  {
-    id: "abroad",
-    title: "Dental Treatment Abroad",
-    description:
-      "Full coordination for international patients — treatment planning, airport transfers, accommodation links, and multilingual support.",
-    tags: ["International", "Treatment Planning", "Multilingual"],
-    href: "/international",
-    icon: "✈",
-  },
-];
+// Maps service slug → lucide icon component
+const SERVICE_ICONS: Record<string, LucideIcon> = {
+  "dental-implants":          CircleDot,
+  "dental-crowns":            Crown,
+  "orthodontics":             AlignCenter,
+  "cosmetic-dentistry":       Sparkles,
+  "full-mouth-reconstruction":RefreshCcw,
+  "oral-surgery":             Scissors,
+  "pediatric-dentistry":      Smile,
+  "sleep-apnea":              Moon,
+  "teeth-whitening":          Zap,
+};
 
-export default function ServicesPage() {
+export default async function ServicesPage() {
+  const services = await getServices();
   return (
     <SiteShell>
       {/* Page header */}
@@ -116,45 +58,48 @@ export default function ServicesPage() {
       {/* Services grid */}
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8">
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {SERVICE_CATEGORIES.map((service) => (
-            <article
-              key={service.id}
-              id={service.id}
-              className="group flex flex-col overflow-hidden rounded-[2rem] border border-[--border-strong] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_60px_rgba(57,28,45,0.1)]"
-            >
-              <div className="flex items-center gap-4 border-b border-[--border-strong] px-6 py-5">
-                <span
-                  className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[--surface-strong] text-xl text-[--brand-deep]"
-                  aria-hidden="true"
-                >
-                  {service.icon}
-                </span>
-                <h2 className="font-display text-[1.5rem] leading-tight text-[--text-main]">
-                  {service.title}
-                </h2>
-              </div>
-              <div className="flex flex-1 flex-col gap-4 p-6">
-                <p className="flex-1 text-sm leading-7 text-[--text-soft]">{service.description}</p>
-                <div className="flex flex-wrap gap-2">
-                  {service.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="rounded-full bg-[--brand-soft] px-3 py-1 text-[0.7rem] font-semibold text-[--brand-deep]"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+          {services.map((service) => {
+            const Icon = SERVICE_ICONS[service.slug] ?? CircleDot;
+            return (
+              <article
+                key={service.id}
+                id={service.slug}
+                className="group flex flex-col overflow-hidden rounded-[2rem] border border-[--border-strong] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_60px_rgba(57,28,45,0.1)]"
+              >
+                <div className="flex items-center gap-4 border-b border-[--border-strong] px-6 py-5">
+                  <span
+                    className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[--surface-strong] text-[--brand-deep]"
+                    aria-hidden="true"
+                  >
+                    <Icon size={22} strokeWidth={1.75} />
+                  </span>
+                  <h2 className="font-display text-[1.5rem] leading-tight text-[--text-main]">
+                    {service.name}
+                  </h2>
                 </div>
-                <Link
-                  href={service.href}
-                  className="inline-flex items-center gap-2 text-sm font-semibold text-[--brand-deep] transition hover:text-[--brand]"
-                >
-                  Learn more
-                  <span aria-hidden="true" className="transition group-hover:translate-x-1">→</span>
-                </Link>
-              </div>
-            </article>
-          ))}
+                <div className="flex flex-1 flex-col gap-4 p-6">
+                  <p className="flex-1 text-sm leading-7 text-[--text-soft]">{service.description}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {(service.features ?? []).map((tag) => (
+                      <span
+                        key={tag}
+                        className="rounded-full bg-[--brand-soft] px-3 py-1 text-[0.7rem] font-semibold text-[--brand-deep]"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  <Link
+                    href={`/services/${service.slug}`}
+                    className="inline-flex items-center gap-2 text-sm font-semibold text-[--brand-deep] transition hover:text-[--brand]"
+                  >
+                    Learn more
+                    <span aria-hidden="true" className="transition group-hover:translate-x-1">→</span>
+                  </Link>
+                </div>
+              </article>
+            );
+          })}
         </div>
       </div>
 
