@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SiteShell } from "@/components/site/site-shell";
+import { Building2, Star, Mail, Stethoscope, Heart, Handshake, ImagePlay, Cpu, type LucideIcon } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -15,62 +16,62 @@ const STATS = [
   { value: "58", label: "Dental Chairs" },
 ];
 
-const ABOUT_SECTIONS = [
+const ABOUT_SECTIONS: { title: string; description: string; href: string; icon: LucideIcon }[] = [
   {
     title: "Our Facilities",
     description:
       "A purpose-built, 10-storey dental hospital with 58 chairs, 6 surgical theatres, an in-house CAD/CAM lab, and hospital-grade sterilisation.",
     href: "/about/facilities",
-    icon: "🏥",
+    icon: Building2,
   },
   {
     title: "Vision, Mission & Values",
     description:
       "Enriching lives with quality dentistry — guided by professionalism, honesty, teamwork, innovation, and excellence.",
     href: "/about/vision-mission-values",
-    icon: "⭐",
+    icon: Star,
   },
   {
     title: "Message from Our Director",
     description:
       "A personal message from Dr. Tith Hong Yoeu, DDS, MSc. — Founder & Director — on Roomchang's commitment to quality care.",
     href: "/about/director-message",
-    icon: "✉",
+    icon: Mail,
   },
   {
     title: "Our Doctors",
     description:
       "Meet the specialist team — multilingual experts in implants, orthodontics, cosmetic dentistry, paediatrics, and more.",
     href: "/team",
-    icon: "👨‍⚕️",
+    icon: Stethoscope,
   },
   {
     title: "Community & Charity",
     description:
       "Free dental care for underserved communities — mobile clinics, blood drives, and oral health education across Cambodia.",
     href: "/about/community",
-    icon: "❤️",
+    icon: Heart,
   },
   {
     title: "Corporate Partnerships",
     description:
       "Trusted by 50+ banks, schools, insurers, and organisations to deliver dental benefits for employees and members.",
     href: "/about/partnerships",
-    icon: "🤝",
+    icon: Handshake,
   },
   {
     title: "Clinical Results",
     description:
       "See real before-and-after cases — dental implants, smile makeovers, orthodontics, and full-mouth reconstructions.",
     href: "/clinical-results",
-    icon: "📸",
+    icon: ImagePlay,
   },
   {
     title: "Technology",
     description:
       "3D CBCT imaging, CAD/CAM milling, digital intraoral scanning, and the CA® proprietary clear aligner system.",
     href: "/technology",
-    icon: "🔬",
+    icon: Cpu,
   },
 ];
 
@@ -145,7 +146,9 @@ export default function AboutPage() {
               href={section.href}
               className="group flex flex-col rounded-[2rem] border border-[--border-strong] bg-white p-7 shadow-[0_12px_40px_rgba(57,28,45,0.05)] transition hover:border-[--brand-light] hover:shadow-[0_16px_48px_rgba(204,55,113,0.1)]"
             >
-              <span className="text-3xl" aria-hidden="true">{section.icon}</span>
+              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[--brand-soft] text-[--brand-deep]">
+                <section.icon size={20} strokeWidth={1.75} aria-hidden="true" />
+              </span>
               <h3 className="mt-4 font-display text-xl text-[--text-main] group-hover:text-[--brand-deep]">
                 {section.title}
               </h3>
