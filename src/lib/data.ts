@@ -96,6 +96,20 @@ export type ClinicalCase = {
   published: boolean;
 };
 
+export type HeroSlideDb = {
+  id: string;
+  eyebrow: string | null;
+  title: string | null;
+  description: string | null;
+  imageSrc: string;
+  imageAlt: string | null;
+  imagePosition: string | null;
+  imageSize: string | null;
+  preserveFullImage: boolean;
+  order: number;
+  published: boolean;
+};
+
 // ─── Queries ────────────────────────────────────────────────────────────────
 
 export async function getDoctors(): Promise<Doctor[]> {
@@ -204,6 +218,20 @@ export async function getClinicalCases(): Promise<ClinicalCase[]> {
 
   if (error) {
     console.error("Failed to fetch clinical cases:", error.message);
+    return [];
+  }
+  return data ?? [];
+}
+
+export async function getHeroSlides(): Promise<HeroSlideDb[]> {
+  const { data, error } = await supabase
+    .from("hero_slides")
+    .select("*")
+    .eq("published", true)
+    .order("order");
+
+  if (error) {
+    console.error("Failed to fetch hero slides:", error.message);
     return [];
   }
   return data ?? [];
