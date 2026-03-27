@@ -48,6 +48,15 @@ export type PricingItem = {
   categoryId: string;
 };
 
+export type ServiceSection =
+  | { type: "callout"; icon?: string; title: string; body: string; stats?: { value: string; label: string }[] }
+  | { type: "text"; heading: string; body: string; card?: boolean }
+  | { type: "list"; heading?: string; items: string[] }
+  | { type: "cards"; heading: string; subheading?: string; numbered?: boolean; columns?: number; items: { title: string; body: string; tag?: string; icon?: string; badge?: string; spec?: string }[] }
+  | { type: "steps"; heading: string; subheading?: string; items: { step: string; detail: string }[] }
+  | { type: "pricing"; heading?: string; subheading?: string; rows: { treatment: string; price: string }[] }
+  | { type: "twocol"; left: ServiceSection; right: ServiceSection };
+
 export type Service = {
   id: string;
   name: string;
@@ -59,6 +68,9 @@ export type Service = {
   isFeatured: boolean;
   order: number;
   published: boolean;
+  eyebrow: string | null;
+  heroDescription: string | null;
+  content: { sections: ServiceSection[] } | null;
 };
 
 export type Testimonial = {
@@ -179,6 +191,21 @@ export async function getServices(): Promise<Service[]> {
     return [];
   }
   return data ?? [];
+}
+
+export async function getServiceBySlug(slug: string): Promise<Service | null> {
+  const { data, error } = await supabase
+    .from("services")
+    .select("*")
+    .eq("slug", slug)
+    .eq("published", true)
+    .single();
+
+  if (error) {
+    console.error("Failed to fetch service:", error.message);
+    return null;
+  }
+  return data ?? null;
 }
 
 export async function getTestimonials(): Promise<Testimonial[]> {
