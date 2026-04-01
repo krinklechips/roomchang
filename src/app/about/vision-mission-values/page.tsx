@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SiteShell } from "@/components/site/site-shell";
+import { GraduationCap, Handshake, Users, Lightbulb, Award, type LucideIcon } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -8,34 +9,34 @@ export const metadata: Metadata = {
     "Roomchang's vision: enriching lives with quality dentistry. Five core values guide everything we do — professionalism, honesty, teamwork, innovation, and excellence.",
 };
 
-const VALUES = [
+const VALUES: { title: string; Icon: LucideIcon; description: string }[] = [
   {
     title: "Professionalism",
-    icon: "🎓",
+    Icon: GraduationCap,
     description:
       "Our team holds international qualifications and operates to the highest clinical standards — backed by ISO 9001:2015 certification.",
   },
   {
     title: "Honesty",
-    icon: "🤝",
+    Icon: Handshake,
     description:
       "Clear pricing, transparent treatment options, and no hidden fees. We believe informed patients make the best decisions.",
   },
   {
     title: "Teamwork",
-    icon: "👥",
+    Icon: Users,
     description:
       "A collaborative environment where specialists across disciplines work together to deliver the best outcome for every patient.",
   },
   {
     title: "Innovation",
-    icon: "💡",
+    Icon: Lightbulb,
     description:
       "We invest continuously in technology — from CAD/CAM digital labs to 3D CBCT imaging — to stay at the forefront of dentistry.",
   },
   {
     title: "Excellence",
-    icon: "⭐",
+    Icon: Award,
     description:
       "From routine check-ups to complex full-mouth reconstructions, we hold ourselves to the same standard of excellence every time.",
   },
@@ -101,7 +102,9 @@ export default function VisionMissionValuesPage() {
                 key={value.title}
                 className="rounded-[1.75rem] border border-[--border-strong] bg-white p-6 shadow-[0_12px_40px_rgba(57,28,45,0.05)]"
               >
-                <span className="text-3xl" aria-hidden="true">{value.icon}</span>
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[--brand-soft] text-[--brand-deep]">
+                  <value.Icon size={20} strokeWidth={1.75} aria-hidden="true" />
+                </span>
                 <h3 className="mt-3 font-display text-2xl text-[--brand-deep]">{value.title}</h3>
                 <p className="mt-3 text-sm leading-6 text-[--text-soft]">{value.description}</p>
               </div>
