@@ -12,6 +12,8 @@ import {
   Smile,
   Moon,
   Zap,
+  Shield,
+  Bone,
   type LucideIcon,
 } from "lucide-react";
 
@@ -32,6 +34,8 @@ const SERVICE_ICONS: Record<string, LucideIcon> = {
   "pediatric-dentistry":      Smile,
   "sleep-apnea":              Moon,
   "teeth-whitening":          Zap,
+  "all-on-4":                 Bone,
+  "implant-bridges":          Shield,
 };
 
 export default async function ServicesPage() {

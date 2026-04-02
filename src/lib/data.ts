@@ -104,6 +104,7 @@ export type ClinicalCase = {
   duration: string;
   description: string | null;
   tag: string;
+  imageUrl: string | null;
   order: number;
   published: boolean;
 };

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { SiteShell } from "@/components/site/site-shell";
 import { getClinicalCases } from "@/lib/data";
@@ -82,18 +83,28 @@ export default async function ClinicalResultsPage() {
               key={c.id}
               className="flex flex-col overflow-hidden rounded-[2rem] border border-[--border-strong] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_60px_rgba(57,28,45,0.1)]"
             >
-              {/* Before/After placeholder */}
-              <div className="relative flex min-h-[14rem] items-center justify-center overflow-hidden bg-[linear-gradient(135deg,var(--brand-soft),var(--surface-strong))]">
-                <div className="flex w-full">
-                  <div className="flex flex-1 flex-col items-center justify-center gap-1 border-r border-white/60 py-8">
-                    <span className="text-[0.65rem] font-bold uppercase tracking-[0.22em] text-[color:var(--text-soft)]">Before</span>
-                    <span className="font-display text-4xl text-[color:var(--border-strong)] select-none">◌</span>
+              {/* Before/After — real photo if available, placeholder otherwise */}
+              <div className="relative min-h-[14rem] overflow-hidden bg-[linear-gradient(135deg,var(--brand-soft),var(--surface-strong))]">
+                {c.imageUrl ? (
+                  <Image
+                    src={c.imageUrl}
+                    alt={`Before and after — ${c.title}`}
+                    fill
+                    className="object-cover object-center"
+                    sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                  />
+                ) : (
+                  <div className="flex h-full min-h-[14rem] w-full">
+                    <div className="flex flex-1 flex-col items-center justify-center gap-1 border-r border-white/60 py-8">
+                      <span className="text-[0.65rem] font-bold uppercase tracking-[0.22em] text-[color:var(--text-soft)]">Before</span>
+                      <span className="font-display text-4xl text-[color:var(--border-strong)] select-none">◌</span>
+                    </div>
+                    <div className="flex flex-1 flex-col items-center justify-center gap-1 py-8">
+                      <span className="text-[0.65rem] font-bold uppercase tracking-[0.22em] text-[color:var(--brand-deep)]">After</span>
+                      <span className="font-display text-4xl text-[color:var(--brand)] select-none">◎</span>
+                    </div>
                   </div>
-                  <div className="flex flex-1 flex-col items-center justify-center gap-1 py-8">
-                    <span className="text-[0.65rem] font-bold uppercase tracking-[0.22em] text-[color:var(--brand-deep)]">After</span>
-                    <span className="font-display text-4xl text-[color:var(--brand)] select-none">◎</span>
-                  </div>
-                </div>
+                )}
                 <span className="absolute right-3 top-3 rounded-full bg-[color:var(--brand-soft)] px-2.5 py-1 text-[0.65rem] font-bold uppercase tracking-[0.18em] text-[color:var(--brand-deep)]">
                   {c.tag}
                 </span>

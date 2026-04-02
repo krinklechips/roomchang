@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { SiteShell } from "@/components/site/site-shell";
 import { getDoctors } from "@/lib/data";
@@ -56,8 +57,18 @@ export default async function TeamPage() {
             >
               {/* Avatar */}
               <div className="flex items-center gap-5 border-b border-[--border-strong] px-6 py-6">
-                <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,var(--brand-soft),var(--brand-light))] text-xl font-bold text-[--brand-deep]">
-                  {doctor.initials}
+                <div className="relative flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-[linear-gradient(135deg,var(--brand-soft),var(--brand-light))] text-xl font-bold text-[--brand-deep]">
+                  {doctor.photoUrl ? (
+                    <Image
+                      src={doctor.photoUrl}
+                      alt={doctor.name}
+                      fill
+                      className="object-cover object-top"
+                      sizes="64px"
+                    />
+                  ) : (
+                    doctor.initials
+                  )}
                 </div>
                 <div>
                   <h2 className="font-display text-xl leading-tight text-[--text-main]">
