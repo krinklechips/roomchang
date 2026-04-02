@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { SiteShell } from "@/components/site/site-shell";
 import { Building2, Star, Mail, Stethoscope, Heart, Handshake, ImagePlay, Cpu, type LucideIcon } from "lucide-react";
@@ -135,6 +136,68 @@ export default function AboutPage() {
               Roomchang was the first dental facility in Cambodia to achieve ISO 9001 certification
               — a standard independently audited by Bureau Veritas under UKAS accreditation.
             </p>
+          </div>
+        </div>
+
+        {/* History photo strip */}
+        <div className="mt-14 grid gap-4 sm:grid-cols-2">
+          <div className="relative overflow-hidden rounded-2xl">
+            <Image
+              src="/about/history-clinic-1996.jpg"
+              alt="Roomchang Dental in 1996 — the original clinic"
+              width={600}
+              height={400}
+              className="h-56 w-full object-cover"
+            />
+            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[rgba(44,26,40,0.7)] to-transparent px-4 pb-3 pt-8">
+              <p className="text-xs font-semibold text-white/80 uppercase tracking-[0.18em]">Est. 1996</p>
+              <p className="text-sm font-semibold text-white">The original clinic</p>
+            </div>
+          </div>
+          <div className="relative overflow-hidden rounded-2xl">
+            <Image
+              src="/about/history-clinic-2002.jpg"
+              alt="Roomchang Dental in 2002 — expansion phase"
+              width={600}
+              height={400}
+              className="h-56 w-full object-cover"
+            />
+            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[rgba(44,26,40,0.7)] to-transparent px-4 pb-3 pt-8">
+              <p className="text-xs font-semibold text-white/80 uppercase tracking-[0.18em]">2002</p>
+              <p className="text-sm font-semibold text-white">Expanding across Phnom Penh</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Branch gallery */}
+        <div className="mt-14">
+          <h2 className="font-display text-3xl text-[--text-main]">Our Branches</h2>
+          <p className="mt-3 max-w-xl text-sm leading-7 text-[--text-soft]">
+            Five locations across Phnom Penh — each offering the full range of Roomchang services,
+            staffed by the same specialist team.
+          </p>
+          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              { src: "/about/branch-main-exterior.jpg",     label: "Main Branch" },
+              { src: "/about/branch-exterior-2.jpg",        label: "Sen Sok Branch" },
+              { src: "/about/branch-aeon-mall.jpg",         label: "AEON Mall Branch" },
+              { src: "/about/branch-interior-reception.jpg",label: "Reception & Lobby" },
+              { src: "/about/branch-staff-photo.jpeg",      label: "Clinical Team" },
+              { src: "/facilities/building-exterior.jpg",   label: "Hospital Building" },
+            ].map(({ src, label }) => (
+              <div key={src} className="relative overflow-hidden rounded-2xl">
+                <Image
+                  src={src}
+                  alt={label}
+                  width={480}
+                  height={320}
+                  className="h-44 w-full object-cover transition hover:scale-105"
+                />
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[rgba(44,26,40,0.65)] to-transparent px-3 pb-2.5 pt-6">
+                  <p className="text-xs font-semibold text-white">{label}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
