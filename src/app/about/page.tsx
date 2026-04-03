@@ -139,34 +139,75 @@ export default function AboutPage() {
           </div>
         </div>
 
-        {/* History photo strip */}
-        <div className="mt-14 grid gap-4 sm:grid-cols-2">
-          <div className="relative overflow-hidden rounded-2xl">
-            <Image
-              src="/about/history-clinic-1996.jpg"
-              alt="Roomchang Dental in 1996 — the original clinic"
-              width={600}
-              height={400}
-              className="h-56 w-full object-cover"
-            />
-            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[rgba(44,26,40,0.7)] to-transparent px-4 pb-3 pt-8">
-              <p className="text-xs font-semibold text-white/80 uppercase tracking-[0.18em]">Est. 1996</p>
-              <p className="text-sm font-semibold text-white">The original clinic</p>
+        {/* History — museum timeline */}
+        <div className="mt-20 mx-auto max-w-2xl">
+          {([
+            {
+              year: "1996",
+              caption: "The beginning",
+              body: "A single practice. A single belief — that Cambodians deserved world-class dental care at home.",
+              src: "/about/history-clinic-1996.jpg",
+              alt: "Roomchang — the original clinic, 1996",
+            },
+            {
+              year: "2002",
+              caption: "Roots deepen",
+              body: "A second location. New equipment. The same uncompromising standard — now reaching more of Phnom Penh.",
+              src: "/about/history-clinic-2002.jpg",
+              alt: "Roomchang — expansion, 2002",
+            },
+            {
+              year: "2010s",
+              caption: "Recognition",
+              body: "ISO 9001 certified. The first dental facility in Cambodia to earn it — independently audited, internationally recognised.",
+              src: "/about/certification-iso.jpg",
+              alt: "Roomchang ISO 9001 certification document",
+            },
+            {
+              year: "Now",
+              caption: "A hospital",
+              body: "Five branches. Fifty-eight chairs. Thirty specialists. Ten thousand patients a month. And still growing.",
+              src: "/team/team-implantologists-group.jpg",
+              alt: "Roomchang specialist team — present day",
+            },
+          ] as const).map((item, i, arr) => (
+            <div key={item.year} className="relative">
+              {/* Thin vertical spine */}
+              {i < arr.length - 1 && (
+                <div className="absolute left-[3.25rem] top-0 bottom-0 w-px bg-[color:var(--border-strong)]" aria-hidden="true" />
+              )}
+
+              <div className="flex gap-8 pb-20 last:pb-0">
+                {/* Year column */}
+                <div className="relative flex flex-col items-center gap-3 w-24 shrink-0 pt-1">
+                  {/* Dot on the spine */}
+                  <div className="relative z-10 h-2 w-2 rounded-full bg-[color:var(--brand)] ring-4 ring-[color:var(--brand-soft)] mt-2" />
+                  <p className="font-display text-[2.6rem] leading-none text-[color:var(--brand-soft)] select-none -mt-1">
+                    {item.year}
+                  </p>
+                </div>
+
+                {/* Content */}
+                <div className="flex-1 pt-1">
+                  <p className="text-[0.65rem] font-bold uppercase tracking-[0.28em] text-[color:var(--brand)] mb-3">
+                    {item.caption}
+                  </p>
+                  <p className="text-base leading-8 text-[--text-soft] italic max-w-sm">
+                    {item.body}
+                  </p>
+                  <div className="mt-6 overflow-hidden rounded-2xl">
+                    <Image
+                      src={item.src}
+                      alt={item.alt}
+                      width={640}
+                      height={360}
+                      className="h-56 w-full object-cover grayscale-[20%] hover:grayscale-0 transition-all duration-500"
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-          <div className="relative overflow-hidden rounded-2xl">
-            <Image
-              src="/about/history-clinic-2002.jpg"
-              alt="Roomchang Dental in 2002 — expansion phase"
-              width={600}
-              height={400}
-              className="h-56 w-full object-cover"
-            />
-            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[rgba(44,26,40,0.7)] to-transparent px-4 pb-3 pt-8">
-              <p className="text-xs font-semibold text-white/80 uppercase tracking-[0.18em]">2002</p>
-              <p className="text-sm font-semibold text-white">Expanding across Phnom Penh</p>
-            </div>
-          </div>
+          ))}
         </div>
 
         {/* Branch gallery */}
