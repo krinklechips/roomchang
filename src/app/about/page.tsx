@@ -113,7 +113,7 @@ export default function AboutPage() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 pt-14 pb-0 sm:px-6 sm:pt-20 lg:px-8">
         {/* History */}
         <div className="mx-auto max-w-3xl">
           <h2 className="font-display text-4xl text-[--text-main]">A Hospital, Not Just a Clinic</h2>
@@ -139,10 +139,12 @@ export default function AboutPage() {
             </p>
           </div>
         </div>
+      </div>
 
-        {/* History — interactive timeline */}
-        <AboutTimeline />
+      {/* History — full-bleed timeline */}
+      <AboutTimeline />
 
+      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
         {/* Branch gallery */}
         <div className="mt-14">
           <h2 className="font-display text-3xl text-[--text-main]">Our Branches</h2>
