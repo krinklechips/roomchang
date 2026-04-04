@@ -25,10 +25,32 @@ export function ContactForm({ branches }: { branches: Branch[] }) {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setSubmitting(true);
-    // TODO: wire up to /api/enquiry when server action / API route is added
-    await new Promise((r) => setTimeout(r, 800));
-    setSubmitted(true);
-    setSubmitting(false);
+
+    const form = e.currentTarget;
+    const data = {
+      name:      (form.elements.namedItem("name")    as HTMLInputElement).value,
+      email:     (form.elements.namedItem("email")   as HTMLInputElement).value,
+      phone:     (form.elements.namedItem("phone")   as HTMLInputElement).value,
+      country:   (form.elements.namedItem("country") as HTMLInputElement).value,
+      treatment: (form.elements.namedItem("service") as HTMLSelectElement).value,
+      branch:    (form.elements.namedItem("branch")  as HTMLSelectElement).value,
+      date:      (form.elements.namedItem("date")    as HTMLInputElement).value,
+      message:   (form.elements.namedItem("message") as HTMLTextAreaElement).value,
+    };
+
+    try {
+      const res = await fetch("/api/enquiry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) throw new Error("Request failed");
+      setSubmitted(true);
+    } catch {
+      alert("Sorry, something went wrong. Please try again or call us directly.");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
