@@ -11,6 +11,7 @@ const ERAS = [
     body: "A single practice. A single belief — that Cambodians deserved world-class dental care at home. Dr. Tith Hong Yoeu opens Roomchang as Cambodia's first specialist dental clinic built to international standards.",
     src: "/about/history-clinic-1996.jpg",
     alt: "Roomchang — the original clinic, 1996",
+    objectPos: "object-center",
   },
   {
     year: "2002",
@@ -19,6 +20,7 @@ const ERAS = [
     body: "A second location. New equipment. The same uncompromising standard — now reaching more of Phnom Penh. The foundations of a multi-branch group are quietly being laid.",
     src: "/about/history-clinic-2002.jpg",
     alt: "Roomchang — expansion, 2002",
+    objectPos: "object-center",
   },
   {
     year: "2010s",
@@ -27,6 +29,7 @@ const ERAS = [
     body: "ISO 9001 certified — the first dental facility in Cambodia to earn it. Independently audited, internationally recognised. A standard that held us accountable long before it was expected.",
     src: "/about/certification-iso.jpg",
     alt: "Roomchang ISO 9001 certification",
+    objectPos: "object-top",
   },
   {
     year: "Now",
@@ -35,8 +38,9 @@ const ERAS = [
     body: "Five branches. Fifty-eight chairs. Thirty specialists. Ten thousand patients a month. And the same conviction that started it all — quality care, close to home.",
     src: "/team/team-implantologists-group.jpg",
     alt: "Roomchang specialist team — present day",
+    objectPos: "object-left",
   },
-] as const;
+];
 
 export function AboutTimeline() {
   const [visibleSet, setVisibleSet] = useState<Set<number>>(new Set());
@@ -105,7 +109,7 @@ export function AboutTimeline() {
                   alt={item.alt}
                   fill
                   sizes="(min-width: 1024px) 50vw, 100vw"
-                  className="object-cover"
+                  className={`object-cover ${item.objectPos}`}
                   priority={i === 0}
                 />
                 {/* Subtle darkening vignette */}
