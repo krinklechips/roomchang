@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { SiteShell } from "@/components/site/site-shell";
+import { ArrowRight } from "lucide-react";
 import { getDoctors } from "@/lib/data";
 import type { Metadata } from "next";
 
@@ -116,7 +117,7 @@ export default async function TeamPage() {
                   href="/contact"
                   className="mt-auto inline-flex items-center gap-2 text-sm font-semibold text-[--brand-deep] transition hover:text-[--brand]"
                 >
-                  Book with this doctor →
+                  Book with this doctor <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
                 </Link>
               </div>
             </article>

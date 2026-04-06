@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { SiteShell } from "@/components/site/site-shell";
+import { ArrowRight } from "lucide-react";
 import { getClinicalCases } from "@/lib/data";
 import type { Metadata } from "next";
 
@@ -122,7 +123,7 @@ export default async function ClinicalResultsPage() {
                     href="/contact"
                     className="text-xs font-semibold text-[color:var(--brand-deep)] transition hover:text-[color:var(--brand)]"
                   >
-                    Similar treatment →
+                    Similar treatment <ArrowRight size={12} strokeWidth={2} aria-hidden="true" />
                   </Link>
                 </div>
               </div>

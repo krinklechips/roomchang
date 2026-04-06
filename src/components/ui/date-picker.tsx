@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const DAYS = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
 const MONTHS = [
@@ -96,9 +97,9 @@ export function DatePicker({ name, required }: Props) {
             <button
               type="button"
               onClick={prevMonth}
-              className="flex h-8 w-8 items-center justify-center rounded-full text-lg font-light text-white/80 transition hover:bg-white/20 hover:text-white"
+              className="flex h-8 w-8 items-center justify-center rounded-full text-white/80 transition hover:bg-white/20 hover:text-white"
             >
-              ‹
+              <ChevronLeft size={16} strokeWidth={2.5} aria-hidden="true" />
             </button>
             <span className="text-sm font-semibold tracking-wide text-white">
               {MONTHS[viewMonth]} {viewYear}
@@ -106,9 +107,9 @@ export function DatePicker({ name, required }: Props) {
             <button
               type="button"
               onClick={nextMonth}
-              className="flex h-8 w-8 items-center justify-center rounded-full text-lg font-light text-white/80 transition hover:bg-white/20 hover:text-white"
+              className="flex h-8 w-8 items-center justify-center rounded-full text-white/80 transition hover:bg-white/20 hover:text-white"
             >
-              ›
+              <ChevronRight size={16} strokeWidth={2.5} aria-hidden="true" />
             </button>
           </div>
 

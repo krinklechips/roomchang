@@ -2,6 +2,7 @@
 
 import { startTransition, useEffect, useState } from "react";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 interface TestimonialData {
   id: string;
@@ -128,7 +129,7 @@ export function HomeTestimonials({
             href="/about#testimonials"
             className="text-sm font-semibold text-[--brand-deep] transition hover:text-[--brand]"
           >
-            Read more patient stories →
+            Read more patient stories <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
           </Link>
         </div>
       </div>
