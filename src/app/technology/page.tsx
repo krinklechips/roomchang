@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { SiteShell } from "@/components/site/site-shell";
 import { Check, ArrowRight } from "lucide-react";
 import { getTechnology } from "@/lib/data";
@@ -51,20 +52,24 @@ export default async function TechnologyPage() {
               }`}
             >
               {/* Image or gradient placeholder */}
-              <div
-                className={`min-h-[18rem] lg:min-h-[24rem] ${
-                  tech.imageSrc
-                    ? "bg-cover bg-center"
-                    : `${CATEGORY_COLORS[tech.category] ?? "bg-[--surface-strong]"} flex items-center justify-center`
-                }`}
-                style={tech.imageSrc ? { backgroundImage: `url(${tech.imageSrc})` } : {}}
-              >
-                {!tech.imageSrc && (
+              {tech.imageSrc ? (
+                <div className="flex items-center justify-center overflow-hidden bg-[color:var(--surface)] p-6 lg:p-8">
+                  <Image
+                    src={tech.imageSrc}
+                    alt={tech.name}
+                    width={700}
+                    height={500}
+                    className="w-full h-auto max-h-[22rem] rounded-xl object-contain"
+                    sizes="(min-width: 1024px) 50vw, 100vw"
+                  />
+                </div>
+              ) : (
+                <div className={`min-h-[18rem] lg:min-h-[24rem] flex items-center justify-center ${CATEGORY_COLORS[tech.category] ?? "bg-[--surface-strong]"}`}>
                   <span className="font-display text-[4rem] font-bold text-white/30 select-none">
                     {tech.name.charAt(0)}
                   </span>
-                )}
-              </div>
+                </div>
+              )}
 
               {/* Content */}
               <div className="flex flex-col justify-center gap-5 p-8 sm:p-10">
