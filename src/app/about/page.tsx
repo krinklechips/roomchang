@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { SiteShell } from "@/components/site/site-shell";
 import { AboutTimeline } from "@/components/sections/about-timeline";
-import { Building2, Star, Mail, Stethoscope, Heart, Handshake, ImagePlay, Cpu, type LucideIcon } from "lucide-react";
+import { Building2, Star, Mail, Stethoscope, Heart, Handshake, ImagePlay, Cpu, ArrowRight, type LucideIcon } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -194,8 +194,8 @@ export default function AboutPage() {
               <p className="mt-2 flex-1 text-sm leading-6 text-[--text-soft]">
                 {section.description}
               </p>
-              <span className="mt-4 text-sm font-semibold text-[--brand-deep] transition group-hover:text-[--brand]">
-                Learn more →
+              <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-[--brand-deep] transition group-hover:text-[--brand]">
+                Learn more <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
               </span>
             </Link>
           ))}

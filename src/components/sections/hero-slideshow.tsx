@@ -2,6 +2,7 @@
 
 import type { CSSProperties } from "react";
 import { startTransition, useEffect, useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export type HeroSlide = {
   id: string;
@@ -179,17 +180,17 @@ export function HeroSlideshow({
           type="button"
           aria-label="Show previous slide"
           onClick={showPrevious}
-          className="absolute left-4 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/24 bg-[color:rgba(255,255,255,0.12)] text-[1.75rem] text-white backdrop-blur-md transition hover:bg-[color:rgba(255,255,255,0.24)] sm:flex"
+          className="absolute left-4 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/24 bg-[color:rgba(255,255,255,0.12)] text-white backdrop-blur-md transition hover:bg-[color:rgba(255,255,255,0.24)] sm:flex"
         >
-          ‹
+          <ChevronLeft size={22} strokeWidth={2} aria-hidden="true" />
         </button>
         <button
           type="button"
           aria-label="Show next slide"
           onClick={showNext}
-          className="absolute right-4 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/24 bg-[color:rgba(255,255,255,0.12)] text-[1.75rem] text-white backdrop-blur-md transition hover:bg-[color:rgba(255,255,255,0.24)] sm:flex"
+          className="absolute right-4 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/24 bg-[color:rgba(255,255,255,0.12)] text-white backdrop-blur-md transition hover:bg-[color:rgba(255,255,255,0.24)] sm:flex"
         >
-          ›
+          <ChevronRight size={22} strokeWidth={2} aria-hidden="true" />
         </button>
 
         {/* Dots inside the image when flush (so CTA dock positions correctly) */}

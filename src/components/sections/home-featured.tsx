@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 const CARDS = [
   {
@@ -9,7 +10,7 @@ const CARDS = [
     imageSrc: "/hero/roomchang-patient-care.jpg",
     imageAlt: "Roomchang patient care team",
     href: "/international",
-    cta: "Plan your trip →",
+    cta: "Plan your trip",
   },
   {
     id: "team",
@@ -19,7 +20,7 @@ const CARDS = [
     imageSrc: "/hero/roomchang-team.jpg",
     imageAlt: "Roomchang dental hospital team",
     href: "/team",
-    cta: "Meet the doctors →",
+    cta: "Meet the doctors",
   },
   {
     id: "aligner",
@@ -29,7 +30,7 @@ const CARDS = [
     imageSrc: "/hero/roomchang-clear-aligner.jpg",
     imageAlt: "Roomchang clear aligner treatment",
     href: "/technology#ca-aligner",
-    cta: "Learn more →",
+    cta: "Learn more",
   },
 ];
 
@@ -56,9 +57,9 @@ export function HomeFeatured() {
                 <p className="text-sm leading-7 text-[--text-soft]">{card.description}</p>
                 <Link
                   href={card.href}
-                  className="inline-flex items-center text-sm font-semibold text-[--brand-deep] transition group-hover:text-[--brand]"
+                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-[--brand-deep] transition group-hover:text-[--brand]"
                 >
-                  {card.cta}
+                  {card.cta} <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
                 </Link>
               </div>
             </article>

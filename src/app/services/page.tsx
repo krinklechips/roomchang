@@ -14,6 +14,7 @@ import {
   Zap,
   Shield,
   Bone,
+  ArrowRight,
   type LucideIcon,
 } from "lucide-react";
 
@@ -98,7 +99,7 @@ export default async function ServicesPage() {
                     className="inline-flex items-center gap-2 text-sm font-semibold text-[--brand-deep] transition hover:text-[--brand]"
                   >
                     Learn more
-                    <span aria-hidden="true" className="transition group-hover:translate-x-1">→</span>
+                    <ArrowRight size={14} strokeWidth={2} aria-hidden="true" className="transition group-hover:translate-x-1" />
                   </Link>
                 </div>
               </article>

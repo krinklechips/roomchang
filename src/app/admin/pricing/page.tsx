@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { Check, ExternalLink, ArrowUp, ArrowDown, X } from "lucide-react";
 
 type PriceItem = { ada: string; name: string; price: string; aus: string };
 type Category = { id: string; title: string; icon: string; items: PriceItem[] };
@@ -118,9 +119,9 @@ export default function AdminPricingPage() {
             <span className="text-xs text-gray-400">Last saved: {data.lastUpdated}</span>
           )}
           {error && <span className="text-xs text-red-500">{error}</span>}
-          {saved && <span className="text-xs text-green-600 font-semibold">✓ Saved</span>}
-          <a href="/pricing" target="_blank" className="text-xs text-blue-600 hover:underline">
-            View live page ↗
+          {saved && <span className="inline-flex items-center gap-1 text-xs text-green-600 font-semibold"><Check size={12} strokeWidth={3} />Saved</span>}
+          <a href="/pricing" target="_blank" className="inline-flex items-center gap-1 text-xs text-blue-600 hover:underline">
+            View live page <ExternalLink size={11} strokeWidth={2} aria-hidden="true" />
           </a>
           <button
             onClick={save}
@@ -223,7 +224,7 @@ export default function AdminPricingPage() {
                           title="Move up"
                           className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-700 disabled:opacity-30"
                         >
-                          ↑
+                          <ArrowUp size={13} strokeWidth={2} aria-hidden="true" />
                         </button>
                         <button
                           onClick={() => moveRow(activeTab, ri, 1)}
@@ -231,14 +232,14 @@ export default function AdminPricingPage() {
                           title="Move down"
                           className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-700 disabled:opacity-30"
                         >
-                          ↓
+                          <ArrowDown size={13} strokeWidth={2} aria-hidden="true" />
                         </button>
                         <button
                           onClick={() => deleteRow(activeTab, ri)}
                           title="Delete row"
                           className="rounded p-1 text-gray-400 hover:bg-red-50 hover:text-red-500"
                         >
-                          ✕
+                          <X size={13} strokeWidth={2.5} aria-hidden="true" />
                         </button>
                       </div>
                     </td>

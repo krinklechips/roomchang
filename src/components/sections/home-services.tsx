@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CircleDot, Crown, AlignCenter, Sparkles, Sun, Scissors, type LucideIcon } from "lucide-react";
+import { CircleDot, Crown, AlignCenter, Sparkles, Sun, Scissors, ArrowRight, type LucideIcon } from "lucide-react";
 
 const SERVICES: { id: string; label: string; href: string; Icon: LucideIcon }[] = [
   { id: "implants", label: "Dental Implants", href: "/services#implants", Icon: CircleDot },
@@ -26,7 +26,7 @@ export function HomeServices() {
           href="/services"
           className="inline-flex items-center gap-2 text-sm font-semibold text-[--brand-deep] transition hover:text-[--brand]"
         >
-          See all services →
+          See all services <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
         </Link>
       </div>
 

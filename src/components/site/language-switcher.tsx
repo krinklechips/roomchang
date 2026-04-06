@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { ChevronDown } from "lucide-react";
 
 const LANGUAGES = [
   { code: "EN", label: "English", flag: "🇬🇧", href: "/en" },
@@ -54,12 +55,12 @@ export function LanguageSwitcher() {
           {activeLanguage.flag}
         </span>
         <span className="hidden sm:inline">{activeLanguage.code}</span>
-        <span
-          className={`text-[0.7rem] text-[--text-soft] transition ${isOpen ? "rotate-180" : ""}`}
+        <ChevronDown
+          size={13}
+          strokeWidth={2.5}
+          className={`text-[--text-soft] transition ${isOpen ? "rotate-180" : ""}`}
           aria-hidden="true"
-        >
-          ▼
-        </span>
+        />
       </button>
 
       {isOpen ? (
