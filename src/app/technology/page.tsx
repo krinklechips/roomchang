@@ -92,12 +92,21 @@ export default async function TechnologyPage() {
                     </li>
                   ))}
                 </ul>
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center gap-2 text-sm font-semibold text-[--brand-deep] transition hover:text-[--brand]"
-                >
-                  Ask about this technology <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
-                </Link>
+                {tech.slug ? (
+                  <Link
+                    href={`/technology/${tech.slug}`}
+                    className="inline-flex items-center gap-2 text-sm font-semibold text-[--brand-deep] transition hover:text-[--brand]"
+                  >
+                    Learn more <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
+                  </Link>
+                ) : (
+                  <Link
+                    href="/contact"
+                    className="inline-flex items-center gap-2 text-sm font-semibold text-[--brand-deep] transition hover:text-[--brand]"
+                  >
+                    Ask about this <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
+                  </Link>
+                )}
               </div>
             </article>
           ))}

@@ -85,15 +85,23 @@ export type Testimonial = {
   published: boolean;
 };
 
+export type TechSection =
+  | { type: "callout"; icon?: string; title: string; body: string }
+  | { type: "text"; heading: string; body: string; card?: boolean }
+  | { type: "cards"; heading: string; subheading?: string; columns?: number; items: { title: string; body: string; icon?: string }[] }
+  | { type: "steps"; heading: string; subheading?: string; items: { step: string; detail: string }[] };
+
 export type TechnologyItem = {
   id: string;
   name: string;
+  slug: string | null;
   category: string;
   description: string | null;
   highlights: string[];
   imageSrc: string | null;
   order: number;
   published: boolean;
+  content: { sections: TechSection[] } | null;
 };
 
 export type ClinicalCase = {
@@ -235,6 +243,21 @@ export async function getTechnology(): Promise<TechnologyItem[]> {
     return [];
   }
   return data ?? [];
+}
+
+export async function getTechnologyBySlug(slug: string): Promise<TechnologyItem | null> {
+  const { data, error } = await supabase
+    .from("technology")
+    .select("*")
+    .eq("slug", slug)
+    .eq("published", true)
+    .single();
+
+  if (error) {
+    console.error("Failed to fetch technology:", error.message);
+    return null;
+  }
+  return data ?? null;
 }
 
 export async function getClinicalCases(): Promise<ClinicalCase[]> {
