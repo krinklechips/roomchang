@@ -19,12 +19,11 @@ const FOOTER_LINKS = [
     heading: "About",
     links: [
       { label: "About Roomchang", href: "/about" },
-      { label: "Our Facilities", href: "/about#facilities" },
-      { label: "Vision & Mission", href: "/about#vision" },
+      { label: "Our Facilities", href: "/about/facilities" },
+      { label: "Vision & Mission", href: "/about/vision-mission-values" },
       { label: "Our Doctors", href: "/team" },
       { label: "Technology", href: "/technology" },
-      { label: "Community", href: "/about#community" },
-      { label: "News & Events", href: "/about#news" },
+      { label: "Community", href: "/about/community" },
     ],
   },
   {
@@ -34,7 +33,7 @@ const FOOTER_LINKS = [
       { label: "Price Comparison", href: "/pricing" },
       { label: "How It Works", href: "/international#how-it-works" },
       { label: "Clinical Results", href: "/clinical-results" },
-      { label: "Patient Testimonials", href: "/about#testimonials" },
+      { label: "Patient Testimonials", href: "/clinical-results" },
     ],
   },
   {

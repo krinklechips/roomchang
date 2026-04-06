@@ -126,7 +126,7 @@ export function HomeTestimonials({
         {/* Link to full testimonials */}
         <div className="mt-10 flex justify-center">
           <Link
-            href="/about#testimonials"
+            href="/clinical-results"
             className="text-sm font-semibold text-[--brand-deep] transition hover:text-[--brand]"
           >
             Read more patient stories <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />

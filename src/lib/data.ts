@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { supabase } from "./supabase";
 
 // ─── Types ──────────────────────────────────────────────────────────────────
@@ -202,7 +203,7 @@ export async function getServices(): Promise<Service[]> {
   return data ?? [];
 }
 
-export async function getServiceBySlug(slug: string): Promise<Service | null> {
+export const getServiceBySlug = cache(async function getServiceBySlug(slug: string): Promise<Service | null> {
   const { data, error } = await supabase
     .from("services")
     .select("*")
@@ -215,7 +216,7 @@ export async function getServiceBySlug(slug: string): Promise<Service | null> {
     return null;
   }
   return data ?? null;
-}
+});
 
 export async function getTestimonials(): Promise<Testimonial[]> {
   const { data, error } = await supabase
@@ -245,7 +246,7 @@ export async function getTechnology(): Promise<TechnologyItem[]> {
   return data ?? [];
 }
 
-export async function getTechnologyBySlug(slug: string): Promise<TechnologyItem | null> {
+export const getTechnologyBySlug = cache(async function getTechnologyBySlug(slug: string): Promise<TechnologyItem | null> {
   const { data, error } = await supabase
     .from("technology")
     .select("*")
@@ -258,7 +259,7 @@ export async function getTechnologyBySlug(slug: string): Promise<TechnologyItem 
     return null;
   }
   return data ?? null;
-}
+});
 
 export async function getClinicalCases(): Promise<ClinicalCase[]> {
   const { data, error } = await supabase

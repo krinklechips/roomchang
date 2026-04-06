@@ -10,7 +10,11 @@ const MONTHS = [
 ];
 
 function toISODate(d: Date) {
-  return d.toISOString().split("T")[0];
+  // Use local year/month/day to avoid UTC-offset shifting the date (e.g. Cambodia is UTC+7)
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
 }
 
 function formatDisplay(d: Date) {
