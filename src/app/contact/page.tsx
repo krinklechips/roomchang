@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { SiteShell } from "@/components/site/site-shell";
 import { getBranches } from "@/lib/data";
 import { ContactForm } from "./contact-form";
@@ -51,7 +52,9 @@ export default async function ContactPage() {
         </div>
       </div>
 
-      <ContactForm branches={branches} />
+      <Suspense fallback={<div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 animate-pulse h-96" />}>
+        <ContactForm branches={branches} />
+      </Suspense>
     </SiteShell>
   );
 }
