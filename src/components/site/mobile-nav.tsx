@@ -21,7 +21,6 @@ const NAV_ITEMS: NavItem[] = [
       { label: "Beyond® Whitening", href: "/technology/beyond-whitening" },
       { label: "GC G-ænial Universal Flo", href: "/technology/gc-gaenial" },
       { label: "Sterilisation Technologies", href: "/technology/sterilisation" },
-      { label: "3D CBCT Imaging", href: "/technology/cbct-imaging" },
     ],
   },
   { label: "International", href: "/international" },
