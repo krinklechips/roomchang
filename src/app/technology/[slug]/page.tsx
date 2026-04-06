@@ -185,16 +185,17 @@ export default async function TechnologyDetailPage({
 
       {/* Hero image */}
       {tech.imageSrc && (
-        <div className="relative h-72 w-full overflow-hidden sm:h-96 lg:h-[28rem]">
-          <Image
-            src={tech.imageSrc}
-            alt={tech.name}
-            fill
-            className="object-cover object-center"
-            sizes="100vw"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[color:var(--surface)]/60 to-transparent" />
+        <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--surface)]">
+          <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
+            <Image
+              src={tech.imageSrc}
+              alt={tech.name}
+              width={1200}
+              height={700}
+              className="w-full h-auto rounded-2xl object-contain"
+              priority
+            />
+          </div>
         </div>
       )}
 
