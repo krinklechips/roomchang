@@ -114,7 +114,7 @@ export default async function TeamPage() {
                   <p className="text-[0.68rem] leading-5 text-[--text-soft] italic">{doctor.note}</p>
                 )}
                 <Link
-                  href="/contact"
+                  href={`/contact?doctor=${encodeURIComponent(doctor.name)}`}
                   className="mt-auto inline-flex items-center gap-2 text-sm font-semibold text-[--brand-deep] transition hover:text-[--brand]"
                 >
                   Book with this doctor <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />

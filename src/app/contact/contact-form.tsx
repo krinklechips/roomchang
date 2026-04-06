@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { DatePicker } from "@/components/ui/date-picker";
 import { CheckCircle2 } from "lucide-react";
 import type { Branch } from "@/lib/data";
@@ -22,6 +23,13 @@ const SERVICES = [
 export function ContactForm({ branches }: { branches: Branch[] }) {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const searchParams = useSearchParams();
+  const [preferredDoctor, setPreferredDoctor] = useState("");
+
+  useEffect(() => {
+    const doc = searchParams.get("doctor");
+    if (doc) setPreferredDoctor(doc);
+  }, [searchParams]);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -35,6 +43,7 @@ export function ContactForm({ branches }: { branches: Branch[] }) {
       country:   (form.elements.namedItem("country") as HTMLInputElement).value,
       treatment: (form.elements.namedItem("service") as HTMLSelectElement).value,
       branch:    (form.elements.namedItem("branch")  as HTMLSelectElement).value,
+      doctor:    (form.elements.namedItem("doctor")  as HTMLInputElement).value,
       date:      (form.elements.namedItem("date")    as HTMLInputElement).value,
       message:   (form.elements.namedItem("message") as HTMLTextAreaElement).value,
     };
@@ -174,6 +183,21 @@ export function ContactForm({ branches }: { branches: Branch[] }) {
                     ))}
                   </select>
                 </div>
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="doctor" className="block text-xs font-semibold uppercase tracking-[0.2em] text-[--text-soft]">
+                  Preferred Doctor
+                </label>
+                <input
+                  id="doctor"
+                  name="doctor"
+                  type="text"
+                  value={preferredDoctor}
+                  onChange={(e) => setPreferredDoctor(e.target.value)}
+                  className="w-full rounded-xl border border-[--border-strong] bg-white px-4 py-3 text-sm text-[--text-main] placeholder-[--text-soft]/50 outline-none transition focus:border-[--brand] focus:ring-2 focus:ring-[--brand]/20"
+                  placeholder="Any doctor (optional)"
+                />
               </div>
 
               <div className="space-y-2">

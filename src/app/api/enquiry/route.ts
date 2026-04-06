@@ -9,7 +9,7 @@ const supabase = createClient(
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, email, phone, country, treatment, branch, date, message } = body;
+    const { name, email, phone, country, treatment, branch, doctor, date, message } = body;
 
     if (!name) {
       return NextResponse.json({ error: "Name is required" }, { status: 400 });
@@ -26,6 +26,7 @@ export async function POST(request: NextRequest) {
       country: country ?? null,
       treatment: treatment ?? null,
       branch: branch ?? null,
+      doctor: doctor ?? null,
       date: date ?? null,
       message: message ?? null,
       agent_code,
