@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SiteShell } from "@/components/site/site-shell";
+import { ArrowLeft, Check } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -68,7 +69,7 @@ export default function FacilitiesPage() {
             href="/about"
             className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[--brand] transition hover:text-[--brand-deep]"
           >
-            ← About
+            <ArrowLeft size={13} strokeWidth={2.5} aria-hidden="true" /> About
           </Link>
           <h1 className="mt-4 font-display text-5xl leading-none text-[--text-main] sm:text-6xl">
             Our Facilities
@@ -107,8 +108,8 @@ export default function FacilitiesPage() {
               <ul className="mt-5 space-y-3">
                 {section.items.map((item) => (
                   <li key={item} className="flex items-start gap-3 text-sm leading-6 text-[--text-soft]">
-                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[--brand-soft] text-[--brand-deep] text-[0.65rem] font-bold">
-                      ✓
+                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[--brand-soft] text-[--brand-deep]">
+                      <Check size={11} strokeWidth={3} aria-hidden="true" />
                     </span>
                     {item}
                   </li>

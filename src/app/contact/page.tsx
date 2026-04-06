@@ -1,6 +1,7 @@
 import { SiteShell } from "@/components/site/site-shell";
 import { getBranches } from "@/lib/data";
 import { ContactForm } from "./contact-form";
+import { Phone, Smartphone, Mail } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -32,19 +33,19 @@ export default async function ContactPage() {
               href="tel:+85523211338"
               className="inline-flex items-center gap-2 font-semibold text-[--brand-deep] hover:text-[--brand]"
             >
-              <span aria-hidden="true">📞</span> +855 23 211 338
+              <Phone size={15} strokeWidth={2} aria-hidden="true" /> +855 23 211 338
             </a>
             <a
               href="tel:+85511811338"
               className="inline-flex items-center gap-2 font-semibold text-[--brand-deep] hover:text-[--brand]"
             >
-              <span aria-hidden="true">📱</span> +855 11 811 338 (24/7)
+              <Smartphone size={15} strokeWidth={2} aria-hidden="true" /> +855 11 811 338 (24/7)
             </a>
             <a
               href="mailto:contact@roomchang.com"
               className="inline-flex items-center gap-2 font-semibold text-[--brand-deep] hover:text-[--brand]"
             >
-              <span aria-hidden="true">✉</span> contact@roomchang.com
+              <Mail size={15} strokeWidth={2} aria-hidden="true" /> contact@roomchang.com
             </a>
           </div>
         </div>

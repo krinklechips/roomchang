@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SiteShell } from "@/components/site/site-shell";
+import { Check, ArrowRight } from "lucide-react";
 import { getTechnology } from "@/lib/data";
 import type { Metadata } from "next";
 
@@ -84,8 +85,8 @@ export default async function TechnologyPage() {
                       key={h}
                       className="flex items-start gap-2.5 text-sm text-[--text-main]"
                     >
-                      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[--brand-soft] text-[--brand-deep] text-[0.6rem] font-bold">
-                        ✓
+                      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[--brand-soft] text-[--brand-deep]">
+                        <Check size={11} strokeWidth={3} aria-hidden="true" />
                       </span>
                       {h}
                     </li>
@@ -95,7 +96,7 @@ export default async function TechnologyPage() {
                   href="/contact"
                   className="inline-flex items-center gap-2 text-sm font-semibold text-[--brand-deep] transition hover:text-[--brand]"
                 >
-                  Ask about this technology →
+                  Ask about this technology <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
                 </Link>
               </div>
             </article>
