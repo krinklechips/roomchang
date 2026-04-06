@@ -98,7 +98,7 @@ export default function AboutPage() {
       </div>
 
       {/* Stats */}
-      <div className="border-b border-[--border-strong] bg-[--brand]">
+      <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--brand)]">
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
             {STATS.map((stat) => (
@@ -147,32 +147,82 @@ export default function AboutPage() {
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
         {/* Branch gallery */}
         <div className="mt-14">
-          <h2 className="font-display text-3xl text-[--text-main]">Our Branches</h2>
-          <p className="mt-3 max-w-xl text-sm leading-7 text-[--text-soft]">
-            Five locations across Phnom Penh — each offering the full range of Roomchang services,
-            staffed by the same specialist team.
+          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--brand)]">
+            5 Locations Across Phnom Penh
           </p>
-          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <h2 className="mt-3 font-display text-4xl text-[color:var(--text-main)]">Our Branches</h2>
+          <p className="mt-4 max-w-2xl text-sm leading-7 text-[color:var(--text-soft)]">
+            Each branch delivers the full range of Roomchang services — same specialist team, same
+            hospital-grade equipment, same standard of care.
+          </p>
+
+          {/* Main branch — full width hero */}
+          <div className="mt-8 relative overflow-hidden rounded-3xl">
+            <Image
+              src="/about/branch-main-exterior.jpg"
+              alt="Roomchang Dental Hospital — Main Branch, Monivong Boulevard"
+              width={1280}
+              height={560}
+              className="h-72 w-full object-cover sm:h-96 transition hover:scale-[1.02]"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[rgba(44,26,40,0.7)] via-transparent to-transparent" />
+            <div className="absolute bottom-0 left-0 px-8 pb-8">
+              <span className="inline-block rounded-full bg-[color:var(--brand)] px-3 py-1 text-[0.65rem] font-bold uppercase tracking-[0.2em] text-white mb-3">
+                Main Hospital
+              </span>
+              <h3 className="font-display text-3xl text-white leading-tight">
+                Monivong Boulevard
+              </h3>
+              <p className="mt-1 text-sm text-white/80">10-storey purpose-built dental hospital · 58 chairs · 6 surgical theatres</p>
+            </div>
+          </div>
+
+          {/* Other branches — 2 col */}
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
             {[
-              { src: "/about/branch-main-exterior.jpg",     label: "Main Branch" },
-              { src: "/about/branch-exterior-2.jpg",        label: "Sen Sok Branch" },
-              { src: "/about/branch-aeon-mall.jpg",         label: "AEON Mall Branch" },
-              { src: "/about/branch-interior-reception.jpg",label: "Reception & Lobby" },
-              { src: "/about/branch-staff-photo.jpeg",      label: "Clinical Team" },
-              { src: "/facilities/building-exterior.jpg",   label: "Hospital Building" },
-            ].map(({ src, label }) => (
+              {
+                src: "/about/branch-aeon-mall.jpg",
+                label: "AEON Mall Branch",
+                sublabel: "Sen Sok City — convenient for weekend appointments",
+              },
+              {
+                src: "/about/branch-exterior-2.jpg",
+                label: "Sen Sok Branch",
+                sublabel: "North Phnom Penh — full range of specialist services",
+              },
+            ].map(({ src, label, sublabel }) => (
               <div key={src} className="relative overflow-hidden rounded-2xl">
                 <Image
                   src={src}
                   alt={label}
-                  width={480}
-                  height={320}
-                  className="h-44 w-full object-cover transition hover:scale-105"
+                  width={640}
+                  height={400}
+                  className="h-64 w-full object-cover transition hover:scale-[1.02]"
                 />
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[rgba(44,26,40,0.65)] to-transparent px-3 pb-2.5 pt-6">
-                  <p className="text-xs font-semibold text-white">{label}</p>
+                <div className="absolute inset-0 bg-gradient-to-t from-[rgba(44,26,40,0.7)] via-transparent to-transparent" />
+                <div className="absolute bottom-0 left-0 px-6 pb-6">
+                  <h3 className="font-display text-2xl text-white">{label}</h3>
+                  <p className="mt-1 text-xs text-white/75">{sublabel}</p>
                 </div>
               </div>
+            ))}
+          </div>
+
+          {/* Additional branch name pills */}
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
+              Also at:
+            </span>
+            {[
+              "PH Euro Park (Borey Peng Huoth)",
+              "Fun Mall — TK Avenue",
+            ].map((name) => (
+              <span
+                key={name}
+                className="rounded-full border border-[color:var(--border-strong)] bg-white px-4 py-1.5 text-xs font-semibold text-[color:var(--text-soft)]"
+              >
+                {name}
+              </span>
             ))}
           </div>
         </div>

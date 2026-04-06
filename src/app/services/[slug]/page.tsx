@@ -1,9 +1,45 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SiteShell } from "@/components/site/site-shell";
-import { Check } from "lucide-react";
+import {
+  Check,
+  DollarSign,
+  Bone,
+  Sparkles,
+  Dumbbell,
+  Smile,
+  Clock,
+  CircleDot,
+  Heart,
+  Shield,
+  Star,
+  Zap,
+  type LucideIcon,
+} from "lucide-react";
 import { getServiceBySlug, getServices, type ServiceSection } from "@/lib/data";
 import type { Metadata } from "next";
+
+// Maps icon name strings (stored in DB) → Lucide components
+const ICON_MAP: Record<string, LucideIcon> = {
+  DollarSign,
+  Bone,
+  Sparkles,
+  Dumbbell,
+  Smile,
+  Clock,
+  CircleDot,
+  Heart,
+  Shield,
+  Star,
+  Zap,
+  Check,
+};
+
+function ServiceIcon({ name, className }: { name: string; className?: string }) {
+  const Icon = ICON_MAP[name];
+  if (!Icon) return null;
+  return <Icon size={24} strokeWidth={1.75} className={className} aria-hidden="true" />;
+}
 
 export async function generateStaticParams() {
   const services = await getServices();
@@ -30,7 +66,11 @@ function Callout({ s }: { s: Extract<ServiceSection, { type: "callout" }> }) {
   return (
     <div className="rounded-3xl bg-[color:var(--brand-soft)] px-8 py-8">
       <div className="flex flex-col sm:flex-row sm:items-start gap-4">
-        {s.icon && <div className="shrink-0 text-3xl">{s.icon}</div>}
+        {s.icon && (
+          <div className="shrink-0 flex h-11 w-11 items-center justify-center rounded-xl bg-[color:var(--brand)] text-white">
+            <ServiceIcon name={s.icon} />
+          </div>
+        )}
         <div className="flex-1">
           <p className="font-semibold text-[color:var(--brand-deep)]">{s.title}</p>
           <p className="mt-1 text-sm leading-7 text-[--text-soft]">{s.body}</p>
@@ -103,7 +143,9 @@ function Cards({ s }: { s: Extract<ServiceSection, { type: "cards" }> }) {
               </div>
             )}
             {item.icon && !s.numbered && (
-              <div className="mb-3 text-3xl">{item.icon}</div>
+              <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-[color:var(--brand-soft)] text-[color:var(--brand-deep)]">
+                <ServiceIcon name={item.icon} />
+              </div>
             )}
             {item.badge && (
               <span className="mb-2 inline-block rounded-full bg-[color:var(--brand-soft)] px-2.5 py-0.5 text-xs font-semibold text-[color:var(--brand-deep)]">
