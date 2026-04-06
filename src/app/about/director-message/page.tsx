@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft } from "lucide-react";
@@ -31,8 +32,14 @@ export default function DirectorMessagePage() {
         <div className="mx-auto max-w-3xl">
           {/* Director card */}
           <div className="flex items-center gap-5 rounded-[2rem] border border-[--border-strong] bg-white p-6 shadow-[0_12px_40px_rgba(57,28,45,0.05)]">
-            <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,var(--brand-soft),var(--brand-light))] text-2xl font-bold text-[--brand-deep]">
-              TH
+            <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl">
+              <Image
+                src="/team/dr-tith-hong-yoeu.jpg"
+                alt="Dr. Tith Hong Yoeu — Founder & Director, Roomchang Dental Hospital"
+                fill
+                className="object-cover object-top"
+                sizes="80px"
+              />
             </div>
             <div>
               <h2 className="font-display text-2xl text-[--text-main]">
