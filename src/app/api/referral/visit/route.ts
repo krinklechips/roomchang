@@ -8,9 +8,19 @@ const supabase = createClient(
 
 export async function POST(request: NextRequest) {
   try {
+    // Only accept calls from our own middleware (passes a shared internal secret).
+    // If the env var is not configured (dev), allow through.
+    const internalSecret = process.env.INTERNAL_SECRET;
+    if (internalSecret) {
+      const provided = request.headers.get("x-internal-secret");
+      if (provided !== internalSecret) {
+        return NextResponse.json({ ok: true }); // silently ignore — don't leak info
+      }
+    }
+
     const { agent_code, page } = await request.json();
 
-    if (!agent_code) {
+    if (!agent_code || typeof agent_code !== "string" || !/^[a-zA-Z0-9_-]{2,40}$/.test(agent_code)) {
       return NextResponse.json({ error: "Missing agent_code" }, { status: 400 });
     }
 

@@ -163,7 +163,7 @@ export default function InternationalPage() {
         </section>
 
         {/* How it works */}
-        <section>
+        <section id="how-it-works">
           <h2 className="font-display text-4xl text-[--text-main]">How It Works</h2>
           <p className="mt-3 text-sm leading-7 text-[--text-soft] max-w-xl">
             From your first message to your last appointment, we make every step clear and

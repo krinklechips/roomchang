@@ -237,7 +237,7 @@ export function ContactForm({ branches }: { branches: Branch[] }) {
         </div>
 
         {/* Branch info */}
-        <div className="space-y-4">
+        <div id="branches" className="space-y-4">
           <h2 className="font-display text-2xl text-[--text-main]">Our Branches</h2>
           {branches.map((branch) => (
             <div
