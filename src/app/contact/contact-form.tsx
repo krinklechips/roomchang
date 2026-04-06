@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { DatePicker } from "@/components/ui/date-picker";
+import { CheckCircle2 } from "lucide-react";
 import type { Branch } from "@/lib/data";
 
 const SERVICES = [
@@ -60,7 +61,7 @@ export function ContactForm({ branches }: { branches: Branch[] }) {
         <div>
           {submitted ? (
             <div className="flex flex-col items-start gap-4 rounded-[2rem] border border-[--border-strong] bg-[--surface] p-10">
-              <span className="text-4xl" aria-hidden="true">✓</span>
+              <CheckCircle2 size={48} strokeWidth={1.5} className="text-[--brand]" aria-hidden="true" />
               <h2 className="font-display text-3xl text-[--text-main]">
                 Thanks, we&apos;ll be in touch!
               </h2>

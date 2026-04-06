@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { SiteShell } from "@/components/site/site-shell";
-import { GraduationCap, Handshake, Users, Lightbulb, Award, type LucideIcon } from "lucide-react";
+import { ArrowLeft, GraduationCap, Handshake, Users, Lightbulb, Award, type LucideIcon } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -52,7 +52,7 @@ export default function VisionMissionValuesPage() {
             href="/about"
             className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[--brand] transition hover:text-[--brand-deep]"
           >
-            ← About
+            <ArrowLeft size={13} strokeWidth={2.5} aria-hidden="true" /> About
           </Link>
           <h1 className="mt-4 font-display text-5xl leading-none text-[--text-main] sm:text-6xl">
             Vision, Mission & Values

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SiteShell } from "@/components/site/site-shell";
+import { Check } from "lucide-react";
 import { getServiceBySlug, getServices, type ServiceSection } from "@/lib/data";
 import type { Metadata } from "next";
 
@@ -74,7 +75,7 @@ function BulletList({ s }: { s: Extract<ServiceSection, { type: "list" }> }) {
       <div className="grid gap-3 sm:grid-cols-2">
         {s.items.map((item) => (
           <div key={item} className="flex items-start gap-3 rounded-2xl border border-[--border-strong] bg-white px-5 py-4">
-            <span className="mt-0.5 h-4 w-4 shrink-0 rounded-full bg-[color:var(--brand)] text-white flex items-center justify-center text-[9px]">✓</span>
+            <span className="mt-0.5 h-4 w-4 shrink-0 rounded-full bg-[color:var(--brand)] text-white flex items-center justify-center"><Check size={9} strokeWidth={3.5} aria-hidden="true" /></span>
             <span className="text-sm leading-6 text-[--text-soft]">{item}</span>
           </div>
         ))}
