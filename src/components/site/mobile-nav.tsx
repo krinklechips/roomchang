@@ -3,12 +3,26 @@
 import { useState } from "react";
 import Link from "next/link";
 
-const NAV_ITEMS = [
+type NavChild = { label: string; href: string };
+type NavItem = { label: string; href: string; children?: NavChild[] };
+
+const NAV_ITEMS: NavItem[] = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   { label: "Services", href: "/services" },
   { label: "Doctors", href: "/team" },
-  { label: "Technology", href: "/technology" },
+  {
+    label: "Technology",
+    href: "/technology",
+    children: [
+      { label: "CA® Clear Aligner", href: "/technology/ca-clear-aligner" },
+      { label: "CAD/CAM Dentistry", href: "/technology/cad-cam" },
+      { label: "Invisalign", href: "/technology/invisalign" },
+      { label: "Beyond® Whitening", href: "/technology/beyond-whitening" },
+      { label: "Sterilisation", href: "/technology/sterilisation" },
+      { label: "3D CBCT Imaging", href: "/technology/cbct-imaging" },
+    ],
+  },
   { label: "International", href: "/international" },
   { label: "Pricing", href: "/pricing" },
   { label: "Clinical Results", href: "/clinical-results" },
@@ -74,14 +88,29 @@ export function MobileNav() {
 
           <nav aria-label="Mobile primary" className="mt-6 flex flex-col gap-1">
             {NAV_ITEMS.map((item) => (
-              <Link
-                key={item.label}
-                href={item.href}
-                onClick={() => setOpen(false)}
-                className="rounded-xl px-4 py-3 text-base font-semibold text-[--text-main] transition hover:bg-[--surface-strong] hover:text-[--brand-deep]"
-              >
-                {item.label}
-              </Link>
+              <div key={item.label}>
+                <Link
+                  href={item.href}
+                  onClick={() => setOpen(false)}
+                  className="block rounded-xl px-4 py-3 text-base font-semibold text-[--text-main] transition hover:bg-[--surface-strong] hover:text-[--brand-deep]"
+                >
+                  {item.label}
+                </Link>
+                {item.children && (
+                  <div className="ml-4 flex flex-col gap-0.5 border-l border-[--border-strong] pl-3">
+                    {item.children.map((child) => (
+                      <Link
+                        key={child.href}
+                        href={child.href}
+                        onClick={() => setOpen(false)}
+                        className="rounded-lg px-3 py-2 text-sm font-medium text-[--text-soft] transition hover:bg-[--surface-strong] hover:text-[--brand-deep]"
+                      >
+                        {child.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
             ))}
           </nav>
 
