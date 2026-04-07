@@ -34,6 +34,7 @@ const PARTNER_CATEGORIES: { title: string; partners: Partner[] }[] = [
       { name: "Sathapana Bank" },
       { name: "Union Commercial Bank" },
       { name: "AEON Specialized Bank" },
+      { name: "Oriental Bank",            logo: "/partners/logos/oriental-bank.jpg" },
       { name: "Bridge Bank" },
     ],
   },
@@ -107,7 +108,7 @@ function PartnerLogo({ partner }: { partner: Partner }) {
             width={120}
             height={48}
             className="max-h-12 w-auto object-contain opacity-50 grayscale transition group-hover:opacity-80 group-hover:grayscale-0"
-            unoptimized
+            unoptimized={partner.logo.endsWith(".svg")}
           />
         </div>
         <span className="text-center text-[10px] font-semibold uppercase tracking-[0.15em] text-[color:var(--text-soft)]">
