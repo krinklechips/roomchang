@@ -3,6 +3,7 @@ import Link from "next/link";
 import { SiteShell } from "@/components/site/site-shell";
 import { AboutTimeline } from "@/components/sections/about-timeline";
 import { Building2, Star, Mail, Stethoscope, Heart, Handshake, ImagePlay, Cpu, ArrowRight, type LucideIcon } from "lucide-react";
+import { BRANCHES } from "@/lib/branches";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -156,68 +157,40 @@ export default function AboutPage() {
             hospital-grade equipment, same standard of care.
           </p>
 
-          {/* Main branch — full-width hero */}
-          <div className="mt-8 relative overflow-hidden rounded-3xl">
+          {/* Main branch — full-width hero, clickable */}
+          <Link href={`/about/branches/${BRANCHES[0].slug}`} className="mt-8 block relative overflow-hidden rounded-3xl group">
             <Image
-              src="/about/branch-main-exterior.jpg"
-              alt="Roomchang Dental Hospital — Main Branch, Monivong Boulevard"
+              src={BRANCHES[0].imageSrc}
+              alt={BRANCHES[0].imageAlt}
               width={1280}
               height={600}
-              className="h-80 w-full object-cover object-center sm:h-[26rem]"
+              className="h-80 w-full object-cover object-center sm:h-[26rem] transition duration-500 group-hover:scale-[1.02]"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[rgba(44,26,40,0.75)] via-[rgba(44,26,40,0.2)] to-transparent" />
             <div className="absolute bottom-0 left-0 px-8 pb-8">
               <span className="inline-block rounded-full bg-[color:var(--brand)] px-3 py-1 text-[0.65rem] font-bold uppercase tracking-[0.2em] text-white mb-3">
-                Main Hospital
+                {BRANCHES[0].badge}
               </span>
-              <h3 className="font-display text-3xl text-white leading-tight">
-                Monivong Boulevard
-              </h3>
+              <h3 className="font-display text-3xl text-white leading-tight">{BRANCHES[0].shortName}</h3>
               <p className="mt-1.5 text-sm text-white/80">10-storey purpose-built dental hospital · 58 chairs · 6 surgical theatres</p>
-              <p className="mt-1 text-xs text-white/60">No. 4, Street 184, Khan Daun Penh · Mon–Sat 08:00–17:30 · +855 23 211 338</p>
+              <p className="mt-1 text-xs text-white/60">{BRANCHES[0].address} · {BRANCHES[0].hours} · {BRANCHES[0].phone}</p>
             </div>
-          </div>
+            <span className="absolute right-6 top-6 flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1.5 text-[0.65rem] font-bold uppercase tracking-[0.15em] text-white backdrop-blur-sm opacity-0 transition group-hover:opacity-100">
+              View details <ArrowRight size={11} strokeWidth={2.5} />
+            </span>
+          </Link>
 
-          {/* Other 4 branches — 2×2 grid */}
+          {/* Other 4 branches — 2×2 grid, all clickable */}
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
-            {[
-              {
-                src: "/about/branch-aeon-mall.jpg",
-                badge: "Mall Branch",
-                label: "AEON Mall Sen Sok",
-                address: "1st Floor, AEON Mall Sen Sok City, Street 1003",
-                hours: "Mon–Sun 09:00–20:00",
-                phone: "+855 23 911 338",
-              },
-              {
-                src: "/about/branch-exterior-2.jpg",
-                badge: "Branch",
-                label: "Rose Condo (Bassac)",
-                address: "No. 10, Block 252, Bassac Garden City, Chamkarmorn",
-                hours: "Mon–Sat 08:00–17:30",
-                phone: "+855 23 723 338",
-              },
-              {
-                src: "/about/branch-ph-euro-park.jpg",
-                badge: "Branch",
-                label: "PH Euro Park",
-                address: "Euro Park, Borey Peng Hout, National Road 1, Chbar Ampov",
-                hours: "Mon–Sat 08:00–17:30",
-                phone: "+855 86 811 338",
-              },
-              {
-                src: "/about/branch-fun-mall.jpg",
-                badge: "Mall Branch",
-                label: "Fun Mall — TK Avenue",
-                address: "2nd Floor, Fun Mall, Street 315, Toul Kork",
-                hours: "Mon–Sun 09:00–20:00",
-                phone: "+855 12 911 338",
-              },
-            ].map(({ src, badge, label, address, hours, phone }) => (
-              <div key={src} className="group relative overflow-hidden rounded-2xl">
+            {BRANCHES.slice(1).map((branch) => (
+              <Link
+                key={branch.slug}
+                href={`/about/branches/${branch.slug}`}
+                className="group relative overflow-hidden rounded-2xl"
+              >
                 <Image
-                  src={src}
-                  alt={label}
+                  src={branch.imageSrc}
+                  alt={branch.imageAlt}
                   width={640}
                   height={420}
                   className="h-64 w-full object-cover transition duration-500 group-hover:scale-[1.04]"
@@ -225,13 +198,16 @@ export default function AboutPage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-[rgba(44,26,40,0.82)] via-[rgba(44,26,40,0.25)] to-transparent" />
                 <div className="absolute bottom-0 left-0 px-6 pb-6">
                   <span className="mb-2 inline-block rounded-full border border-white/30 bg-white/10 px-2.5 py-0.5 text-[0.6rem] font-bold uppercase tracking-[0.18em] text-white/80 backdrop-blur-sm">
-                    {badge}
+                    {branch.badge}
                   </span>
-                  <h3 className="font-display text-2xl text-white leading-snug">{label}</h3>
-                  <p className="mt-1 text-xs text-white/70 leading-relaxed">{address}</p>
-                  <p className="mt-0.5 text-xs text-white/55">{hours} · {phone}</p>
+                  <h3 className="font-display text-2xl text-white leading-snug">{branch.shortName}</h3>
+                  <p className="mt-1 text-xs text-white/70 leading-relaxed">{branch.address}</p>
+                  <p className="mt-0.5 text-xs text-white/55">{branch.hours} · {branch.phone}</p>
                 </div>
-              </div>
+                <span className="absolute right-4 top-4 flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1.5 text-[0.65rem] font-bold uppercase tracking-[0.15em] text-white backdrop-blur-sm opacity-0 transition group-hover:opacity-100">
+                  View details <ArrowRight size={11} strokeWidth={2.5} />
+                </span>
+              </Link>
             ))}
           </div>
         </div>
