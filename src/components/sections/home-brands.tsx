@@ -6,7 +6,7 @@ const BRANDS: { id: string; name: string; src: string; width: number; height: nu
   { id: "beyond",         name: "Beyond®",            src: "/brands/logos/beyond.svg",          width: 120, height: 36 },
   { id: "gc",             name: "GC Corporation",     src: "/brands/logos/gc-corporation.svg",  width: 120, height: 32 },
   { id: "tuttnauer",      name: "Tuttnauer",          src: "/brands/logos/tuttnauer.svg",       width: 100, height: 28 },
-  { id: "bureau-veritas", name: "Bureau Veritas",     src: "/brands/logos/bureau-veritas.svg",  width: 110, height: 36 },
+  { id: "bureau-veritas", name: "Bureau Veritas",     src: "/brands/logos/bureau-veritas.svg",  width: 140, height: 44 },
   { id: "dentsply",       name: "Dentsply Sirona",    src: "/brands/logos/dentsply-sirona.svg", width: 120, height: 32 },
   { id: "colgate",        name: "Colgate",            src: "/brands/logos/colgate.svg",         width: 90,  height: 32 },
 ];
