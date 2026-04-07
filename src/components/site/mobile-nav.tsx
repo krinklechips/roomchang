@@ -51,8 +51,30 @@ const NAV_ITEMS: NavItem[] = [
     ],
   },
   { label: "International", href: "/international" },
-  { label: "Pricing", href: "/pricing" },
-  { label: "Clinical Results", href: "/clinical-results" },
+  {
+    label: "Pricing",
+    href: "/pricing",
+    children: [
+      { label: "All Treatment Prices", href: "/pricing" },
+      { label: "Dental Implants", href: "/pricing#implants" },
+      { label: "Crowns & Veneers", href: "/pricing#crowns" },
+      { label: "Orthodontics", href: "/pricing#orthodontics" },
+      { label: "Teeth Whitening", href: "/pricing#whitening" },
+      { label: "International Comparison", href: "/pricing#international" },
+    ],
+  },
+  {
+    label: "Clinical Results",
+    href: "/clinical-results",
+    children: [
+      { label: "All Cases", href: "/clinical-results" },
+      { label: "Full Mouth Reconstruction", href: "/clinical-results#full-mouth" },
+      { label: "Implants & Crowns", href: "/clinical-results#implants" },
+      { label: "Implant Bridges", href: "/clinical-results#bridges" },
+      { label: "Orthodontics", href: "/clinical-results#orthodontics" },
+      { label: "Cosmetic & E-Max", href: "/clinical-results#cosmetic" },
+    ],
+  },
   { label: "Contact", href: "/contact" },
 ];
 
