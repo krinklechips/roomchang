@@ -29,34 +29,37 @@ export default function DirectorMessagePage() {
       </div>
 
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
-        <div className="mx-auto max-w-3xl">
-          {/* Director card */}
-          <div className="flex items-center gap-5 rounded-[2rem] border border-[--border-strong] bg-white p-6 shadow-[0_12px_40px_rgba(57,28,45,0.05)]">
-            <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl">
-              <Image
-                src="/team/dr-tith-hong-yoeu.jpg"
-                alt="Dr. Tith Hong Yoeu — Founder & Director, Roomchang Dental Hospital"
-                fill
-                className="object-cover object-top"
-                sizes="80px"
-              />
-            </div>
-            <div>
-              <h2 className="font-display text-2xl text-[--text-main]">
-                Dr. Tith Hong Yoeu
-              </h2>
-              <p className="text-sm font-semibold text-[--text-soft]">DDS, MSc.</p>
-              <p className="mt-0.5 text-xs uppercase tracking-[0.18em] text-[--brand]">
-                Founder & Director
-              </p>
-              <p className="mt-1 text-xs text-[--text-soft]">
-                MSc. in Oral Implantology — Goethe University Frankfurt, Germany
-              </p>
+        <div className="lg:grid lg:grid-cols-[360px_1fr] lg:gap-16 xl:gap-20">
+
+          {/* Director portrait — sticky on desktop */}
+          <div className="mb-12 lg:mb-0">
+            <div className="lg:sticky lg:top-28">
+              <div className="relative aspect-[3/4] w-full max-w-xs overflow-hidden rounded-3xl shadow-[0_24px_64px_rgba(57,28,45,0.12)] mx-auto lg:mx-0">
+                <Image
+                  src="/team/dr-tith-hong-yoeu.jpg"
+                  alt="Dr. Tith Hong Yoeu — Founder & Director, Roomchang Dental Hospital"
+                  fill
+                  className="object-cover object-top"
+                  sizes="(min-width: 1024px) 360px, (min-width: 640px) 320px, 90vw"
+                  priority
+                />
+              </div>
+              <div className="mt-6 text-center lg:text-left">
+                <h2 className="font-display text-2xl text-[--text-main]">Dr. Tith Hong Yoeu</h2>
+                <p className="mt-0.5 text-sm font-semibold text-[--text-soft]">DDS, MSc.</p>
+                <p className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-[--brand]">
+                  Founder & Director
+                </p>
+                <p className="mt-2 text-xs leading-relaxed text-[--text-soft]">
+                  MSc. in Oral Implantology<br />Goethe University Frankfurt, Germany
+                </p>
+              </div>
             </div>
           </div>
 
           {/* Message */}
-          <div className="mt-10 space-y-6 text-base leading-8 text-[--text-soft]">
+          <div>
+          <div className="space-y-6 text-base leading-8 text-[--text-soft]">
             <p>Dear Patients,</p>
             <p>
               Thank you for entrusting your dental care to Roomchang. Over the last three decades,
@@ -106,7 +109,8 @@ export default function DirectorMessagePage() {
               Our Doctors
             </Link>
           </div>
-        </div>
+          </div>{/* end message col */}
+        </div>{/* end grid */}
       </div>
     </SiteShell>
   );
