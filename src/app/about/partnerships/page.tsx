@@ -17,7 +17,7 @@ const PARTNER_CATEGORIES: { title: string; partners: Partner[] }[] = [
     title: "Banks & Financial Institutions",
     partners: [
       { name: "Vattanac Bank",           logo: "/partners/logos/vattanac-bank.jpg" },
-      { name: "Cambodia Post Bank" },
+      { name: "Cambodia Post Bank",       logo: "/partners/logos/cambodia-post-bank.png" },
       { name: "Chip Mong Bank",           logo: "/partners/logos/chip-mong-bank.png" },
       { name: "BRED Bank" },
       { name: "Phillip Bank",             logo: "/partners/logos/phillip-bank.svg" },
@@ -66,7 +66,7 @@ const PARTNER_CATEGORIES: { title: string; partners: Partner[] }[] = [
     partners: [
       { name: "Palace Gate Hotel & Resort" },
       { name: "Sun & Moon Urban Hotel" },
-      { name: "Sofitel Hotel" },
+      { name: "Sofitel Hotel",             logo: "/partners/logos/sofitel.svg" },
     ],
   },
   {
@@ -80,7 +80,7 @@ const PARTNER_CATEGORIES: { title: string; partners: Partner[] }[] = [
     title: "Professional Associations",
     partners: [
       { name: "EuroCham Cambodia" },
-      { name: "AmCham Cambodia" },
+      { name: "AmCham Cambodia",           logo: "/partners/logos/amcham.svg" },
       { name: "IDI" },
     ],
   },
