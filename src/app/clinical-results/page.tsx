@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowRight } from "lucide-react";
-import { getClinicalCases } from "@/lib/data";
+import { CLINICAL_CASES } from "@/lib/clinical-cases";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -18,10 +18,10 @@ const STATS = [
   { value: "30+",     label: "Specialist dentists" },
 ];
 
-export default async function ClinicalResultsPage() {
-  const cases = await getClinicalCases();
+export default function ClinicalResultsPage() {
+  const cases = CLINICAL_CASES;
 
-  // Derive unique categories from DB data
+  // Derive unique categories
   const categories = ["All", ...Array.from(new Set(cases.map((c) => c.category)))];
 
   return (
@@ -80,54 +80,39 @@ export default async function ClinicalResultsPage() {
         {/* Cases grid */}
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {cases.map((c) => (
-            <article
-              key={c.id}
-              className="flex flex-col overflow-hidden rounded-[2rem] border border-[--border-strong] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_60px_rgba(57,28,45,0.1)]"
+            <Link
+              key={c.slug}
+              href={`/clinical-results/${c.slug}`}
+              className="group flex flex-col overflow-hidden rounded-[2rem] border border-[--border-strong] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_60px_rgba(57,28,45,0.1)]"
             >
-              {/* Before/After — real photo if available, placeholder otherwise */}
+              {/* Before/After card image */}
               <div className="relative min-h-[14rem] overflow-hidden bg-[linear-gradient(135deg,var(--brand-soft),var(--surface-strong))]">
-                {c.imageUrl ? (
-                  <Image
-                    src={c.imageUrl}
-                    alt={`Before and after — ${c.title}`}
-                    fill
-                    className="object-cover object-center"
-                    sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                  />
-                ) : (
-                  <div className="flex h-full min-h-[14rem] w-full">
-                    <div className="flex flex-1 flex-col items-center justify-center gap-1 border-r border-white/60 py-8">
-                      <span className="text-[0.65rem] font-bold uppercase tracking-[0.22em] text-[color:var(--text-soft)]">Before</span>
-                      <span className="font-display text-4xl text-[color:var(--border-strong)] select-none">◌</span>
-                    </div>
-                    <div className="flex flex-1 flex-col items-center justify-center gap-1 py-8">
-                      <span className="text-[0.65rem] font-bold uppercase tracking-[0.22em] text-[color:var(--brand-deep)]">After</span>
-                      <span className="font-display text-4xl text-[color:var(--brand)] select-none">◎</span>
-                    </div>
-                  </div>
-                )}
+                <Image
+                  src={c.cardImage}
+                  alt={`Before and after — ${c.title}`}
+                  fill
+                  className="object-cover object-center transition duration-500 group-hover:scale-[1.03]"
+                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                />
                 <span className="absolute right-3 top-3 rounded-full bg-[color:var(--brand-soft)] px-2.5 py-1 text-[0.65rem] font-bold uppercase tracking-[0.18em] text-[color:var(--brand-deep)]">
                   {c.tag}
                 </span>
               </div>
 
               <div className="flex flex-1 flex-col gap-3 p-6">
-                <h2 className="font-display text-xl leading-tight text-[color:var(--text-main)]">{c.title}</h2>
+                <h2 className="font-display text-xl leading-tight text-[color:var(--text-main)] group-hover:text-[color:var(--brand-deep)] transition">{c.title}</h2>
                 <p className="text-xs font-semibold text-[color:var(--brand-deep)]">{c.treatment}</p>
                 <p className="flex-1 text-sm leading-6 text-[color:var(--text-soft)]">{c.description}</p>
                 <div className="flex items-center justify-between border-t border-[--border-strong] pt-3">
                   <span className="text-xs text-[color:var(--text-soft)]">
                     Duration: <span className="font-semibold text-[color:var(--text-main)]">{c.duration}</span>
                   </span>
-                  <Link
-                    href="/contact"
-                    className="text-xs font-semibold text-[color:var(--brand-deep)] transition hover:text-[color:var(--brand)]"
-                  >
-                    Similar treatment <ArrowRight size={12} strokeWidth={2} aria-hidden="true" />
-                  </Link>
+                  <span className="inline-flex items-center gap-1 text-xs font-semibold text-[color:var(--brand-deep)] transition group-hover:text-[color:var(--brand)]">
+                    View case <ArrowRight size={12} strokeWidth={2} aria-hidden="true" />
+                  </span>
                 </div>
               </div>
-            </article>
+            </Link>
           ))}
         </div>
 

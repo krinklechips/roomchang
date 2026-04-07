@@ -60,12 +60,13 @@ const FACILITY_SECTIONS = [
   },
 ];
 
-const GALLERY = [
-  { src: "/facilities/building-exterior.jpg",              alt: "Roomchang Dental Hospital main building exterior",     span: "sm:col-span-2" },
-  { src: "/facilities/facility-interior.jpg",              alt: "Roomchang clinical interior and reception area",        span: "" },
-  { src: "/facilities/treatment-room-1.jpg",               alt: "Modern treatment room at Roomchang",                   span: "" },
-  { src: "/facilities/treatment-room-2.jpg",               alt: "Specialist treatment room with advanced equipment",     span: "" },
-  { src: "/facilities/international-patient-consultation.jpg", alt: "International patient consultation at Roomchang",  span: "" },
+const GALLERY_INTERIOR = [
+  { src: "/facilities/facility-treatment-abroad.jpg",      alt: "Roomchang treatment room — international patient care" },
+  { src: "/facilities/facility-room-a.jpg",                alt: "Roomchang dental chair and treatment suite" },
+  { src: "/facilities/facility-room-b.jpg",                alt: "Modern dental treatment room at Roomchang" },
+  { src: "/facilities/facility-room-c.jpg",                alt: "Specialist dental suite with advanced equipment" },
+  { src: "/facilities/treatment-room-1.jpg",               alt: "Treatment room at Roomchang Dental Hospital" },
+  { src: "/facilities/international-patient-consultation.jpg", alt: "International patient consultation at Roomchang" },
 ];
 
 export default function FacilitiesPage() {
@@ -106,26 +107,42 @@ export default function FacilitiesPage() {
         </div>
       </div>
 
-      {/* Photo gallery */}
+      {/* Building hero — full-bleed tall portrait */}
       <div className="border-b border-[color:var(--border-strong)]">
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {GALLERY.map(({ src, alt, span }) => (
-              <div
-                key={src}
-                className={`relative overflow-hidden rounded-2xl ${span} ${
-                  src.includes("building-exterior") ? "h-64 sm:h-72" : "h-52"
-                }`}
-              >
-                <Image
-                  src={src}
-                  alt={alt}
-                  fill
-                  className="object-cover transition duration-500 hover:scale-[1.04]"
-                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                />
+          <div className="grid gap-4 lg:grid-cols-[340px_1fr]">
+            {/* Tall building portrait */}
+            <div className="relative overflow-hidden rounded-3xl shadow-[0_20px_60px_rgba(57,28,45,0.12)]">
+              <Image
+                src="/facilities/building-exterior.jpg"
+                alt="Roomchang Dental Hospital — 10-storey building, Monivong Boulevard, Phnom Penh"
+                width={769}
+                height={1280}
+                className="h-full w-full object-cover object-center"
+                style={{ minHeight: "480px" }}
+                priority
+              />
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[rgba(44,26,40,0.7)] to-transparent px-6 pb-6 pt-16">
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/70">Main Hospital</p>
+                <p className="mt-1 font-display text-2xl text-white">10-Storey Building</p>
+                <p className="mt-0.5 text-xs text-white/60">No. 4, Street 184, Monivong Blvd, Phnom Penh</p>
               </div>
-            ))}
+            </div>
+
+            {/* Interior photo grid */}
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3">
+              {GALLERY_INTERIOR.map(({ src, alt }) => (
+                <div key={src} className="relative h-48 overflow-hidden rounded-2xl lg:h-44 xl:h-48">
+                  <Image
+                    src={src}
+                    alt={alt}
+                    fill
+                    className="object-cover transition duration-500 hover:scale-[1.04]"
+                    sizes="(min-width: 1280px) 220px, (min-width: 1024px) 180px, (min-width: 640px) 33vw, 50vw"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
