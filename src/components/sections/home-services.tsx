@@ -2,12 +2,12 @@ import Link from "next/link";
 import { CircleDot, Crown, AlignCenter, Sparkles, Sun, Scissors, ArrowRight, type LucideIcon } from "lucide-react";
 
 const SERVICES: { id: string; label: string; href: string; Icon: LucideIcon }[] = [
-  { id: "implants", label: "Dental Implants", href: "/services#implants", Icon: CircleDot },
-  { id: "crowns", label: "Crowns & Bridges", href: "/services#crowns", Icon: Crown },
-  { id: "aligners", label: "Clear Aligners", href: "/services#orthodontics", Icon: AlignCenter },
-  { id: "cosmetic", label: "Cosmetic Dentistry", href: "/services#cosmetic", Icon: Sparkles },
-  { id: "whitening", label: "Teeth Whitening", href: "/services#cosmetic", Icon: Sun },
-  { id: "surgery", label: "Oral Surgery", href: "/services#surgery", Icon: Scissors },
+  { id: "implants", label: "Dental Implants", href: "/services/dental-implants", Icon: CircleDot },
+  { id: "crowns", label: "Crowns & Bridges", href: "/services/dental-crowns", Icon: Crown },
+  { id: "aligners", label: "Clear Aligners", href: "/services/orthodontics", Icon: AlignCenter },
+  { id: "cosmetic", label: "Cosmetic Dentistry", href: "/services/cosmetic-dentistry", Icon: Sparkles },
+  { id: "whitening", label: "Teeth Whitening", href: "/services/teeth-whitening", Icon: Sun },
+  { id: "surgery", label: "Oral Surgery", href: "/services/oral-surgery", Icon: Scissors },
 ];
 
 export function HomeServices() {

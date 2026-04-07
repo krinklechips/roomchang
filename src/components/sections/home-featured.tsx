@@ -6,7 +6,7 @@ const CARDS = [
     id: "international",
     title: "International Patients",
     description:
-      "Hundreds of patients from Australia, Japan, and Singapore visit Roomchang each year. We make the journey simple.",
+      "Thousands of patients from Australia, Japan, Singapore, and beyond visit Roomchang each year. We make the journey simple.",
     imageSrc: "/hero/roomchang-patient-care.jpg",
     imageAlt: "Roomchang patient care team",
     href: "/international",
@@ -29,7 +29,7 @@ const CARDS = [
       "Our proprietary aligner — designed, fabricated, and fitted in-house for a precise, discreet result.",
     imageSrc: "/hero/roomchang-clear-aligner.jpg",
     imageAlt: "Roomchang clear aligner treatment",
-    href: "/technology#ca-aligner",
+    href: "/technology/ca-clear-aligner",
     cta: "Learn more",
   },
 ];

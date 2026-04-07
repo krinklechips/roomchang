@@ -3,11 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 
 const STATS = [
-  { value: 30, suffix: " yrs", label: "Established Experience" },
+  { value: 30, suffix: " yrs", label: "Years of Experience" },
   { value: 30, suffix: "+", label: "Specialist Dentists" },
   { value: 5, suffix: "", label: "Phnom Penh Branches" },
   { value: 20, suffix: "+", label: "Countries Served" },
-  { value: 100000, suffix: "+", label: "Patients Served Worldwide" },
+  { value: 100000, suffix: "+", label: "Patients Treated" },
 ];
 
 function easeOut(t: number) {

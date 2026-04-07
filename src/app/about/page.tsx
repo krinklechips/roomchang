@@ -71,7 +71,7 @@ const ABOUT_SECTIONS: { title: string; description: string; href: string; icon: 
   {
     title: "Technology",
     description:
-      "3D CBCT imaging, CAD/CAM milling, digital intraoral scanning, and the CA® proprietary clear aligner system.",
+      "CAD/CAM milling, digital intraoral scanning, Invisalign, Beyond® whitening, and the CA® proprietary clear aligner system.",
     href: "/technology",
     icon: Cpu,
   },
