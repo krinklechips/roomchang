@@ -48,14 +48,16 @@ export function AboutTimeline() {
 
   useEffect(() => {
     const obs: IntersectionObserver[] = [];
+
+    function makeCallback(i: number): IntersectionObserverCallback {
+      return ([entry]) => {
+        if (entry.isIntersecting) setVisibleSet((prev) => new Set([...prev, i]));
+      };
+    }
+
     refs.current.forEach((el, i) => {
       if (!el) return;
-      const o = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) setVisibleSet((prev) => new Set([...prev, i]));
-        },
-        { threshold: 0.08 }
-      );
+      const o = new IntersectionObserver(makeCallback(i), { threshold: 0.08 });
       o.observe(el);
       obs.push(o);
     });

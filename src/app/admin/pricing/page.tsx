@@ -47,39 +47,40 @@ export default function AdminPricingPage() {
   }
 
   function updateItem(catIdx: number, rowIdx: number, field: keyof PriceItem, value: string) {
-    setData((d) => {
+    function applyUpdate(d: PricingData | null): PricingData | null {
       if (!d) return d;
-      const cats = d.categories.map((c, ci) => {
+      const categories = d.categories.map((c, ci) => {
         if (ci !== catIdx) return c;
-        return {
-          ...c,
-          items: c.items.map((item, ri) =>
-            ri !== rowIdx ? item : { ...item, [field]: value }
-          ),
-        };
+        const items = c.items.map((item, ri) =>
+          ri !== rowIdx ? item : { ...item, [field]: value }
+        );
+        return { ...c, items };
       });
-      return { ...d, categories: cats };
-    });
+      return { ...d, categories };
+    }
+    setData(applyUpdate);
   }
 
   function addRow(catIdx: number) {
-    setData((d) => {
+    function applyAdd(d: PricingData | null): PricingData | null {
       if (!d) return d;
-      const cats = d.categories.map((c, ci) =>
+      const categories = d.categories.map((c, ci) =>
         ci !== catIdx ? c : { ...c, items: [...c.items, newItem()] }
       );
-      return { ...d, categories: cats };
-    });
+      return { ...d, categories };
+    }
+    setData(applyAdd);
   }
 
   function deleteRow(catIdx: number, rowIdx: number) {
-    setData((d) => {
+    function applyDelete(d: PricingData | null): PricingData | null {
       if (!d) return d;
-      const cats = d.categories.map((c, ci) =>
+      const categories = d.categories.map((c, ci) =>
         ci !== catIdx ? c : { ...c, items: c.items.filter((_, ri) => ri !== rowIdx) }
       );
-      return { ...d, categories: cats };
-    });
+      return { ...d, categories };
+    }
+    setData(applyDelete);
   }
 
   function moveRow(catIdx: number, rowIdx: number, dir: -1 | 1) {

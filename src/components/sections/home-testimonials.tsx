@@ -42,11 +42,12 @@ export function HomeTestimonials({
 
   useEffect(() => {
     if (paused || testimonials.length === 0) return;
-    const id = setInterval(() => {
+    function advance() {
       startTransition(() => {
         setActive((i) => (i + 1) % testimonials.length);
       });
-    }, 6000);
+    }
+    const id = setInterval(advance, 6000);
     return () => clearInterval(id);
   }, [paused, testimonials.length]);
 
