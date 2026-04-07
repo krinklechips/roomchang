@@ -57,12 +57,13 @@ export function HeroSlideshow({
   useEffect(() => {
     if (slides.length <= 1 || isPaused) return undefined;
 
-    const intervalId = window.setInterval(() => {
+    function advance() {
       startTransition(() => {
         setActiveIndex((current) => getWrappedIndex(current + 1, slides.length));
       });
-    }, autoRotateMs);
+    }
 
+    const intervalId = window.setInterval(advance, autoRotateMs);
     return () => window.clearInterval(intervalId);
   }, [autoRotateMs, isPaused, slides.length]);
 

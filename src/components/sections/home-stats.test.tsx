@@ -14,8 +14,8 @@ class MockIntersectionObserver {
     );
   }
 
-  disconnect() {}
-  unobserve() {}
+  disconnect() { /* intentional no-op stub */ }
+  unobserve() { /* intentional no-op stub */ }
   takeRecords() {
     return [];
   }
