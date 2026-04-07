@@ -46,8 +46,10 @@ The final results show a complete transformation — both aesthetically and func
     treatment: "Osseointegrated implants with zirconia crowns",
     duration: "4–6 months",
     description:
-      "Single and multiple tooth replacement using OSSTEM implants with custom zirconia restorations.",
-    fullText: `A patient presented requiring tooth replacement following extraction of failed teeth. After a full assessment and X-ray, Ankylos implants were placed and allowed to osseointegrate over a 3-month period.
+      "Single and multiple tooth replacement using OSSTEM implants with custom zirconia restorations following apical cyst removal.",
+    fullText: `A 50-year-old male presented with dental pain and difficulty eating. The patient also expressed dissatisfaction with the appearance of his teeth. Radiographic imaging revealed an apical cyst at one location, which was surgically removed along with the affected tooth.
+
+Two dental implants were subsequently placed to restore function and aesthetics. The implants were allowed to osseointegrate over a 3-month period.
 
 Custom zirconia crowns were then fabricated in-house using Roomchang's CAD/CAM digital laboratory. The permanent crowns were cemented following a try-in and adjustment phase.
 
@@ -77,6 +79,8 @@ The dental implants needed two months to heal and bond with the bone. After thre
     images: [
       { src: "/clinical-results/cases/implants-crowns-2-a.jpg", caption: "Before treatment — panoramic view showing missing teeth" },
       { src: "/clinical-results/cases/implants-crowns-2-b.jpg", caption: "After treatment — 15 E-Max crowns cemented" },
+      { src: "/clinical-results/cases/implants-crowns-2-c.jpg", caption: "Lower arch — close-up after restoration" },
+      { src: "/clinical-results/cases/implants-crowns-2-d.jpg", caption: "Upper arch — close-up after restoration" },
     ],
   },
   {
@@ -97,6 +101,8 @@ A second bridge was removed from teeth #36–38. Tooth #38 was extracted. Tooth 
     images: [
       { src: "/clinical-results/cases/implants-crowns-3-a.jpg", caption: "Before treatment — anterior view" },
       { src: "/clinical-results/cases/implants-crowns-3-b.jpg", caption: "After treatment — E-Max crown restorations" },
+      { src: "/clinical-results/cases/implants-crowns-3-c.jpg", caption: "Close-up — crown detail upper arch" },
+      { src: "/clinical-results/cases/implants-crowns-3-d.jpg", caption: "Close-up — crown detail lower arch" },
     ],
   },
   {
@@ -139,6 +145,8 @@ The before and after photos show the results of the treatment of both the full u
     images: [
       { src: "/clinical-results/cases/implant-bridges-2-a.jpg", caption: "Before treatment — unstable lower bridge" },
       { src: "/clinical-results/cases/implant-bridges-2-b.jpg", caption: "After treatment — Ankylos implant-supported bridge" },
+      { src: "/clinical-results/cases/implant-bridges-2-c.jpg", caption: "Lower arch — implant positions #34, 35, 43, 45" },
+      { src: "/clinical-results/cases/implant-bridges-2-d.jpg", caption: "Final result — full upper denture and lower bridge" },
     ],
   },
   {
@@ -162,6 +170,30 @@ The change is quite dramatic. The patient is very pleased with the results and t
     ],
   },
   {
+    slug: "open-bite",
+    title: "Open Bite Correction",
+    category: "Orthodontics",
+    tag: "Before & After",
+    treatment: "Orthodontic treatment with implant — open bite and protrusion correction",
+    duration: "24–30 months",
+    description:
+      "Severe anterior open bite and protrusion corrected with orthodontic treatment and strategic implant placement.",
+    fullText: `A 26-year-old male patient came to Roomchang with a severe protrusion and open bite (malocclusion). When biting, his back teeth would touch and his front teeth would remain open. He had an existing pontic bridge on teeth #12 to #22.
+
+Orthodontic treatment was started to widen the space at the missing tooth #11. This allowed the placing of an implant. It also corrected the open bite and the protrusion.
+
+The X-rays and clinical photos document the dramatic transformation achieved through the combined orthodontic and implant approach. The patient's bite was fully corrected and the protrusion resolved, achieving both improved function and a dramatically improved facial profile.`,
+    cardImage: "/clinical-results/open-bite-before-after.jpg",
+    images: [
+      { src: "/clinical-results/cases/open-bite-1.jpg", caption: "Before treatment — severe open bite and protrusion" },
+      { src: "/clinical-results/cases/open-bite-2.jpg", caption: "X-ray — before treatment" },
+      { src: "/clinical-results/cases/open-bite-3.jpg", caption: "X-ray — after treatment" },
+      { src: "/clinical-results/cases/open-bite-4.jpg", caption: "Progress — orthodontic alignment phase" },
+      { src: "/clinical-results/cases/open-bite-5.jpg", caption: "After treatment — open bite corrected" },
+      { src: "/clinical-results/cases/open-bite-6.jpg", caption: "Final result — profile and bite fully restored" },
+    ],
+  },
+  {
     slug: "orthodontics-1",
     title: "Orthodontics — Case 1",
     category: "Orthodontics",
@@ -178,7 +210,8 @@ The final results show both the dental alignment and the profile improvement —
     cardImage: "/clinical-results/orthodontic-1-before-after.jpg",
     images: [
       { src: "/clinical-results/cases/orthodontic-1-a.jpg", caption: "Cephalometric X-ray — before and after profile change" },
-      { src: "/clinical-results/cases/orthodontic-1-b.jpg", caption: "Dental alignment — before and after bilateral crossbite correction" },
+      { src: "/clinical-results/cases/orthodontic-1-b.jpg", caption: "Dental alignment — before bilateral crossbite correction" },
+      { src: "/clinical-results/cases/orthodontic-1-c.jpg", caption: "Dental alignment — after bilateral crossbite correction" },
     ],
   },
   {
@@ -197,8 +230,8 @@ Teeth #34 and #44 were removed to create space for the realignment of the teeth.
 The final result shows full correction of the crossbite and a beautifully aligned smile. The patient is very happy with her new smile and new profile.`,
     cardImage: "/clinical-results/orthodontic-2-before-after.jpg",
     images: [
-      { src: "/clinical-results/cases/orthodontic-2-a.jpg", caption: "Profile view — before and after treatment" },
-      { src: "/clinical-results/cases/orthodontic-2-b.jpg", caption: "Dental alignment — crossbite corrected" },
+      { src: "/clinical-results/cases/orthodontic-2-a.jpg", caption: "Profile view — before treatment" },
+      { src: "/clinical-results/cases/orthodontic-2-b.jpg", caption: "Profile view — after treatment, crossbite corrected" },
     ],
   },
   {
