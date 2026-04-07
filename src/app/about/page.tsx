@@ -156,16 +156,16 @@ export default function AboutPage() {
             hospital-grade equipment, same standard of care.
           </p>
 
-          {/* Main branch — full width hero */}
+          {/* Main branch — full-width hero */}
           <div className="mt-8 relative overflow-hidden rounded-3xl">
             <Image
               src="/about/branch-main-exterior.jpg"
               alt="Roomchang Dental Hospital — Main Branch, Monivong Boulevard"
               width={1280}
-              height={560}
-              className="h-72 w-full object-cover sm:h-96 transition hover:scale-[1.02]"
+              height={600}
+              className="h-80 w-full object-cover object-center sm:h-[26rem]"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[rgba(44,26,40,0.7)] via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[rgba(44,26,40,0.75)] via-[rgba(44,26,40,0.2)] to-transparent" />
             <div className="absolute bottom-0 left-0 px-8 pb-8">
               <span className="inline-block rounded-full bg-[color:var(--brand)] px-3 py-1 text-[0.65rem] font-bold uppercase tracking-[0.2em] text-white mb-3">
                 Main Hospital
@@ -173,56 +173,65 @@ export default function AboutPage() {
               <h3 className="font-display text-3xl text-white leading-tight">
                 Monivong Boulevard
               </h3>
-              <p className="mt-1 text-sm text-white/80">10-storey purpose-built dental hospital · 58 chairs · 6 surgical theatres</p>
+              <p className="mt-1.5 text-sm text-white/80">10-storey purpose-built dental hospital · 58 chairs · 6 surgical theatres</p>
+              <p className="mt-1 text-xs text-white/60">No. 4, Street 184, Khan Daun Penh · Mon–Sat 08:00–17:30 · +855 23 211 338</p>
             </div>
           </div>
 
-          {/* Other branches — 2 col */}
+          {/* Other 4 branches — 2×2 grid */}
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
             {[
               {
                 src: "/about/branch-aeon-mall.jpg",
-                label: "AEON Mall Branch",
-                sublabel: "Sen Sok City — convenient for weekend appointments",
+                badge: "Mall Branch",
+                label: "AEON Mall Sen Sok",
+                address: "1st Floor, AEON Mall Sen Sok City, Street 1003",
+                hours: "Mon–Sun 09:00–20:00",
+                phone: "+855 23 911 338",
               },
               {
                 src: "/about/branch-exterior-2.jpg",
-                label: "Sen Sok Branch",
-                sublabel: "North Phnom Penh — full range of specialist services",
+                badge: "Branch",
+                label: "Rose Condo (Bassac)",
+                address: "No. 10, Block 252, Bassac Garden City, Chamkarmorn",
+                hours: "Mon–Sat 08:00–17:30",
+                phone: "+855 23 723 338",
               },
-            ].map(({ src, label, sublabel }) => (
-              <div key={src} className="relative overflow-hidden rounded-2xl">
+              {
+                src: "/about/branch-ph-euro-park.jpg",
+                badge: "Branch",
+                label: "PH Euro Park",
+                address: "Euro Park, Borey Peng Hout, National Road 1, Chbar Ampov",
+                hours: "Mon–Sat 08:00–17:30",
+                phone: "+855 86 811 338",
+              },
+              {
+                src: "/about/branch-fun-mall.jpg",
+                badge: "Mall Branch",
+                label: "Fun Mall — TK Avenue",
+                address: "2nd Floor, Fun Mall, Street 315, Toul Kork",
+                hours: "Mon–Sun 09:00–20:00",
+                phone: "+855 12 911 338",
+              },
+            ].map(({ src, badge, label, address, hours, phone }) => (
+              <div key={src} className="group relative overflow-hidden rounded-2xl">
                 <Image
                   src={src}
                   alt={label}
                   width={640}
-                  height={400}
-                  className="h-64 w-full object-cover transition hover:scale-[1.02]"
+                  height={420}
+                  className="h-64 w-full object-cover transition duration-500 group-hover:scale-[1.04]"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[rgba(44,26,40,0.7)] via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[rgba(44,26,40,0.82)] via-[rgba(44,26,40,0.25)] to-transparent" />
                 <div className="absolute bottom-0 left-0 px-6 pb-6">
-                  <h3 className="font-display text-2xl text-white">{label}</h3>
-                  <p className="mt-1 text-xs text-white/75">{sublabel}</p>
+                  <span className="mb-2 inline-block rounded-full border border-white/30 bg-white/10 px-2.5 py-0.5 text-[0.6rem] font-bold uppercase tracking-[0.18em] text-white/80 backdrop-blur-sm">
+                    {badge}
+                  </span>
+                  <h3 className="font-display text-2xl text-white leading-snug">{label}</h3>
+                  <p className="mt-1 text-xs text-white/70 leading-relaxed">{address}</p>
+                  <p className="mt-0.5 text-xs text-white/55">{hours} · {phone}</p>
                 </div>
               </div>
-            ))}
-          </div>
-
-          {/* Additional branch name pills */}
-          <div className="mt-6 flex flex-wrap items-center gap-3">
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
-              Also at:
-            </span>
-            {[
-              "PH Euro Park (Borey Peng Huoth)",
-              "Fun Mall — TK Avenue",
-            ].map((name) => (
-              <span
-                key={name}
-                className="rounded-full border border-[color:var(--border-strong)] bg-white px-4 py-1.5 text-xs font-semibold text-[color:var(--text-soft)]"
-              >
-                {name}
-              </span>
             ))}
           </div>
         </div>
