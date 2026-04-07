@@ -3,7 +3,7 @@ const BRANDS: { id: string; name: string; src: string; width: number; height: nu
   { id: "invisalign",     name: "Invisalign",        src: "/brands/logos/invisalign.svg",      width: 110, height: 32 },
   { id: "osstem",         name: "OSSTEM",             src: "/brands/logos/osstem.svg",          width: 110, height: 32 },
   { id: "scheu",          name: "Scheu-Dental",       src: "/brands/logos/scheu-dental.svg",    width: 100, height: 32 },
-  { id: "beyond",         name: "Beyond®",            src: "/brands/logos/beyond.png",          width: 36,  height: 36 },
+  { id: "beyond",         name: "Beyond®",            src: "/brands/logos/beyond.svg",          width: 120, height: 36 },
   { id: "gc",             name: "GC Corporation",     src: "/brands/logos/gc-corporation.svg",  width: 120, height: 28 },
   { id: "tuttnauer",      name: "Tuttnauer",          src: "/brands/logos/tuttnauer.svg",       width: 100, height: 28 },
   { id: "bureau-veritas", name: "Bureau Veritas",     src: "/brands/logos/bureau-veritas.svg",  width: 110, height: 36 },
