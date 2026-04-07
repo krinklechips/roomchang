@@ -114,7 +114,7 @@ export default function AboutPage() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-7xl px-4 pt-14 pb-0 sm:px-6 sm:pt-20 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 pt-14 pb-14 sm:px-6 sm:pt-20 sm:pb-20 lg:px-8">
         {/* History */}
         <div className="mx-auto max-w-3xl">
           <h2 className="font-display text-4xl text-[--text-main]">A Hospital, Not Just a Clinic</h2>

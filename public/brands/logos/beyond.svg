@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 48" fill="none">
+  <!-- "b" icon mark — simplified from the Beyond® brand icon -->
+  <!-- Left blue stripe -->
+  <path d="M8 6 L8 42 Q8 46 12 46 L16 46 L16 6 Q16 2 12 2 Q8 2 8 6Z" fill="#00AEEF" opacity="0.6"/>
+  <!-- Dark navy cap -->
+  <path d="M8 6 Q8 2 12 2 Q16 2 16 6 L16 18 Q12 22 8 18Z" fill="#003087"/>
+  <!-- Right red shape -->
+  <path d="M18 14 Q26 14 26 22 Q26 30 18 30 L18 14Z" fill="#E31837"/>
+  <!-- Overlap/shadow -->
+  <path d="M16 18 L16 30 Q16 34 18 30 Q26 30 26 22 Q26 18 22 16 L16 18Z" fill="#00AEEF" opacity="0.4"/>
+
+  <!-- Wordmark text -->
+  <text x="34" y="32" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="600" letter-spacing="-0.5" fill="#1a1a2e">beyond</text>
+  <text x="138" y="24" font-family="Arial, Helvetica, sans-serif" font-size="10" fill="#1a1a2e">®</text>
+</svg>
