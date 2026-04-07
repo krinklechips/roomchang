@@ -5,13 +5,13 @@ const FOOTER_LINKS = [
   {
     heading: "Services",
     links: [
-      { label: "Dental Implants", href: "/services#implants" },
-      { label: "All-on-4 / All-on-6", href: "/services#all-on-4" },
-      { label: "Orthodontics & Braces", href: "/services#orthodontics" },
-      { label: "Teeth Whitening", href: "/services#whitening" },
-      { label: "Cosmetic Dentistry", href: "/services#cosmetic" },
-      { label: "Oral Surgery", href: "/services#surgery" },
-      { label: "Full Mouth Reconstruction", href: "/services#reconstruction" },
+      { label: "Dental Implants", href: "/services/dental-implants" },
+      { label: "All-on-4 / All-on-6", href: "/services/all-on-4" },
+      { label: "Orthodontics & Braces", href: "/services/orthodontics" },
+      { label: "Teeth Whitening", href: "/services/teeth-whitening" },
+      { label: "Cosmetic Dentistry", href: "/services/cosmetic-dentistry" },
+      { label: "Oral Surgery", href: "/services/oral-surgery" },
+      { label: "Full Mouth Reconstruction", href: "/services/full-mouth-reconstruction" },
       { label: "All Services", href: "/services" },
     ],
   },
@@ -23,7 +23,7 @@ const FOOTER_LINKS = [
       { label: "Vision & Mission", href: "/about/vision-mission-values" },
       { label: "Our Doctors", href: "/team" },
       { label: "Technology", href: "/technology" },
-      { label: "Community", href: "/about/community" },
+      { label: "Community & Charity", href: "/about/community" },
     ],
   },
   {
@@ -33,7 +33,7 @@ const FOOTER_LINKS = [
       { label: "Price Comparison", href: "/pricing" },
       { label: "How It Works", href: "/international#how-it-works" },
       { label: "Clinical Results", href: "/clinical-results" },
-      { label: "Patient Testimonials", href: "/clinical-results" },
+      { label: "Patient Stories", href: "/clinical-results" },
     ],
   },
   {
@@ -41,7 +41,7 @@ const FOOTER_LINKS = [
     links: [
       { label: "Book Appointment", href: "/contact" },
       { label: "Our 5 Branches", href: "/contact#branches" },
-      { label: "WhatsApp (+855 11 811 338)", href: "https://wa.me/85511811338" },
+      { label: "WhatsApp (+855 69 811 338)", href: "https://wa.me/85569811338" },
       { label: "Telegram", href: "https://t.me/roomchang" },
       { label: "Facebook", href: "https://www.facebook.com/roomchangdental" },
     ],

@@ -4,10 +4,12 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
 
+// Multilingual routing is not yet implemented — all hrefs point to "#"
+// to prevent 404s. Update hrefs when /[locale] routes are built.
 const LANGUAGES = [
-  { code: "EN", label: "English", flag: "🇬🇧", href: "/en" },
-  { code: "KH", label: "Khmer", flag: "🇰🇭", href: "/kh" },
-  { code: "中文", label: "中文", flag: "🇨🇳", href: "/zh" },
+  { code: "EN", label: "English", flag: "🇬🇧", href: "#", active: true },
+  { code: "KH", label: "ខ្មែរ", flag: "🇰🇭", href: "#", active: false },
+  { code: "中文", label: "中文", flag: "🇨🇳", href: "#", active: false },
 ];
 
 export function LanguageSwitcher() {
@@ -71,16 +73,26 @@ export function LanguageSwitcher() {
         >
           {LANGUAGES.map((language) => (
             <Link
-              key={language.href}
+              key={language.code}
               href={language.href}
               role="menuitem"
-              className="flex items-center gap-3 rounded-2xl px-3 py-3 text-sm font-medium text-[--text-main] transition hover:bg-[--surface-strong]"
+              aria-current={language.active ? "true" : undefined}
+              className={`flex items-center gap-3 rounded-2xl px-3 py-3 text-sm font-medium transition ${
+                language.active
+                  ? "bg-[--surface-strong] text-[--brand-deep]"
+                  : "text-[--text-soft] hover:bg-[--surface-strong] hover:text-[--text-main]"
+              }`}
               onClick={() => setIsOpen(false)}
             >
               <span className="text-lg leading-none" aria-hidden="true">
                 {language.flag}
               </span>
               <span className="flex-1">{language.label}</span>
+              {!language.active && (
+                <span className="rounded-full bg-[--border-strong] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-[--text-soft]">
+                  Soon
+                </span>
+              )}
             </Link>
           ))}
         </div>

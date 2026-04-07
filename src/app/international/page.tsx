@@ -96,7 +96,7 @@ export default function InternationalPage() {
             International Patients
           </h1>
           <p className="mt-5 max-w-2xl text-base leading-7 text-[--text-soft]">
-            Hundreds of patients travel from Australia, Japan, Singapore, and beyond to receive
+            Thousands of patients travel from Australia, Japan, Singapore, and beyond to receive
             world-class dental care at Roomchang. We make the process simple, transparent, and as
             comfortable as possible.
           </p>
