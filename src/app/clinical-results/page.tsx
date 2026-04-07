@@ -85,13 +85,14 @@ export default function ClinicalResultsPage() {
               href={`/clinical-results/${c.slug}`}
               className="group flex flex-col overflow-hidden rounded-[2rem] border border-[--border-strong] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_60px_rgba(57,28,45,0.1)]"
             >
-              {/* Before/After card image */}
-              <div className="relative min-h-[14rem] overflow-hidden bg-[linear-gradient(135deg,var(--brand-soft),var(--surface-strong))]">
+              {/* Before/After card image — natural height, no cropping */}
+              <div className="relative overflow-hidden bg-[linear-gradient(135deg,var(--brand-soft),var(--surface-strong))]">
                 <Image
                   src={c.cardImage}
                   alt={`Before and after — ${c.title}`}
-                  fill
-                  className="object-cover object-center transition duration-500 group-hover:scale-[1.03]"
+                  width={800}
+                  height={600}
+                  className="w-full h-auto transition duration-500 group-hover:scale-[1.03]"
                   sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                 />
                 <span className="absolute right-3 top-3 rounded-full bg-[color:var(--brand-soft)] px-2.5 py-1 text-[0.65rem] font-bold uppercase tracking-[0.18em] text-[color:var(--brand-deep)]">

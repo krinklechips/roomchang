@@ -21,7 +21,7 @@ export function HomeBrands() {
         {items.map((brand, i) => (
           <div
             key={`${brand.id}-${i}`}
-            className="flex select-none flex-col items-center gap-2 opacity-40 grayscale transition hover:opacity-60"
+            className="flex select-none items-center opacity-40 grayscale transition hover:opacity-60"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -33,9 +33,6 @@ export function HomeBrands() {
               style={{ maxHeight: brand.height, width: "auto" }}
               draggable={false}
             />
-            <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[--text-soft]">
-              {brand.name}
-            </span>
           </div>
         ))}
       </div>

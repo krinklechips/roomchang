@@ -90,16 +90,17 @@ export default async function ClinicalCaseDetailPage({
           {/* Left — gallery + clinical narrative */}
           <div className="flex flex-col gap-10">
 
-            {/* Image gallery */}
+            {/* Image gallery — full natural size, no cropping */}
             <div className="flex flex-col gap-4">
               {c.images.map(({ src, caption }, i) => (
                 <figure key={src} className="overflow-hidden rounded-3xl border border-[color:var(--border-strong)] shadow-[0_12px_40px_rgba(57,28,45,0.07)]">
-                  <div className="relative w-full overflow-hidden bg-[color:var(--brand-soft)]" style={{ aspectRatio: i === 0 ? "16/9" : "16/9" }}>
+                  <div className="w-full bg-[color:var(--brand-soft)]">
                     <Image
                       src={src}
                       alt={caption ?? `${c.title} — image ${i + 1}`}
-                      fill
-                      className="object-cover object-center"
+                      width={1200}
+                      height={900}
+                      className="w-full h-auto"
                       sizes="(min-width: 1280px) 780px, (min-width: 1024px) 65vw, 100vw"
                       priority={i === 0}
                     />
