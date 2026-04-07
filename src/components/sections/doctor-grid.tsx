@@ -82,33 +82,33 @@ export function DoctorGrid({ doctors }: { doctors: Doctor[] }) {
               key={doctor.id}
               className="flex flex-col overflow-hidden rounded-[2rem] border border-[color:var(--border-strong)] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)] transition hover:shadow-[0_20px_56px_rgba(57,28,45,0.1)]"
             >
-              {/* Photo header */}
-              <div className="relative flex items-end bg-[linear-gradient(135deg,var(--brand-soft),#f0d6e4)] px-6 pb-0 pt-8">
-                <div className="relative h-32 w-32 shrink-0 overflow-hidden rounded-2xl border-4 border-white shadow-[0_8px_24px_rgba(57,28,45,0.12)]">
+              {/* Photo + name header — clean white */}
+              <div className="flex items-center gap-5 border-b border-[color:var(--border-strong)] px-6 py-5">
+                <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-2xl ring-2 ring-[color:var(--brand-soft)]">
                   {doctor.photoUrl ? (
                     <Image
                       src={doctor.photoUrl}
                       alt={doctor.name}
                       fill
                       className="object-cover object-top"
-                      sizes="128px"
+                      sizes="96px"
                     />
                   ) : (
-                    <div className="flex h-full w-full items-center justify-center bg-[linear-gradient(135deg,var(--brand-soft),var(--brand-light))] text-3xl font-bold text-[color:var(--brand-deep)]">
+                    <div className="flex h-full w-full items-center justify-center bg-[color:var(--brand-soft)] text-2xl font-bold text-[color:var(--brand-deep)]">
                       {doctor.initials}
                     </div>
                   )}
                 </div>
-                <div className="ml-4 mb-4 min-w-0">
+                <div className="min-w-0">
                   <h2 className="font-display text-xl leading-snug text-[color:var(--text-main)]">
                     {doctor.name}
                   </h2>
                   {doctor.credentials && (
-                    <p className="mt-0.5 text-xs font-normal text-[color:var(--text-soft)]">
+                    <p className="mt-0.5 text-xs text-[color:var(--text-soft)]">
                       {cleanCredentials(doctor.credentials)}
                     </p>
                   )}
-                  <p className="mt-1 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[color:var(--brand-deep)]">
+                  <p className="mt-1.5 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[color:var(--brand-deep)]">
                     {doctor.role}
                   </p>
                 </div>
