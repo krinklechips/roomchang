@@ -54,7 +54,7 @@ export default async function ServicesPage() {
           </h1>
           <p className="mt-5 max-w-2xl text-base leading-7 text-[--text-soft]">
             Roomchang offers hospital-level dental care across all major specialties. Whether
-            you&apos;re visiting from Phnom Penh or travelling from overseas, our multilingual team
+            you&apos;re based in Phnom Penh or travelling from overseas, our multilingual team
             is here to guide you through every step.
           </p>
         </div>

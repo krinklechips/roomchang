@@ -29,11 +29,11 @@ const FOOTER_LINKS = [
   {
     heading: "International Patients",
     links: [
-      { label: "Dental Treatment Abroad", href: "/international" },
+      { label: "Coming to Cambodia?", href: "/international" },
       { label: "Price Comparison", href: "/pricing" },
       { label: "How It Works", href: "/international#how-it-works" },
-      { label: "Clinical Results", href: "/clinical-results" },
-      { label: "Patient Stories", href: "/clinical-results" },
+      { label: "Before & After Gallery", href: "/clinical-results" },
+      { label: "Treatment Cost Guide", href: "/pricing" },
     ],
   },
   {
