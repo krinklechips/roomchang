@@ -125,7 +125,7 @@ export default function AboutPage() {
               the world — without having to travel abroad to get it.
             </p>
             <p>
-              Over nearly three decades, we&apos;ve grown from a single practice to a
+              Over nearly 30 years, we&apos;ve grown from a single practice to a
               hospital-scale group with five branches across Phnom Penh, an in-house digital
               laboratory, and a specialist team covering every major dental discipline.
             </p>
