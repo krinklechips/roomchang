@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ArrowRight, X } from "lucide-react";
 import type { Doctor } from "@/lib/data";
 
@@ -30,12 +30,15 @@ function cleanCredentials(raw: string): string {
 }
 
 function DoctorModal({ doctor, onClose }: { doctor: Doctor; onClose: () => void }) {
+  const panelRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     function handleKey(e: KeyboardEvent) {
       if (e.key === "Escape") onClose();
     }
     document.addEventListener("keydown", handleKey);
     document.body.style.overflow = "hidden";
+    panelRef.current?.focus();
     return () => {
       document.removeEventListener("keydown", handleKey);
       document.body.style.overflow = "";
@@ -44,15 +47,20 @@ function DoctorModal({ doctor, onClose }: { doctor: Doctor; onClose: () => void 
 
   return (
     <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="doctor-modal-title"
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
       onClick={onClose}
     >
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
+      <div className="absolute inset-0 bg-black/60" />
 
       {/* Panel */}
       <div
-        className="relative z-10 max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-[2rem] bg-white shadow-2xl"
+        ref={panelRef}
+        tabIndex={-1}
+        className="relative z-10 max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-[2rem] bg-white shadow-2xl outline-none"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close button */}
@@ -82,7 +90,7 @@ function DoctorModal({ doctor, onClose }: { doctor: Doctor; onClose: () => void 
             )}
           </div>
           <div className="min-w-0 flex-1 pt-1">
-            <h2 className="font-display text-2xl leading-snug text-[color:var(--text-main)]">
+            <h2 id="doctor-modal-title" className="font-display text-2xl leading-snug text-[color:var(--text-main)]">
               {doctor.name}
             </h2>
             {doctor.credentials && (

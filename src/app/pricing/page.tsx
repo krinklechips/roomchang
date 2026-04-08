@@ -10,6 +10,13 @@ export const metadata: Metadata = {
     "Transparent pricing for dental implants, crowns, orthodontics, veneers, and more at Roomchang Dental Hospital in Phnom Penh, Cambodia.",
 };
 
+const HERO_TRUST = [
+  { value: "$0",     label: "Consultation" },
+  { value: "USD",    label: "All Prices" },
+  { value: "40–70%", label: "vs. AUS/UK" },
+  { value: "No",     label: "Hidden Fees" },
+];
+
 export default async function PricingPage() {
   const categories = await getPricingCategories();
   const { comparisons } = pricingData;
@@ -18,20 +25,32 @@ export default async function PricingPage() {
     <SiteShell>
       {/* Header */}
       <div className="border-b border-[--border-strong] bg-[--surface]">
-        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--brand)]">
-            Transparent Pricing
-          </p>
-          <h1 className="mt-3 font-display text-5xl leading-none text-[color:var(--text-main)] sm:text-6xl">
-            Treatment Prices
-          </h1>
-          <p className="mt-5 max-w-2xl text-base leading-7 text-[color:var(--text-soft)]">
-            We believe in clear, upfront pricing — no hidden fees. All prices below are in USD and reflect
-            actual treatment costs. Your exact quote will be confirmed after consultation and X-rays.
-          </p>
-          <div className="mt-7 flex flex-wrap gap-3">
-            <Link href="/contact" className="btn-primary">Get a Personalised Quote</Link>
-            <Link href="/international" className="btn-secondary">International Patients</Link>
+        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8 lg:grid lg:grid-cols-2 lg:items-center lg:gap-16">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--brand)]">
+              Transparent Pricing
+            </p>
+            <h1 className="mt-3 font-display text-5xl leading-none text-[color:var(--text-main)] sm:text-6xl">
+              Treatment Prices
+            </h1>
+            <p className="mt-5 max-w-2xl text-base leading-7 text-[color:var(--text-soft)]">
+              We believe in clear, upfront pricing — no hidden fees. All prices below are in USD and reflect
+              actual treatment costs. Your exact quote will be confirmed after consultation and X-rays.
+            </p>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Link href="/contact" className="btn-primary">Get a Personalised Quote</Link>
+              <Link href="/international" className="btn-secondary">International Patients</Link>
+            </div>
+          </div>
+          <div className="hidden lg:flex lg:justify-end">
+            <div className="grid grid-cols-2 gap-3">
+              {HERO_TRUST.map((item) => (
+                <div key={item.label} className="rounded-2xl border border-[color:var(--border-strong)] bg-white px-5 py-4 shadow-[0_8px_24px_rgba(57,28,45,0.06)]">
+                  <p className="font-display text-2xl text-[color:var(--brand-deep)]">{item.value}</p>
+                  <p className="mt-0.5 text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--text-soft)]">{item.label}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
