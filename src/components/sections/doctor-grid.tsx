@@ -8,6 +8,19 @@ import type { Doctor } from "@/lib/data";
 
 const LANGUAGES = ["Khmer", "English", "Mandarin", "Japanese", "Malay", "French"];
 
+const DEPARTMENT_LABELS: Record<string, string> = {
+  DIRECTOR: "Director & Founder",
+  SENIOR_CONSULTANT: "Senior Consultants",
+  IMPLANTOLOGY: "Implantology & Oral Reconstruction",
+  PERIODONTICS: "Periodontics",
+  COSMETIC: "Cosmetic Dentistry",
+  ORTHODONTICS: "Orthodontics & Clear Aligners",
+  PEDIATRICS: "Paediatric Dentistry",
+  GENERAL: "General Dentistry",
+};
+
+const DEPARTMENT_ORDER = ["DIRECTOR", "SENIOR_CONSULTANT", "IMPLANTOLOGY", "PERIODONTICS", "COSMETIC", "ORTHODONTICS", "PEDIATRICS", "GENERAL"];
+
 // Sanitise credentials — replace any stray Cyrillic chars with ASCII equivalents
 function cleanCredentials(raw: string): string {
   return raw
@@ -145,6 +158,87 @@ function DoctorModal({ doctor, onClose }: { doctor: Doctor; onClose: () => void 
   );
 }
 
+function DoctorCard({ doctor, onSelect }: { doctor: Doctor; onSelect: (d: Doctor) => void }) {
+  return (
+    <article className="flex flex-col overflow-hidden rounded-[2rem] border border-[color:var(--border-strong)] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)] transition hover:shadow-[0_20px_56px_rgba(57,28,45,0.1)]">
+      {/* Photo header */}
+      <div className="relative aspect-[4/3] w-full overflow-hidden bg-[color:var(--brand-soft)]">
+        {doctor.photoUrl ? (
+          <Image
+            src={doctor.photoUrl}
+            alt={doctor.name}
+            fill
+            className="object-cover object-top"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center text-5xl font-bold text-[color:var(--brand-deep)]/30">
+            {doctor.initials}
+          </div>
+        )}
+      </div>
+
+      <div className="flex flex-1 flex-col gap-4 p-6">
+        {/* Name + title */}
+        <div>
+          <h3 className="font-display text-xl leading-snug text-[color:var(--text-main)]">
+            {doctor.name}
+          </h3>
+          {doctor.credentials && (
+            <p className="mt-0.5 text-xs text-[color:var(--text-soft)]">
+              {cleanCredentials(doctor.credentials)}
+            </p>
+          )}
+          <p className="mt-1.5 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[color:var(--brand-deep)]">
+            {doctor.role}
+          </p>
+        </div>
+
+        {/* Specialties */}
+        <div className="flex flex-wrap gap-1.5">
+          {doctor.specialty.map((s) => (
+            <span
+              key={s}
+              className="rounded-full bg-[color:var(--brand-soft)] px-2.5 py-0.5 text-[0.68rem] font-semibold text-[color:var(--brand-deep)]"
+            >
+              {s}
+            </span>
+          ))}
+        </div>
+
+        {/* Bio preview */}
+        {doctor.bio && (
+          <p className="line-clamp-3 text-sm leading-6 text-[color:var(--text-soft)]">
+            {doctor.bio}
+          </p>
+        )}
+
+        {/* Languages */}
+        <p className="text-xs text-[color:var(--text-soft)]">
+          <span className="font-semibold">Languages: </span>
+          {doctor.languages.join(" · ")}
+        </p>
+
+        {/* Actions */}
+        <div className="mt-auto flex items-center justify-between pt-1">
+          <button
+            onClick={() => onSelect(doctor)}
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-[color:var(--brand-deep)] transition hover:text-[color:var(--brand)]"
+          >
+            View profile <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
+          </button>
+          <Link
+            href={`/contact?doctor=${encodeURIComponent(doctor.name)}`}
+            className="rounded-full border border-[color:var(--brand)] px-3.5 py-1.5 text-xs font-semibold text-[color:var(--brand-deep)] transition hover:bg-[color:var(--brand)] hover:text-white"
+          >
+            Book
+          </Link>
+        </div>
+      </div>
+    </article>
+  );
+}
+
 export function DoctorGrid({ doctors }: { doctors: Doctor[] }) {
   const [activeLanguage, setActiveLanguage] = useState<string | null>(null);
   const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null);
@@ -154,6 +248,17 @@ export function DoctorGrid({ doctors }: { doctors: Doctor[] }) {
         d.languages.some((l) => l.toLowerCase() === activeLanguage.toLowerCase())
       )
     : doctors;
+
+  // Group by department (only when not filtering)
+  const grouped = activeLanguage
+    ? null
+    : DEPARTMENT_ORDER
+        .map((dept) => ({
+          dept,
+          label: DEPARTMENT_LABELS[dept] ?? dept,
+          docs: filtered.filter((d) => d.department === dept),
+        }))
+        .filter((g) => g.docs.length > 0);
 
   function toggleLanguage(lang: string) {
     setActiveLanguage((prev) => (prev === lang ? null : lang));
@@ -205,89 +310,26 @@ export function DoctorGrid({ doctors }: { doctors: Doctor[] }) {
 
       {/* Doctor grid */}
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8">
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((doctor) => (
-            <article
-              key={doctor.id}
-              className="flex flex-col overflow-hidden rounded-[2rem] border border-[color:var(--border-strong)] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)] transition hover:shadow-[0_20px_56px_rgba(57,28,45,0.1)]"
-            >
-              {/* Photo header */}
-              <div className="relative aspect-[4/3] w-full overflow-hidden bg-[color:var(--brand-soft)]">
-                {doctor.photoUrl ? (
-                  <Image
-                    src={doctor.photoUrl}
-                    alt={doctor.name}
-                    fill
-                    className="object-cover object-top"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  />
-                ) : (
-                  <div className="flex h-full w-full items-center justify-center text-5xl font-bold text-[color:var(--brand-deep)]/30">
-                    {doctor.initials}
-                  </div>
-                )}
-              </div>
-
-              <div className="flex flex-1 flex-col gap-4 p-6">
-                {/* Name + title */}
-                <div>
-                  <h2 className="font-display text-xl leading-snug text-[color:var(--text-main)]">
-                    {doctor.name}
-                  </h2>
-                  {doctor.credentials && (
-                    <p className="mt-0.5 text-xs text-[color:var(--text-soft)]">
-                      {cleanCredentials(doctor.credentials)}
-                    </p>
-                  )}
-                  <p className="mt-1.5 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[color:var(--brand-deep)]">
-                    {doctor.role}
-                  </p>
+        {grouped ? (
+          // Grouped by department
+          <div className="flex flex-col gap-16">
+            {grouped.map(({ dept, label, docs }) => (
+              <section key={dept}>
+                <h2 className="mb-8 font-display text-2xl text-[color:var(--brand-deep)]">
+                  {label}
+                </h2>
+                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {docs.map((doctor) => <DoctorCard key={doctor.id} doctor={doctor} onSelect={setSelectedDoctor} />)}
                 </div>
-
-                {/* Specialties */}
-                <div className="flex flex-wrap gap-1.5">
-                  {doctor.specialty.map((s) => (
-                    <span
-                      key={s}
-                      className="rounded-full bg-[color:var(--brand-soft)] px-2.5 py-0.5 text-[0.68rem] font-semibold text-[color:var(--brand-deep)]"
-                    >
-                      {s}
-                    </span>
-                  ))}
-                </div>
-
-                {/* Bio preview */}
-                {doctor.bio && (
-                  <p className="line-clamp-3 text-sm leading-6 text-[color:var(--text-soft)]">
-                    {doctor.bio}
-                  </p>
-                )}
-
-                {/* Languages */}
-                <p className="text-xs text-[color:var(--text-soft)]">
-                  <span className="font-semibold">Languages: </span>
-                  {doctor.languages.join(" · ")}
-                </p>
-
-                {/* Actions */}
-                <div className="mt-auto flex items-center justify-between pt-1">
-                  <button
-                    onClick={() => setSelectedDoctor(doctor)}
-                    className="inline-flex items-center gap-1.5 text-sm font-semibold text-[color:var(--brand-deep)] transition hover:text-[color:var(--brand)]"
-                  >
-                    View profile <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
-                  </button>
-                  <Link
-                    href={`/contact?doctor=${encodeURIComponent(doctor.name)}`}
-                    className="rounded-full border border-[color:var(--brand)] px-3.5 py-1.5 text-xs font-semibold text-[color:var(--brand-deep)] transition hover:bg-[color:var(--brand)] hover:text-white"
-                  >
-                    Book
-                  </Link>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
+              </section>
+            ))}
+          </div>
+        ) : (
+          // Flat filtered grid
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {filtered.map((doctor) => <DoctorCard key={doctor.id} doctor={doctor} onSelect={setSelectedDoctor} />)}
+          </div>
+        )}
 
         {filtered.length === 0 && (
           <div className="py-20 text-center">
