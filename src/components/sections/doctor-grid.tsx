@@ -170,13 +170,13 @@ function DoctorCard({ doctor, onSelect }: { doctor: Doctor; onSelect: (d: Doctor
   return (
     <article className="flex flex-col overflow-hidden rounded-[2rem] border border-[color:var(--border-strong)] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)] transition hover:shadow-[0_20px_56px_rgba(57,28,45,0.1)]">
       {/* Photo header */}
-      <div className="relative aspect-[4/3] w-full overflow-hidden bg-[color:var(--brand-soft)]">
+      <div className="relative h-[220px] w-full overflow-hidden bg-[color:var(--brand-soft)]">
         {doctor.photoUrl ? (
           <Image
             src={doctor.photoUrl}
             alt={doctor.name}
             fill
-            className="object-cover object-top"
+            className="object-cover object-[center_15%]"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         ) : (
