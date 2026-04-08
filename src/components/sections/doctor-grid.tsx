@@ -169,18 +169,20 @@ function DoctorModal({ doctor, onClose }: { doctor: Doctor; onClose: () => void 
 function DoctorCard({ doctor, onSelect }: { doctor: Doctor; onSelect: (d: Doctor) => void }) {
   return (
     <article className="flex flex-col overflow-hidden rounded-[2rem] border border-[color:var(--border-strong)] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)] transition hover:shadow-[0_20px_56px_rgba(57,28,45,0.1)]">
-      {/* Photo header */}
-      <div className="relative h-[220px] w-full overflow-hidden bg-[color:var(--brand-soft)]">
+      {/* Photo — fixed-width portrait centred in brand-tinted bar */}
+      <div className="flex h-[200px] items-end justify-center overflow-hidden bg-[color:var(--brand-soft)] pt-4">
         {doctor.photoUrl ? (
-          <Image
-            src={doctor.photoUrl}
-            alt={doctor.name}
-            fill
-            className="object-cover object-[center_15%]"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          />
+          <div className="relative h-[185px] w-[148px] shrink-0 overflow-hidden rounded-t-xl">
+            <Image
+              src={doctor.photoUrl}
+              alt={doctor.name}
+              fill
+              className="object-cover object-top"
+              sizes="148px"
+            />
+          </div>
         ) : (
-          <div className="flex h-full w-full items-center justify-center text-5xl font-bold text-[color:var(--brand-deep)]/30">
+          <div className="flex h-[185px] w-[148px] items-center justify-center rounded-t-xl text-5xl font-bold text-[color:var(--brand-deep)]/30">
             {doctor.initials}
           </div>
         )}
