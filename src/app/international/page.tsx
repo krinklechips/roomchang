@@ -83,30 +83,49 @@ const POPULAR_TREATMENTS = [
   { name: "Invisalign / Clear Aligner", saving: "Save ~40%" },
 ];
 
+const HERO_TRUST = [
+  { value: "20+",    label: "Countries" },
+  { value: "40–70%", label: "Savings" },
+  { value: "6",      label: "Languages" },
+  { value: "30 yrs", label: "Experience" },
+];
+
 export default function InternationalPage() {
   return (
     <SiteShell>
       {/* Header */}
       <div className="border-b border-[--border-strong] bg-[--surface]">
-        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[--brand]">
-            Dental Tourism
-          </p>
-          <h1 className="mt-3 font-display text-5xl leading-none text-[--text-main] sm:text-6xl">
-            International Patients
-          </h1>
-          <p className="mt-5 max-w-2xl text-base leading-7 text-[--text-soft]">
-            Thousands of patients travel from Australia, Japan, Singapore, and beyond to receive
-            world-class dental care at Roomchang. We make the process simple, transparent, and as
-            comfortable as possible.
-          </p>
-          <div className="mt-7 flex flex-wrap gap-3">
-            <Link href="/contact" className="btn-primary">
-              Start Your Treatment Plan
-            </Link>
-            <Link href="/services" className="btn-secondary">
-              Browse Services
-            </Link>
+        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8 lg:grid lg:grid-cols-2 lg:items-center lg:gap-16">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[--brand]">
+              Dental Tourism
+            </p>
+            <h1 className="mt-3 font-display text-5xl leading-none text-[--text-main] sm:text-6xl">
+              International Patients
+            </h1>
+            <p className="mt-5 max-w-2xl text-base leading-7 text-[--text-soft]">
+              Thousands of patients travel from Australia, Japan, Singapore, and beyond to receive
+              world-class dental care at Roomchang. We make the process simple, transparent, and as
+              comfortable as possible.
+            </p>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Link href="/contact" className="btn-primary">
+                Start Your Treatment Plan
+              </Link>
+              <Link href="/services" className="btn-secondary">
+                Browse Services
+              </Link>
+            </div>
+          </div>
+          <div className="hidden lg:flex lg:justify-end">
+            <div className="grid grid-cols-2 gap-3">
+              {HERO_TRUST.map((item) => (
+                <div key={item.label} className="rounded-2xl border border-[color:var(--border-strong)] bg-white px-5 py-4 shadow-[0_8px_24px_rgba(57,28,45,0.06)]">
+                  <p className="font-display text-2xl text-[color:var(--brand-deep)]">{item.value}</p>
+                  <p className="mt-0.5 text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--text-soft)]">{item.label}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

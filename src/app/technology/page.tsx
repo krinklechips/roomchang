@@ -12,12 +12,19 @@ export const metadata: Metadata = {
 };
 
 const CATEGORY_COLORS: Record<string, string> = {
-  "Orthodontics":      "bg-[linear-gradient(135deg,#a22f7b,#8c2a8d)]",
-  "Lab & Restoration": "bg-[linear-gradient(135deg,#0fa5a4,#0b8b8a)]",
-  "Cosmetic":          "bg-[linear-gradient(135deg,#c76ad7,#a750b7)]",
-  "Infection Control": "bg-[linear-gradient(135deg,#1592db,#0e7cc7)]",
-  "Diagnostics":       "bg-[linear-gradient(135deg,#6cab18,#5a9514)]",
+  "Orthodontics":      "bg-[color:var(--brand)]",
+  "Lab & Restoration": "bg-[color:var(--brand-deep)]",
+  "Cosmetic":          "bg-[linear-gradient(135deg,var(--brand),var(--brand-deep))]",
+  "Infection Control": "bg-[color:var(--brand-deep)]",
+  "Diagnostics":       "bg-[color:var(--brand)]",
 };
+
+const HERO_TRUST = [
+  { value: "CAD/CAM", label: "In-house Lab" },
+  { value: "3D",      label: "CBCT Imaging" },
+  { value: "CA®",     label: "Clear Aligners" },
+  { value: "ISO",     label: "Sterilisation" },
+];
 
 export default async function TechnologyPage() {
   const technologies = await getTechnology();
@@ -26,18 +33,30 @@ export default async function TechnologyPage() {
     <SiteShell>
       {/* Header */}
       <div className="border-b border-[--border-strong] bg-[--surface]">
-        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[--brand]">
-            Precision & Innovation
-          </p>
-          <h1 className="mt-3 font-display text-5xl leading-none text-[--text-main] sm:text-6xl">
-            Our Technology
-          </h1>
-          <p className="mt-5 max-w-2xl text-base leading-7 text-[--text-soft]">
-            Roomchang invests continuously in the tools and systems that make dental care safer,
-            faster, and more precise. From in-house aligner fabrication to 3D surgical planning,
-            technology is at the core of how we work.
-          </p>
+        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8 lg:grid lg:grid-cols-2 lg:items-center lg:gap-16">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[--brand]">
+              Precision & Innovation
+            </p>
+            <h1 className="mt-3 font-display text-5xl leading-none text-[--text-main] sm:text-6xl">
+              Our Technology
+            </h1>
+            <p className="mt-5 max-w-2xl text-base leading-7 text-[--text-soft]">
+              Roomchang invests continuously in the tools and systems that make dental care safer,
+              faster, and more precise. From in-house aligner fabrication to 3D surgical planning,
+              technology is at the core of how we work.
+            </p>
+          </div>
+          <div className="hidden lg:flex lg:justify-end">
+            <div className="grid grid-cols-2 gap-3">
+              {HERO_TRUST.map((item) => (
+                <div key={item.label} className="rounded-2xl border border-[color:var(--border-strong)] bg-white px-5 py-4 shadow-[0_8px_24px_rgba(57,28,45,0.06)]">
+                  <p className="font-display text-2xl text-[color:var(--brand-deep)]">{item.value}</p>
+                  <p className="mt-0.5 text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--text-soft)]">{item.label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
