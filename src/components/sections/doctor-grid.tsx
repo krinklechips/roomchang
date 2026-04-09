@@ -80,7 +80,7 @@ function DoctorModal({ doctor, onClose }: { doctor: Doctor; onClose: () => void 
                 src={doctor.photoUrl}
                 alt={doctor.name}
                 fill
-                className="object-cover object-top"
+                className="object-contain object-center"
                 sizes="112px"
               />
             ) : (
@@ -169,20 +169,20 @@ function DoctorModal({ doctor, onClose }: { doctor: Doctor; onClose: () => void 
 function DoctorCard({ doctor, onSelect }: { doctor: Doctor; onSelect: (d: Doctor) => void }) {
   return (
     <article className="flex flex-col overflow-hidden rounded-[2rem] border border-[color:var(--border-strong)] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)] transition hover:shadow-[0_20px_56px_rgba(57,28,45,0.1)]">
-      {/* Photo — fixed-width portrait centred in brand-tinted bar */}
-      <div className="flex h-[200px] items-end justify-center overflow-hidden bg-[color:var(--brand-soft)] pt-4">
+      {/* Photo — fixed-size box, object-contain so no cropping regardless of source aspect ratio */}
+      <div className="flex h-[220px] items-center justify-center bg-[color:var(--brand-soft)]">
         {doctor.photoUrl ? (
-          <div className="relative h-[185px] w-[148px] shrink-0 overflow-hidden rounded-t-xl">
+          <div className="relative h-[220px] w-[200px] shrink-0 overflow-hidden rounded-t-[2rem]">
             <Image
               src={doctor.photoUrl}
               alt={doctor.name}
               fill
-              className="object-cover object-top"
-              sizes="148px"
+              className="object-contain object-center"
+              sizes="200px"
             />
           </div>
         ) : (
-          <div className="flex h-[185px] w-[148px] items-center justify-center rounded-t-xl text-5xl font-bold text-[color:var(--brand-deep)]/30">
+          <div className="flex h-[220px] w-[200px] items-center justify-center rounded-t-[2rem] text-6xl font-bold text-[color:var(--brand-deep)]/30">
             {doctor.initials}
           </div>
         )}
