@@ -108,7 +108,7 @@ export default async function PricingPage() {
                 key={cat.id}
                 className="overflow-hidden rounded-[2rem] border border-[--border-strong] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)]"
               >
-                <div className="flex items-center gap-3 border-b border-[--border-strong] px-6 py-5">
+                <div className="flex items-center gap-3 border-b border-[color:var(--brand-soft)] px-6 py-5">
                   <span
                     className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[color:var(--surface-strong)] text-[color:var(--brand-deep)]"
                     aria-hidden="true"
@@ -119,7 +119,7 @@ export default async function PricingPage() {
                     {cat.title}
                   </h2>
                 </div>
-                <ul className="divide-y divide-[--border-strong]">
+                <ul className="divide-y divide-[color:var(--brand-soft)]">
                   {cat.items.map((item, i) => (
                     <li key={i} className="flex items-start justify-between gap-3 px-6 py-3.5">
                       <div className="min-w-0">
@@ -156,7 +156,7 @@ export default async function PricingPage() {
             <div className="overflow-x-auto">
               <table className="w-full min-w-[560px] text-sm">
                 <thead>
-                  <tr className="border-b border-[--border-strong] bg-[--surface]">
+                  <tr className="border-b border-[color:var(--brand-soft)] bg-[--surface]">
                     <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
                       Treatment
                     </th>
@@ -171,7 +171,7 @@ export default async function PricingPage() {
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[--border-strong]">
+                <tbody className="divide-y divide-[color:var(--brand-soft)]">
                   {(comparisons as { ada: string; treatment: string; roomchang: string; australia: string }[]).map((row) => (
                     <tr key={row.ada} className="transition hover:bg-[--surface]">
                       <td className="px-6 py-4 font-medium text-[color:var(--text-main)]">{row.treatment}</td>
