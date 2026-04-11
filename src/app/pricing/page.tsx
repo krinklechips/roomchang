@@ -1,4 +1,19 @@
 import Link from "next/link";
+import {
+  Search,
+  ScanLine,
+  Droplets,
+  Sparkles,
+  Crown,
+  Minus,
+  CircleDot,
+  AlignCenter,
+  Scissors,
+  Zap,
+  Moon,
+  Smile,
+  type LucideIcon,
+} from 'lucide-react';
 import { SiteShell } from "@/components/site/site-shell";
 import { getPricingCategories } from "@/lib/data";
 import type { Metadata } from "next";
@@ -16,6 +31,34 @@ const HERO_TRUST = [
   { value: "40–70%", label: "vs. AUS/UK" },
   { value: "No",     label: "Hidden Fees" },
 ];
+
+const CATEGORY_ICONS: Record<string, LucideIcon> = {
+  'examination': Search,
+  'cleaning':    Droplets,
+  'x-ray':       ScanLine,
+  'digital':     ScanLine,
+  'filling':     Sparkles,
+  'cosmetic':    Sparkles,
+  'aesthetic':   Sparkles,
+  'crown':       Crown,
+  'bridge':      Crown,
+  'root canal':  Minus,
+  'implant':     CircleDot,
+  'orthodontic': AlignCenter,
+  'surgery':     Scissors,
+  'whitening':   Zap,
+  'sleep':       Moon,
+  'paediatric':  Smile,
+  'pediatric':   Smile,
+};
+
+function getCategoryIcon(title: string): LucideIcon {
+  const lower = title.toLowerCase();
+  for (const [key, Icon] of Object.entries(CATEGORY_ICONS)) {
+    if (lower.includes(key)) return Icon;
+  }
+  return Sparkles;
+}
 
 export default async function PricingPage() {
   const categories = await getPricingCategories();
@@ -67,10 +110,10 @@ export default async function PricingPage() {
               >
                 <div className="flex items-center gap-3 border-b border-[--border-strong] px-6 py-5">
                   <span
-                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[color:var(--surface-strong)] text-lg text-[color:var(--brand-deep)]"
+                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[color:var(--surface-strong)] text-[color:var(--brand-deep)]"
                     aria-hidden="true"
                   >
-                    {cat.icon}
+                    {(() => { const Icon = getCategoryIcon(cat.title); return <Icon className="h-5 w-5" />; })()}
                   </span>
                   <h2 className="font-display text-xl leading-tight text-[color:var(--text-main)]">
                     {cat.title}
