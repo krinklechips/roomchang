@@ -66,7 +66,7 @@ export default async function TechnologyPage() {
           {technologies.map((tech, i) => (
             <article
               key={tech.id}
-              className={`grid gap-0 overflow-hidden rounded-[2rem] border border-[--border-strong] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)] lg:grid-cols-2 ${
+              className={`grid gap-0 overflow-hidden rounded-3xl border border-[--border-strong] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)] lg:grid-cols-2 ${
                 i % 2 === 1 ? "lg:[&>:first-child]:order-2" : ""
               }`}
             >
@@ -137,7 +137,7 @@ export default async function TechnologyPage() {
         </div>
 
         {/* CTA */}
-        <div className="mt-16 flex flex-col items-start gap-6 rounded-[2rem] border border-[--border-strong] bg-[--surface] p-10 sm:flex-row sm:items-center sm:justify-between sm:p-12">
+        <div className="mt-16 flex flex-col items-start gap-6 rounded-3xl border border-[--border-strong] bg-[--surface] p-10 sm:flex-row sm:items-center sm:justify-between sm:p-12">
           <div>
             <h2 className="font-display text-3xl text-[--text-main]">See it in person</h2>
             <p className="mt-2 text-sm leading-7 text-[--text-soft]">

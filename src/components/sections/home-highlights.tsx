@@ -65,7 +65,7 @@ export function HomeHighlights() {
             <a
               key={shortcut.label}
               href={shortcut.href}
-              className={`${shortcut.accent} group flex min-h-28 flex-col justify-between rounded-[1.75rem] p-5 text-white shadow-[0_16px_40px_rgba(34,22,31,0.12)] transition hover:-translate-y-0.5`}
+              className={`${shortcut.accent} group flex min-h-28 flex-col justify-between rounded-2xl p-5 text-white shadow-[0_16px_40px_rgba(34,22,31,0.12)] transition hover:-translate-y-0.5`}
             >
               <span className="text-[0.76rem] font-semibold uppercase tracking-[0.22em] text-white/70">
                 Quick Access
@@ -90,7 +90,7 @@ export function HomeHighlights() {
         {featuredCards.map((card) => (
           <article
             key={card.id}
-            className="overflow-hidden rounded-[2rem] border border-[--border-strong] bg-white shadow-[0_20px_60px_rgba(57,28,45,0.08)]"
+            className="overflow-hidden rounded-3xl border border-[--border-strong] bg-white shadow-[0_20px_60px_rgba(57,28,45,0.08)]"
           >
             <div
               role="img"

@@ -52,7 +52,7 @@ describe("HomeHero", () => {
     const dockSurface = screen.getByTestId("hero-cta-surface");
 
     expect(shell.className).toContain("overflow-hidden");
-    expect(shell.className).toContain("rounded-[1.75rem]");
+    expect(shell.className).toContain("rounded-2xl");
     expect(dock.className).toContain("mt-0");
     expect(dock.className).toContain("sm:absolute");
     expect(dock.className).not.toContain("mt-4");

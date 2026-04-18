@@ -152,7 +152,7 @@ export default function FacilitiesPage() {
           {FACILITY_SECTIONS.map((section) => (
             <div
               key={section.title}
-              className="rounded-[2rem] border border-[color:var(--border-strong)] bg-white p-8 shadow-[0_12px_40px_rgba(57,28,45,0.05)]"
+              className="rounded-3xl border border-[color:var(--border-strong)] bg-white p-8 shadow-[0_12px_40px_rgba(57,28,45,0.05)]"
             >
               <h2 className="font-display text-2xl text-[color:var(--text-main)]">{section.title}</h2>
               <ul className="mt-5 space-y-3">
@@ -170,7 +170,7 @@ export default function FacilitiesPage() {
         </div>
 
         {/* ISO callout */}
-        <div className="mt-12 rounded-[2rem] bg-[color:var(--brand-soft)] p-10 sm:p-12">
+        <div className="mt-12 rounded-3xl bg-[color:var(--brand-soft)] p-10 sm:p-12">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--brand-deep)]">

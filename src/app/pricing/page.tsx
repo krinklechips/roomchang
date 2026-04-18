@@ -106,7 +106,7 @@ export default async function PricingPage() {
             {categories.map((cat) => (
               <div
                 key={cat.id}
-                className="overflow-hidden rounded-[2rem] border border-[--border-strong] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)]"
+                className="overflow-hidden rounded-3xl border border-[--border-strong] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)]"
               >
                 <div className="flex items-center gap-3 border-b border-[color:var(--brand-soft)] px-6 py-5">
                   <span
@@ -152,7 +152,7 @@ export default async function PricingPage() {
             without compromising on quality or safety. Patients save up to 70%.
           </p>
 
-          <div className="mt-10 overflow-hidden rounded-[2rem] border border-[--border-strong] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)]">
+          <div className="mt-10 overflow-hidden rounded-3xl border border-[--border-strong] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)]">
             <div className="overflow-x-auto">
               <table className="w-full min-w-[560px] text-sm">
                 <thead>
@@ -192,7 +192,7 @@ export default async function PricingPage() {
         </section>
 
         {/* CTA */}
-        <section className="rounded-[2rem] bg-[color:var(--brand)] p-10 sm:p-14 text-white">
+        <section className="rounded-3xl bg-[color:var(--brand)] p-10 sm:p-14 text-white">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 className="font-display text-4xl">Get your exact quote</h2>

@@ -132,7 +132,7 @@ export default async function BranchPage({
           <div className="flex flex-col gap-6">
 
             {/* Address card */}
-            <div className="rounded-[2rem] border border-[color:var(--border-strong)] bg-white p-8 shadow-[0_12px_40px_rgba(57,28,45,0.05)]">
+            <div className="rounded-3xl border border-[color:var(--border-strong)] bg-white p-8 shadow-[0_12px_40px_rgba(57,28,45,0.05)]">
               <h2 className="font-display text-2xl text-[color:var(--text-main)]">Visit Us</h2>
 
               <div className="mt-6 flex flex-col gap-5">
@@ -194,7 +194,7 @@ export default async function BranchPage({
             </div>
 
             {/* Other branches */}
-            <div className="rounded-[2rem] border border-[color:var(--border-strong)] bg-white p-6 shadow-[0_12px_40px_rgba(57,28,45,0.05)]">
+            <div className="rounded-3xl border border-[color:var(--border-strong)] bg-white p-6 shadow-[0_12px_40px_rgba(57,28,45,0.05)]">
               <h3 className="font-display text-lg text-[color:var(--text-main)]">Other Branches</h3>
               <div className="mt-4 flex flex-col gap-2">
                 {otherBranches.map((b) => (

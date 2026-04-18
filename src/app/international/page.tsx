@@ -143,7 +143,7 @@ export default function InternationalPage() {
             {WHY_ITEMS.map((item) => (
               <div
                 key={item.title}
-                className="rounded-[1.75rem] border border-[--border-strong] bg-white p-6 shadow-[0_12px_40px_rgba(57,28,45,0.05)]"
+                className="rounded-2xl border border-[--border-strong] bg-white p-6 shadow-[0_12px_40px_rgba(57,28,45,0.05)]"
               >
                 <h3 className="font-display text-xl text-[--brand-deep]">{item.title}</h3>
                 <p className="mt-3 text-sm leading-6 text-[--text-soft]">{item.description}</p>
@@ -153,7 +153,7 @@ export default function InternationalPage() {
         </section>
 
         {/* Cost comparison */}
-        <section className="rounded-[2rem] border border-[--border-strong] bg-[--surface] overflow-hidden">
+        <section className="rounded-3xl border border-[--border-strong] bg-[--surface] overflow-hidden">
           <div className="px-8 py-8 border-b border-[--border-strong]">
             <h2 className="font-display text-3xl text-[--text-main]">Cost Comparison</h2>
             <p className="mt-2 text-sm leading-6 text-[--text-soft]">
@@ -192,7 +192,7 @@ export default function InternationalPage() {
             {STEPS.map((s) => (
               <div
                 key={s.step}
-                className="flex gap-6 rounded-[1.75rem] border border-[--border-strong] bg-white p-6 shadow-[0_8px_30px_rgba(57,28,45,0.04)]"
+                className="flex gap-6 rounded-2xl border border-[--border-strong] bg-white p-6 shadow-[0_8px_30px_rgba(57,28,45,0.04)]"
               >
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[--brand] font-bold text-white text-sm">
                   {s.step}
@@ -207,7 +207,7 @@ export default function InternationalPage() {
         </section>
 
         {/* CTA */}
-        <section className="rounded-[2rem] bg-[--brand] p-10 sm:p-14 text-white">
+        <section className="rounded-3xl bg-[--brand] p-10 sm:p-14 text-white">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 className="font-display text-4xl">Ready to get started?</h2>

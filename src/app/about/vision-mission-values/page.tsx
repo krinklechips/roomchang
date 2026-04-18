@@ -67,7 +67,7 @@ export default function VisionMissionValuesPage() {
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
         {/* Vision & Mission */}
         <div className="grid gap-6 sm:grid-cols-2">
-          <div className="rounded-[2rem] border border-[--border-strong] bg-white p-10 shadow-[0_12px_40px_rgba(57,28,45,0.05)]">
+          <div className="rounded-3xl border border-[--border-strong] bg-white p-10 shadow-[0_12px_40px_rgba(57,28,45,0.05)]">
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[--brand]">Vision</p>
             <p className="mt-4 font-display text-4xl leading-tight text-[--text-main]">
               Enriching lives with quality dentistry.
@@ -77,7 +77,7 @@ export default function VisionMissionValuesPage() {
               choosing local doesn&apos;t mean compromising on quality.
             </p>
           </div>
-          <div className="rounded-[2rem] border border-[--border-strong] bg-white p-10 shadow-[0_12px_40px_rgba(57,28,45,0.05)]">
+          <div className="rounded-3xl border border-[--border-strong] bg-white p-10 shadow-[0_12px_40px_rgba(57,28,45,0.05)]">
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[--brand]">Mission</p>
             <p className="mt-4 font-display text-4xl leading-tight text-[--text-main]">
               We truly care for your teeth.
@@ -100,7 +100,7 @@ export default function VisionMissionValuesPage() {
             {VALUES.map((value) => (
               <div
                 key={value.title}
-                className="rounded-[1.75rem] border border-[--border-strong] bg-white p-6 shadow-[0_12px_40px_rgba(57,28,45,0.05)]"
+                className="rounded-2xl border border-[--border-strong] bg-white p-6 shadow-[0_12px_40px_rgba(57,28,45,0.05)]"
               >
                 <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[--brand-soft] text-[--brand-deep]">
                   <value.Icon size={20} strokeWidth={1.75} aria-hidden="true" />
@@ -113,7 +113,7 @@ export default function VisionMissionValuesPage() {
         </div>
 
         {/* CTA */}
-        <div className="mt-20 rounded-[2rem] bg-[--brand-soft] p-10 sm:p-12">
+        <div className="mt-20 rounded-3xl bg-[--brand-soft] p-10 sm:p-12">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 className="font-display text-3xl text-[--text-main]">See our values in action</h2>

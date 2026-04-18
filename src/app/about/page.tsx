@@ -237,7 +237,7 @@ export default function AboutPage() {
             <Link
               key={section.href}
               href={section.href}
-              className="group flex flex-col rounded-[2rem] border border-[--border-strong] bg-white p-7 shadow-[0_12px_40px_rgba(57,28,45,0.05)] transition hover:border-[--brand-light] hover:shadow-[0_16px_48px_rgba(204,55,113,0.1)]"
+              className="group flex flex-col rounded-3xl border border-[--border-strong] bg-white p-7 shadow-[0_12px_40px_rgba(57,28,45,0.05)] transition hover:border-[--brand-light] hover:shadow-[0_16px_48px_rgba(204,55,113,0.1)]"
             >
               <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[--brand-soft] text-[--brand-deep]">
                 <section.icon size={20} strokeWidth={1.75} aria-hidden="true" />
