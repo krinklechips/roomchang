@@ -98,7 +98,7 @@ export default function DirectorMessagePage() {
           </div>
 
           {/* CTA */}
-          <div className="mt-14 rounded-[2rem] bg-[--brand-soft] p-8 text-center">
+          <div className="mt-14 rounded-3xl bg-[--brand-soft] p-8 text-center">
             <h3 className="font-display text-2xl text-[--text-main]">
               Meet the full team
             </h3>

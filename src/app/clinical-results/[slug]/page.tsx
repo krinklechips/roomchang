@@ -115,7 +115,7 @@ export default async function ClinicalCaseDetailPage({
             </div>
 
             {/* Clinical narrative */}
-            <div className="rounded-[2rem] border border-[color:var(--border-strong)] bg-white p-8 shadow-[0_12px_40px_rgba(57,28,45,0.05)] sm:p-10">
+            <div className="rounded-3xl border border-[color:var(--border-strong)] bg-white p-8 shadow-[0_12px_40px_rgba(57,28,45,0.05)] sm:p-10">
               <h2 className="font-display text-2xl text-[color:var(--text-main)]">Clinical Notes</h2>
               <div className="mt-5 space-y-4 text-sm leading-7 text-[color:var(--text-soft)] whitespace-pre-line">
                 {c.fullText}
@@ -128,7 +128,7 @@ export default async function ClinicalCaseDetailPage({
           <div className="flex flex-col gap-6">
 
             {/* Treatment summary card */}
-            <div className="rounded-[2rem] border border-[color:var(--border-strong)] bg-white p-8 shadow-[0_12px_40px_rgba(57,28,45,0.05)]">
+            <div className="rounded-3xl border border-[color:var(--border-strong)] bg-white p-8 shadow-[0_12px_40px_rgba(57,28,45,0.05)]">
               <h2 className="font-display text-2xl text-[color:var(--text-main)]">Treatment Summary</h2>
               <dl className="mt-6 flex flex-col gap-5">
                 <div>

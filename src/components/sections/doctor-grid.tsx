@@ -60,7 +60,7 @@ function DoctorModal({ doctor, onClose }: { doctor: Doctor; onClose: () => void 
       <div
         ref={panelRef}
         tabIndex={-1}
-        className="relative z-10 max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-[2rem] bg-white shadow-2xl outline-none"
+        className="relative z-10 max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-3xl bg-white shadow-2xl outline-none"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close button */}
@@ -168,11 +168,11 @@ function DoctorModal({ doctor, onClose }: { doctor: Doctor; onClose: () => void 
 
 function DoctorCard({ doctor, onSelect }: { doctor: Doctor; onSelect: (d: Doctor) => void }) {
   return (
-    <article className="flex flex-col overflow-hidden rounded-[2rem] border border-[color:var(--border-strong)] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)] transition hover:shadow-[0_20px_56px_rgba(57,28,45,0.1)]">
+    <article className="flex flex-col overflow-hidden rounded-3xl border border-[color:var(--border-strong)] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)] transition hover:shadow-[0_20px_56px_rgba(57,28,45,0.1)]">
       {/* Photo — fixed-width portrait, object-cover+object-top: fills box from top, crops only sides */}
       <div className="flex h-[260px] items-end justify-center overflow-hidden bg-[color:var(--brand-soft)]">
         {doctor.photoUrl ? (
-          <div className="relative h-[260px] w-[200px] shrink-0 overflow-hidden rounded-t-[2rem]">
+          <div className="relative h-[260px] w-[200px] shrink-0 overflow-hidden rounded-t-3xl">
             <Image
               src={doctor.photoUrl}
               alt={doctor.name}
@@ -182,7 +182,7 @@ function DoctorCard({ doctor, onSelect }: { doctor: Doctor; onSelect: (d: Doctor
             />
           </div>
         ) : (
-          <div className="flex h-[260px] w-[200px] items-center justify-center rounded-t-[2rem] text-6xl font-bold text-[color:var(--brand-deep)]/30">
+          <div className="flex h-[260px] w-[200px] items-center justify-center rounded-t-3xl text-6xl font-bold text-[color:var(--brand-deep)]/30">
             {doctor.initials}
           </div>
         )}
@@ -356,7 +356,7 @@ export function DoctorGrid({ doctors }: { doctors: Doctor[] }) {
         )}
 
         {/* CTA */}
-        <div className="mt-16 rounded-[2rem] bg-[color:var(--brand-soft)] p-10 sm:p-12">
+        <div className="mt-16 rounded-3xl bg-[color:var(--brand-soft)] p-10 sm:p-12">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 className="font-display text-3xl text-[color:var(--text-main)]">

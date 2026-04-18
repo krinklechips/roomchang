@@ -42,7 +42,7 @@ export function HomeFeatured() {
           {CARDS.map((card) => (
             <article
               key={card.id}
-              className="group overflow-hidden rounded-[2rem] border border-[--border-strong] bg-white shadow-[0_16px_50px_rgba(57,28,45,0.07)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_60px_rgba(57,28,45,0.12)]"
+              className="group overflow-hidden rounded-3xl border border-[--border-strong] bg-white shadow-[0_16px_50px_rgba(57,28,45,0.07)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_60px_rgba(57,28,45,0.12)]"
             >
               <div
                 role="img"

@@ -64,7 +64,7 @@ export default function CommunityPage() {
           {PROGRAMS.map((program) => (
             <div
               key={program.title}
-              className="flex flex-col rounded-[2rem] border border-[--border-strong] bg-white p-8 shadow-[0_12px_40px_rgba(57,28,45,0.05)]"
+              className="flex flex-col rounded-3xl border border-[--border-strong] bg-white p-8 shadow-[0_12px_40px_rgba(57,28,45,0.05)]"
             >
               <h2 className="font-display text-2xl text-[--text-main]">{program.title}</h2>
               <p className="mt-4 flex-1 text-sm leading-7 text-[--text-soft]">{program.description}</p>
@@ -78,7 +78,7 @@ export default function CommunityPage() {
         </div>
 
         {/* CTA */}
-        <div className="mt-16 rounded-[2rem] bg-[--brand-soft] p-10 sm:p-12">
+        <div className="mt-16 rounded-3xl bg-[--brand-soft] p-10 sm:p-12">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 className="font-display text-3xl text-[--text-main]">Partner With Us</h2>

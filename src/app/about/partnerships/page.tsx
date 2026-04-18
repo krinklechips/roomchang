@@ -166,7 +166,7 @@ export default function PartnershipsPage() {
         ))}
 
         {/* CTA */}
-        <div className="rounded-[2rem] bg-[color:var(--brand-soft)] p-10 sm:p-12">
+        <div className="rounded-3xl bg-[color:var(--brand-soft)] p-10 sm:p-12">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 className="font-display text-3xl text-[color:var(--text-main)]">Become a Partner</h2>

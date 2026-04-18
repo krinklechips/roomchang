@@ -38,7 +38,7 @@ export function ClinicalResultsGrid({ cases }: { cases: ClinicalCaseDetail[] }) 
           <Link
             key={c.slug}
             href={`/clinical-results/${c.slug}`}
-            className="group flex flex-col overflow-hidden rounded-[2rem] border border-[color:var(--border-strong)] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_60px_rgba(57,28,45,0.1)]"
+            className="group flex flex-col overflow-hidden rounded-3xl border border-[color:var(--border-strong)] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_60px_rgba(57,28,45,0.1)]"
           >
             <div className="relative overflow-hidden bg-[linear-gradient(135deg,var(--brand-soft),var(--surface-strong))]">
               <Image
@@ -92,7 +92,7 @@ export function ClinicalResultsGrid({ cases }: { cases: ClinicalCaseDetail[] }) 
       </p>
 
       {/* CTA */}
-      <section className="rounded-[2rem] bg-[color:var(--brand-soft)] p-10 sm:p-12">
+      <section className="rounded-3xl bg-[color:var(--brand-soft)] p-10 sm:p-12">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="font-display text-4xl text-[color:var(--text-main)]">Achieve similar results</h2>
