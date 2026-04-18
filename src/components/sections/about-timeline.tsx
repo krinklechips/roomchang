@@ -26,9 +26,9 @@ const ERAS = [
     year: "2010s",
     caption: "Recognition",
     heading: "Certified Excellence",
-    body: "ISO 9001 certified — the first dental facility in Cambodia to earn it. Independently audited, internationally recognised. A standard that held us accountable long before it was expected.",
+    body: "Roomchang became the benchmark for dental quality in Cambodia — investing in international training, hospital-grade infrastructure, and a culture of clinical excellence that continues today.",
     src: "/about/certification-iso.jpg",
-    alt: "Roomchang ISO 9001 certification",
+    alt: "Roomchang clinical excellence",
     objectPos: "object-top",
   },
   {

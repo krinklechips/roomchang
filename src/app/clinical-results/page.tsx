@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 const STATS = [
-  { value: "10,000+", label: "Patients per month" },
+  { value: "4,000+", label: "Patients per month" },
   { value: "20+",     label: "Countries served" },
   { value: "30 yrs",  label: "Clinical experience" },
   { value: "30+",     label: "Specialist dentists" },

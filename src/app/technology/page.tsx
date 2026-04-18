@@ -23,7 +23,7 @@ const HERO_TRUST = [
   { value: "CAD/CAM", label: "In-house Lab" },
   { value: "3D",      label: "CBCT Imaging" },
   { value: "CA®",     label: "Clear Aligners" },
-  { value: "ISO",     label: "Sterilisation" },
+  { value: "Class B", label: "Sterilisation" },
 ];
 
 export default async function TechnologyPage() {
