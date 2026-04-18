@@ -169,7 +169,7 @@ export default function FacilitiesPage() {
           ))}
         </div>
 
-        {/* ISO callout */}
+        {/* Quality callout */}
         <div className="mt-12 rounded-3xl bg-[color:var(--brand-soft)] p-10 sm:p-12">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
@@ -177,11 +177,11 @@ export default function FacilitiesPage() {
                 Quality Assurance
               </p>
               <h2 className="mt-2 font-display text-3xl text-[color:var(--text-main)]">
-                ISO 9001:2015 Certified
+                Hospital-Grade Standards
               </h2>
               <p className="mt-3 max-w-lg text-sm leading-7 text-[color:var(--text-soft)]">
-                Roomchang was the first dental facility in Cambodia to achieve ISO 9001 certification —
-                independently audited by Bureau Veritas under UKAS accreditation.
+                Roomchang follows strict sterilisation, infection control, and clinical protocols —
+                the same standards expected of leading international dental hospitals.
               </p>
             </div>
             <Link href="/contact" className="btn-primary shrink-0">

@@ -9,7 +9,7 @@ import type { Doctor } from "@/lib/data";
 const LANGUAGES = ["Khmer", "English", "Mandarin", "Japanese", "Malay", "French"];
 
 const DEPARTMENT_LABELS: Record<string, string> = {
-  DIRECTOR: "Director & Founder",
+  DIRECTOR: "Oral Surgery & Implantology",
   SENIOR_CONSULTANT: "Senior Consultants",
   IMPLANTOLOGY: "Implantology & Oral Reconstruction",
   PERIODONTICS: "Periodontics",
@@ -19,7 +19,7 @@ const DEPARTMENT_LABELS: Record<string, string> = {
   GENERAL: "General Dentistry",
 };
 
-const DEPARTMENT_ORDER = ["DIRECTOR", "SENIOR_CONSULTANT", "IMPLANTOLOGY", "PERIODONTICS", "COSMETIC", "ORTHODONTICS", "PEDIATRICS", "GENERAL"];
+const DEPARTMENT_ORDER = ["SENIOR_CONSULTANT", "DIRECTOR", "IMPLANTOLOGY", "PERIODONTICS", "COSMETIC", "ORTHODONTICS", "PEDIATRICS", "GENERAL"];
 
 // Sanitise credentials — replace any stray Cyrillic chars with ASCII equivalents
 function cleanCredentials(raw: string): string {

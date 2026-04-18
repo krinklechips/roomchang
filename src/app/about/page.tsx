@@ -23,7 +23,7 @@ const HERO_TRUST = [
   { value: "1996",     label: "Est." },
   { value: "5",        label: "Branches" },
   { value: "30+",      label: "Specialists" },
-  { value: "ISO 9001", label: "Certified" },
+  { value: "5",        label: "Locations" },
 ];
 
 const ABOUT_SECTIONS: { title: string; description: string; href: string; icon: LucideIcon }[] = [
@@ -154,8 +154,7 @@ export default function AboutPage() {
               than 20 countries who choose Cambodia for high-quality, cost-effective dental care.
             </p>
             <p>
-              Roomchang was the first dental facility in Cambodia to achieve ISO 9001 certification
-              — a standard independently audited by Bureau Veritas under UKAS accreditation.
+              Roomchang serves international visitors from more than 20 countries who choose Cambodia for high-quality, cost-effective dental care delivered to the same standards as leading clinics abroad.
             </p>
           </div>
         </div>

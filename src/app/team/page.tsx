@@ -4,7 +4,7 @@ import { getDoctors } from "@/lib/data";
 import type { Metadata } from "next";
 
 const HERO_TRUST = [
-  { value: "39",   label: "Doctors" },
+  { value: "37",   label: "Doctors" },
   { value: "6",    label: "Languages" },
   { value: "30+",  label: "Yrs Exp." },
   { value: "5",    label: "Branches" },

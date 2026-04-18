@@ -27,7 +27,7 @@ const FALLBACK_SLIDES: HeroSlide[] = [
     id: "all-staff",
     eyebrow: "Trusted since 1996",
     title: "Nearly 30 Years of Exceptional Care",
-    description: "From a single practice to Cambodia's most trusted dental hospital — ISO 9001 certified, hospital-grade, and built for every patient.",
+    description: "From a single practice to Cambodia's most trusted dental hospital — hospital-grade standards, multilingual care, and built for every patient.",
     imageSrc: "/hero/hero-all-staff.jpg",
     imageAlt: "Roomchang Dental Hospital all staff group photo",
     imagePosition: "center top",
@@ -65,9 +65,9 @@ export async function HomeHero() {
   return (
     <section className="relative overflow-hidden sm:min-h-[calc(100svh-6.625rem)] lg:min-h-[calc(100svh-7.25rem)]">
 
-      {/* Trust pill — in flow on mobile, absolute top-left on sm+ */}
-      <div className="relative z-20 px-4 pb-3 pt-4 sm:absolute sm:left-7 sm:top-7 sm:p-0">
-        <p className="inline-flex rounded-full border border-[rgba(33,23,31,0.2)] bg-white/96 px-3.5 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-[color:var(--text-main)] shadow-[0_10px_28px_rgba(29,19,27,0.08)] sm:backdrop-blur-md">
+      {/* Trust pill — always overlaid on the image */}
+      <div className="absolute left-4 top-4 z-20 sm:left-7 sm:top-7">
+        <p className="inline-flex rounded-full border border-[rgba(33,23,31,0.2)] bg-white/96 px-3.5 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-[color:var(--text-main)] shadow-[0_10px_28px_rgba(29,19,27,0.08)] backdrop-blur-sm">
           Trusted Since 1996
         </p>
       </div>
@@ -79,7 +79,7 @@ export async function HomeHero() {
           showCaption={false}
           flush
           className="sm:h-full"
-          mediaClassName="aspect-[3/2] sm:rounded-none sm:h-full sm:aspect-auto"
+          mediaClassName="aspect-[16/9] sm:rounded-none sm:h-full sm:aspect-auto"
         />
 
         {/* Bottom pink fade blending into page */}

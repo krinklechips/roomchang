@@ -89,9 +89,6 @@ export function SiteFooter() {
               <a href="mailto:contact@roomchang.com" className="block hover:text-[--brand-deep]">
                 contact@roomchang.com
               </a>
-              <p className="mt-2 inline-block rounded border border-[--border-strong] px-2 py-0.5 text-xs font-medium tracking-wide text-[--text-soft]">
-                ISO 9001:2015 Certified
-              </p>
             </div>
           </div>
 

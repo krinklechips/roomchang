@@ -254,6 +254,15 @@ export function ContactForm({ branches }: { branches: Branch[] }) {
                 <p className="text-sm text-[--text-soft]">{branch.email}</p>
               )}
               <p className="mt-1 text-xs text-[--text-soft]/70">{branch.hours}</p>
+              <a
+                href={`https://maps.google.com/?q=${encodeURIComponent(branch.address)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-[color:var(--brand)] transition hover:text-[color:var(--brand-deep)]"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></svg>
+                Get directions
+              </a>
             </div>
           ))}
 

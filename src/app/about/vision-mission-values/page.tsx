@@ -14,7 +14,7 @@ const VALUES: { title: string; Icon: LucideIcon; description: string }[] = [
     title: "Professionalism",
     Icon: GraduationCap,
     description:
-      "Our team holds international qualifications and operates to the highest clinical standards — backed by ISO 9001:2015 certification.",
+      "Our team holds international qualifications and operates to the highest clinical standards, guided by rigorous internal protocols and continuous training.",
   },
   {
     title: "Honesty",
