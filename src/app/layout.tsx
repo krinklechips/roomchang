@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Manrope } from "next/font/google";
+import { Manrope } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
 const manrope = Manrope({
@@ -7,10 +8,15 @@ const manrope = Manrope({
   subsets: ["latin"],
 });
 
-const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant",
-  subsets: ["latin"],
-  weight: ["500", "600", "700"],
+const gotham = localFont({
+  src: [
+    { path: "../../public/fonts/gotham/GothamHTF-Book.otf",      weight: "400", style: "normal" },
+    { path: "../../public/fonts/gotham/GothamHTF-BookItalic.otf", weight: "400", style: "italic" },
+    { path: "../../public/fonts/gotham/GothamHTF-Medium.otf",     weight: "500", style: "normal" },
+    { path: "../../public/fonts/gotham/GothamHTF-Bold.otf",       weight: "700", style: "normal" },
+    { path: "../../public/fonts/gotham/GothamHTF-Black.otf",      weight: "900", style: "normal" },
+  ],
+  variable: "--font-gotham",
 });
 
 export const metadata: Metadata = {
@@ -26,7 +32,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${manrope.variable} ${cormorant.variable} h-full scroll-smooth antialiased`}
+      className={`${manrope.variable} ${gotham.variable} h-full scroll-smooth antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

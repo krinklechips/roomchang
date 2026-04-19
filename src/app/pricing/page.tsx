@@ -136,7 +136,6 @@ export default async function PricingPage() {
                 <details
                   key={cat.id}
                   id={cat.id}
-                  open={idx === 0}
                   className="group"
                 >
                   {/* Summary row */}
