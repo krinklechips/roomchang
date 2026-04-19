@@ -20,7 +20,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-manrope);
-  --font-display: var(--font-cormorant);
+  --font-display: var(--font-gotham);
 }
 
 * {
@@ -45,7 +45,7 @@ a {
 }
 
 .font-display {
-  font-family: var(--font-cormorant), serif;
+  font-family: var(--font-gotham), sans-serif;
 }
 
 .btn-primary,
