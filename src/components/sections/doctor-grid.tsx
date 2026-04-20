@@ -8,18 +8,15 @@ import type { Doctor } from "@/lib/data";
 
 const LANGUAGES = ["Khmer", "English", "Mandarin", "Japanese", "Malay", "French"];
 
-const DEPARTMENT_LABELS: Record<string, string> = {
-  DIRECTOR: "Oral Surgery & Implantology",
-  SENIOR_CONSULTANT: "Senior Consultants",
-  IMPLANTOLOGY: "Implantology & Oral Reconstruction",
-  PERIODONTICS: "Periodontics",
-  COSMETIC: "Cosmetic Dentistry",
-  ORTHODONTICS: "Orthodontics & Clear Aligners",
-  PEDIATRICS: "Paediatric Dentistry",
-  GENERAL: "General Dentistry",
-};
-
-const DEPARTMENT_ORDER = ["SENIOR_CONSULTANT", "DIRECTOR", "IMPLANTOLOGY", "PERIODONTICS", "COSMETIC", "ORTHODONTICS", "PEDIATRICS", "GENERAL"];
+/** Each entry groups one or more DB department values under a single visible heading */
+const DEPARTMENT_GROUPS: { label: string; depts: string[] }[] = [
+  { label: "Implantology and Oral Reconstruction", depts: ["SENIOR_CONSULTANT", "DIRECTOR", "IMPLANTOLOGY"] },
+  { label: "Periodontics",                          depts: ["PERIODONTICS"] },
+  { label: "Cosmetic Dentistry",                    depts: ["COSMETIC"] },
+  { label: "Orthodontics & Clear Aligners",         depts: ["ORTHODONTICS"] },
+  { label: "Paediatric Dentistry",                  depts: ["PEDIATRICS"] },
+  { label: "General Dentistry",                     depts: ["GENERAL"] },
+];
 
 // Sanitise credentials — replace any stray Cyrillic chars with ASCII equivalents
 function cleanCredentials(raw: string): string {
@@ -262,11 +259,10 @@ export function DoctorGrid({ doctors }: { doctors: Doctor[] }) {
   // Group by department (only when not filtering)
   const grouped = activeLanguage
     ? null
-    : DEPARTMENT_ORDER
-        .map((dept) => ({
-          dept,
-          label: DEPARTMENT_LABELS[dept] ?? dept,
-          docs: filtered.filter((d) => d.department === dept),
+    : DEPARTMENT_GROUPS
+        .map(({ label, depts }) => ({
+          label,
+          docs: filtered.filter((d) => depts.includes(d.department ?? "")),
         }))
         .filter((g) => g.docs.length > 0);
 
@@ -323,8 +319,8 @@ export function DoctorGrid({ doctors }: { doctors: Doctor[] }) {
         {grouped ? (
           // Grouped by department
           <div className="flex flex-col gap-16">
-            {grouped.map(({ dept, label, docs }) => (
-              <section key={dept}>
+            {grouped.map(({ label, docs }) => (
+              <section key={label}>
                 <h2 className="mb-8 font-display text-2xl text-[color:var(--brand-deep)]">
                   {label}
                 </h2>
