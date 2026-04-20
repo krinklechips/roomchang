@@ -230,7 +230,7 @@ function DoctorCard({ doctor, onSelect }: { doctor: Doctor; onSelect: (d: Doctor
         <div className="mt-auto flex items-center justify-between pt-1">
           <button
             onClick={() => onSelect(doctor)}
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-[color:var(--brand-deep)] transition hover:text-[color:var(--brand)]"
+            className="inline-flex cursor-pointer items-center gap-1.5 text-sm font-semibold text-[color:var(--brand-deep)] transition hover:text-[color:var(--brand)]"
           >
             View profile <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
           </button>
