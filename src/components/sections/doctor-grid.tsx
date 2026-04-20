@@ -10,12 +10,13 @@ const LANGUAGES = ["Khmer", "English", "Mandarin", "Japanese", "Malay", "French"
 
 /** Each entry groups one or more DB department values under a single visible heading */
 const DEPARTMENT_GROUPS: { label: string; depts: string[] }[] = [
-  { label: "Implantology and Oral Reconstruction", depts: ["SENIOR_CONSULTANT", "DIRECTOR", "IMPLANTOLOGY"] },
-  { label: "Periodontics",                          depts: ["PERIODONTICS"] },
-  { label: "Cosmetic Dentistry",                    depts: ["COSMETIC"] },
-  { label: "Orthodontics & Clear Aligners",         depts: ["ORTHODONTICS"] },
-  { label: "Paediatric Dentistry",                  depts: ["PEDIATRICS"] },
-  { label: "General Dentistry",                     depts: ["GENERAL"] },
+  { label: "Implantology and Oral Reconstruction", depts: ["DIRECTOR", "IMPLANTOLOGY"] },
+  { label: "Cosmetic Dentistry",                   depts: ["COSMETIC"] },
+  { label: "General Dentistry",                    depts: ["GENERAL"] },
+  { label: "Periodontics",                         depts: ["PERIODONTICS"] },
+  { label: "Orthodontics",                         depts: ["ORTHODONTICS"] },
+  { label: "Pediatrics",                           depts: ["PEDIATRICS"] },
+  { label: "Senior Consultant",                    depts: ["SENIOR_CONSULTANT"] },
 ];
 
 // Sanitise credentials — replace any stray Cyrillic chars with ASCII equivalents
@@ -165,84 +166,43 @@ function DoctorModal({ doctor, onClose }: { doctor: Doctor; onClose: () => void 
 
 function DoctorCard({ doctor, onSelect }: { doctor: Doctor; onSelect: (d: Doctor) => void }) {
   return (
-    <article className="flex flex-col overflow-hidden rounded-3xl border border-[color:var(--border-strong)] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)] transition hover:shadow-[0_20px_56px_rgba(57,28,45,0.1)]">
-      {/* Photo — fixed-width portrait, object-cover+object-top: fills box from top, crops only sides */}
-      <div className="flex h-[260px] items-end justify-center overflow-hidden bg-[color:var(--brand-soft)]">
+    <button
+      type="button"
+      onClick={() => onSelect(doctor)}
+      className="w-full cursor-pointer overflow-hidden rounded-2xl bg-white text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+    >
+      {/* Portrait — fills card width, fixed height */}
+      <div className="relative h-[220px] w-full overflow-hidden bg-[color:var(--brand-soft)]">
         {doctor.photoUrl ? (
-          <div className="relative h-[260px] w-[200px] shrink-0 overflow-hidden rounded-t-3xl">
-            <Image
-              src={doctor.photoUrl}
-              alt={doctor.name}
-              fill
-              className="object-cover object-top"
-              sizes="200px"
-            />
-          </div>
+          <Image
+            src={doctor.photoUrl}
+            alt={doctor.name}
+            fill
+            className="object-cover object-top"
+            sizes="(min-width: 1280px) 20vw, (min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
+          />
         ) : (
-          <div className="flex h-[260px] w-[200px] items-center justify-center rounded-t-3xl text-6xl font-bold text-[color:var(--brand-deep)]/30">
+          <div className="flex h-full w-full items-center justify-center text-5xl font-bold text-[color:var(--brand-deep)]/30">
             {doctor.initials}
           </div>
         )}
       </div>
 
-      <div className="flex flex-1 flex-col gap-4 p-6">
-        {/* Name + title */}
-        <div>
-          <h3 className="font-display text-xl leading-snug text-[color:var(--text-main)]">
-            {doctor.name}
-          </h3>
-          {doctor.credentials && (
-            <p className="mt-0.5 text-xs text-[color:var(--text-soft)]">
-              {cleanCredentials(doctor.credentials)}
-            </p>
-          )}
-          <p className="mt-1.5 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[color:var(--brand-deep)]">
-            {doctor.role}
-          </p>
-        </div>
-
-        {/* Specialties */}
-        <div className="flex flex-wrap gap-1.5">
-          {doctor.specialty.map((s) => (
-            <span
-              key={s}
-              className="rounded-full bg-[color:var(--brand-soft)] px-2.5 py-0.5 text-[0.68rem] font-semibold text-[color:var(--brand-deep)]"
-            >
-              {s}
-            </span>
-          ))}
-        </div>
-
-        {/* Bio preview */}
-        {doctor.bio && (
-          <p className="line-clamp-3 text-sm leading-6 text-[color:var(--text-soft)]">
-            {doctor.bio}
+      {/* Info */}
+      <div className="px-3 py-3">
+        <h3 className="font-display text-sm leading-snug text-[color:var(--text-main)]">
+          {doctor.name}
+        </h3>
+        {doctor.credentials && (
+          <p className="mt-0.5 text-[0.7rem] text-[color:var(--text-soft)]">
+            {cleanCredentials(doctor.credentials)}
           </p>
         )}
-
-        {/* Languages */}
-        <p className="text-xs text-[color:var(--text-soft)]">
-          <span className="font-semibold">Languages: </span>
-          {doctor.languages.join(" · ")}
+        <p className="mt-1 text-[0.6rem] font-semibold uppercase tracking-[0.16em] text-[color:var(--brand-deep)]">
+          {doctor.role}
         </p>
-
-        {/* Actions */}
-        <div className="mt-auto flex items-center justify-between pt-1">
-          <button
-            onClick={() => onSelect(doctor)}
-            className="inline-flex cursor-pointer items-center gap-1.5 text-sm font-semibold text-[color:var(--brand-deep)] transition hover:text-[color:var(--brand)]"
-          >
-            View profile <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
-          </button>
-          <Link
-            href={`/contact?doctor=${encodeURIComponent(doctor.name)}`}
-            className="rounded-full border border-[color:var(--brand)] px-3.5 py-1.5 text-xs font-semibold text-[color:var(--brand-deep)] transition hover:bg-[color:var(--brand)] hover:text-white"
-          >
-            Book
-          </Link>
-        </div>
       </div>
-    </article>
+    </button>
   );
 }
 
@@ -324,7 +284,7 @@ export function DoctorGrid({ doctors }: { doctors: Doctor[] }) {
                 <h2 className="mb-8 font-display text-2xl text-[color:var(--brand-deep)]">
                   {label}
                 </h2>
-                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                   {docs.map((doctor) => <DoctorCard key={doctor.id} doctor={doctor} onSelect={setSelectedDoctor} />)}
                 </div>
               </section>
@@ -332,7 +292,7 @@ export function DoctorGrid({ doctors }: { doctors: Doctor[] }) {
           </div>
         ) : (
           // Flat filtered grid
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {filtered.map((doctor) => <DoctorCard key={doctor.id} doctor={doctor} onSelect={setSelectedDoctor} />)}
           </div>
         )}
