@@ -35,7 +35,7 @@ const ERAS = [
     year: "Now",
     caption: "A hospital",
     heading: "Still Growing",
-    body: "Five branches. Fifty-eight chairs. Thirty specialists. Thousands of patients every month. And the same conviction that started it all — quality care, close to home.",
+    body: "Five branches. Fifty-eight chairs. 37 specialist dentists. Thousands of patients every month. And the same conviction that started it all — quality care, close to home.",
     src: "/team/team-implantologists-group.jpg",
     alt: "Roomchang specialist team — present day",
     objectPos: "object-left",
