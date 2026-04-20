@@ -34,7 +34,7 @@ export default async function ContactPage() {
               href="tel:+85523211338"
               className="inline-flex items-center gap-2 font-semibold text-[--brand-deep] hover:text-[--brand]"
             >
-              <Phone size={15} strokeWidth={2} aria-hidden="true" /> +855 23 211 338
+              <Phone size={15} strokeWidth={2} aria-hidden="true" /> +855 69 811 338
             </a>
             <a
               href="tel:+85511811338"

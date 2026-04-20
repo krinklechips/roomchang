@@ -81,7 +81,7 @@ export function SiteFooter() {
               <p>No.4, Street 184, Phsar Thmey 3</p>
               <p>Khan Daun Penh, Phnom Penh 120203</p>
               <a href="tel:+85523211338" className="block hover:text-[--brand-deep]">
-                +855 23 211 338
+                +855 69 811 338
               </a>
               <a href="tel:+85511811338" className="block hover:text-[--brand-deep]">
                 +855 11 811 338 <span className="text-xs">(Mobile 24/7)</span>

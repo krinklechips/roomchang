@@ -284,7 +284,7 @@ export default async function ServiceDetailPage({
             <p className="mt-2 text-sm text-[--text-soft]">
               Call us on{" "}
               <a href="tel:+85523211338" className="font-semibold text-[color:var(--brand)]">
-                +855 23 211 338
+                +855 69 811 338
               </a>{" "}
               or send an enquiry and we&apos;ll get back to you within one business day.
             </p>

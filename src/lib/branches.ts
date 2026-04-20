@@ -25,7 +25,7 @@ export const BRANCHES: Branch[] = [
     address: "No. 4, Street 184, Khan Daun Penh",
     addressLine2: "Phnom Penh, Cambodia",
     hours: "Mon–Sat 08:00–17:30",
-    phone: "+855 23 211 338",
+    phone: "+855 69 811 338",
     description:
       "Our flagship 10-storey, 3,400 m² hospital — home to 58 dental chairs, 6 surgical theatres, an in-house CAD/CAM digital laboratory, and the full specialist team.",
     imageSrc: "/about/branch-main-exterior.jpg",
