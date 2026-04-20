@@ -18,7 +18,7 @@ const FALLBACK_SLIDES: HeroSlide[] = [
     id: "care",
     eyebrow: "Patient-first care",
     title: "Dentistry That Puts You at Ease",
-    description: "Our multilingual team speaks your language — literally. Consultations in English, Khmer, Mandarin, Japanese, Malay, and French.",
+    description: "Our multilingual team speaks your language — literally. Consultations in English, Khmer, Mandarin, Japanese, German, and French.",
     imageSrc: "/hero/hero-patient-care.jpeg",
     imageAlt: "Roomchang staff with a patient in a treatment room",
     imagePosition: "center center",

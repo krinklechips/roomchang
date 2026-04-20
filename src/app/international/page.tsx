@@ -55,7 +55,7 @@ const WHY_ITEMS = [
   {
     title: "Multilingual Team",
     description:
-      "Our staff speak Khmer, English, Mandarin, Japanese, Malay, and French. You will always have someone who can communicate clearly with you.",
+      "Our staff speak Khmer, English, Mandarin, Japanese, German, and French. You will always have someone who can communicate clearly with you.",
   },
   {
     title: "Flexible Scheduling",

@@ -6,7 +6,7 @@ import { useState, useEffect, useRef } from "react";
 import { ArrowRight, X } from "lucide-react";
 import type { Doctor } from "@/lib/data";
 
-const LANGUAGES = ["Khmer", "English", "Mandarin", "Japanese", "Malay", "French"];
+const LANGUAGES = ["Khmer", "English", "Mandarin", "Japanese", "German", "French"];
 
 /** Each entry groups one or more DB department values under a single visible heading */
 const DEPARTMENT_GROUPS: { label: string; depts: string[] }[] = [

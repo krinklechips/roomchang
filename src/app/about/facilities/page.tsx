@@ -55,7 +55,7 @@ const FACILITY_SECTIONS = [
       "Electronic Medical Record (EMR) system",
       "Underground parking for 15 vehicles",
       "Full wheelchair accessibility",
-      "Multilingual staff: Khmer, English, French, Chinese, Japanese, Malay",
+      "Multilingual staff: Khmer, English, French, Chinese, Japanese, German",
     ],
   },
 ];
