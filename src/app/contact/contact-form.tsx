@@ -9,7 +9,7 @@ import type { Branch } from "@/lib/data";
 const SERVICES = [
   "Dental Implants",
   "Crowns & Bridges",
-  "Orthodontics (Braces / Clear Aligner)",
+  "Orthodontics",
   "Cosmetic Dentistry",
   "Full Mouth Reconstruction",
   "Oral Surgery",
