@@ -40,7 +40,7 @@ const FACILITY_SECTIONS = [
   {
     title: "Sterilisation & Infection Control",
     items: [
-      "Hospital-grade autoclave sterilisation at 134°C",
+      "Hospital-grade autoclave sterilisation",
       "High-pressure saturated steam processing",
       "All instruments sterilised for invasive and non-invasive procedures",
       "Daily cleaning and disinfection of the entire hospital",
@@ -52,7 +52,7 @@ const FACILITY_SECTIONS = [
     items: [
       "Dedicated children's treatment rooms",
       "Beyond® professional whitening system",
-      "Electronic Medical Record (EMR) system — fully paperless",
+      "Electronic Medical Record (EMR) system",
       "Underground parking for 15 vehicles",
       "Full wheelchair accessibility",
       "Multilingual staff: Khmer, English, French, Chinese, Japanese, Malay",

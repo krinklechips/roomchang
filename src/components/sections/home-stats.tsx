@@ -4,9 +4,8 @@ import { useEffect, useRef, useState } from "react";
 
 const STATS = [
   { value: 30, suffix: " yrs", label: "Years of Experience" },
-  { value: 30, suffix: "+", label: "Specialist Dentists" },
+  { value: 37, suffix: "+", label: "Specialist Dentists" },
   { value: 5, suffix: "", label: "Phnom Penh Branches" },
-  { value: 20, suffix: "+", label: "Countries Served" },
   { value: 100000, suffix: "+", label: "Patients Treated" },
 ];
 
