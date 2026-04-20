@@ -7,10 +7,11 @@ const FOOTER_LINKS = [
     links: [
       { label: "Dental Implants", href: "/services/dental-implants" },
       { label: "All-on-4 / All-on-6", href: "/services/all-on-4" },
-      { label: "Orthodontics & Braces", href: "/services/orthodontics" },
+      { label: "Orthodontics", href: "/services/orthodontics" },
       { label: "Teeth Whitening", href: "/services/teeth-whitening" },
       { label: "Cosmetic Dentistry", href: "/services/cosmetic-dentistry" },
       { label: "Oral Surgery", href: "/services/oral-surgery" },
+      { label: "Endodontics", href: "/services/endodontics" },
       { label: "Full Mouth Reconstruction", href: "/services/full-mouth-reconstruction" },
       { label: "All Services", href: "/services" },
     ],

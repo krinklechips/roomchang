@@ -27,7 +27,7 @@ export const BRANCHES: Branch[] = [
     hours: "Mon–Sat 08:00–17:30",
     phone: "+855 69 811 338",
     description:
-      "Our flagship 10-storey, 3,400 m² hospital — home to 58 dental chairs, 6 surgical theatres, an in-house CAD/CAM digital laboratory, and the full specialist team.",
+      "Our flagship 10-storey hospital with 58 dental chairs, 6 surgical theatres, an in-house CAD/CAM digital laboratory, and the full specialist team.",
     imageSrc: "/about/branch-main-exterior.jpg",
     imageAlt: "Roomchang Dental Hospital main building — Monivong Boulevard",
     mapQuery: "Roomchang Dental Hospital, Street 184, Phnom Penh",
