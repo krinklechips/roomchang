@@ -25,15 +25,15 @@ const NAV_ITEMS: NavItem[] = [
     label: "Services",
     href: "/services",
     children: [
-      { label: "Dental Implants", href: "/services/dental-implants" },
-      { label: "Dental Crowns", href: "/services/dental-crowns" },
-      { label: "Full Mouth Reconstruction", href: "/services/full-mouth-reconstruction" },
-      { label: "Oral Surgery", href: "/services/oral-surgery" },
-      { label: "Endodontics", href: "/services/endodontics" },
       { label: "Cosmetic Dentistry", href: "/services/cosmetic-dentistry" },
-      { label: "Teeth Whitening", href: "/services/teeth-whitening" },
+      { label: "Endodontics", href: "/services/endodontics" },
+      { label: "Dental Crowns", href: "/services/dental-crowns" },
       { label: "Orthodontics", href: "/services/orthodontics" },
       { label: "Pediatric Dentistry", href: "/services/pediatric-dentistry" },
+      { label: "Dental Implants", href: "/services/dental-implants" },
+      { label: "Oral Surgery", href: "/services/oral-surgery" },
+      { label: "Full Mouth Reconstruction", href: "/services/full-mouth-reconstruction" },
+      { label: "Teeth Whitening", href: "/services/teeth-whitening" },
       { label: "Snoring & Sleep Apnea", href: "/services/sleep-apnea" },
     ],
   },
@@ -75,7 +75,6 @@ const NAV_ITEMS: NavItem[] = [
       { label: "Cosmetic & E-Max", href: "/clinical-results#cosmetic" },
     ],
   },
-  { label: "Contact", href: "/contact" },
 ];
 
 export function MobileNav() {
