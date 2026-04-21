@@ -78,8 +78,8 @@ export const BRANCHES: Branch[] = [
       "Located within the Euro Park development in Borey Peng Huoth — serving residents on the eastern side of Phnom Penh along National Road 1.",
     imageSrc: "/about/branch-ph-euro-park.jpg",
     imageAlt: "Roomchang Dental — PH Euro Park branch",
-    mapQuery: "Roomchang Dental, Euro Park, Borey Peng Huoth, National Road 1, Phnom Penh",
-    mapDirectionsQuery: "Roomchang+Dental+Euro+Park+Borey+Peng+Huoth+National+Road+1+Phnom+Penh+Cambodia",
+    mapQuery: "Roomchang Dental Hospital Borey Peng Huoth Phnom Penh",
+    mapDirectionsQuery: "Roomchang+Dental+Hospital+Borey+Peng+Huoth+National+Road+1+Phnom+Penh+Cambodia",
   },
   {
     slug: "fun-mall",
