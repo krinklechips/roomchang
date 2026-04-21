@@ -31,11 +31,12 @@ const featuredCards = [
     id: "international",
     title: "International Patients",
     description:
-      "Support for overseas visitors, treatment planning, and a smoother arrival experience for patients coming to Phnom Penh.",
+      "Thousands of patients from Australia, Japan, Singapore, and beyond visit Roomchang each year. We make the journey simple.",
     imageSrc: "/hero/roomchang-patient-care.jpg",
     imageAlt: "Roomchang patient care team",
-    href: "#trip",
-    bgPosition: "bg-center",
+    href: "/international",
+    bgSize: "cover",
+    bgPosition: "center",
   },
   {
     id: "team",
@@ -45,7 +46,8 @@ const featuredCards = [
     imageSrc: "/hero/hero-all-staff.jpg",
     imageAlt: "Roomchang dental hospital team",
     href: "/team",
-    bgPosition: "bg-top",
+    bgSize: "contain",
+    bgPosition: "center top",
   },
   {
     id: "aligner",
@@ -55,7 +57,8 @@ const featuredCards = [
     imageSrc: "/hero/roomchang-clear-aligner.jpg",
     imageAlt: "Roomchang clear aligner treatment",
     href: "/technology/ca-clear-aligner",
-    bgPosition: "bg-right",
+    bgSize: "contain",
+    bgPosition: "center",
   },
 ];
 
@@ -98,8 +101,13 @@ export function HomeHighlights() {
             <div
               role="img"
               aria-label={card.imageAlt}
-              className={`h-60 bg-[--surface-strong] bg-cover ${card.bgPosition}`}
-              style={{ backgroundImage: `url(${card.imageSrc})` }}
+              className="h-60 bg-[color:var(--brand-soft)]"
+              style={{
+                backgroundImage: `url(${card.imageSrc})`,
+                backgroundSize: card.bgSize,
+                backgroundPosition: card.bgPosition,
+                backgroundRepeat: "no-repeat",
+              }}
             />
             <div className="space-y-4 p-6">
               <h2 className="font-display text-[2rem] leading-none text-[--text-main]">{card.title}</h2>
@@ -108,7 +116,7 @@ export function HomeHighlights() {
                 href={card.href}
                 className="inline-flex items-center gap-2 text-sm font-semibold text-[--brand-deep] transition hover:text-[--brand]"
               >
-                See more
+                {card.id === "international" ? "Plan your trip" : card.id === "team" ? "Meet the doctors" : "Learn more"}
                 <span aria-hidden="true">→</span>
               </a>
             </div>
