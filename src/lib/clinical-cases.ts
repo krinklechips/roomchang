@@ -152,7 +152,7 @@ The before and after photos show the results of the treatment of both the full u
   {
     slug: "emax-crowns",
     title: "E-Max Crown Smile Makeover",
-    category: "Crowns & Veneers",
+    category: "Cosmetic & E-Max",
     tag: "Cosmetic",
     treatment: "Four E-Max ceramic crowns on upper anterior teeth",
     duration: "2–3 weeks",

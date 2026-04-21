@@ -52,8 +52,8 @@ export const BRANCHES: Branch[] = [
   {
     slug: "rose-condo",
     badge: "Branch",
-    name: "Rose Condo — Bassac",
-    shortName: "Rose Condo (Bassac)",
+    name: "Rose Condo — Bassac Garden City",
+    shortName: "Rose Condo - Bassac Garden City",
     address: "No. 10, Block 252, Bassac Garden City",
     addressLine2: "Chamkarmorn, Phnom Penh, Cambodia",
     hours: "Mon–Sat 08:00–17:30",
