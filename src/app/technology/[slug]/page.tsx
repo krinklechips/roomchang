@@ -183,16 +183,16 @@ export default async function TechnologyDetailPage({
         </div>
       </div>
 
-      {/* Hero image */}
+      {/* Product image — centred, capped height so it reads as a product shot not a banner */}
       {tech.imageSrc && (
         <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--surface)]">
-          <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 flex justify-center">
             <Image
               src={tech.imageSrc}
               alt={tech.name}
-              width={1200}
-              height={700}
-              className="w-full h-auto rounded-2xl object-contain"
+              width={900}
+              height={600}
+              className="max-h-[320px] w-auto rounded-2xl object-contain"
               priority
             />
           </div>

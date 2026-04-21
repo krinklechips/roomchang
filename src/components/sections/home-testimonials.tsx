@@ -127,10 +127,10 @@ export function HomeTestimonials({
         {/* Link to full testimonials */}
         <div className="mt-10 flex justify-center">
           <Link
-            href="/clinical-results"
-            className="text-sm font-semibold text-[--brand-deep] transition hover:text-[--brand]"
+            href="/about/testimonials"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-[--brand-deep] transition hover:text-[--brand]"
           >
-            See clinical results & cases <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
+            See all patient reviews <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
           </Link>
         </div>
       </div>
