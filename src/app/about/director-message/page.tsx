@@ -70,7 +70,7 @@ export default function DirectorMessagePage() {
               When I founded Roomchang in 1996, my goal was simple: to build a dental hospital in
               Cambodia that could match the standard of care available anywhere in the world. That
               vision hasn&apos;t changed. What has changed is the scale at which we can deliver it — five
-              branches, 58 chairs, a full in-house digital laboratory, and a team of more than 30
+              branches, 74 chairs, a full in-house digital laboratory, and a team of more than 37
               specialist dentists.
             </p>
             <p>

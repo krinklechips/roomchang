@@ -26,8 +26,6 @@ const NAV_ITEMS: NavItem[] = [
     href: "/services",
     children: [
       { label: "Dental Implants", href: "/services/dental-implants" },
-      { label: "Implant Bridges", href: "/services/implant-bridges" },
-      { label: "All-on-4 / All-on-6", href: "/services/all-on-4" },
       { label: "Dental Crowns", href: "/services/dental-crowns" },
       { label: "Full Mouth Reconstruction", href: "/services/full-mouth-reconstruction" },
       { label: "Oral Surgery", href: "/services/oral-surgery" },

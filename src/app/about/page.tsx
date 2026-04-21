@@ -15,14 +15,14 @@ export const metadata: Metadata = {
 const STATS = [
   { value: "1996", label: "Year Established" },
   { value: "5", label: "Phnom Penh Branches" },
-  { value: "30+", label: "Specialist Dentists" },
-  { value: "58", label: "Dental Chairs" },
+  { value: "37+", label: "Specialist Dentists" },
+  { value: "74", label: "Dental Chairs" },
 ];
 
 const HERO_TRUST = [
   { value: "1996",     label: "Est." },
   { value: "5",        label: "Branches" },
-  { value: "30+",      label: "Specialists" },
+  { value: "37+",      label: "Specialists" },
   { value: "5",        label: "Locations" },
 ];
 
@@ -30,7 +30,7 @@ const ABOUT_SECTIONS: { title: string; description: string; href: string; icon: 
   {
     title: "Our Facilities",
     description:
-      "A purpose-built, 10-storey dental hospital with 58 chairs, 6 surgical theatres, an in-house CAD/CAM lab, and hospital-grade sterilisation.",
+      "A purpose-built, 10-storey dental hospital with 74 chairs, 6 surgical theatres, an in-house CAD/CAM lab, and hospital-grade sterilisation.",
     href: "/about/facilities",
     icon: Building2,
   },
@@ -190,7 +190,7 @@ export default function AboutPage() {
                 {BRANCHES[0].badge}
               </span>
               <h3 className="font-display text-3xl text-white leading-tight">{BRANCHES[0].shortName}</h3>
-              <p className="mt-1.5 text-sm text-white/80">10-storey purpose-built dental hospital · 58 chairs · 6 surgical theatres</p>
+              <p className="mt-1.5 text-sm text-white/80">10-storey purpose-built dental hospital · 74 chairs · 6 surgical theatres</p>
               <p className="mt-1 text-xs text-white/60">{BRANCHES[0].address} · {BRANCHES[0].hours} · {BRANCHES[0].phone}</p>
             </div>
             <span className="absolute right-6 top-6 flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1.5 text-[0.65rem] font-bold uppercase tracking-[0.15em] text-white backdrop-blur-sm opacity-0 transition group-hover:opacity-100">
