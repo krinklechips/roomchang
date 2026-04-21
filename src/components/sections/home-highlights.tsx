@@ -35,24 +35,27 @@ const featuredCards = [
     imageSrc: "/hero/roomchang-patient-care.jpg",
     imageAlt: "Roomchang patient care team",
     href: "#trip",
+    bgPosition: "bg-center",
   },
   {
     id: "team",
     title: "Meet Our Team",
     description:
-      "Get a clearer picture of the doctors, specialists, and wider team behind Roomchang's hospital-level care model.",
-    imageSrc: "/hero/roomchang-team.jpg",
+      "30+ specialist dentists across every discipline — multilingual, experienced, and committed to your comfort.",
+    imageSrc: "/hero/hero-all-staff.jpg",
     imageAlt: "Roomchang dental hospital team",
-    href: "#team",
+    href: "/team",
+    bgPosition: "bg-top",
   },
   {
     id: "aligner",
-    title: "Clear Aligner",
+    title: "CA® Clear Aligner",
     description:
-      "Featured treatment spotlight for discreet alignment options, digital planning, and smile design with clear guidance.",
+      "Our proprietary aligner — designed, fabricated, and fitted in-house for a precise, discreet result.",
     imageSrc: "/hero/roomchang-clear-aligner.jpg",
     imageAlt: "Roomchang clear aligner treatment",
-    href: "#services",
+    href: "/technology/ca-clear-aligner",
+    bgPosition: "bg-right",
   },
 ];
 
@@ -95,7 +98,7 @@ export function HomeHighlights() {
             <div
               role="img"
               aria-label={card.imageAlt}
-              className="h-60 bg-[--surface-strong] bg-cover bg-center"
+              className={`h-60 bg-[--surface-strong] bg-cover ${card.bgPosition}`}
               style={{ backgroundImage: `url(${card.imageSrc})` }}
             />
             <div className="space-y-4 p-6">
