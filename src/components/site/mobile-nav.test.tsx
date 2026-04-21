@@ -1,18 +1,15 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
-import { SiteFooter } from "./site-footer";
+import { MobileNav } from "./mobile-nav";
 
-describe("SiteFooter", () => {
-  it("uses responsive sizes for the footer logo image", () => {
-    render(<SiteFooter />);
+describe("MobileNav", () => {
+  it("links to Endodontics immediately after Oral Surgery in the services submenu", async () => {
+    const user = userEvent.setup();
+    render(<MobileNav />);
 
-    const logo = screen.getByRole("img", { name: /roomchang dental hospital/i });
-
-    expect(logo).toHaveAttribute("sizes", "120px");
-  });
-
-  it("links to Endodontics immediately after Oral Surgery in the services links", () => {
-    render(<SiteFooter />);
+    await user.click(screen.getByRole("button", { name: /open menu/i }));
+    await user.click(screen.getByRole("button", { name: /toggle services submenu/i }));
 
     const serviceLinks = screen
       .getAllByRole("link")

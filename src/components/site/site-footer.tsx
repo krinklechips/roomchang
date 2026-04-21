@@ -5,13 +5,14 @@ const FOOTER_LINKS = [
   {
     heading: "Services",
     links: [
-      { label: "Dental Implants", href: "/services/dental-implants" },
-      { label: "Orthodontics", href: "/services/orthodontics" },
-      { label: "Teeth Whitening", href: "/services/teeth-whitening" },
       { label: "Cosmetic Dentistry", href: "/services/cosmetic-dentistry" },
-      { label: "Oral Surgery", href: "/services/oral-surgery" },
       { label: "Endodontics", href: "/services/endodontics" },
+      { label: "Dental Crowns", href: "/services/dental-crowns" },
+      { label: "Orthodontics", href: "/services/orthodontics" },
+      { label: "Dental Implants", href: "/services/dental-implants" },
+      { label: "Oral Surgery", href: "/services/oral-surgery" },
       { label: "Full Mouth Reconstruction", href: "/services/full-mouth-reconstruction" },
+      { label: "Teeth Whitening", href: "/services/teeth-whitening" },
       { label: "All Services", href: "/services" },
     ],
   },

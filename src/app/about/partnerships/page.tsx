@@ -19,7 +19,7 @@ const PARTNER_CATEGORIES: { title: string; partners: Partner[] }[] = [
       { name: "Vattanac Bank",           logo: "/partners/logos/vattanac-bank.jpg" },
       { name: "Cambodia Post Bank",       logo: "/partners/logos/cambodia-post-bank.png" },
       { name: "Chip Mong Bank",           logo: "/partners/logos/chip-mong-bank.png" },
-      { name: "BRED Bank" },
+      { name: "BRED Bank",                logo: "/partners/logos/bred-bank.webp" },
       { name: "Phillip Bank",             logo: "/partners/logos/phillip-bank.svg" },
       { name: "Maybank",                  logo: "/partners/logos/maybank.png" },
       { name: "PPC Bank" },
@@ -107,7 +107,7 @@ function PartnerLogo({ partner }: { partner: Partner }) {
             alt={partner.name}
             width={120}
             height={48}
-            className="max-h-12 w-auto object-contain opacity-50 grayscale transition group-hover:opacity-80 group-hover:grayscale-0"
+            className="max-h-12 w-auto object-contain"
             unoptimized={partner.logo.endsWith(".svg")}
           />
         </div>
@@ -157,7 +157,7 @@ export default function PartnershipsPage() {
                 {category.partners.length} partners
               </span>
             </div>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {category.partners.map((partner) => (
                 <PartnerLogo key={partner.name} partner={partner} />
               ))}
