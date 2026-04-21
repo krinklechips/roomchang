@@ -6,7 +6,6 @@ const FOOTER_LINKS = [
     heading: "Services",
     links: [
       { label: "Dental Implants", href: "/services/dental-implants" },
-      { label: "All-on-4 / All-on-6", href: "/services/all-on-4" },
       { label: "Orthodontics", href: "/services/orthodontics" },
       { label: "Teeth Whitening", href: "/services/teeth-whitening" },
       { label: "Cosmetic Dentistry", href: "/services/cosmetic-dentistry" },
