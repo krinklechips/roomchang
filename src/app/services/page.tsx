@@ -42,8 +42,17 @@ const SERVICE_ICONS: Record<string, LucideIcon> = {
   "pediatric-dentistry":      Smile,
   "sleep-apnea":              Moon,
   "teeth-whitening":          Zap,
-  "all-on-4":                 Bone,
-  "implant-bridges":          Shield,
+  "endodontics":              Shield,
+};
+
+// Sub-services shown as links inside their parent card rather than as top-level cards
+const HIDDEN_FROM_GRID = new Set(["all-on-4", "implant-bridges"]);
+
+const SUB_SERVICES: Record<string, { label: string; href: string }[]> = {
+  "dental-implants": [
+    { label: "All-on-4, 6 & 8", href: "/services/all-on-4" },
+    { label: "Implant Bridges", href: "/services/implant-bridges" },
+  ],
 };
 
 export default async function ServicesPage() {
@@ -82,8 +91,9 @@ export default async function ServicesPage() {
       {/* Services grid */}
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8">
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {services.map((service) => {
+          {services.filter((s) => !HIDDEN_FROM_GRID.has(s.slug)).map((service) => {
             const Icon = SERVICE_ICONS[service.slug] ?? CircleDot;
+            const subServices = SUB_SERVICES[service.slug] ?? [];
             return (
               <article
                 key={service.id}
@@ -113,6 +123,19 @@ export default async function ServicesPage() {
                       </span>
                     ))}
                   </div>
+                  {subServices.length > 0 && (
+                    <div className="flex flex-wrap gap-2 border-t border-[--border-strong] pt-3">
+                      {subServices.map((sub) => (
+                        <Link
+                          key={sub.href}
+                          href={sub.href}
+                          className="rounded-full border border-[--border-strong] px-3 py-1 text-[0.7rem] font-semibold text-[--brand-deep] transition hover:border-[--brand] hover:bg-[--brand-soft]"
+                        >
+                          {sub.label}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
                   <Link
                     href={`/services/${service.slug}`}
                     className="inline-flex items-center gap-2 text-sm font-semibold text-[--brand-deep] transition hover:text-[--brand]"

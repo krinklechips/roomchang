@@ -66,13 +66,11 @@ export function HomeStats() {
   return (
     <div ref={ref} className="border-y border-[--border-strong] bg-[--surface]">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 gap-px bg-[--border-strong] sm:grid-cols-3 lg:grid-cols-5">
-          {STATS.map((stat, index) => (
+        <div className="grid grid-cols-2 gap-px bg-[--border-strong] sm:grid-cols-4">
+          {STATS.map((stat) => (
             <div
               key={stat.label}
-              className={`flex flex-col items-center justify-center gap-1 bg-[--surface] px-4 py-8 text-center sm:px-6 ${
-                index === STATS.length - 1 ? "col-span-2 sm:col-span-1" : ""
-              }`}
+              className="flex flex-col items-center justify-center gap-1 bg-[--surface] px-4 py-8 text-center sm:px-6"
             >
               <p className="font-display text-[2.6rem] leading-none text-[--brand-deep] lg:text-[3rem]">
                 <CountUp target={stat.value} suffix={stat.suffix} started={started} />
