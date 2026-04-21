@@ -1,14 +1,35 @@
 // CMS-ready: replace BRANDS with API data when CMS is live
-const BRANDS: { id: string; name: string; src: string; width: number; height: number }[] = [
-  { id: "invisalign",     name: "Invisalign",        src: "/brands/logos/invisalign.svg",      width: 110, height: 32 },
-  { id: "osstem",         name: "OSSTEM",             src: "/brands/logos/osstem.svg",          width: 110, height: 32 },
-  { id: "scheu",          name: "Scheu-Dental",       src: "/brands/logos/scheu-dental.svg",    width: 100, height: 32 },
-  { id: "beyond",         name: "Beyond®",            src: "/brands/logos/beyond.svg",          width: 120, height: 36 },
-  { id: "gc",             name: "GC Corporation",     src: "/brands/logos/gc-corporation.svg",  width: 120, height: 32 },
-  { id: "tuttnauer",      name: "Tuttnauer",          src: "/brands/logos/tuttnauer.svg",       width: 100, height: 28 },
-  { id: "bureau-veritas", name: "Bureau Veritas",     src: "/brands/logos/bureau-veritas.svg",  width: 140, height: 44 },
-  { id: "dentsply",       name: "Dentsply Sirona",    src: "/brands/logos/dentsply-sirona.svg", width: 120, height: 32 },
-  { id: "colgate",        name: "Colgate",            src: "/brands/logos/colgate.svg",         width: 90,  height: 32 },
+// Brand list sourced from Unident Cambodia's partners strip.
+const BRANDS: { id: string; name: string; src: string }[] = [
+  { id: "amann-girrbach",   name: "Amann Girrbach",               src: "/brands/logos/amann-girrbach.png" },
+  { id: "beyond",           name: "Beyond International",         src: "/brands/logos/beyond-international.png" },
+  { id: "bl-biotech",       name: "B&L Biotech",                  src: "/brands/logos/bl-biotech.png" },
+  { id: "botiss",           name: "Botiss Biomaterials",          src: "/brands/logos/botiss.png" },
+  { id: "henry-schein",     name: "Henry Schein Orthodontics",    src: "/brands/logos/henry-schein.jpg" },
+  { id: "cefla",            name: "Cefla",                        src: "/brands/logos/cefla.png" },
+  { id: "yamahachi",        name: "Yamahachi",                    src: "/brands/logos/yamahachi.png" },
+  { id: "dentaurum",        name: "Dentaurum",                    src: "/brands/logos/dentaurum.png" },
+  { id: "durr-dental",      name: "Dürr Dental",                  src: "/brands/logos/durr-dental.png" },
+  { id: "garrison",         name: "Garrison Dental Solutions",    src: "/brands/logos/garrison.png" },
+  { id: "gc",               name: "GC Corporation",               src: "/brands/logos/gc-corporation.svg" },
+  { id: "helmut-zepf",      name: "Helmut Zepf",                  src: "/brands/logos/helmut-zepf.png" },
+  { id: "hu-friedy",        name: "Hu-Friedy",                    src: "/brands/logos/hu-friedy.png" },
+  { id: "itena",            name: "Itena Clinical",               src: "/brands/logos/itena.png" },
+  { id: "jota",             name: "Jota",                         src: "/brands/logos/jota.png" },
+  { id: "monitex",          name: "Monitex",                      src: "/brands/logos/monitex.png" },
+  { id: "nissin",           name: "Nissin",                       src: "/brands/logos/nissin.png" },
+  { id: "novocol",          name: "Novocol",                      src: "/brands/logos/novocol.png" },
+  { id: "paradise-dental",  name: "Paradise Dental Technologies", src: "/brands/logos/paradise-dental.png" },
+  { id: "meisinger",        name: "Meisinger",                    src: "/brands/logos/meisinger.png" },
+  { id: "takara-belmont",   name: "Takara Belmont",               src: "/brands/logos/takara-belmont.png" },
+  { id: "therabreath",      name: "TheraBreath",                  src: "/brands/logos/therabreath.png" },
+  { id: "tuttnauer",        name: "Tuttnauer",                    src: "/brands/logos/tuttnauer.svg" },
+  { id: "wh",               name: "W&H",                          src: "/brands/logos/wh.png" },
+  { id: "ustomed",          name: "Ustomed Instrumente",          src: "/brands/logos/ustomed.jpg" },
+  { id: "photocentric",     name: "Photocentric",                 src: "/brands/logos/photocentric.jpg" },
+  { id: "posdion",          name: "Posdion",                      src: "/brands/logos/posdion.jpg" },
+  { id: "admetec",          name: "Admetec",                      src: "/brands/logos/admetec.jpg" },
+  { id: "lasotronix",       name: "Lasotronix",                   src: "/brands/logos/lasotronix.jpg" },
 ];
 
 export function HomeBrands() {
@@ -28,10 +49,7 @@ export function HomeBrands() {
             <img
               src={brand.src}
               alt={brand.name}
-              width={brand.width}
-              height={brand.height}
-              className="object-contain"
-              style={{ maxHeight: brand.height, maxWidth: brand.width, width: "auto" }}
+              className="h-10 w-auto max-w-[160px] object-contain"
               draggable={false}
             />
           </div>
