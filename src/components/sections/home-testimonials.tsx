@@ -83,7 +83,7 @@ export function HomeTestimonials({
 
         {/* Quote text */}
         <blockquote className="mt-8 text-center">
-          <p className="font-display text-[1.45rem] leading-[1.6] text-[--text-main] sm:text-[1.7rem]">
+          <p className="line-clamp-3 font-display text-[1.45rem] leading-[1.6] text-[--text-main] sm:text-[1.7rem]">
             &ldquo;{current.quote}&rdquo;
           </p>
         </blockquote>

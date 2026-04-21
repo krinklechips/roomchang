@@ -2,13 +2,44 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import type { ClinicalCaseDetail } from "@/lib/clinical-cases";
 
+const CATEGORY_ORDER = [
+  "Full Mouth",
+  "Implants & Crowns",
+  "Implant Bridges",
+  "Orthodontics",
+  "Cosmetic & E-Max",
+];
+
+const HASH_TO_CATEGORY: Record<string, string> = {
+  "full-mouth": "Full Mouth",
+  implants:     "Implants & Crowns",
+  bridges:      "Implant Bridges",
+  orthodontics: "Orthodontics",
+  cosmetic:     "Cosmetic & E-Max",
+};
+
 export function ClinicalResultsGrid({ cases }: { cases: ClinicalCaseDetail[] }) {
-  const categories = ["All", ...Array.from(new Set(cases.map((c) => c.category)))];
+  const rawCategories = Array.from(new Set(cases.map((c) => c.category)));
+  const categories = [
+    "All",
+    ...CATEGORY_ORDER.filter((c) => rawCategories.includes(c)),
+    ...rawCategories.filter((c) => !CATEGORY_ORDER.includes(c)),
+  ];
   const [active, setActive] = useState("All");
+
+  // Activate filter from URL hash on first load (e.g. /clinical-results#implants)
+  useEffect(() => {
+    const hash = window.location.hash.replace("#", "");
+    if (hash && HASH_TO_CATEGORY[hash]) {
+      setActive(HASH_TO_CATEGORY[hash]);
+      // Scroll filter pills into view
+      document.getElementById(`filter-${hash}`)?.scrollIntoView({ block: "center" });
+    }
+  }, []);
 
   const filtered = active === "All" ? cases : cases.filter((c) => c.category === active);
 
@@ -16,20 +47,24 @@ export function ClinicalResultsGrid({ cases }: { cases: ClinicalCaseDetail[] }) 
     <div className="space-y-14">
       {/* Category filter */}
       <div className="flex flex-wrap gap-2">
-        {categories.map((cat) => (
-          <button
-            key={cat}
-            type="button"
-            onClick={() => setActive(cat === active && cat !== "All" ? "All" : cat)}
-            className={`cursor-pointer rounded-full border px-4 py-1.5 text-xs font-semibold transition ${
-              cat === active
-                ? "border-[color:var(--brand)] bg-[color:var(--brand)] text-white"
-                : "border-[color:var(--border-strong)] bg-white text-[color:var(--text-soft)] hover:border-[color:var(--brand)] hover:text-[color:var(--brand-deep)]"
-            }`}
-          >
-            {cat}
-          </button>
-        ))}
+        {categories.map((cat) => {
+          const hashKey = Object.entries(HASH_TO_CATEGORY).find(([, v]) => v === cat)?.[0];
+          return (
+            <button
+              key={cat}
+              id={hashKey ? `filter-${hashKey}` : undefined}
+              type="button"
+              onClick={() => setActive(cat === active && cat !== "All" ? "All" : cat)}
+              className={`cursor-pointer rounded-full border px-4 py-1.5 text-xs font-semibold transition ${
+                cat === active
+                  ? "border-[color:var(--brand)] bg-[color:var(--brand)] text-white"
+                  : "border-[color:var(--border-strong)] bg-white text-[color:var(--text-soft)] hover:border-[color:var(--brand)] hover:text-[color:var(--brand-deep)]"
+              }`}
+            >
+              {cat}
+            </button>
+          );
+        })}
       </div>
 
       {/* Cases grid */}
