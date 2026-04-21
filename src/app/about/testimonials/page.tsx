@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowLeft, Star, ExternalLink } from "lucide-react";
+import { ArrowLeft, Star } from "lucide-react";
 import { SiteShell } from "@/components/site/site-shell";
 import { getTestimonials } from "@/lib/data";
 import type { Metadata } from "next";
@@ -36,6 +36,99 @@ function StarRating({ rating }: { rating: number }) {
   );
 }
 
+const VIDEO_TESTIMONIALS = [
+  {
+    id: "ryxcCSeH4ZE",
+    title: "Mr. Robert Backert — USA",
+    description: "From the USA to Roomchang: Mr. Robert Backert's smile says it all after his successful dental implant procedure.",
+    treatment: "Dental Implants",
+  },
+  {
+    id: "RdWGGl0U_p4",
+    title: "Mr. Kevin — Australia",
+    description: "Mr. Kevin from Australia had a positive experience at Roomchang Dental Hospital — excellent dental treatment plus an enjoyable vacation in Cambodia.",
+    treatment: "Dental Treatment",
+  },
+  {
+    id: "7ydJxsMTw4k",
+    title: "Mr. William Morris — Sydney, Australia",
+    description: "Mr. William Morris traveled from Sydney, Australia to get his dental work done at Roomchang and enjoyed his vacation in Cambodia.",
+    treatment: "Dental Tourism",
+  },
+  {
+    id: "bzfVyEb0Qak",
+    title: "Ms. Pauline Scott — New Zealand",
+    description: "Ms. Pauline Scott travels from New Zealand to Cambodia to have her dental treatments done at Roomchang.",
+    treatment: "Dental Treatment",
+  },
+  {
+    id: "jEnBISKgthw",
+    title: "Mr. Andrew Smith — Full Mouth Rehabilitation",
+    description: "Mr. Andrew Smith shares his full mouth rehabilitation experience with Roomchang's Implantology department.",
+    treatment: "Full Mouth Rehabilitation",
+  },
+  {
+    id: "GPI31xSd2TU",
+    title: "Ms. Jayadevi — Lingual Braces",
+    description: "Ms. Jayadevi chose lingual braces (back-of-teeth) to correct her crooked teeth at Roomchang.",
+    treatment: "Orthodontics",
+  },
+  {
+    id: "c33gA9XwUgA",
+    title: "Ms. Jenifer Padget — Lingual Braces",
+    description: "Ms. Jenifer Padget shares her first experience with Lingual Braces from Roomchang.",
+    treatment: "Orthodontics",
+  },
+  {
+    id: "TXsRqtNesVs",
+    title: "Mr. Pen Saravuth — Lingual Braces",
+    description: "Mr. Pen Saravuth shares his experience with Lingual Braces from orthodontist Dr. Nicolas Salesse.",
+    treatment: "Orthodontics",
+  },
+  {
+    id: "VaveFPmQSVA",
+    title: "Charley & Clem — Australia",
+    description: "Charley and Clem from Australia explain why they chose to have dental implants at Roomchang.",
+    treatment: "Dental Implants",
+  },
+  {
+    id: "917hvs8COHI",
+    title: "Mr. Russell — Australia",
+    description: "Russell explains why he traveled from Australia to Cambodia for dental work at Roomchang.",
+    treatment: "Dental Treatment",
+  },
+  {
+    id: "UVptrgYbvfk",
+    title: "Ms. Judy Hanson — Canada",
+    description: "Judy Hanson from Canada talks about her experience at Roomchang.",
+    treatment: "Dental Treatment",
+  },
+  {
+    id: "3sWMhXCD5GA",
+    title: "Ms. Wong Siew Wei",
+    description: "Ms. Wong Siew Wei explains why she chose dental work at Roomchang — her family have been long-time customers for international quality at local prices.",
+    treatment: "Dental Treatment",
+  },
+  {
+    id: "TT1bcfDV4k8",
+    title: "Ms. Kong Navy — Cambodia",
+    description: "Ms. Kong Navy talks about her successful treatment at Roomchang Dental Hospital.",
+    treatment: "Dental Treatment",
+  },
+  {
+    id: "4u1t_jnGM9k",
+    title: "Ms. Sharon Wilkinson — Britain",
+    description: "Sharon Wilkinson from Britain talks about her successful treatment with Dr. Tith Hong Yoeu at Roomchang.",
+    treatment: "Dental Treatment",
+  },
+  {
+    id: "H6oW3rgIkXg",
+    title: "Ms. Chhan Kimbuoy — Cambodia",
+    description: "Roomchang happy brace patient Ms. Chhan Kimbuoy shares her orthodontic journey.",
+    treatment: "Orthodontics",
+  },
+];
+
 export default async function TestimonialsPage() {
   const testimonials = await getTestimonials();
 
@@ -63,74 +156,96 @@ export default async function TestimonialsPage() {
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8 space-y-20">
 
         {/* Written testimonials grid */}
-        <section>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-2">
-            {testimonials.map((t) => {
-              const { origin, treatment } = parseOriginAndTreatment(t.authorTitle);
-              const initials = getInitials(t.authorName);
-              return (
-                <div
-                  key={t.id}
-                  className="flex flex-col gap-4 rounded-3xl border border-[color:var(--brand-soft)] bg-white p-8 shadow-[0_12px_40px_rgba(57,28,45,0.05)]"
-                >
-                  {/* Stars */}
-                  <StarRating rating={t.rating} />
-
-                  {/* Quote */}
-                  <blockquote className="flex-1 text-sm leading-7 text-[color:var(--text-main)]">
-                    &ldquo;{t.quote}&rdquo;
-                  </blockquote>
-
-                  {/* Author */}
-                  <div className="flex items-center gap-3 border-t border-[color:var(--brand-soft)] pt-4">
-                    {t.authorPhotoUrl ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={t.authorPhotoUrl}
-                        alt={t.authorName}
-                        className="h-10 w-10 rounded-full object-cover"
-                      />
-                    ) : (
-                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[color:var(--brand-soft)] text-sm font-semibold text-[color:var(--brand-deep)]">
-                        {initials}
-                      </div>
-                    )}
-                    <div className="min-w-0">
-                      <p className="text-sm font-semibold text-[color:var(--text-main)]">{t.authorName}</p>
-                      {origin && <p className="text-xs text-[color:var(--text-soft)]">{origin}</p>}
-                      {treatment && (
-                        <span className="mt-0.5 inline-block rounded-full bg-[color:var(--brand-soft)] px-2.5 py-0.5 text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-[color:var(--brand-deep)]">
-                          {treatment}
-                        </span>
+        {testimonials.length > 0 && (
+          <section>
+            <h2 className="font-display text-4xl text-[color:var(--text-main)]">What Patients Say</h2>
+            <p className="mt-3 max-w-xl text-sm leading-7 text-[color:var(--text-soft)]">
+              Verified reviews from patients who have visited Roomchang.
+            </p>
+            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-2">
+              {testimonials.map((t) => {
+                const { origin, treatment } = parseOriginAndTreatment(t.authorTitle);
+                const initials = getInitials(t.authorName);
+                return (
+                  <div
+                    key={t.id}
+                    className="flex flex-col gap-4 rounded-3xl border border-[color:var(--brand-soft)] bg-white p-8 shadow-[0_12px_40px_rgba(57,28,45,0.05)]"
+                  >
+                    <StarRating rating={t.rating} />
+                    <blockquote className="flex-1 text-sm leading-7 text-[color:var(--text-main)]">
+                      &ldquo;{t.quote}&rdquo;
+                    </blockquote>
+                    <div className="flex items-center gap-3 border-t border-[color:var(--brand-soft)] pt-4">
+                      {t.authorPhotoUrl ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={t.authorPhotoUrl}
+                          alt={t.authorName}
+                          className="h-10 w-10 rounded-full object-cover"
+                        />
+                      ) : (
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[color:var(--brand-soft)] text-sm font-semibold text-[color:var(--brand-deep)]">
+                          {initials}
+                        </div>
                       )}
+                      <div className="min-w-0">
+                        <p className="text-sm font-semibold text-[color:var(--text-main)]">{t.authorName}</p>
+                        {origin && <p className="text-xs text-[color:var(--text-soft)]">{origin}</p>}
+                        {treatment && (
+                          <span className="mt-0.5 inline-block rounded-full bg-[color:var(--brand-soft)] px-2.5 py-0.5 text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-[color:var(--brand-deep)]">
+                            {treatment}
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
-        </section>
+                );
+              })}
+            </div>
+          </section>
+        )}
 
-        {/* YouTube video section */}
+        {/* Video testimonials */}
         <section>
           <h2 className="font-display text-4xl text-[color:var(--text-main)]">Video Testimonials</h2>
           <p className="mt-3 max-w-xl text-sm leading-7 text-[color:var(--text-soft)]">
-            Watch real patients share their experience at Roomchang Dental Hospital on our YouTube channel.
+            Watch real patients share their experience at Roomchang Dental Hospital.
           </p>
-          <div className="mt-8 flex items-center gap-4">
-            <Link
-              href="https://www.youtube.com/@roomchang"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full bg-[#FF0000] px-6 py-3 text-sm font-bold text-white transition hover:bg-[#cc0000]"
-            >
-              <svg width="20" height="14" viewBox="0 0 20 14" fill="none" aria-hidden="true">
-                <path d="M19.582 2.186A2.506 2.506 0 0 0 17.82.422C16.254 0 10 0 10 0S3.746 0 2.18.422A2.506 2.506 0 0 0 .418 2.186C0 3.754 0 7 0 7s0 3.246.418 4.814A2.506 2.506 0 0 0 2.18 13.578C3.746 14 10 14 10 14s6.254 0 7.82-.422a2.506 2.506 0 0 0 1.762-1.764C20 10.246 20 7 20 7s0-3.246-.418-4.814Z" fill="currentColor"/>
-                <path d="M8 10l5.196-3L8 4v6Z" fill="white"/>
-              </svg>
-              Watch on YouTube
-              <ExternalLink size={13} strokeWidth={2} />
-            </Link>
+
+          <div className="mt-10 grid gap-8 sm:grid-cols-2">
+            {VIDEO_TESTIMONIALS.map((video) => (
+              <div
+                key={video.id}
+                className="overflow-hidden rounded-3xl border border-[color:var(--border-strong)] bg-white shadow-[0_12px_40px_rgba(57,28,45,0.06)]"
+              >
+                {/* Video embed */}
+                <div className="aspect-video w-full">
+                  <iframe
+                    src={`https://www.youtube-nocookie.com/embed/${video.id}`}
+                    title={video.title}
+                    className="h-full w-full"
+                    loading="lazy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                </div>
+
+                {/* Card content */}
+                <div className="flex items-start justify-between gap-4 px-6 py-5">
+                  <div className="min-w-0">
+                    <p className="font-display text-lg leading-snug text-[color:var(--text-main)]">
+                      {video.title}
+                    </p>
+                    <p className="mt-1.5 text-sm leading-6 text-[color:var(--text-soft)]">
+                      {video.description}
+                    </p>
+                  </div>
+                  <span className="mt-0.5 shrink-0 rounded-full bg-[color:var(--brand-soft)] px-2.5 py-0.5 text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-[color:var(--brand-deep)]">
+                    {video.treatment}
+                  </span>
+                </div>
+              </div>
+            ))}
           </div>
         </section>
 
