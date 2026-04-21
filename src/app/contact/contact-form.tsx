@@ -13,6 +13,7 @@ const SERVICES = [
   "Cosmetic Dentistry",
   "Full Mouth Reconstruction",
   "Oral Surgery",
+  "Endodontics",
   "Teeth Whitening",
   "Paediatric Dentistry",
   "Sleep Apnea Treatment",
@@ -122,7 +123,7 @@ export function ContactForm({ branches }: { branches: Branch[] }) {
               <div className="grid gap-6 sm:grid-cols-2">
                 <div className="space-y-2">
                   <label htmlFor="phone" className="block text-xs font-semibold uppercase tracking-[0.2em] text-[--text-soft]">
-                    Phone / WhatsApp
+                    Phone / WhatsApp / Telegram
                   </label>
                   <input
                     id="phone"
