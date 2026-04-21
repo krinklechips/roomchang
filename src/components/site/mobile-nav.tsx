@@ -47,7 +47,7 @@ const NAV_ITEMS: NavItem[] = [
       { label: "CAD/CAM Digital Dentistry", href: "/technology/cad-cam" },
       { label: "CA® Clear Aligner Splint", href: "/technology/ca-clear-aligner" },
       { label: "Invisalign Clear Aligners", href: "/technology/invisalign" },
-      { label: "Ortho-Tain®", href: "/technology/ortho-tain" },
+      { label: "Ortho-Tain® System", href: "/technology/ortho-tain" },
       { label: "Beyond® Teeth Whitening", href: "/technology/beyond-whitening" },
       { label: "Sterilisation Technologies", href: "/technology/sterilisation" },
     ],
