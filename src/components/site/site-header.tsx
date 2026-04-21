@@ -20,6 +20,7 @@ const NAV_ITEMS: NavItem[] = [
       { label: "Message from Our Director", href: "/about/director-message" },
       { label: "Community & Charity", href: "/about/community" },
       { label: "Corporate Partnerships", href: "/about/partnerships" },
+      { label: "Patient Testimonials", href: "/about/testimonials" },
     ],
   },
   {
