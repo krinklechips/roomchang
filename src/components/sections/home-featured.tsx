@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 
 const CARDS = [
@@ -42,22 +43,29 @@ export function HomeFeatured() {
           {CARDS.map((card) => (
             <article
               key={card.id}
-              className="group overflow-hidden rounded-3xl border border-[--border-strong] bg-white shadow-[0_16px_50px_rgba(57,28,45,0.07)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_60px_rgba(57,28,45,0.12)]"
+              className="group flex flex-col overflow-hidden rounded-3xl border border-[--border-strong] bg-white shadow-[0_16px_50px_rgba(57,28,45,0.07)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_60px_rgba(57,28,45,0.12)]"
             >
-              <div
-                role="img"
-                aria-label={card.imageAlt}
-                className="h-52 bg-[--surface-strong] bg-contain bg-center bg-no-repeat"
-                style={{ backgroundImage: `url(${card.imageSrc})` }}
-              />
-              <div className="space-y-3 p-6">
+              {/* aspect-[19/8] matches the native 2.375:1 aspect of all three
+                  source photos, so object-cover yields no letterboxing and no
+                  meaningful crop. */}
+              <div className="relative aspect-[19/8] overflow-hidden bg-white">
+                <Image
+                  src={card.imageSrc}
+                  alt={card.imageAlt}
+                  fill
+                  className="object-cover object-center"
+                  sizes="(min-width: 1024px) 33vw, 100vw"
+                  priority={card.id === "international"}
+                />
+              </div>
+              <div className="flex flex-1 flex-col gap-3 p-6">
                 <h3 className="font-display text-[1.8rem] leading-tight text-[--text-main]">
                   {card.title}
                 </h3>
                 <p className="text-sm leading-7 text-[--text-soft]">{card.description}</p>
                 <Link
                   href={card.href}
-                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-[--brand-deep] transition group-hover:text-[--brand]"
+                  className="mt-auto inline-flex items-center gap-1.5 pt-2 text-sm font-semibold text-[--brand-deep] transition group-hover:text-[--brand]"
                 >
                   {card.cta} <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
                 </Link>
