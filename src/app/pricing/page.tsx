@@ -20,6 +20,10 @@ import { getPricingCategories } from "@/lib/data";
 import type { Metadata } from "next";
 import pricingData from "@/data/pricing.json";
 
+// Re-fetch pricing categories from Supabase at most every 60s so CMS edits
+// go live without a full redeploy.
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: "Dental Treatment Prices | Roomchang Dental Hospital",
   description:
