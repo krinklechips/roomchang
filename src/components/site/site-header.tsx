@@ -61,12 +61,9 @@ const NAV_ITEMS: NavItem[] = [
     label: "Pricing",
     href: "/pricing",
     children: [
-      { label: "All Treatment Prices", href: "/pricing" },
-      { label: "Dental Implants", href: "/pricing#implants" },
-      { label: "Crowns & Veneers", href: "/pricing#crowns" },
-      { label: "Orthodontics", href: "/pricing#orthodontics" },
-      { label: "Teeth Whitening", href: "/pricing#whitening" },
-      { label: "International Comparison", href: "/pricing#international" },
+      { label: "Dental Treatment Costs", href: "/pricing" },
+      { label: "Price Comparison", href: "/pricing/price-comparison" },
+      { label: "Dental Implants Price Comparison", href: "/pricing/implants-comparison" },
     ],
   },
   {
