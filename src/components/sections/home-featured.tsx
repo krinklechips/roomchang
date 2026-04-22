@@ -47,7 +47,7 @@ export function HomeFeatured() {
               <div
                 role="img"
                 aria-label={card.imageAlt}
-                className="h-52 bg-[--surface-strong] bg-cover bg-center"
+                className="h-52 bg-[--surface-strong] bg-contain bg-center bg-no-repeat"
                 style={{ backgroundImage: `url(${card.imageSrc})` }}
               />
               <div className="space-y-3 p-6">

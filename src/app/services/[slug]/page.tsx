@@ -41,6 +41,10 @@ function ServiceIcon({ name, className }: { name: string; className?: string }) 
   return <Icon size={24} strokeWidth={1.75} className={className} aria-hidden="true" />;
 }
 
+// Re-fetch service content from Supabase at most every 60s so CMS edits
+// (new services, content tweaks) go live without a full redeploy.
+export const revalidate = 60;
+
 export async function generateStaticParams() {
   const services = await getServices();
   return services.map((s) => ({ slug: s.slug }));
