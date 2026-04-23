@@ -2,7 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, Check } from "lucide-react";
+import { supabaseServer } from "@/lib/supabase-server";
 import type { Metadata } from "next";
+
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Our Facilities | Roomchang Dental Hospital",
@@ -10,12 +13,14 @@ export const metadata: Metadata = {
     "Explore Roomchang's 10-storey hospital with 74 dental chairs, 6 surgical theatres, in-house CAD/CAM lab, and hospital-grade sterilisation.",
 };
 
-const BUILDING_STATS = [
-  { value: "10", label: "Storey Building" },
-  { value: "74", label: "Dental Chairs" },
-  { value: "6", label: "Surgical Theatres" },
-  { value: "37+", label: "Specialist Dentists" },
-];
+type DisplayStat = { display_value: string; label: string };
+
+const FALLBACK_STATS: Record<string, DisplayStat> = {
+  building_storeys: { display_value: "10", label: "Storey Building" },
+  dental_chairs: { display_value: "74", label: "Dental Chairs" },
+  surgical_theatres: { display_value: "6", label: "Surgical Theatres" },
+  specialist_dentists: { display_value: "37+", label: "Specialist Dentists" },
+};
 
 const FACILITY_SECTIONS = [
   {
@@ -69,7 +74,19 @@ const GALLERY_INTERIOR = [
   { src: "/facilities/international-patient-consultation.jpg", alt: "International patient consultation at Roomchang" },
 ];
 
-export default function FacilitiesPage() {
+export default async function FacilitiesPage() {
+  const { data: statsData, error } = await supabaseServer
+    .from("site_stats")
+    .select("key, display_value, label")
+    .order("sort_order");
+
+  if (error) {
+    console.error("[FacilitiesPage] site_stats fetch failed:", error.message);
+  }
+
+  const stat = (key: string) =>
+    statsData?.find((s) => s.key === key) ?? FALLBACK_STATS[key] ?? { display_value: "—", label: key };
+
   return (
     <SiteShell>
       {/* Header */}
@@ -95,9 +112,14 @@ export default function FacilitiesPage() {
       <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--brand)]">
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
-            {BUILDING_STATS.map((stat) => (
+            {[
+              stat("building_storeys"),
+              stat("dental_chairs"),
+              stat("surgical_theatres"),
+              stat("specialist_dentists"),
+            ].map((stat) => (
               <div key={stat.label} className="text-center">
-                <p className="font-display text-5xl font-bold text-white">{stat.value}</p>
+                <p className="font-display text-5xl font-bold text-white">{stat.display_value}</p>
                 <p className="mt-1 text-sm font-semibold uppercase tracking-[0.18em] text-white/70">
                   {stat.label}
                 </p>

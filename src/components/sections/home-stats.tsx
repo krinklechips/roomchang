@@ -2,12 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const STATS = [
-  { value: 30, suffix: " yrs", label: "Years of Experience" },
-  { value: 37, suffix: "+", label: "Specialist Dentists" },
-  { value: 5, suffix: "", label: "Phnom Penh Branches" },
-  { value: 100000, suffix: "+", label: "Patients Treated" },
-];
+export type StatItem = { numeric_value: number; suffix: string; label: string };
 
 function easeOut(t: number) {
   return 1 - Math.pow(1 - t, 3);
@@ -43,7 +38,7 @@ function CountUp({ target, suffix, started }: { target: number; suffix: string; 
   );
 }
 
-export function HomeStats() {
+export function HomeStats({ stats }: { stats: StatItem[] }) {
   const [started, setStarted] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -67,13 +62,13 @@ export function HomeStats() {
     <div ref={ref} className="border-y border-[--border-strong] bg-[--surface]">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 gap-px bg-[--border-strong] sm:grid-cols-4">
-          {STATS.map((stat) => (
+          {stats.map((stat) => (
             <div
               key={stat.label}
               className="flex flex-col items-center justify-center gap-1 bg-[--surface] px-4 py-8 text-center sm:px-6"
             >
               <p className="font-display text-[2.6rem] leading-none text-[--brand-deep] lg:text-[3rem]">
-                <CountUp target={stat.value} suffix={stat.suffix} started={started} />
+                <CountUp target={stat.numeric_value} suffix={stat.suffix} started={started} />
               </p>
               <p className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-[--text-soft]">
                 {stat.label}

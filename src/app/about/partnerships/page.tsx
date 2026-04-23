@@ -2,7 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft } from "lucide-react";
+import { supabaseServer } from "@/lib/supabase-server";
 import type { Metadata } from "next";
+
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Corporate Partnerships | Roomchang Dental Hospital",
@@ -11,8 +14,9 @@ export const metadata: Metadata = {
 };
 
 type Partner = { name: string; logo?: string };
+type PartnerCategory = { title: string; partners: Partner[] };
 
-const PARTNER_CATEGORIES: { title: string; partners: Partner[] }[] = [
+const PARTNER_CATEGORIES: PartnerCategory[] = [
   {
     title: "Banks & Financial Institutions",
     partners: [
@@ -126,7 +130,44 @@ function PartnerLogo({ partner }: { partner: Partner }) {
   );
 }
 
-export default function PartnershipsPage() {
+type PartnerRow = {
+  name: string;
+  logo_src: string | null;
+  sort_order: number | null;
+  partner_categories: { name: string; sort_order: number | null } | null;
+};
+
+export default async function PartnershipsPage() {
+  const { data, error } = await supabaseServer
+    .from("partners")
+    .select("*, partner_categories(name, sort_order)")
+    .order("sort_order");
+
+  if (error) {
+    console.error("[PartnershipsPage] partners fetch failed:", error.message);
+  }
+
+  const categoryMap = new Map<string, PartnerCategory & { sortOrder: number }>();
+  ((data as PartnerRow[] | null) ?? []).forEach((row) => {
+    const category = row.partner_categories;
+    if (!category) return;
+    const existing = categoryMap.get(category.name) ?? {
+      title: category.name,
+      partners: [],
+      sortOrder: category.sort_order ?? 0,
+    };
+    existing.partners.push({
+      name: row.name,
+      ...(row.logo_src ? { logo: row.logo_src } : {}),
+    });
+    categoryMap.set(category.name, existing);
+  });
+  const partnerCategories = categoryMap.size
+    ? Array.from(categoryMap.values())
+        .sort((a, b) => a.sortOrder - b.sortOrder)
+        .map(({ sortOrder, ...category }) => category)
+    : PARTNER_CATEGORIES;
+
   return (
     <SiteShell>
       {/* Header */}
@@ -149,7 +190,7 @@ export default function PartnershipsPage() {
       </div>
 
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8 space-y-16">
-        {PARTNER_CATEGORIES.map((category) => (
+        {partnerCategories.map((category) => (
           <section key={category.title}>
             <div className="mb-6 flex items-baseline gap-3">
               <h2 className="font-display text-2xl text-[color:var(--text-main)]">{category.title}</h2>

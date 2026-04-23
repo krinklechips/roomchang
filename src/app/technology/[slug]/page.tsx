@@ -10,6 +10,8 @@ import { ArrowLeft, Check, ArrowRight,
 import { getTechnologyBySlug, getTechnology, type TechSection } from "@/lib/data";
 import type { Metadata } from "next";
 
+export const revalidate = 60;
+
 export async function generateStaticParams() {
   const items = await getTechnology();
   return items.filter((t) => t.slug).map((t) => ({ slug: t.slug! }));

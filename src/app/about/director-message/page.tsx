@@ -4,6 +4,8 @@ import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
 
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: "Message from Our Director | Roomchang Dental Hospital",
   description:

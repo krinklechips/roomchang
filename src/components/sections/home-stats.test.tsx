@@ -34,15 +34,24 @@ describe("HomeStats", () => {
     });
     vi.stubGlobal("cancelAnimationFrame", () => {});
 
-    render(<HomeStats />);
+    render(
+      <HomeStats
+        stats={[
+          { numeric_value: 30, suffix: " yrs", label: "Years of Experience" },
+          { numeric_value: 37, suffix: "+", label: "Specialist Dentists" },
+          { numeric_value: 5, suffix: "", label: "Phnom Penh Branches" },
+          { numeric_value: 100000, suffix: "+", label: "Patients Treated" },
+        ]}
+      />,
+    );
 
     expect(screen.getByText(/30 yrs/i)).toBeInTheDocument();
-    expect(screen.getByText(/established experience/i)).toBeInTheDocument();
+    expect(screen.getByText(/years of experience/i)).toBeInTheDocument();
     expect(screen.getByText(/100,000\+/i)).toBeInTheDocument();
-    expect(screen.getByText(/patients served worldwide/i)).toBeInTheDocument();
+    expect(screen.getByText(/patients treated/i)).toBeInTheDocument();
 
-    const worldwideCard = screen.getByText(/patients served worldwide/i).closest("div");
-    expect(worldwideCard?.className).toContain("col-span-2");
+    const patientsCard = screen.getByText(/patients treated/i).closest("div");
+    expect(patientsCard?.className).toContain("bg-[--surface]");
 
     globalThis.IntersectionObserver = originalObserver;
     globalThis.requestAnimationFrame = originalRaf;
