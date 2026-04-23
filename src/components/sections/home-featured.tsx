@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
+import { supabaseServer } from "@/lib/supabase-server";
 
 const CARDS = [
   {
@@ -35,12 +36,43 @@ const CARDS = [
   },
 ];
 
-export function HomeFeatured() {
+type HomepageFeatureCardRow = {
+  slug: string;
+  title: string;
+  description: string;
+  image_src: string;
+  image_alt: string;
+  href: string;
+  cta: string;
+};
+
+export async function HomeFeatured() {
+  const { data, error } = await supabaseServer
+    .from("homepage_feature_cards")
+    .select("slug, title, description, image_src, image_alt, href, cta")
+    .order("sort_order");
+
+  if (error) {
+    console.error("[HomeFeatured] homepage_feature_cards fetch failed:", error.message);
+  }
+
+  const cards = data?.length
+    ? (data as HomepageFeatureCardRow[]).map((card) => ({
+        id: card.slug,
+        title: card.title,
+        description: card.description,
+        imageSrc: card.image_src,
+        imageAlt: card.image_alt,
+        href: card.href,
+        cta: card.cta,
+      }))
+    : CARDS;
+
   return (
     <section className="border-t border-[--border-strong] bg-[--surface]">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
         <div className="grid gap-6 lg:grid-cols-3">
-          {CARDS.map((card) => (
+          {cards.map((card) => (
             <article
               key={card.id}
               className="group flex flex-col overflow-hidden rounded-3xl border border-[--border-strong] bg-white shadow-[0_16px_50px_rgba(57,28,45,0.07)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_60px_rgba(57,28,45,0.12)]"

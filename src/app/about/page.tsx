@@ -4,7 +4,10 @@ import { SiteShell } from "@/components/site/site-shell";
 import { AboutTimeline } from "@/components/sections/about-timeline";
 import { Building2, Star, Mail, Stethoscope, Heart, Handshake, ImagePlay, Cpu, ArrowRight, type LucideIcon } from "lucide-react";
 import { BRANCHES } from "@/lib/branches";
+import { supabaseServer } from "@/lib/supabase-server";
 import type { Metadata } from "next";
+
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "About Us | Roomchang Dental Hospital",
@@ -12,19 +15,14 @@ export const metadata: Metadata = {
     "Established in 1996, Roomchang Dental Hospital is Cambodia's leading dental group — multilingual, technology-first, and rooted in compassionate care.",
 };
 
-const STATS = [
-  { value: "1996", label: "Year Established" },
-  { value: "5", label: "Phnom Penh Branches" },
-  { value: "37+", label: "Specialist Dentists" },
-  { value: "74", label: "Dental Chairs" },
-];
+type DisplayStat = { display_value: string; label: string };
 
-const HERO_TRUST = [
-  { value: "1996",     label: "Est." },
-  { value: "5",        label: "Branches" },
-  { value: "37+",      label: "Specialists" },
-  { value: "5",        label: "Locations" },
-];
+const FALLBACK_STATS: Record<string, DisplayStat> = {
+  year_established: { display_value: "1996", label: "Year Established" },
+  branches_count: { display_value: "5", label: "Phnom Penh Branches" },
+  specialist_dentists: { display_value: "37+", label: "Specialist Dentists" },
+  dental_chairs: { display_value: "74", label: "Dental Chairs" },
+};
 
 const ABOUT_SECTIONS: { title: string; description: string; href: string; icon: LucideIcon }[] = [
   {
@@ -85,7 +83,19 @@ const ABOUT_SECTIONS: { title: string; description: string; href: string; icon: 
   },
 ];
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const { data: statsData, error } = await supabaseServer
+    .from("site_stats")
+    .select("key, display_value, label")
+    .order("sort_order");
+
+  if (error) {
+    console.error("[AboutPage] site_stats fetch failed:", error.message);
+  }
+
+  const stat = (key: string) =>
+    statsData?.find((s) => s.key === key) ?? FALLBACK_STATS[key] ?? { display_value: "—", label: key };
+
   return (
     <SiteShell>
       {/* Hero */}
@@ -106,9 +116,14 @@ export default function AboutPage() {
           </div>
           <div className="hidden lg:flex lg:justify-end">
             <div className="grid grid-cols-2 gap-3">
-              {HERO_TRUST.map((item) => (
-                <div key={item.label} className="rounded-2xl border border-[color:var(--border-strong)] bg-white px-5 py-4 shadow-[0_8px_24px_rgba(57,28,45,0.06)]">
-                  <p className="font-display text-2xl text-[color:var(--brand-deep)]">{item.value}</p>
+              {[
+                stat("year_established"),
+                stat("branches_count"),
+                stat("specialist_dentists"),
+                stat("branches_count"),
+              ].map((item, i) => (
+                <div key={`${item.label}-${i}`} className="rounded-2xl border border-[color:var(--border-strong)] bg-white px-5 py-4 shadow-[0_8px_24px_rgba(57,28,45,0.06)]">
+                  <p className="font-display text-2xl text-[color:var(--brand-deep)]">{item.display_value}</p>
                   <p className="mt-0.5 text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--text-soft)]">{item.label}</p>
                 </div>
               ))}
@@ -121,11 +136,16 @@ export default function AboutPage() {
       <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--brand)]">
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
-            {STATS.map((stat) => (
-              <div key={stat.label} className="text-center">
-                <p className="font-display text-5xl font-bold text-white">{stat.value}</p>
+            {[
+              stat("year_established"),
+              stat("branches_count"),
+              stat("specialist_dentists"),
+              stat("dental_chairs"),
+            ].map((item) => (
+              <div key={item.label} className="text-center">
+                <p className="font-display text-5xl font-bold text-white">{item.display_value}</p>
                 <p className="mt-1 text-sm font-semibold uppercase tracking-[0.18em] text-white/70">
-                  {stat.label}
+                  {item.label}
                 </p>
               </div>
             ))}

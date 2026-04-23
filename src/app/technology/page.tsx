@@ -5,6 +5,8 @@ import { Check, ArrowRight } from "lucide-react";
 import { getTechnology } from "@/lib/data";
 import type { Metadata } from "next";
 
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: "Technology | Roomchang Dental Hospital",
   description:

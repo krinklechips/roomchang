@@ -2,6 +2,9 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { Package, FlaskConical, Building2 } from "lucide-react";
 import { SiteShell } from "@/components/site/site-shell";
+import { supabaseServer } from "@/lib/supabase-server";
+
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Dental Implants Price Comparison | Roomchang Dental Hospital",
@@ -37,7 +40,36 @@ const IMPLANT_PRICES = [
   { ada: "",    treatment: "3-crown bridge on 2 implants (E-Max)",             roomchang: "$5,000–5,400", australia: "AUD $9,500+" },
 ];
 
-export default function ImplantsComparisonPage() {
+type PricingComparisonRow = {
+  ada: string | null;
+  treatment: string;
+  roomchang_price: string;
+  australia_price: string;
+  sort_order: number | null;
+};
+
+export default async function ImplantsComparisonPage() {
+  const { data, error } = await supabaseServer
+    .from("pricing_comparison_sets")
+    .select("pricing_comparison_rows(ada, treatment, roomchang_price, australia_price, sort_order)")
+    .eq("slug", "implants-comparison")
+    .maybeSingle();
+
+  if (error) {
+    console.error("[ImplantsComparisonPage] pricing comparison fetch failed:", error.message);
+  }
+
+  const rows = ((data?.pricing_comparison_rows as PricingComparisonRow[] | undefined) ?? [])
+    .slice()
+    .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
+    .map((row) => ({
+      ada: row.ada ?? "",
+      treatment: row.treatment,
+      roomchang: row.roomchang_price,
+      australia: row.australia_price,
+    }));
+  const implantPrices = rows.length ? rows : IMPLANT_PRICES;
+
   return (
     <SiteShell>
       {/* Hero */}
@@ -140,7 +172,7 @@ export default function ImplantsComparisonPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[color:var(--brand-soft)]">
-                  {IMPLANT_PRICES.map((row, i) => (
+                  {implantPrices.map((row, i) => (
                     <tr key={i} className="transition hover:bg-[--surface]">
                       <td className="px-6 py-4 font-medium text-[color:var(--text-main)]">{row.treatment}</td>
                       <td className="px-6 py-4 text-center text-xs text-[color:var(--text-soft)]">{row.ada || "—"}</td>

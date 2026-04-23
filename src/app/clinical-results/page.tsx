@@ -1,7 +1,10 @@
 import { SiteShell } from "@/components/site/site-shell";
 import { ClinicalResultsGrid } from "@/components/sections/clinical-results-grid";
 import { CLINICAL_CASES } from "@/lib/clinical-cases";
+import { supabaseServer } from "@/lib/supabase-server";
 import type { Metadata } from "next";
+
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Clinical Results | Roomchang Dental Hospital",
@@ -9,21 +12,28 @@ export const metadata: Metadata = {
     "Real patient results from Roomchang Dental Hospital — before and after cases for implants, orthodontics, full mouth reconstruction, cosmetic dentistry and more.",
 };
 
-const STATS = [
-  { value: "4,000+", label: "Patients per month" },
-  { value: "20+",     label: "Countries served" },
-  { value: "30 yrs",  label: "Clinical experience" },
-  { value: "30+",     label: "Specialist dentists" },
-];
+type DisplayStat = { display_value: string; label: string };
 
-const HERO_TRUST = [
-  { value: "11+",  label: "Case Types" },
-  { value: "20+",  label: "Countries" },
-  { value: "30 yrs", label: "Experience" },
-  { value: "100%", label: "Consented" },
-];
+const FALLBACK_STATS: Record<string, DisplayStat> = {
+  patients_per_month: { display_value: "4,000+", label: "Patients per month" },
+  countries_served: { display_value: "20+", label: "Countries served" },
+  clinical_experience: { display_value: "30 yrs", label: "Clinical experience" },
+  specialist_dentists: { display_value: "37+", label: "Specialist Dentists" },
+  patients_treated: { display_value: "100,000+", label: "Patients Treated" },
+};
 
-export default function ClinicalResultsPage() {
+export default async function ClinicalResultsPage() {
+  const { data: statsData, error } = await supabaseServer
+    .from("site_stats")
+    .select("key, display_value, label")
+    .order("sort_order");
+
+  if (error) {
+    console.error("[ClinicalResultsPage] site_stats fetch failed:", error.message);
+  }
+
+  const stat = (key: string) =>
+    statsData?.find((s) => s.key === key) ?? FALLBACK_STATS[key] ?? { display_value: "—", label: key };
   const cases = CLINICAL_CASES;
 
   return (
@@ -46,9 +56,14 @@ export default function ClinicalResultsPage() {
           </div>
           <div className="hidden lg:flex lg:justify-end">
             <div className="grid grid-cols-2 gap-3">
-              {HERO_TRUST.map((item) => (
+              {[
+                stat("patients_treated"),
+                stat("countries_served"),
+                stat("clinical_experience"),
+                stat("specialist_dentists"),
+              ].map((item) => (
                 <div key={item.label} className="rounded-2xl border border-[color:var(--border-strong)] bg-white px-5 py-4 shadow-[0_8px_24px_rgba(57,28,45,0.06)]">
-                  <p className="font-display text-2xl text-[color:var(--brand-deep)]">{item.value}</p>
+                  <p className="font-display text-2xl text-[color:var(--brand-deep)]">{item.display_value}</p>
                   <p className="mt-0.5 text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--text-soft)]">{item.label}</p>
                 </div>
               ))}
@@ -61,11 +76,16 @@ export default function ClinicalResultsPage() {
       <div className="border-b border-[--border-strong] bg-[color:var(--brand)]">
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
-            {STATS.map((stat) => (
-              <div key={stat.label} className="text-center">
-                <p className="font-display text-4xl font-bold text-white sm:text-5xl">{stat.value}</p>
+            {[
+              stat("patients_per_month"),
+              stat("countries_served"),
+              stat("clinical_experience"),
+              stat("specialist_dentists"),
+            ].map((item) => (
+              <div key={item.label} className="text-center">
+                <p className="font-display text-4xl font-bold text-white sm:text-5xl">{item.display_value}</p>
                 <p className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-white/70">
-                  {stat.label}
+                  {item.label}
                 </p>
               </div>
             ))}

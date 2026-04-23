@@ -2,6 +2,8 @@ import Link from "next/link";
 import { SiteShell } from "@/components/site/site-shell";
 import type { Metadata } from "next";
 
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: "International Patients | Roomchang Dental Hospital",
   description:

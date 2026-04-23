@@ -3,6 +3,8 @@ import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, GraduationCap, Handshake, Users, Lightbulb, Award, type LucideIcon } from "lucide-react";
 import type { Metadata } from "next";
 
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: "Vision, Mission & Values | Roomchang Dental Hospital",
   description:
