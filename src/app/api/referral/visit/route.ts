@@ -1,10 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+import { supabaseAdmin } from "@/lib/supabase-admin";
 
 export async function POST(request: NextRequest) {
   try {
@@ -25,7 +20,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Verify the agent exists and is active
-    const { data: agent } = await supabase
+    const { data: agent } = await supabaseAdmin
       .from("referral_agents")
       .select("code")
       .eq("code", agent_code)
@@ -37,7 +32,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ ok: true });
     }
 
-    await supabase.from("referral_visits").insert({ agent_code, page });
+    await supabaseAdmin.from("referral_visits").insert({ agent_code, page });
 
     return NextResponse.json({ ok: true });
   } catch {
