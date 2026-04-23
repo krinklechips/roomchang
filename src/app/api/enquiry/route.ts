@@ -1,11 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+import { supabaseAdmin } from "@/lib/supabase-admin";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -62,7 +57,7 @@ export async function POST(request: NextRequest) {
     const agent_code = request.cookies.get("rc_ref")?.value ?? null;
 
     // 1. Save to Supabase
-    const { error: dbError } = await supabase.from("enquiries").insert({
+    const { error: dbError } = await supabaseAdmin.from("enquiries").insert({
       id: crypto.randomUUID(),
       name: cleanName,
       email: cleanEmail || null,
