@@ -1,6 +1,6 @@
 import { SiteShell } from "@/components/site/site-shell";
 import { ClinicalResultsGrid } from "@/components/sections/clinical-results-grid";
-import { CLINICAL_CASES } from "@/lib/clinical-cases";
+import { getClinicalCases } from "@/lib/data";
 import { supabaseServer } from "@/lib/supabase-server";
 import type { Metadata } from "next";
 
@@ -34,7 +34,7 @@ export default async function ClinicalResultsPage() {
 
   const stat = (key: string) =>
     statsData?.find((s) => s.key === key) ?? FALLBACK_STATS[key] ?? { display_value: "—", label: key };
-  const cases = CLINICAL_CASES;
+  const cases = await getClinicalCases();
 
   return (
     <SiteShell>

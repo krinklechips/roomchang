@@ -1,5 +1,6 @@
 import { cache } from "react";
 import { supabase } from "./supabase";
+import { supabaseServer } from "./supabase-server";
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -107,13 +108,16 @@ export type TechnologyItem = {
 
 export type ClinicalCase = {
   id: string;
+  slug: string;
   title: string;
   category: string;
   treatment: string;
   duration: string;
   description: string | null;
   tag: string;
-  imageUrl: string | null;
+  cardImage: string | null;   // maps from imageUrl column
+  fullText: string | null;
+  images: { src: string; caption?: string }[];
   order: number;
   published: boolean;
 };
@@ -264,7 +268,7 @@ export const getTechnologyBySlug = cache(async function getTechnologyBySlug(slug
 export async function getClinicalCases(): Promise<ClinicalCase[]> {
   const { data, error } = await supabase
     .from("clinical_cases")
-    .select("*")
+    .select("id, slug, title, category, treatment, duration, description, tag, imageUrl, fullText, images, order, published")
     .eq("published", true)
     .order("order");
 
@@ -272,6 +276,74 @@ export async function getClinicalCases(): Promise<ClinicalCase[]> {
     console.error("Failed to fetch clinical cases:", error.message);
     return [];
   }
+  return (data ?? []).map((row) => ({
+    ...row,
+    cardImage: row.imageUrl ?? null,
+    images: Array.isArray(row.images) ? row.images : [],
+  }));
+}
+
+export const getClinicalCaseBySlug = cache(async function getClinicalCaseBySlug(slug: string): Promise<ClinicalCase | null> {
+  const { data, error } = await supabase
+    .from("clinical_cases")
+    .select("id, slug, title, category, treatment, duration, description, tag, imageUrl, fullText, images, order, published")
+    .eq("slug", slug)
+    .eq("published", true)
+    .single();
+
+  if (error) {
+    console.error("Failed to fetch clinical case:", error.message);
+    return null;
+  }
+  return data ? { ...data, cardImage: data.imageUrl ?? null, images: Array.isArray(data.images) ? data.images : [] } : null;
+});
+
+export type InternationalStep = {
+  id: number;
+  step_label: string;
+  title: string;
+  description: string;
+  sort_order: number;
+};
+
+export type InternationalWhyItem = {
+  id: number;
+  title: string;
+  description: string;
+  sort_order: number;
+};
+
+export type InternationalPopularTreatment = {
+  id: number;
+  name: string;
+  saving: string;
+  sort_order: number;
+};
+
+export async function getInternationalSteps(): Promise<InternationalStep[]> {
+  const { data, error } = await supabaseServer
+    .from("international_steps")
+    .select("*")
+    .order("sort_order");
+  if (error) { console.error("Failed to fetch international steps:", error.message); return []; }
+  return data ?? [];
+}
+
+export async function getInternationalWhyItems(): Promise<InternationalWhyItem[]> {
+  const { data, error } = await supabaseServer
+    .from("international_why_items")
+    .select("*")
+    .order("sort_order");
+  if (error) { console.error("Failed to fetch international why items:", error.message); return []; }
+  return data ?? [];
+}
+
+export async function getInternationalPopularTreatments(): Promise<InternationalPopularTreatment[]> {
+  const { data, error } = await supabaseServer
+    .from("international_popular_treatments")
+    .select("*")
+    .order("sort_order");
+  if (error) { console.error("Failed to fetch popular treatments:", error.message); return []; }
   return data ?? [];
 }
 

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SiteShell } from "@/components/site/site-shell";
+import { getInternationalSteps, getInternationalWhyItems, getInternationalPopularTreatments } from "@/lib/data";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -10,81 +11,6 @@ export const metadata: Metadata = {
     "Planning dental treatment in Cambodia? Roomchang supports international patients from Australia, Asia, and worldwide — treatment planning, coordination, and multilingual care.",
 };
 
-const STEPS = [
-  {
-    step: "01",
-    title: "Send Us Your X-rays or Photos",
-    description:
-      "Email or WhatsApp your dental records, existing X-rays, or clear photos of your teeth. Our team will review them and provide an initial assessment.",
-  },
-  {
-    step: "02",
-    title: "Receive a Treatment Plan & Quote",
-    description:
-      "Within 1–2 business days, you'll receive a detailed treatment plan with costs, timelines, and what to expect at each visit.",
-  },
-  {
-    step: "03",
-    title: "Book Your Dates",
-    description:
-      "Once you're happy to proceed, we'll schedule your appointments around your travel dates and confirm everything in writing.",
-  },
-  {
-    step: "04",
-    title: "Arrive — We Handle the Rest",
-    description:
-      "Our team can assist with airport directions, accommodation recommendations near our clinic, and a warm welcome on arrival.",
-  },
-  {
-    step: "05",
-    title: "Treatment & Follow-up",
-    description:
-      "Receive your treatment in a modern, hospital-standard facility. We'll provide digital records and a full report for your home dentist.",
-  },
-];
-
-const WHY_ITEMS = [
-  {
-    title: "Significant Cost Savings",
-    description:
-      "Dental work in Phnom Penh can cost 40–70% less than equivalent treatment in Australia, Singapore, or the UK — without compromising on quality.",
-  },
-  {
-    title: "Hospital-Grade Standards",
-    description:
-      "Roomchang operates to international sterilisation and clinical protocols. Our lab, imaging, and materials meet the same standards you expect at home.",
-  },
-  {
-    title: "Multilingual Team",
-    description:
-      "Our staff speak Khmer, English, Mandarin, Japanese, German, and French. You will always have someone who can communicate clearly with you.",
-  },
-  {
-    title: "Flexible Scheduling",
-    description:
-      "We work around your travel itinerary. Many treatments can be staged across a single trip, with digital follow-up when you return home.",
-  },
-  {
-    title: "Digital Records",
-    description:
-      "All imaging, treatment notes, and records are stored digitally and shared with you so your home dentist can continue your care seamlessly.",
-  },
-  {
-    title: "Established Reputation",
-    description:
-      "Since 1996, Roomchang has treated thousands of international patients from over 20 countries. Read their stories in our testimonials.",
-  },
-];
-
-const POPULAR_TREATMENTS = [
-  { name: "Full Mouth Reconstruction", saving: "Save ~60%" },
-  { name: "Dental Implants (per implant)", saving: "Save ~50%" },
-  { name: "All-on-4 / All-on-6", saving: "Save ~55%" },
-  { name: "Porcelain Veneers (per tooth)", saving: "Save ~45%" },
-  { name: "E-Max Crown", saving: "Save ~50%" },
-  { name: "Invisalign / Clear Aligner", saving: "Save ~40%" },
-];
-
 const HERO_TRUST = [
   { value: "20+",    label: "Countries" },
   { value: "40–70%", label: "Savings" },
@@ -92,7 +18,13 @@ const HERO_TRUST = [
   { value: "30 yrs", label: "Experience" },
 ];
 
-export default function InternationalPage() {
+export default async function InternationalPage() {
+  const [steps, whyItems, popularTreatments] = await Promise.all([
+    getInternationalSteps(),
+    getInternationalWhyItems(),
+    getInternationalPopularTreatments(),
+  ]);
+
   return (
     <SiteShell>
       {/* Header */}
@@ -142,7 +74,7 @@ export default function InternationalPage() {
             deliberate choice by patients who have done their research.
           </p>
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {WHY_ITEMS.map((item) => (
+            {whyItems.map((item) => (
               <div
                 key={item.title}
                 className="rounded-2xl border border-[--border-strong] bg-white p-6 shadow-[0_12px_40px_rgba(57,28,45,0.05)]"
@@ -163,7 +95,7 @@ export default function InternationalPage() {
             </p>
           </div>
           <div className="divide-y divide-[--border-strong]">
-            {POPULAR_TREATMENTS.map((t) => (
+            {popularTreatments.map((t) => (
               <div
                 key={t.name}
                 className="flex items-center justify-between px-8 py-4"
@@ -191,13 +123,13 @@ export default function InternationalPage() {
             manageable — even from the other side of the world.
           </p>
           <div className="mt-10 space-y-6">
-            {STEPS.map((s) => (
+            {steps.map((s) => (
               <div
-                key={s.step}
+                key={s.step_label}
                 className="flex gap-6 rounded-2xl border border-[--border-strong] bg-white p-6 shadow-[0_8px_30px_rgba(57,28,45,0.04)]"
               >
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[--brand] font-bold text-white text-sm">
-                  {s.step}
+                  {s.step_label}
                 </div>
                 <div>
                   <h3 className="font-semibold text-[--text-main]">{s.title}</h3>
