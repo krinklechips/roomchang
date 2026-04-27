@@ -3,11 +3,14 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, ArrowRight, Clock, Tag } from "lucide-react";
-import { CLINICAL_CASES, getCaseBySlug } from "@/lib/clinical-cases";
+import { getClinicalCases, getClinicalCaseBySlug } from "@/lib/data";
 import type { Metadata } from "next";
 
-export function generateStaticParams() {
-  return CLINICAL_CASES.map((c) => ({ slug: c.slug }));
+export const revalidate = 60;
+
+export async function generateStaticParams() {
+  const cases = await getClinicalCases();
+  return cases.map((c) => ({ slug: c.slug }));
 }
 
 export async function generateMetadata({
@@ -16,7 +19,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const c = getCaseBySlug(slug);
+  const c = await getClinicalCaseBySlug(slug);
   if (!c) return {};
   return {
     title: `${c.title} | Clinical Results | Roomchang Dental Hospital`,
@@ -30,11 +33,11 @@ export default async function ClinicalCaseDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const c = getCaseBySlug(slug);
+  const c = await getClinicalCaseBySlug(slug);
   if (!c) notFound();
 
   // Adjacent cases for prev/next navigation
-  const allCases = CLINICAL_CASES;
+  const allCases = await getClinicalCases();
   const idx = allCases.findIndex((x) => x.slug === slug);
   const prev = idx > 0 ? allCases[idx - 1] : null;
   const next = idx < allCases.length - 1 ? allCases[idx + 1] : null;

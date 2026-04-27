@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
-import type { ClinicalCaseDetail } from "@/lib/clinical-cases";
+import type { ClinicalCase } from "@/lib/data";
 
 const CATEGORY_ORDER = [
   "Full Mouth",
@@ -22,7 +22,7 @@ const HASH_TO_CATEGORY: Record<string, string> = {
   cosmetic:     "Cosmetic & E-Max",
 };
 
-export function ClinicalResultsGrid({ cases }: { cases: ClinicalCaseDetail[] }) {
+export function ClinicalResultsGrid({ cases }: { cases: ClinicalCase[] }) {
   const rawCategories = Array.from(new Set(cases.map((c) => c.category)));
   const categories = [
     "All",
@@ -76,14 +76,16 @@ export function ClinicalResultsGrid({ cases }: { cases: ClinicalCaseDetail[] }) 
             className="group flex flex-col overflow-hidden rounded-3xl border border-[color:var(--border-strong)] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_60px_rgba(57,28,45,0.1)]"
           >
             <div className="relative overflow-hidden bg-[linear-gradient(135deg,var(--brand-soft),var(--surface-strong))]">
-              <Image
-                src={c.cardImage}
-                alt={`Before and after — ${c.title}`}
-                width={800}
-                height={600}
-                className="w-full h-auto transition duration-500 group-hover:scale-[1.03]"
-                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-              />
+              {c.cardImage && (
+                <Image
+                  src={c.cardImage}
+                  alt={`Before and after — ${c.title}`}
+                  width={800}
+                  height={600}
+                  className="w-full h-auto transition duration-500 group-hover:scale-[1.03]"
+                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                />
+              )}
               <span className="absolute right-3 top-3 rounded-full bg-[color:var(--brand-soft)] px-2.5 py-1 text-[0.65rem] font-bold uppercase tracking-[0.18em] text-[color:var(--brand-deep)]">
                 {c.tag}
               </span>

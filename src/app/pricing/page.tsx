@@ -17,8 +17,8 @@ import {
 } from "lucide-react";
 import { SiteShell } from "@/components/site/site-shell";
 import { getPricingCategories } from "@/lib/data";
+import { supabaseServer } from "@/lib/supabase-server";
 import type { Metadata } from "next";
-import pricingData from "@/data/pricing.json";
 
 // Re-fetch pricing categories from Supabase at most every 60s so CMS edits
 // go live without a full redeploy.
@@ -92,7 +92,16 @@ function getPriceRange(items: { price: string }[]): string {
 
 export default async function PricingPage() {
   const categories = await getPricingCategories();
-  const { comparisons } = pricingData;
+  const { data: comparisonRows } = await supabaseServer
+    .from("pricing_comparison_rows")
+    .select("ada, treatment, roomchang_price, australia_price")
+    .order("sort_order");
+  const comparisons = (comparisonRows ?? []).map((r) => ({
+    ada: r.ada ?? "",
+    treatment: r.treatment,
+    roomchang: r.roomchang_price ?? "",
+    australia: r.australia_price ?? "",
+  }));
 
   return (
     <SiteShell>
