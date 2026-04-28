@@ -112,6 +112,12 @@ export async function HomeHero() {
           >
             Explore Services
           </Link>
+          <Link
+            href="/team"
+            className="inline-flex items-center justify-center whitespace-nowrap rounded-full border border-[rgba(33,23,31,0.12)] bg-[rgba(255,255,255,0.72)] px-5 py-3 text-xs font-semibold text-[color:var(--text-main)] transition hover:-translate-y-px hover:bg-[rgba(255,255,255,0.92)] sm:border-white/22 sm:bg-[color:rgba(255,255,255,0.12)] sm:text-white sm:hover:bg-[color:rgba(255,255,255,0.22)]"
+          >
+            Our Doctors
+          </Link>
         </div>
       </div>
 
