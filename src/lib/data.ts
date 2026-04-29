@@ -136,6 +136,20 @@ export type HeroSlideDb = {
   published: boolean;
 };
 
+export type SeoPageMeta = {
+  path: string;
+  title: string | null;
+  description: string | null;
+  ogTitle: string | null;
+  ogDescription: string | null;
+  ogImage: string | null;
+  twitterTitle: string | null;
+  twitterDescription: string | null;
+  twitterImage: string | null;
+  canonicalUrl: string | null;
+  noIndex: boolean;
+};
+
 // ─── Queries ────────────────────────────────────────────────────────────────
 
 export async function getDoctors(): Promise<Doctor[]> {
@@ -360,3 +374,44 @@ export async function getHeroSlides(): Promise<HeroSlideDb[]> {
   }
   return data ?? [];
 }
+
+export const getSeoPageMeta = cache(async function getSeoPageMeta(path: string): Promise<SeoPageMeta | null> {
+  const { data, error } = await supabaseServer
+    .from("seo_page_meta")
+    .select(`
+      page_path,
+      title,
+      description,
+      og_title,
+      og_description,
+      og_image,
+      twitter_title,
+      twitter_description,
+      twitter_image,
+      canonical_url,
+      noindex
+    `)
+    .eq("page_path", path)
+    .single();
+
+  if (error || !data) {
+    if (error) {
+      console.error(`Failed to fetch SEO page meta for ${path}:`, error.message);
+    }
+    return null;
+  }
+
+  return {
+    path: data.page_path,
+    title: data.title ?? null,
+    description: data.description ?? null,
+    ogTitle: data.og_title ?? null,
+    ogDescription: data.og_description ?? null,
+    ogImage: data.og_image ?? null,
+    twitterTitle: data.twitter_title ?? null,
+    twitterDescription: data.twitter_description ?? null,
+    twitterImage: data.twitter_image ?? null,
+    canonicalUrl: data.canonical_url ?? null,
+    noIndex: Boolean(data.noindex),
+  };
+});

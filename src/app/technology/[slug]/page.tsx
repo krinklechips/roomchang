@@ -7,7 +7,8 @@ import { ArrowLeft, Check, ArrowRight,
   Heart, Bone, CircleDot, RotateCcw,
   type LucideIcon,
 } from "lucide-react";
-import { getTechnologyBySlug, getTechnology, type TechSection } from "@/lib/data";
+import { getSeoPageMeta, getTechnologyBySlug, getTechnology, type TechSection } from "@/lib/data";
+import { buildSeoMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -23,12 +24,21 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const tech = await getTechnologyBySlug(slug);
+  const [tech, seo] = await Promise.all([
+    getTechnologyBySlug(slug),
+    getSeoPageMeta(`/technology/${slug}`),
+  ]);
+
   if (!tech) return {};
-  return {
-    title: `${tech.name} | Roomchang Dental Hospital`,
-    description: tech.description ?? undefined,
-  };
+
+  return buildSeoMetadata(
+    {
+      path: `/technology/${slug}`,
+      title: `${tech.name} | Roomchang Dental Hospital`,
+      description: tech.description ?? null,
+    },
+    seo,
+  );
 }
 
 // ─── Icon map ────────────────────────────────────────────────────────────────

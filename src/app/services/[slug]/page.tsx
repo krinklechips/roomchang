@@ -16,7 +16,8 @@ import {
   Zap,
   type LucideIcon,
 } from "lucide-react";
-import { getServiceBySlug, getServices, type ServiceSection } from "@/lib/data";
+import { getSeoPageMeta, getServiceBySlug, getServices, type ServiceSection } from "@/lib/data";
+import { buildSeoMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 
 // Maps icon name strings (stored in DB) → Lucide components
@@ -56,12 +57,21 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const service = await getServiceBySlug(slug);
+  const [service, seo] = await Promise.all([
+    getServiceBySlug(slug),
+    getSeoPageMeta(`/services/${slug}`),
+  ]);
+
   if (!service) return {};
-  return {
-    title: `${service.name} | Roomchang Dental Hospital`,
-    description: service.description ?? undefined,
-  };
+
+  return buildSeoMetadata(
+    {
+      path: `/services/${slug}`,
+      title: `${service.name} | Roomchang Dental Hospital`,
+      description: service.description ?? null,
+    },
+    seo,
+  );
 }
 
 // ─── Section renderers ───────────────────────────────────────────────────────
