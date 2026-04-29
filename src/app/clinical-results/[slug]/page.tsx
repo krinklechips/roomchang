@@ -3,7 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, ArrowRight, Clock, Tag } from "lucide-react";
-import { getClinicalCases, getClinicalCaseBySlug } from "@/lib/data";
+import { getClinicalCases, getClinicalCaseBySlug, getSeoPageMeta } from "@/lib/data";
+import { buildSeoMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -19,12 +20,21 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const c = await getClinicalCaseBySlug(slug);
+  const [c, seo] = await Promise.all([
+    getClinicalCaseBySlug(slug),
+    getSeoPageMeta(`/clinical-results/${slug}`),
+  ]);
+
   if (!c) return {};
-  return {
-    title: `${c.title} | Clinical Results | Roomchang Dental Hospital`,
-    description: c.description,
-  };
+
+  return buildSeoMetadata(
+    {
+      path: `/clinical-results/${slug}`,
+      title: `${c.title} | Clinical Results | Roomchang Dental Hospital`,
+      description: c.description ?? null,
+    },
+    seo,
+  );
 }
 
 export default async function ClinicalCaseDetailPage({
