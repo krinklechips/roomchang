@@ -150,7 +150,7 @@ export function AboutTimeline() {
                 }`}
               >
                 {/* Year — mobile only (desktop has spine) */}
-                <p className="mb-1 font-display text-[2.8rem] leading-none text-[color:var(--brand-soft)] lg:hidden">
+                <p className="mb-1 font-display text-[2.8rem] leading-none text-[color:var(--brand)] lg:hidden">
                   {item.year}
                 </p>
 
@@ -164,8 +164,8 @@ export function AboutTimeline() {
                   {item.heading}
                 </h3>
 
-                {/* Year — desktop (sits under heading, editorial) */}
-                <p className="mt-2 hidden font-display text-[5rem] leading-none text-[color:var(--brand-soft)] select-none lg:block xl:text-[6rem]">
+                {/* Year — desktop (sits under heading, editorial ghost) */}
+                <p className="mt-2 hidden font-display text-[5rem] leading-none text-[color:var(--brand-light)] opacity-40 select-none lg:block xl:text-[6rem]">
                   {item.year}
                 </p>
 
