@@ -94,7 +94,7 @@ export function MobileNav() {
         aria-label={open ? "Close menu" : "Open menu"}
         aria-expanded={open}
         onClick={() => setOpen((prev) => !prev)}
-        className="flex h-10 w-10 items-center justify-center rounded-full border border-[--border-strong] bg-white/80 text-[--text-main] backdrop-blur transition hover:bg-[--surface-strong]"
+        className="flex h-10 w-10 items-center justify-center rounded-full border border-[--border-strong] bg-white/80 text-[--text-main] backdrop-blur transition hover:bg-[color:var(--surface-strong)]"
       >
         {open ? (
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -155,7 +155,7 @@ export function MobileNav() {
                       <Link
                         href={item.href}
                         onClick={close}
-                        className="flex-1 rounded-xl px-4 py-3 text-base font-semibold text-[--text-main] transition hover:bg-[--surface-strong] hover:text-[--brand-deep]"
+                        className="flex-1 rounded-xl px-4 py-3 text-base font-semibold text-[--text-main] transition hover:bg-[color:var(--surface-strong)] hover:text-[--brand-deep]"
                       >
                         {item.label}
                       </Link>
@@ -163,7 +163,7 @@ export function MobileNav() {
                         type="button"
                         aria-label={`Toggle ${item.label} submenu`}
                         onClick={() => toggle(item.label)}
-                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-[--text-soft] transition hover:bg-[--surface-strong] hover:text-[--brand-deep]"
+                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-[--text-soft] transition hover:bg-[color:var(--surface-strong)] hover:text-[--brand-deep]"
                       >
                         <svg
                           width="14" height="14" viewBox="0 0 14 14" fill="none"
@@ -182,7 +182,7 @@ export function MobileNav() {
                             key={child.href}
                             href={child.href}
                             onClick={close}
-                            className="rounded-lg px-3 py-2.5 text-sm font-medium text-[--text-soft] transition hover:bg-[--surface-strong] hover:text-[--brand-deep]"
+                            className="rounded-lg px-3 py-2.5 text-sm font-medium text-[--text-soft] transition hover:bg-[color:var(--surface-strong)] hover:text-[--brand-deep]"
                           >
                             {child.label}
                           </Link>
@@ -195,7 +195,7 @@ export function MobileNav() {
                     key={item.label}
                     href={item.href}
                     onClick={close}
-                    className="rounded-xl px-4 py-3 text-base font-semibold text-[--text-main] transition hover:bg-[--surface-strong] hover:text-[--brand-deep]"
+                    className="rounded-xl px-4 py-3 text-base font-semibold text-[--text-main] transition hover:bg-[color:var(--surface-strong)] hover:text-[--brand-deep]"
                   >
                     {item.label}
                   </Link>

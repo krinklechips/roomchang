@@ -69,7 +69,7 @@ export async function HomeFeatured() {
     : CARDS;
 
   return (
-    <section className="border-t border-[--border-strong] bg-[--surface]">
+    <section className="border-t border-[--border-strong] bg-[color:var(--surface)]">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
         <div className="grid gap-6 lg:grid-cols-3">
           {cards.map((card) => (

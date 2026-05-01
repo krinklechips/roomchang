@@ -60,7 +60,7 @@ export default async function ServicesPage() {
   return (
     <SiteShell>
       {/* Page header */}
-      <div className="border-b border-[--border-strong] bg-[--surface]">
+      <div className="border-b border-[--border-strong] bg-[color:var(--surface)]">
         <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8 lg:grid lg:grid-cols-2 lg:items-center lg:gap-16">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[--brand]">
@@ -102,7 +102,7 @@ export default async function ServicesPage() {
               >
                 <div className="flex items-center gap-4 border-b border-[--border-strong] px-6 py-5">
                   <span
-                    className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[--surface-strong] text-[--brand-deep]"
+                    className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[color:var(--surface-strong)] text-[--brand-deep]"
                     aria-hidden="true"
                   >
                     <Icon size={22} strokeWidth={1.75} />
@@ -117,7 +117,7 @@ export default async function ServicesPage() {
                     {(service.features ?? []).map((tag) => (
                       <span
                         key={tag}
-                        className="rounded-full bg-[--brand-soft] px-3 py-1 text-[0.7rem] font-semibold text-[--brand-deep]"
+                        className="rounded-full bg-[color:var(--brand-soft)] px-3 py-1 text-[0.7rem] font-semibold text-[--brand-deep]"
                       >
                         {tag}
                       </span>
@@ -129,7 +129,7 @@ export default async function ServicesPage() {
                         <Link
                           key={sub.href}
                           href={sub.href}
-                          className="rounded-full border border-[--border-strong] px-3 py-1 text-[0.7rem] font-semibold text-[--brand-deep] transition hover:border-[--brand] hover:bg-[--brand-soft]"
+                          className="rounded-full border border-[--border-strong] px-3 py-1 text-[0.7rem] font-semibold text-[--brand-deep] transition hover:border-[--brand] hover:bg-[color:var(--brand-soft)]"
                         >
                           {sub.label}
                         </Link>
@@ -151,7 +151,7 @@ export default async function ServicesPage() {
       </div>
 
       {/* CTA band */}
-      <div className="border-t border-[--border-strong] bg-[--surface]">
+      <div className="border-t border-[--border-strong] bg-[color:var(--surface)]">
         <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8">
           <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>

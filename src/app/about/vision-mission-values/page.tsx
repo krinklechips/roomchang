@@ -48,7 +48,7 @@ export default function VisionMissionValuesPage() {
   return (
     <SiteShell>
       {/* Header */}
-      <div className="border-b border-[--border-strong] bg-[--surface]">
+      <div className="border-b border-[--border-strong] bg-[color:var(--surface)]">
         <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
           <Link
             href="/about"
@@ -104,7 +104,7 @@ export default function VisionMissionValuesPage() {
                 key={value.title}
                 className="rounded-2xl border border-[--border-strong] bg-white p-6 shadow-[0_12px_40px_rgba(57,28,45,0.05)]"
               >
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[--brand-soft] text-[--brand-deep]">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[color:var(--brand-soft)] text-[--brand-deep]">
                   <value.Icon size={20} strokeWidth={1.75} aria-hidden="true" />
                 </span>
                 <h3 className="mt-3 font-display text-2xl text-[--brand-deep]">{value.title}</h3>
@@ -115,7 +115,7 @@ export default function VisionMissionValuesPage() {
         </div>
 
         {/* CTA */}
-        <div className="mt-20 rounded-3xl bg-[--brand-soft] p-10 sm:p-12">
+        <div className="mt-20 rounded-3xl bg-[color:var(--brand-soft)] p-10 sm:p-12">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 className="font-display text-3xl text-[--text-main]">See our values in action</h2>

@@ -99,7 +99,7 @@ export default async function AboutPage() {
   return (
     <SiteShell>
       {/* Hero */}
-      <div className="border-b border-[--border-strong] bg-[--surface]">
+      <div className="border-b border-[--border-strong] bg-[color:var(--surface)]">
         <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8 lg:grid lg:grid-cols-2 lg:items-center lg:gap-16">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[--brand]">
@@ -258,7 +258,7 @@ export default async function AboutPage() {
               href={section.href}
               className="group flex flex-col rounded-3xl border border-[--border-strong] bg-white p-7 shadow-[0_12px_40px_rgba(57,28,45,0.05)] transition hover:border-[--brand-light] hover:shadow-[0_16px_48px_rgba(204,55,113,0.1)]"
             >
-              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[--brand-soft] text-[--brand-deep]">
+              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[color:var(--brand-soft)] text-[--brand-deep]">
                 <section.icon size={20} strokeWidth={1.75} aria-hidden="true" />
               </span>
               <h3 className="mt-4 font-display text-xl text-[--text-main] group-hover:text-[--brand-deep]">

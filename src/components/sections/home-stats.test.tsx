@@ -51,7 +51,7 @@ describe("HomeStats", () => {
     expect(screen.getByText(/patients treated/i)).toBeInTheDocument();
 
     const patientsCard = screen.getByText(/patients treated/i).closest("div");
-    expect(patientsCard?.className).toContain("bg-[--surface]");
+    expect(patientsCard?.className).toContain("bg-[color:var(--surface)]");
 
     globalThis.IntersectionObserver = originalObserver;
     globalThis.requestAnimationFrame = originalRaf;

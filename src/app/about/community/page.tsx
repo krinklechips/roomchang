@@ -91,7 +91,7 @@ export default function CommunityPage() {
   return (
     <SiteShell>
       {/* Header */}
-      <div className="border-b border-[--border-strong] bg-[--surface]">
+      <div className="border-b border-[--border-strong] bg-[color:var(--surface)]">
         <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
           <Link
             href="/about"
@@ -119,7 +119,7 @@ export default function CommunityPage() {
               key={article.title}
               className="flex flex-col overflow-hidden rounded-3xl border border-[--border-strong] bg-white shadow-[0_12px_40px_rgba(57,28,45,0.05)]"
             >
-              <div className="relative aspect-[4/3] overflow-hidden bg-[--surface]">
+              <div className="relative aspect-[4/3] overflow-hidden bg-[color:var(--surface)]">
                 <Image
                   src={article.image}
                   alt={article.imageAlt}
@@ -145,7 +145,7 @@ export default function CommunityPage() {
         </div>
 
         {/* CTA */}
-        <div className="rounded-3xl bg-[--brand-soft] p-10 sm:p-12">
+        <div className="rounded-3xl bg-[color:var(--brand-soft)] p-10 sm:p-12">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 className="font-display text-3xl text-[--text-main]">Partner With Us</h2>

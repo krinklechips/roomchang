@@ -34,7 +34,7 @@ export default async function TechnologyPage() {
   return (
     <SiteShell>
       {/* Header */}
-      <div className="border-b border-[--border-strong] bg-[--surface]">
+      <div className="border-b border-[--border-strong] bg-[color:var(--surface)]">
         <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8 lg:grid lg:grid-cols-2 lg:items-center lg:gap-16">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[--brand]">
@@ -85,7 +85,7 @@ export default async function TechnologyPage() {
                   />
                 </div>
               ) : (
-                <div className={`min-h-[18rem] lg:min-h-[24rem] flex items-center justify-center ${CATEGORY_COLORS[tech.category] ?? "bg-[--surface-strong]"}`}>
+                <div className={`min-h-[18rem] lg:min-h-[24rem] flex items-center justify-center ${CATEGORY_COLORS[tech.category] ?? "bg-[color:var(--surface-strong)]"}`}>
                   <span className="font-display text-[4rem] font-bold text-white/30 select-none">
                     {tech.name.charAt(0)}
                   </span>
@@ -96,7 +96,7 @@ export default async function TechnologyPage() {
               <div className="flex flex-col justify-center gap-5 p-8 sm:p-10">
                 <div>
                   <span
-                    className={`inline-block rounded-full px-3 py-1 text-[0.68rem] font-bold uppercase tracking-[0.22em] text-white ${CATEGORY_COLORS[tech.category] ?? "bg-[--brand]"}`}
+                    className={`inline-block rounded-full px-3 py-1 text-[0.68rem] font-bold uppercase tracking-[0.22em] text-white ${CATEGORY_COLORS[tech.category] ?? "bg-[color:var(--brand)]"}`}
                   >
                     {tech.category}
                   </span>
@@ -111,7 +111,7 @@ export default async function TechnologyPage() {
                       key={h}
                       className="flex items-start gap-2.5 text-sm text-[--text-main]"
                     >
-                      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[--brand-soft] text-[--brand-deep]">
+                      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[color:var(--brand-soft)] text-[--brand-deep]">
                         <Check size={11} strokeWidth={3} aria-hidden="true" />
                       </span>
                       {h}
@@ -139,7 +139,7 @@ export default async function TechnologyPage() {
         </div>
 
         {/* CTA */}
-        <div className="mt-16 flex flex-col items-start gap-6 rounded-3xl border border-[--border-strong] bg-[--surface] p-10 sm:flex-row sm:items-center sm:justify-between sm:p-12">
+        <div className="mt-16 flex flex-col items-start gap-6 rounded-3xl border border-[--border-strong] bg-[color:var(--surface)] p-10 sm:flex-row sm:items-center sm:justify-between sm:p-12">
           <div>
             <h2 className="font-display text-3xl text-[--text-main]">See it in person</h2>
             <p className="mt-2 text-sm leading-7 text-[--text-soft]">

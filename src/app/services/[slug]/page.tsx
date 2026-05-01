@@ -207,7 +207,7 @@ function PricingTable({ s }: { s: Extract<ServiceSection, { type: "pricing" }> }
       {s.subheading && <p className="mt-3 text-sm text-[--text-soft] mb-8">{s.subheading}</p>}
       <div className="overflow-hidden rounded-2xl border border-[--border-strong]">
         <table className="w-full text-sm">
-          <thead className="bg-[--surface]">
+          <thead className="bg-[color:var(--surface)]">
             <tr>
               <th className="px-6 py-4 text-left font-semibold text-[--text-main]">Treatment</th>
               <th className="px-6 py-4 text-right font-semibold text-[--text-main]">Price (USD)</th>
@@ -261,7 +261,7 @@ export default async function ServiceDetailPage({
   return (
     <SiteShell>
       {/* Hero */}
-      <div className="border-b border-[--border-strong] bg-[--surface]">
+      <div className="border-b border-[--border-strong] bg-[color:var(--surface)]">
         <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
           {service.eyebrow && (
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--brand)]">
@@ -291,7 +291,7 @@ export default async function ServiceDetailPage({
       )}
 
       {/* CTA */}
-      <div className="border-t border-[--border-strong] bg-[--surface]">
+      <div className="border-t border-[--border-strong] bg-[color:var(--surface)]">
         <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8 flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="font-display text-3xl text-[--text-main]">Ready to restore your smile?</h2>
