@@ -93,7 +93,7 @@ export function HomeTestimonials({
           <p className="font-semibold text-[--text-main]">{current.authorName}</p>
           {origin && <p className="text-sm text-[--text-soft]">{origin}</p>}
           {treatment && (
-            <span className="mt-1 rounded-full bg-[--brand-soft] px-3 py-0.5 text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-[--brand-deep]">
+            <span className="mt-1 rounded-full bg-[color:var(--brand-soft)] px-3 py-0.5 text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-[--brand-deep]">
               {treatment}
             </span>
           )}

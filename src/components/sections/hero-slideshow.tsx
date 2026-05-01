@@ -143,7 +143,7 @@ export function HeroSlideshow({
         data-testid="hero-stage"
         role="img"
         aria-label={activeSlide.imageAlt}
-        className={`relative min-h-0 overflow-hidden rounded-[1.6rem] bg-[--surface-strong] bg-no-repeat [background-position:var(--hero-mobile-image-position)] [background-size:var(--hero-mobile-image-size)] sm:min-h-[28rem] sm:[background-position:var(--hero-image-position)] sm:[background-size:var(--hero-image-size)] lg:min-h-[31rem] ${mediaClassName}`}
+        className={`relative min-h-0 overflow-hidden rounded-[1.6rem] bg-[color:var(--surface-strong)] bg-no-repeat [background-position:var(--hero-mobile-image-position)] [background-size:var(--hero-mobile-image-size)] sm:min-h-[28rem] sm:[background-position:var(--hero-image-position)] sm:[background-size:var(--hero-image-size)] lg:min-h-[31rem] ${mediaClassName}`}
         style={stageStyle}
       >
         {/* Foreground image layer for preserve mode — rendered first so overlays sit on top */}
@@ -215,7 +215,7 @@ export function HeroSlideshow({
                   aria-label={`Show ${slide.title}`}
                   onClick={() => updateSlide(index)}
                   className={`h-2.5 rounded-full transition ${
-                    isActive ? "w-10 bg-[--brand]" : "w-2.5 bg-[--brand-soft]"
+                    isActive ? "w-10 bg-[color:var(--brand)]" : "w-2.5 bg-[color:var(--brand-soft)]"
                   }`}
                 />
               );

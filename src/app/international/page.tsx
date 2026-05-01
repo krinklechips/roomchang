@@ -28,7 +28,7 @@ export default async function InternationalPage() {
   return (
     <SiteShell>
       {/* Header */}
-      <div className="border-b border-[--border-strong] bg-[--surface]">
+      <div className="border-b border-[--border-strong] bg-[color:var(--surface)]">
         <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8 lg:grid lg:grid-cols-2 lg:items-center lg:gap-16">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[--brand]">
@@ -87,7 +87,7 @@ export default async function InternationalPage() {
         </section>
 
         {/* Cost comparison */}
-        <section className="rounded-3xl border border-[--border-strong] bg-[--surface] overflow-hidden">
+        <section className="rounded-3xl border border-[--border-strong] bg-[color:var(--surface)] overflow-hidden">
           <div className="px-8 py-8 border-b border-[--border-strong]">
             <h2 className="font-display text-3xl text-[--text-main]">Cost Comparison</h2>
             <p className="mt-2 text-sm leading-6 text-[--text-soft]">
@@ -101,13 +101,13 @@ export default async function InternationalPage() {
                 className="flex items-center justify-between px-8 py-4"
               >
                 <p className="text-sm font-semibold text-[--text-main]">{t.name}</p>
-                <span className="rounded-full bg-[--brand-soft] px-3 py-1 text-xs font-bold text-[--brand-deep]">
+                <span className="rounded-full bg-[color:var(--brand-soft)] px-3 py-1 text-xs font-bold text-[--brand-deep]">
                   {t.saving}
                 </span>
               </div>
             ))}
           </div>
-          <div className="px-8 py-5 bg-[--brand-soft]">
+          <div className="px-8 py-5 bg-[color:var(--brand-soft)]">
             <p className="text-xs text-[--text-soft]">
               * Savings are estimates compared to typical Western prices. Exact quotes depend on
               your specific treatment needs. Contact us for a personalised plan.
@@ -128,7 +128,7 @@ export default async function InternationalPage() {
                 key={s.step_label}
                 className="flex gap-6 rounded-2xl border border-[--border-strong] bg-white p-6 shadow-[0_8px_30px_rgba(57,28,45,0.04)]"
               >
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[--brand] font-bold text-white text-sm">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[color:var(--brand)] font-bold text-white text-sm">
                   {s.step_label}
                 </div>
                 <div>
@@ -141,7 +141,7 @@ export default async function InternationalPage() {
         </section>
 
         {/* CTA */}
-        <section className="rounded-3xl bg-[--brand] p-10 sm:p-14 text-white">
+        <section className="rounded-3xl bg-[color:var(--brand)] p-10 sm:p-14 text-white">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 className="font-display text-4xl">Ready to get started?</h2>

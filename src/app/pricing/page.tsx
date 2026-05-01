@@ -106,7 +106,7 @@ export default async function PricingPage() {
   return (
     <SiteShell>
       {/* Header */}
-      <div className="border-b border-[--border-strong] bg-[--surface]">
+      <div className="border-b border-[--border-strong] bg-[color:var(--surface)]">
         <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8 lg:grid lg:grid-cols-2 lg:items-center lg:gap-16">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--brand)]">
@@ -224,7 +224,7 @@ export default async function PricingPage() {
             <div className="overflow-x-auto">
               <table className="w-full min-w-[560px] text-sm">
                 <thead>
-                  <tr className="border-b border-[color:var(--brand-soft)] bg-[--surface]">
+                  <tr className="border-b border-[color:var(--brand-soft)] bg-[color:var(--surface)]">
                     <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
                       Treatment
                     </th>
@@ -241,7 +241,7 @@ export default async function PricingPage() {
                 </thead>
                 <tbody className="divide-y divide-[color:var(--brand-soft)]">
                   {(comparisons as { ada: string; treatment: string; roomchang: string; australia: string }[]).map((row) => (
-                    <tr key={row.ada} className="transition hover:bg-[--surface]">
+                    <tr key={row.ada} className="transition hover:bg-[color:var(--surface)]">
                       <td className="px-6 py-4 font-medium text-[color:var(--text-main)]">{row.treatment}</td>
                       <td className="px-6 py-4 text-center text-xs text-[color:var(--text-soft)]">{row.ada}</td>
                       <td className="px-6 py-4 text-right font-bold text-[color:var(--brand-deep)]">{row.roomchang}</td>

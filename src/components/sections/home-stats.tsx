@@ -59,13 +59,13 @@ export function HomeStats({ stats }: { stats: StatItem[] }) {
   }, []);
 
   return (
-    <div ref={ref} className="border-y border-[--border-strong] bg-[--surface]">
+    <div ref={ref} className="border-y border-[--border-strong] bg-[color:var(--surface)]">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 gap-px bg-[--border-strong] sm:grid-cols-4">
+        <div className="grid grid-cols-2 gap-px bg-[color:var(--border-strong)] sm:grid-cols-4">
           {stats.map((stat) => (
             <div
               key={stat.label}
-              className="flex flex-col items-center justify-center gap-1 bg-[--surface] px-4 py-8 text-center sm:px-6"
+              className="flex flex-col items-center justify-center gap-1 bg-[color:var(--surface)] px-4 py-8 text-center sm:px-6"
             >
               <p className="font-display text-[2.6rem] leading-none text-[--brand-deep] lg:text-[3rem]">
                 <CountUp target={stat.numeric_value} suffix={stat.suffix} started={started} />

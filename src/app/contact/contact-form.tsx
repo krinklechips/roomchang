@@ -70,7 +70,7 @@ export function ContactForm({ branches }: { branches: Branch[] }) {
         {/* Form */}
         <div>
           {submitted ? (
-            <div className="flex flex-col items-start gap-4 rounded-3xl border border-[--border-strong] bg-[--surface] p-10">
+            <div className="flex flex-col items-start gap-4 rounded-3xl border border-[--border-strong] bg-[color:var(--surface)] p-10">
               <CheckCircle2 size={48} strokeWidth={1.5} className="text-[--brand]" aria-hidden="true" />
               <h2 className="font-display text-3xl text-[--text-main]">
                 Thanks, we&apos;ll be in touch!
@@ -243,7 +243,7 @@ export function ContactForm({ branches }: { branches: Branch[] }) {
           {branches.map((branch) => (
             <div
               key={branch.id}
-              className="rounded-2xl border border-[--border-strong] bg-[--surface] p-5"
+              className="rounded-2xl border border-[--border-strong] bg-[color:var(--surface)] p-5"
             >
               <p className="font-semibold text-[--text-main]">{branch.name}</p>
               <p className="mt-1 text-sm leading-6 text-[--text-soft]">{branch.address}</p>
@@ -268,7 +268,7 @@ export function ContactForm({ branches }: { branches: Branch[] }) {
           ))}
 
           {/* Messaging links */}
-          <div className="rounded-2xl border border-[--border-strong] bg-[--brand-soft] p-5">
+          <div className="rounded-2xl border border-[--border-strong] bg-[color:var(--brand-soft)] p-5">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[--brand-deep]">
               Message Us
             </p>

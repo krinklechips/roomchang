@@ -92,7 +92,7 @@ export default async function PriceComparisonPage() {
   return (
     <SiteShell>
       {/* Hero */}
-      <div className="border-b border-[--border-strong] bg-[--surface]">
+      <div className="border-b border-[--border-strong] bg-[color:var(--surface)]">
         <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
           <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--brand)]">
             Roomchang vs. Australia
@@ -136,7 +136,7 @@ export default async function PriceComparisonPage() {
             <div className="overflow-x-auto">
               <table className="w-full min-w-[640px] text-sm">
                 <thead>
-                  <tr className="border-b border-[color:var(--brand-soft)] bg-[--surface]">
+                  <tr className="border-b border-[color:var(--brand-soft)] bg-[color:var(--surface)]">
                     <th className="px-6 py-4 text-center text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
                       ADA
                     </th>
@@ -153,7 +153,7 @@ export default async function PriceComparisonPage() {
                 </thead>
                 <tbody className="divide-y divide-[color:var(--brand-soft)]">
                   {rows.map((row) => (
-                    <tr key={`${row.ada}-${row.treatment}`} className="transition hover:bg-[--surface]">
+                    <tr key={`${row.ada}-${row.treatment}`} className="transition hover:bg-[color:var(--surface)]">
                       <td className="px-6 py-4 text-center text-xs text-[color:var(--text-soft)]">{row.ada}</td>
                       <td className="px-6 py-4 font-medium text-[color:var(--text-main)]">{row.treatment}</td>
                       <td className="px-6 py-4 text-right font-bold text-[color:var(--brand-deep)]">{row.roomchang}</td>

@@ -37,7 +37,7 @@ export function HomeServices() {
             href={service.href}
             className="group flex flex-col items-center gap-3 rounded-2xl border border-[--border-strong] bg-white px-4 py-6 text-center shadow-[0_8px_30px_rgba(57,28,45,0.05)] transition hover:-translate-y-0.5 hover:border-[--brand-light] hover:shadow-[0_14px_40px_rgba(57,28,45,0.1)]"
           >
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[--surface-strong] text-[--brand-deep] transition group-hover:bg-[--brand-soft]">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[color:var(--surface-strong)] text-[--brand-deep] transition group-hover:bg-[color:var(--brand-soft)]">
               <service.Icon size={28} strokeWidth={1.75} aria-hidden="true" />
             </div>
             <p className="text-[0.82rem] font-semibold leading-snug text-[--text-main]">

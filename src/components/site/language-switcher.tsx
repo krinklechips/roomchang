@@ -79,8 +79,8 @@ export function LanguageSwitcher() {
               aria-current={language.active ? "true" : undefined}
               className={`flex items-center gap-3 rounded-2xl px-3 py-3 text-sm font-medium transition ${
                 language.active
-                  ? "bg-[--surface-strong] text-[--brand-deep]"
-                  : "text-[--text-soft] hover:bg-[--surface-strong] hover:text-[--text-main]"
+                  ? "bg-[color:var(--surface-strong)] text-[--brand-deep]"
+                  : "text-[--text-soft] hover:bg-[color:var(--surface-strong)] hover:text-[--text-main]"
               }`}
               onClick={() => setIsOpen(false)}
             >
@@ -89,7 +89,7 @@ export function LanguageSwitcher() {
               </span>
               <span className="flex-1">{language.label}</span>
               {!language.active && (
-                <span className="rounded-full bg-[--border-strong] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-[--text-soft]">
+                <span className="rounded-full bg-[color:var(--border-strong)] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-[--text-soft]">
                   Soon
                 </span>
               )}

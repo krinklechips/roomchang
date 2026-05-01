@@ -16,7 +16,7 @@ export default function DirectorMessagePage() {
   return (
     <SiteShell>
       {/* Header */}
-      <div className="border-b border-[--border-strong] bg-[--surface]">
+      <div className="border-b border-[--border-strong] bg-[color:var(--surface)]">
         <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
           <Link
             href="/about"
@@ -100,7 +100,7 @@ export default function DirectorMessagePage() {
           </div>
 
           {/* CTA */}
-          <div className="mt-14 rounded-3xl bg-[--brand-soft] p-8 text-center">
+          <div className="mt-14 rounded-3xl bg-[color:var(--brand-soft)] p-8 text-center">
             <h3 className="font-display text-2xl text-[--text-main]">
               Meet the full team
             </h3>
