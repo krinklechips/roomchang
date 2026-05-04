@@ -137,6 +137,26 @@ function Steps({ s }: { s: Extract<TechSection, { type: "steps" }> }) {
   );
 }
 
+function InlineImage({ s }: { s: Extract<TechSection, { type: "image" }> }) {
+  return (
+    <figure>
+      <div className="overflow-hidden rounded-2xl border border-[color:var(--border-strong)] shadow-[0_16px_48px_rgba(57,28,45,0.08)]">
+        <Image
+          src={s.src}
+          alt={s.alt}
+          width={1200}
+          height={700}
+          className="w-full h-auto"
+          sizes="(min-width: 1024px) 80vw, 100vw"
+        />
+      </div>
+      {s.caption && (
+        <figcaption className="mt-3 text-center text-xs text-[color:var(--text-soft)]">{s.caption}</figcaption>
+      )}
+    </figure>
+  );
+}
+
 function VideoEmbed({ s }: { s: Extract<TechSection, { type: "video" }> }) {
   return (
     <div>
@@ -161,6 +181,7 @@ function RenderSection({ s }: { s: TechSection }) {
   if (s.type === "cards")   return <Cards s={s} />;
   if (s.type === "steps")   return <Steps s={s} />;
   if (s.type === "video")   return <VideoEmbed s={s} />;
+  if (s.type === "image")   return <InlineImage s={s} />;
   return null;
 }
 
