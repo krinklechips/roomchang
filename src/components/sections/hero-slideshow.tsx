@@ -221,7 +221,7 @@ export function HeroSlideshow({
               );
             })}
           </div>
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[--text-soft]">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[color:var(--text-soft)]">
             Swipe on mobile
           </p>
         </div>

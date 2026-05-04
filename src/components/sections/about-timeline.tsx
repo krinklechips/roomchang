@@ -35,7 +35,7 @@ const ERAS = [
     year: "Now",
     caption: "A hospital",
     heading: "Still Growing",
-    body: "Five branches. Fifty-eight chairs. 37 specialist dentists. Thousands of patients every month. And the same conviction that started it all — quality care, close to home.",
+    body: "Five branches. Seventy-four chairs. 37 specialist dentists. Thousands of patients every month. And the same conviction that started it all — quality care, close to home.",
     src: "/team/team-implantologists-group.jpg",
     alt: "Roomchang specialist team — present day",
     objectPos: "object-left",
@@ -160,7 +160,7 @@ export function AboutTimeline() {
                 </p>
 
                 {/* Heading */}
-                <h3 className="mt-3 font-display text-4xl leading-tight text-[--text-main] lg:text-5xl xl:text-6xl">
+                <h3 className="mt-3 font-display text-4xl leading-tight text-[color:var(--text-main)] lg:text-5xl xl:text-6xl">
                   {item.heading}
                 </h3>
 
@@ -170,7 +170,7 @@ export function AboutTimeline() {
                 </p>
 
                 {/* Body */}
-                <p className="mt-5 max-w-md text-sm leading-8 text-[--text-soft] italic">
+                <p className="mt-5 max-w-md text-sm leading-8 text-[color:var(--text-soft)] italic">
                   {item.body}
                 </p>
               </div>

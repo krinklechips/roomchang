@@ -48,7 +48,7 @@ const localBusinessJsonLd = {
   "@id": "https://roomchang.com",
   name: "Roomchang Dental Hospital",
   description:
-    "Cambodia's leading dental hospital — 37+ specialist dentists, 5 branches in Phnom Penh, serving international patients since 1996.",
+    "Cambodia's leading dental hospital — 37 specialist dentists, 5 branches in Phnom Penh, serving international patients since 1996.",
   url: "https://roomchang.com",
   telephone: "+855698113338",
   email: "contact@roomchang.com",

@@ -20,7 +20,7 @@ type DisplayStat = { display_value: string; label: string };
 const FALLBACK_STATS: Record<string, DisplayStat> = {
   year_established: { display_value: "1996", label: "Year Established" },
   branches_count: { display_value: "5", label: "Phnom Penh Branches" },
-  specialist_dentists: { display_value: "37+", label: "Specialist Dentists" },
+  specialist_dentists: { display_value: "37", label: "Specialist Dentists" },
   dental_chairs: { display_value: "74", label: "Dental Chairs" },
 };
 
@@ -28,7 +28,7 @@ const ABOUT_SECTIONS: { title: string; description: string; href: string; icon: 
   {
     title: "Our Facilities",
     description:
-      "A purpose-built, 10-storey dental hospital with 74 chairs, 6 surgical theatres, an in-house CAD/CAM lab, and hospital-grade sterilisation.",
+      "A purpose-built, 10-storey dental hospital with 46 dental chairs, 4 operation rooms, an in-house CAD/CAM lab, and hospital-grade sterilisation.",
     href: "/about/facilities",
     icon: Building2,
   },
@@ -77,7 +77,7 @@ const ABOUT_SECTIONS: { title: string; description: string; href: string; icon: 
   {
     title: "Technology",
     description:
-      "CAD/CAM milling, digital intraoral scanning, Invisalign, Beyond® whitening, and the CA® proprietary clear aligner system.",
+      "CAD/CAM technology, digital intraoral scanning, Invisalign, Beyond® whitening, and the CA (Clear Aligner) system.",
     href: "/technology",
     icon: Cpu,
   },
@@ -99,16 +99,16 @@ export default async function AboutPage() {
   return (
     <SiteShell>
       {/* Hero */}
-      <div className="border-b border-[--border-strong] bg-[color:var(--surface)]">
+      <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--surface)]">
         <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8 lg:grid lg:grid-cols-2 lg:items-center lg:gap-16">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[--brand]">
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--brand)]">
               Our Story
             </p>
-            <h1 className="mt-3 font-display text-5xl leading-none text-[--text-main] sm:text-6xl">
+            <h1 className="mt-3 font-display text-5xl leading-none text-[color:var(--text-main)] sm:text-6xl">
               About Roomchang
             </h1>
-            <p className="mt-5 max-w-2xl text-base leading-7 text-[--text-soft]">
+            <p className="mt-5 max-w-2xl text-base leading-7 text-[color:var(--text-soft)]">
               Founded in 1996 by a vision to bring specialist dental care to Cambodia, Roomchang
               has grown into the country&apos;s most trusted dental group — serving local families
               and international patients from across Asia, Australia, and beyond.
@@ -120,7 +120,7 @@ export default async function AboutPage() {
                 stat("year_established"),
                 stat("branches_count"),
                 stat("specialist_dentists"),
-                stat("branches_count"),
+                stat("dental_chairs"),
               ].map((item, i) => (
                 <div key={`${item.label}-${i}`} className="rounded-2xl border border-[color:var(--border-strong)] bg-white px-5 py-4 shadow-[0_8px_24px_rgba(57,28,45,0.06)]">
                   <p className="font-display text-2xl text-[color:var(--brand-deep)]">{item.display_value}</p>
@@ -156,8 +156,8 @@ export default async function AboutPage() {
       <div className="mx-auto max-w-7xl px-4 pt-14 pb-14 sm:px-6 sm:pt-20 sm:pb-20 lg:px-8">
         {/* History */}
         <div className="mx-auto max-w-3xl">
-          <h2 className="font-display text-4xl text-[--text-main]">A Hospital, Not Just a Clinic</h2>
-          <div className="mt-6 space-y-4 text-sm leading-7 text-[--text-soft]">
+          <h2 className="font-display text-4xl text-[color:var(--text-main)]">A Hospital, Not Just a Clinic</h2>
+          <div className="mt-6 space-y-4 text-sm leading-7 text-[color:var(--text-soft)]">
             <p>
               Roomchang Dental Hospital was built on the belief that Cambodian patients deserved
               access to the same quality of care available in the most advanced dental centres in
@@ -171,10 +171,8 @@ export default async function AboutPage() {
             <p>
               Today, Roomchang treats thousands of patients every month — from routine checkups to
               complex full-mouth reconstructions — and serves international visitors from more
-              than 20 countries who choose Cambodia for high-quality, cost-effective dental care.
-            </p>
-            <p>
-              Roomchang serves international visitors from more than 20 countries who choose Cambodia for high-quality, cost-effective dental care delivered to the same standards as leading clinics abroad.
+              than 20 countries who choose Cambodia for high-quality, cost-effective dental care
+              delivered to the same standards as leading clinics abroad.
             </p>
           </div>
         </div>
@@ -210,7 +208,7 @@ export default async function AboutPage() {
                 {BRANCHES[0].badge}
               </span>
               <h3 className="font-display text-3xl text-white leading-tight">{BRANCHES[0].shortName}</h3>
-              <p className="mt-1.5 text-sm text-white/80">10-storey purpose-built dental hospital · 74 chairs · 6 surgical theatres</p>
+              <p className="mt-1.5 text-sm text-white/80">10-storey purpose-built dental hospital · 46 chairs · 4 operation rooms</p>
               <p className="mt-1 text-xs text-white/60">{BRANCHES[0].address} · {BRANCHES[0].hours} · {BRANCHES[0].phone}</p>
             </div>
             <span className="absolute right-6 top-6 flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1.5 text-[0.65rem] font-bold uppercase tracking-[0.15em] text-white backdrop-blur-sm opacity-0 transition group-hover:opacity-100">
@@ -256,18 +254,18 @@ export default async function AboutPage() {
             <Link
               key={section.href}
               href={section.href}
-              className="group flex flex-col rounded-3xl border border-[--border-strong] bg-white p-7 shadow-[0_12px_40px_rgba(57,28,45,0.05)] transition hover:border-[--brand-light] hover:shadow-[0_16px_48px_rgba(204,55,113,0.1)]"
+              className="group flex flex-col rounded-3xl border border-[color:var(--border-strong)] bg-white p-7 shadow-[0_12px_40px_rgba(57,28,45,0.05)] transition hover:border-[color:var(--brand-light)] hover:shadow-[0_16px_48px_rgba(204,55,113,0.1)]"
             >
-              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[color:var(--brand-soft)] text-[--brand-deep]">
+              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[color:var(--brand-soft)] text-[color:var(--brand-deep)]">
                 <section.icon size={20} strokeWidth={1.75} aria-hidden="true" />
               </span>
-              <h3 className="mt-4 font-display text-xl text-[--text-main] group-hover:text-[--brand-deep]">
+              <h3 className="mt-4 font-display text-xl text-[color:var(--text-main)] group-hover:text-[color:var(--brand-deep)]">
                 {section.title}
               </h3>
-              <p className="mt-2 flex-1 text-sm leading-6 text-[--text-soft]">
+              <p className="mt-2 flex-1 text-sm leading-6 text-[color:var(--text-soft)]">
                 {section.description}
               </p>
-              <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-[--brand-deep] transition group-hover:text-[--brand]">
+              <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-[color:var(--brand-deep)] transition group-hover:text-[color:var(--brand)]">
                 Learn more <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
               </span>
             </Link>

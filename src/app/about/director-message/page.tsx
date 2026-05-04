@@ -16,15 +16,15 @@ export default function DirectorMessagePage() {
   return (
     <SiteShell>
       {/* Header */}
-      <div className="border-b border-[--border-strong] bg-[color:var(--surface)]">
+      <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--surface)]">
         <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
           <Link
             href="/about"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[--brand] transition hover:text-[--brand-deep]"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--brand)] transition hover:text-[color:var(--brand-deep)]"
           >
             <ArrowLeft size={13} strokeWidth={2.5} aria-hidden="true" /> About
           </Link>
-          <h1 className="mt-4 font-display text-5xl leading-none text-[--text-main] sm:text-6xl">
+          <h1 className="mt-4 font-display text-5xl leading-none text-[color:var(--text-main)] sm:text-6xl">
             Message from Our Director
           </h1>
         </div>
@@ -47,12 +47,12 @@ export default function DirectorMessagePage() {
                 />
               </div>
               <div className="mt-6 text-center lg:text-left">
-                <h2 className="font-display text-2xl text-[--text-main]">Dr. Tith Hong Yoeu</h2>
-                <p className="mt-0.5 text-sm font-semibold text-[--text-soft]">DDS, MSc.</p>
-                <p className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-[--brand]">
+                <h2 className="font-display text-2xl text-[color:var(--text-main)]">Dr. Tith Hong Yoeu</h2>
+                <p className="mt-0.5 text-sm font-semibold text-[color:var(--text-soft)]">DDS, MSc.</p>
+                <p className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--brand)]">
                   Founder & Director
                 </p>
-                <p className="mt-2 text-xs leading-relaxed text-[--text-soft]">
+                <p className="mt-2 text-xs leading-relaxed text-[color:var(--text-soft)]">
                   MSc. in Oral Implantology<br />Goethe University Frankfurt, Germany
                 </p>
               </div>
@@ -61,7 +61,7 @@ export default function DirectorMessagePage() {
 
           {/* Message */}
           <div>
-          <div className="space-y-6 text-base leading-8 text-[--text-soft]">
+          <div className="space-y-6 text-base leading-8 text-[color:var(--text-soft)]">
             <p>Dear Patients,</p>
             <p>
               Thank you for entrusting your dental care to Roomchang. Over the last three decades,
@@ -72,7 +72,7 @@ export default function DirectorMessagePage() {
               When I founded Roomchang in 1996, my goal was simple: to build a dental hospital in
               Cambodia that could match the standard of care available anywhere in the world. That
               vision hasn&apos;t changed. What has changed is the scale at which we can deliver it — five
-              branches, 74 chairs, a full in-house digital laboratory, and a team of more than 37
+              branches, 74 chairs, a full in-house digital laboratory, and a team of 37
               specialist dentists.
             </p>
             <p>
@@ -91,20 +91,20 @@ export default function DirectorMessagePage() {
               confidence in us that drives us to keep improving, keep innovating, and keep showing up
               every day with the same commitment we started with.
             </p>
-            <p className="font-display text-xl text-[--text-main]">
+            <p className="font-display text-xl text-[color:var(--text-main)]">
               Dr. Tith Hong Yoeu
             </p>
-            <p className="text-sm text-[--text-soft]">
+            <p className="text-sm text-[color:var(--text-soft)]">
               Director, Roomchang Dental Hospital
             </p>
           </div>
 
           {/* CTA */}
           <div className="mt-14 rounded-3xl bg-[color:var(--brand-soft)] p-8 text-center">
-            <h3 className="font-display text-2xl text-[--text-main]">
+            <h3 className="font-display text-2xl text-[color:var(--text-main)]">
               Meet the full team
             </h3>
-            <p className="mt-2 text-sm text-[--text-soft]">
+            <p className="mt-2 text-sm text-[color:var(--text-soft)]">
               Get to know the specialist dentists Dr. Tith has assembled.
             </p>
             <Link href="/team" className="btn-primary mt-5 inline-flex">

@@ -91,18 +91,18 @@ export default function CommunityPage() {
   return (
     <SiteShell>
       {/* Header */}
-      <div className="border-b border-[--border-strong] bg-[color:var(--surface)]">
+      <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--surface)]">
         <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
           <Link
             href="/about"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[--brand] transition hover:text-[--brand-deep]"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--brand)] transition hover:text-[color:var(--brand-deep)]"
           >
             <ArrowLeft size={13} strokeWidth={2.5} aria-hidden="true" /> About
           </Link>
-          <h1 className="mt-4 font-display text-5xl leading-none text-[--text-main] sm:text-6xl">
+          <h1 className="mt-4 font-display text-5xl leading-none text-[color:var(--text-main)] sm:text-6xl">
             Community & Charity
           </h1>
-          <p className="mt-5 max-w-2xl text-base leading-7 text-[--text-soft]">
+          <p className="mt-5 max-w-2xl text-base leading-7 text-[color:var(--text-soft)]">
             Dental care shouldn&apos;t be a luxury. Since 1996, Roomchang has run charity missions
             bringing free treatment to underserved communities across Cambodia — rural provinces,
             schools, orphanages, and beyond.
@@ -117,7 +117,7 @@ export default function CommunityPage() {
           {ARTICLES.map((article) => (
             <article
               key={article.title}
-              className="flex flex-col overflow-hidden rounded-3xl border border-[--border-strong] bg-white shadow-[0_12px_40px_rgba(57,28,45,0.05)]"
+              className="flex flex-col overflow-hidden rounded-3xl border border-[color:var(--border-strong)] bg-white shadow-[0_12px_40px_rgba(57,28,45,0.05)]"
             >
               <div className="relative aspect-[4/3] overflow-hidden bg-[color:var(--surface)]">
                 <Image
@@ -130,13 +130,13 @@ export default function CommunityPage() {
                 />
               </div>
               <div className="flex flex-1 flex-col p-6">
-                <p className="text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-[--brand]">
+                <p className="text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-[color:var(--brand)]">
                   {article.date}
                 </p>
-                <h2 className="mt-2 font-display text-xl leading-snug text-[--text-main]">
+                <h2 className="mt-2 font-display text-xl leading-snug text-[color:var(--text-main)]">
                   {article.title}
                 </h2>
-                <p className="mt-3 flex-1 text-sm leading-7 text-[--text-soft]">
+                <p className="mt-3 flex-1 text-sm leading-7 text-[color:var(--text-soft)]">
                   {article.description}
                 </p>
               </div>
@@ -148,8 +148,8 @@ export default function CommunityPage() {
         <div className="rounded-3xl bg-[color:var(--brand-soft)] p-10 sm:p-12">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h2 className="font-display text-3xl text-[--text-main]">Partner With Us</h2>
-              <p className="mt-2 max-w-md text-sm leading-7 text-[--text-soft]">
+              <h2 className="font-display text-3xl text-[color:var(--text-main)]">Partner With Us</h2>
+              <p className="mt-2 max-w-md text-sm leading-7 text-[color:var(--text-soft)]">
                 If your organisation would like to support or co-sponsor a charity dental mission,
                 we&apos;d love to hear from you.
               </p>

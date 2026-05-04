@@ -42,7 +42,7 @@ const featuredCards = [
     id: "team",
     title: "Meet Our Team",
     description:
-      "30+ specialist dentists across every discipline — multilingual, experienced, and committed to your comfort.",
+      "37 specialist dentists across every discipline — multilingual, experienced, and committed to your comfort.",
     imageSrc: "/hero/hero-all-staff.jpg",
     imageAlt: "Roomchang dental hospital team",
     href: "/team",
@@ -51,9 +51,9 @@ const featuredCards = [
   },
   {
     id: "aligner",
-    title: "CA® Clear Aligner",
+    title: "CA (Clear Aligner)",
     description:
-      "Our proprietary aligner — designed, fabricated, and fitted in-house for a precise, discreet result.",
+      "Designed, fabricated, and fitted in-house for a precise, discreet result.",
     imageSrc: "/hero/roomchang-clear-aligner.jpg",
     imageAlt: "Roomchang clear aligner treatment",
     href: "/technology/ca-clear-aligner",
@@ -96,7 +96,7 @@ export function HomeHighlights() {
         {featuredCards.map((card) => (
           <article
             key={card.id}
-            className="overflow-hidden rounded-3xl border border-[--border-strong] bg-white shadow-[0_20px_60px_rgba(57,28,45,0.08)]"
+            className="overflow-hidden rounded-3xl border border-[color:var(--border-strong)] bg-white shadow-[0_20px_60px_rgba(57,28,45,0.08)]"
           >
             <div
               role="img"
@@ -110,11 +110,11 @@ export function HomeHighlights() {
               }}
             />
             <div className="space-y-4 p-6">
-              <h2 className="font-display text-[2rem] leading-none text-[--text-main]">{card.title}</h2>
-              <p className="text-sm leading-7 text-[--text-soft]">{card.description}</p>
+              <h2 className="font-display text-[2rem] leading-none text-[color:var(--text-main)]">{card.title}</h2>
+              <p className="text-sm leading-7 text-[color:var(--text-soft)]">{card.description}</p>
               <a
                 href={card.href}
-                className="inline-flex items-center gap-2 text-sm font-semibold text-[--brand-deep] transition hover:text-[--brand]"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-[color:var(--brand-deep)] transition hover:text-[color:var(--brand)]"
               >
                 {card.id === "international" ? "Plan your trip" : card.id === "team" ? "Meet the doctors" : "Learn more"}
                 <span aria-hidden="true">→</span>

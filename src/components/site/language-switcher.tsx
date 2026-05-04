@@ -51,7 +51,7 @@ export function LanguageSwitcher() {
         aria-expanded={isOpen}
         aria-haspopup="menu"
         onClick={() => setIsOpen((open) => !open)}
-        className="flex items-center gap-2 rounded-full border border-[--border-strong] bg-white/88 px-3 py-2 text-sm font-semibold text-[--text-main] shadow-sm backdrop-blur transition hover:border-[--brand] hover:bg-white hover:text-[--brand-deep]"
+        className="flex items-center gap-2 rounded-full border border-[color:var(--border-strong)] bg-white/88 px-3 py-2 text-sm font-semibold text-[color:var(--text-main)] shadow-sm backdrop-blur transition hover:border-[color:var(--brand)] hover:bg-white hover:text-[color:var(--brand-deep)]"
       >
         <span className="text-base leading-none" aria-hidden="true">
           {activeLanguage.flag}
@@ -60,7 +60,7 @@ export function LanguageSwitcher() {
         <ChevronDown
           size={13}
           strokeWidth={2.5}
-          className={`text-[--text-soft] transition ${isOpen ? "rotate-180" : ""}`}
+          className={`text-[color:var(--text-soft)] transition ${isOpen ? "rotate-180" : ""}`}
           aria-hidden="true"
         />
       </button>
@@ -69,7 +69,7 @@ export function LanguageSwitcher() {
         <div
           role="menu"
           aria-label="Language options"
-          className="absolute right-0 top-[calc(100%+0.6rem)] min-w-44 rounded-3xl border border-[--border-strong] bg-white/96 p-2 shadow-[0_24px_60px_rgba(61,24,47,0.14)] backdrop-blur"
+          className="absolute right-0 top-[calc(100%+0.6rem)] min-w-44 rounded-3xl border border-[color:var(--border-strong)] bg-white/96 p-2 shadow-[0_24px_60px_rgba(61,24,47,0.14)] backdrop-blur"
         >
           {LANGUAGES.map((language) => (
             <Link
@@ -79,8 +79,8 @@ export function LanguageSwitcher() {
               aria-current={language.active ? "true" : undefined}
               className={`flex items-center gap-3 rounded-2xl px-3 py-3 text-sm font-medium transition ${
                 language.active
-                  ? "bg-[color:var(--surface-strong)] text-[--brand-deep]"
-                  : "text-[--text-soft] hover:bg-[color:var(--surface-strong)] hover:text-[--text-main]"
+                  ? "bg-[color:var(--surface-strong)] text-[color:var(--brand-deep)]"
+                  : "text-[color:var(--text-soft)] hover:bg-[color:var(--surface-strong)] hover:text-[color:var(--text-main)]"
               }`}
               onClick={() => setIsOpen(false)}
             >
@@ -89,7 +89,7 @@ export function LanguageSwitcher() {
               </span>
               <span className="flex-1">{language.label}</span>
               {!language.active && (
-                <span className="rounded-full bg-[color:var(--border-strong)] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-[--text-soft]">
+                <span className="rounded-full bg-[color:var(--border-strong)] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-[color:var(--text-soft)]">
                   Soon
                 </span>
               )}

@@ -28,16 +28,16 @@ export default async function InternationalPage() {
   return (
     <SiteShell>
       {/* Header */}
-      <div className="border-b border-[--border-strong] bg-[color:var(--surface)]">
+      <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--surface)]">
         <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8 lg:grid lg:grid-cols-2 lg:items-center lg:gap-16">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[--brand]">
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--brand)]">
               Dental Tourism
             </p>
-            <h1 className="mt-3 font-display text-5xl leading-none text-[--text-main] sm:text-6xl">
+            <h1 className="mt-3 font-display text-5xl leading-none text-[color:var(--text-main)] sm:text-6xl">
               International Patients
             </h1>
-            <p className="mt-5 max-w-2xl text-base leading-7 text-[--text-soft]">
+            <p className="mt-5 max-w-2xl text-base leading-7 text-[color:var(--text-soft)]">
               Thousands of patients travel from Australia, Japan, Singapore, and beyond to receive
               world-class dental care at Roomchang. We make the process simple, transparent, and as
               comfortable as possible.
@@ -68,8 +68,8 @@ export default async function InternationalPage() {
 
         {/* Why Roomchang */}
         <section>
-          <h2 className="font-display text-4xl text-[--text-main]">Why Choose Roomchang?</h2>
-          <p className="mt-3 text-sm leading-7 text-[--text-soft] max-w-xl">
+          <h2 className="font-display text-4xl text-[color:var(--text-main)]">Why Choose Roomchang?</h2>
+          <p className="mt-3 text-sm leading-7 text-[color:var(--text-soft)] max-w-xl">
             Quality dental care in Cambodia offers genuine value — not as a compromise, but as a
             deliberate choice by patients who have done their research.
           </p>
@@ -77,20 +77,20 @@ export default async function InternationalPage() {
             {whyItems.map((item) => (
               <div
                 key={item.title}
-                className="rounded-2xl border border-[--border-strong] bg-white p-6 shadow-[0_12px_40px_rgba(57,28,45,0.05)]"
+                className="rounded-2xl border border-[color:var(--border-strong)] bg-white p-6 shadow-[0_12px_40px_rgba(57,28,45,0.05)]"
               >
-                <h3 className="font-display text-xl text-[--brand-deep]">{item.title}</h3>
-                <p className="mt-3 text-sm leading-6 text-[--text-soft]">{item.description}</p>
+                <h3 className="font-display text-xl text-[color:var(--brand-deep)]">{item.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-[color:var(--text-soft)]">{item.description}</p>
               </div>
             ))}
           </div>
         </section>
 
         {/* Cost comparison */}
-        <section className="rounded-3xl border border-[--border-strong] bg-[color:var(--surface)] overflow-hidden">
-          <div className="px-8 py-8 border-b border-[--border-strong]">
-            <h2 className="font-display text-3xl text-[--text-main]">Cost Comparison</h2>
-            <p className="mt-2 text-sm leading-6 text-[--text-soft]">
+        <section className="rounded-3xl border border-[color:var(--border-strong)] bg-[color:var(--surface)] overflow-hidden">
+          <div className="px-8 py-8 border-b border-[color:var(--border-strong)]">
+            <h2 className="font-display text-3xl text-[color:var(--text-main)]">Cost Comparison</h2>
+            <p className="mt-2 text-sm leading-6 text-[color:var(--text-soft)]">
               Indicative savings vs. equivalent treatments in Australia and Singapore.
             </p>
           </div>
@@ -100,15 +100,15 @@ export default async function InternationalPage() {
                 key={t.name}
                 className="flex items-center justify-between px-8 py-4"
               >
-                <p className="text-sm font-semibold text-[--text-main]">{t.name}</p>
-                <span className="rounded-full bg-[color:var(--brand-soft)] px-3 py-1 text-xs font-bold text-[--brand-deep]">
+                <p className="text-sm font-semibold text-[color:var(--text-main)]">{t.name}</p>
+                <span className="rounded-full bg-[color:var(--brand-soft)] px-3 py-1 text-xs font-bold text-[color:var(--brand-deep)]">
                   {t.saving}
                 </span>
               </div>
             ))}
           </div>
           <div className="px-8 py-5 bg-[color:var(--brand-soft)]">
-            <p className="text-xs text-[--text-soft]">
+            <p className="text-xs text-[color:var(--text-soft)]">
               * Savings are estimates compared to typical Western prices. Exact quotes depend on
               your specific treatment needs. Contact us for a personalised plan.
             </p>
@@ -117,8 +117,8 @@ export default async function InternationalPage() {
 
         {/* How it works */}
         <section id="how-it-works">
-          <h2 className="font-display text-4xl text-[--text-main]">How It Works</h2>
-          <p className="mt-3 text-sm leading-7 text-[--text-soft] max-w-xl">
+          <h2 className="font-display text-4xl text-[color:var(--text-main)]">How It Works</h2>
+          <p className="mt-3 text-sm leading-7 text-[color:var(--text-soft)] max-w-xl">
             From your first message to your last appointment, we make every step clear and
             manageable — even from the other side of the world.
           </p>
@@ -126,14 +126,14 @@ export default async function InternationalPage() {
             {steps.map((s) => (
               <div
                 key={s.step_label}
-                className="flex gap-6 rounded-2xl border border-[--border-strong] bg-white p-6 shadow-[0_8px_30px_rgba(57,28,45,0.04)]"
+                className="flex gap-6 rounded-2xl border border-[color:var(--border-strong)] bg-white p-6 shadow-[0_8px_30px_rgba(57,28,45,0.04)]"
               >
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[color:var(--brand)] font-bold text-white text-sm">
                   {s.step_label}
                 </div>
                 <div>
-                  <h3 className="font-semibold text-[--text-main]">{s.title}</h3>
-                  <p className="mt-1.5 text-sm leading-6 text-[--text-soft]">{s.description}</p>
+                  <h3 className="font-semibold text-[color:var(--text-main)]">{s.title}</h3>
+                  <p className="mt-1.5 text-sm leading-6 text-[color:var(--text-soft)]">{s.description}</p>
                 </div>
               </div>
             ))}
@@ -152,7 +152,7 @@ export default async function InternationalPage() {
             </div>
             <Link
               href="/contact"
-              className="shrink-0 rounded-full border border-white/30 bg-white px-7 py-4 text-sm font-bold text-[--brand] transition hover:bg-white/90"
+              className="shrink-0 rounded-full border border-white/30 bg-white px-7 py-4 text-sm font-bold text-[color:var(--brand)] transition hover:bg-white/90"
             >
               Request a Free Plan
             </Link>

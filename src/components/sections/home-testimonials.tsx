@@ -55,11 +55,9 @@ export function HomeTestimonials({
 
   const current = testimonials[active];
   const { origin, treatment } = parseOriginAndTreatment(current.authorTitle);
-  const initials = getInitials(current.authorName);
-
   return (
     <section
-      className="border-t border-[--border-strong]"
+      className="border-t border-[color:var(--border-strong)]"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
@@ -83,17 +81,17 @@ export function HomeTestimonials({
 
         {/* Quote text */}
         <blockquote className="mt-8 text-center">
-          <p className="line-clamp-3 font-display text-[1.45rem] leading-[1.6] text-[--text-main] sm:text-[1.7rem]">
+          <p className="line-clamp-3 font-display text-[1.45rem] leading-[1.6] text-[color:var(--text-main)] sm:text-[1.7rem]">
             &ldquo;{current.quote}&rdquo;
           </p>
         </blockquote>
 
         {/* Attribution */}
         <div className="mt-8 flex flex-col items-center gap-1">
-          <p className="font-semibold text-[--text-main]">{current.authorName}</p>
-          {origin && <p className="text-sm text-[--text-soft]">{origin}</p>}
+          <p className="font-semibold text-[color:var(--text-main)]">{current.authorName}</p>
+          {origin && <p className="text-sm text-[color:var(--text-soft)]">{origin}</p>}
           {treatment && (
-            <span className="mt-1 rounded-full bg-[color:var(--brand-soft)] px-3 py-0.5 text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-[--brand-deep]">
+            <span className="mt-1 rounded-full bg-[color:var(--brand-soft)] px-3 py-0.5 text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-[color:var(--brand-deep)]">
               {treatment}
             </span>
           )}
@@ -128,7 +126,7 @@ export function HomeTestimonials({
         <div className="mt-10 flex justify-center">
           <Link
             href="/about/testimonials"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-[--brand-deep] transition hover:text-[--brand]"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-[color:var(--brand-deep)] transition hover:text-[color:var(--brand)]"
           >
             See all patient reviews <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
           </Link>

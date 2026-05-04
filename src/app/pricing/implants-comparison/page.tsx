@@ -23,7 +23,7 @@ const COST_DRIVERS = [
     icon: FlaskConical,
     title: "Laboratory fees",
     body:
-      "Roomchang operates an in-house CAD/CAM dental laboratory. Crowns, bridges, and custom abutments are designed and milled on-site — we don't pay a third-party lab markup the way Australian clinics do. That single line item accounts for a large share of the price difference on anything involving a crown or bridge.",
+      "Roomchang operates an in-house CAD/CAM dental laboratory. Crowns, bridges, and custom abutments are designed and fabricated on-site — we don't pay a third-party lab markup the way Australian clinics do. That single line item accounts for a large share of the price difference on anything involving a crown or bridge.",
   },
   {
     icon: Building2,
@@ -73,7 +73,7 @@ export default async function ImplantsComparisonPage() {
   return (
     <SiteShell>
       {/* Hero */}
-      <div className="border-b border-[--border-strong] bg-[color:var(--surface)]">
+      <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--surface)]">
         <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
           <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--brand)]">
             Why Our Implants Cost Less
@@ -108,7 +108,7 @@ export default async function ImplantsComparisonPage() {
             {COST_DRIVERS.map(({ icon: Icon, title, body }) => (
               <article
                 key={title}
-                className="rounded-3xl border border-[--border-strong] bg-white p-7 shadow-[0_16px_48px_rgba(57,28,45,0.06)]"
+                className="rounded-3xl border border-[color:var(--border-strong)] bg-white p-7 shadow-[0_16px_48px_rgba(57,28,45,0.06)]"
               >
                 <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[color:var(--brand-soft)] text-[color:var(--brand-deep)]">
                   <Icon size={22} strokeWidth={1.75} aria-hidden="true" />

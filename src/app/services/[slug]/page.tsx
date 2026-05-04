@@ -87,7 +87,7 @@ function Callout({ s }: { s: Extract<ServiceSection, { type: "callout" }> }) {
         )}
         <div className="flex-1">
           <p className="font-semibold text-[color:var(--brand-deep)]">{s.title}</p>
-          <p className="mt-1 text-sm leading-7 text-[--text-soft]">{s.body}</p>
+          <p className="mt-1 text-sm leading-7 text-[color:var(--text-soft)]">{s.body}</p>
         </div>
       </div>
       {s.stats && (
@@ -95,7 +95,7 @@ function Callout({ s }: { s: Extract<ServiceSection, { type: "callout" }> }) {
           {s.stats.map((st) => (
             <div key={st.label} className="rounded-2xl bg-white/60 px-4 py-3 text-center">
               <p className="text-xl font-bold text-[color:var(--brand-deep)]">{st.value}</p>
-              <p className="mt-1 text-xs text-[--text-soft]">{st.label}</p>
+              <p className="mt-1 text-xs text-[color:var(--text-soft)]">{st.label}</p>
             </div>
           ))}
         </div>
@@ -107,8 +107,8 @@ function Callout({ s }: { s: Extract<ServiceSection, { type: "callout" }> }) {
 function TextBlock({ s }: { s: Extract<ServiceSection, { type: "text" }> }) {
   const inner = (
     <>
-      <h2 className="font-display text-2xl text-[--text-main]">{s.heading}</h2>
-      <div className="mt-3 text-sm leading-7 text-[--text-soft] space-y-3">
+      <h2 className="font-display text-2xl text-[color:var(--text-main)]">{s.heading}</h2>
+      <div className="mt-3 text-sm leading-7 text-[color:var(--text-soft)] space-y-3">
         {String(s.body).split("\n\n").map((para, i) => (
           <p key={i}>{para}</p>
         ))}
@@ -116,7 +116,7 @@ function TextBlock({ s }: { s: Extract<ServiceSection, { type: "text" }> }) {
     </>
   );
   return s.card ? (
-    <div className="rounded-3xl border border-[--border-strong] bg-white p-8">{inner}</div>
+    <div className="rounded-3xl border border-[color:var(--border-strong)] bg-white p-8">{inner}</div>
   ) : (
     <div>{inner}</div>
   );
@@ -125,12 +125,12 @@ function TextBlock({ s }: { s: Extract<ServiceSection, { type: "text" }> }) {
 function BulletList({ s }: { s: Extract<ServiceSection, { type: "list" }> }) {
   return (
     <div>
-      {s.heading && <h2 className="font-display text-3xl text-[--text-main] mb-6">{s.heading}</h2>}
+      {s.heading && <h2 className="font-display text-3xl text-[color:var(--text-main)] mb-6">{s.heading}</h2>}
       <div className="grid gap-3 sm:grid-cols-2">
         {s.items.map((item) => (
-          <div key={item} className="flex items-start gap-3 rounded-2xl border border-[--border-strong] bg-white px-5 py-4">
+          <div key={item} className="flex items-start gap-3 rounded-2xl border border-[color:var(--border-strong)] bg-white px-5 py-4">
             <span className="mt-0.5 h-4 w-4 shrink-0 rounded-full bg-[color:var(--brand)] text-white flex items-center justify-center"><Check size={9} strokeWidth={3.5} aria-hidden="true" /></span>
-            <span className="text-sm leading-6 text-[--text-soft]">{item}</span>
+            <span className="text-sm leading-6 text-[color:var(--text-soft)]">{item}</span>
           </div>
         ))}
       </div>
@@ -146,11 +146,11 @@ function Cards({ s }: { s: Extract<ServiceSection, { type: "cards" }> }) {
     "sm:grid-cols-3";
   return (
     <div>
-      <h2 className="font-display text-3xl text-[--text-main]">{s.heading}</h2>
-      {s.subheading && <p className="mt-3 text-sm text-[--text-soft]">{s.subheading}</p>}
+      <h2 className="font-display text-3xl text-[color:var(--text-main)]">{s.heading}</h2>
+      {s.subheading && <p className="mt-3 text-sm text-[color:var(--text-soft)]">{s.subheading}</p>}
       <div className={`mt-8 grid gap-6 ${gridClass}`}>
         {s.items.map((item, i) => (
-          <div key={item.title} className="rounded-2xl border border-[--border-strong] bg-white p-6">
+          <div key={item.title} className="rounded-2xl border border-[color:var(--border-strong)] bg-white p-6">
             {s.numbered && (
               <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-full bg-[color:var(--brand)] text-white text-sm font-bold">
                 {i + 1}
@@ -166,7 +166,7 @@ function Cards({ s }: { s: Extract<ServiceSection, { type: "cards" }> }) {
                 {item.badge}
               </span>
             )}
-            <h3 className="font-display text-xl text-[--text-main]">{item.title}</h3>
+            <h3 className="font-display text-xl text-[color:var(--text-main)]">{item.title}</h3>
             {item.spec && (
               <p className="mt-1 text-xs font-semibold text-[color:var(--brand)]">{item.spec}</p>
             )}
@@ -175,7 +175,7 @@ function Cards({ s }: { s: Extract<ServiceSection, { type: "cards" }> }) {
                 {item.tag}
               </span>
             )}
-            <p className="mt-2 text-sm leading-7 text-[--text-soft]">{item.body}</p>
+            <p className="mt-2 text-sm leading-7 text-[color:var(--text-soft)]">{item.body}</p>
           </div>
         ))}
       </div>
@@ -186,13 +186,13 @@ function Cards({ s }: { s: Extract<ServiceSection, { type: "cards" }> }) {
 function Steps({ s }: { s: Extract<ServiceSection, { type: "steps" }> }) {
   return (
     <div>
-      <h2 className="font-display text-3xl text-[--text-main]">{s.heading}</h2>
-      {s.subheading && <p className="mt-3 text-sm text-[--text-soft]">{s.subheading}</p>}
+      <h2 className="font-display text-3xl text-[color:var(--text-main)]">{s.heading}</h2>
+      {s.subheading && <p className="mt-3 text-sm text-[color:var(--text-soft)]">{s.subheading}</p>}
       <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {s.items.map((item) => (
-          <div key={item.step} className="rounded-2xl border border-[--border-strong] bg-white p-6">
+          <div key={item.step} className="rounded-2xl border border-[color:var(--border-strong)] bg-white p-6">
             <p className="text-xs font-semibold uppercase tracking-widest text-[color:var(--brand)]">{item.step}</p>
-            <p className="mt-2 text-sm leading-7 text-[--text-soft]">{item.detail}</p>
+            <p className="mt-2 text-sm leading-7 text-[color:var(--text-soft)]">{item.detail}</p>
           </div>
         ))}
       </div>
@@ -203,21 +203,21 @@ function Steps({ s }: { s: Extract<ServiceSection, { type: "steps" }> }) {
 function PricingTable({ s }: { s: Extract<ServiceSection, { type: "pricing" }> }) {
   return (
     <div>
-      {s.heading && <h2 className="font-display text-3xl text-[--text-main]">{s.heading}</h2>}
-      {s.subheading && <p className="mt-3 text-sm text-[--text-soft] mb-8">{s.subheading}</p>}
-      <div className="overflow-hidden rounded-2xl border border-[--border-strong]">
+      {s.heading && <h2 className="font-display text-3xl text-[color:var(--text-main)]">{s.heading}</h2>}
+      {s.subheading && <p className="mt-3 text-sm text-[color:var(--text-soft)] mb-8">{s.subheading}</p>}
+      <div className="overflow-hidden rounded-2xl border border-[color:var(--border-strong)]">
         <table className="w-full text-sm">
           <thead className="bg-[color:var(--surface)]">
             <tr>
-              <th className="px-6 py-4 text-left font-semibold text-[--text-main]">Treatment</th>
-              <th className="px-6 py-4 text-right font-semibold text-[--text-main]">Price (USD)</th>
+              <th className="px-6 py-4 text-left font-semibold text-[color:var(--text-main)]">Treatment</th>
+              <th className="px-6 py-4 text-right font-semibold text-[color:var(--text-main)]">Price (USD)</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-[--border-strong] bg-white">
             {s.rows.map((row) => (
               <tr key={row.treatment}>
-                <td className="px-6 py-4 text-[--text-soft]">{row.treatment}</td>
-                <td className="px-6 py-4 text-right font-semibold text-[--text-main]">{row.price}</td>
+                <td className="px-6 py-4 text-[color:var(--text-soft)]">{row.treatment}</td>
+                <td className="px-6 py-4 text-right font-semibold text-[color:var(--text-main)]">{row.price}</td>
               </tr>
             ))}
           </tbody>
@@ -261,17 +261,17 @@ export default async function ServiceDetailPage({
   return (
     <SiteShell>
       {/* Hero */}
-      <div className="border-b border-[--border-strong] bg-[color:var(--surface)]">
+      <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--surface)]">
         <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
           {service.eyebrow && (
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--brand)]">
               {service.eyebrow}
             </p>
           )}
-          <h1 className="mt-3 font-display text-5xl leading-none text-[--text-main] sm:text-6xl">
+          <h1 className="mt-3 font-display text-5xl leading-none text-[color:var(--text-main)] sm:text-6xl">
             {service.name}
           </h1>
-          <p className="mt-5 max-w-2xl text-base leading-7 text-[--text-soft]">
+          <p className="mt-5 max-w-2xl text-base leading-7 text-[color:var(--text-soft)]">
             {service.heroDescription ?? service.description}
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
@@ -291,13 +291,13 @@ export default async function ServiceDetailPage({
       )}
 
       {/* CTA */}
-      <div className="border-t border-[--border-strong] bg-[color:var(--surface)]">
+      <div className="border-t border-[color:var(--border-strong)] bg-[color:var(--surface)]">
         <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8 flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h2 className="font-display text-3xl text-[--text-main]">Ready to restore your smile?</h2>
-            <p className="mt-2 text-sm text-[--text-soft]">
+            <h2 className="font-display text-3xl text-[color:var(--text-main)]">Ready to restore your smile?</h2>
+            <p className="mt-2 text-sm text-[color:var(--text-soft)]">
               Call us on{" "}
-              <a href="tel:+85523211338" className="font-semibold text-[color:var(--brand)]">
+              <a href="tel:+85569811338" className="font-semibold text-[color:var(--brand)]">
                 +855 69 811 338
               </a>{" "}
               or send an enquiry and we&apos;ll get back to you within one business day.

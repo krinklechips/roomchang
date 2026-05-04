@@ -70,12 +70,12 @@ export function ContactForm({ branches }: { branches: Branch[] }) {
         {/* Form */}
         <div>
           {submitted ? (
-            <div className="flex flex-col items-start gap-4 rounded-3xl border border-[--border-strong] bg-[color:var(--surface)] p-10">
-              <CheckCircle2 size={48} strokeWidth={1.5} className="text-[--brand]" aria-hidden="true" />
-              <h2 className="font-display text-3xl text-[--text-main]">
+            <div className="flex flex-col items-start gap-4 rounded-3xl border border-[color:var(--border-strong)] bg-[color:var(--surface)] p-10">
+              <CheckCircle2 size={48} strokeWidth={1.5} className="text-[color:var(--brand)]" aria-hidden="true" />
+              <h2 className="font-display text-3xl text-[color:var(--text-main)]">
                 Thanks, we&apos;ll be in touch!
               </h2>
-              <p className="text-sm leading-7 text-[--text-soft]">
+              <p className="text-sm leading-7 text-[color:var(--text-soft)]">
                 Your enquiry has been received. A member of our team will contact you within one
                 business day to confirm your appointment or answer your questions.
               </p>
@@ -91,8 +91,8 @@ export function ContactForm({ branches }: { branches: Branch[] }) {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid gap-6 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <label htmlFor="name" className="block text-xs font-semibold uppercase tracking-[0.2em] text-[--text-soft]">
-                    Full Name <span className="text-[--brand]">*</span>
+                  <label htmlFor="name" className="block text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
+                    Full Name <span className="text-[color:var(--brand)]">*</span>
                   </label>
                   <input
                     id="name"
@@ -100,13 +100,13 @@ export function ContactForm({ branches }: { branches: Branch[] }) {
                     type="text"
                     required
                     autoComplete="name"
-                    className="w-full rounded-xl border border-[--border-strong] bg-white px-4 py-3 text-sm text-[--text-main] placeholder-[--text-soft]/50 outline-none transition focus:border-[--brand] focus:ring-2 focus:ring-[--brand]/20"
+                    className="w-full rounded-xl border border-[color:var(--border-strong)] bg-white px-4 py-3 text-sm text-[color:var(--text-main)] placeholder-[color:var(--text-soft)]/50 outline-none transition focus:border-[color:var(--brand)] focus:ring-2 focus:ring-[color:var(--brand)]/20"
                     placeholder="Your name"
                   />
                 </div>
                 <div className="space-y-2">
-                  <label htmlFor="email" className="block text-xs font-semibold uppercase tracking-[0.2em] text-[--text-soft]">
-                    Email <span className="text-[--brand]">*</span>
+                  <label htmlFor="email" className="block text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
+                    Email <span className="text-[color:var(--brand)]">*</span>
                   </label>
                   <input
                     id="email"
@@ -114,7 +114,7 @@ export function ContactForm({ branches }: { branches: Branch[] }) {
                     type="email"
                     required
                     autoComplete="email"
-                    className="w-full rounded-xl border border-[--border-strong] bg-white px-4 py-3 text-sm text-[--text-main] placeholder-[--text-soft]/50 outline-none transition focus:border-[--brand] focus:ring-2 focus:ring-[--brand]/20"
+                    className="w-full rounded-xl border border-[color:var(--border-strong)] bg-white px-4 py-3 text-sm text-[color:var(--text-main)] placeholder-[color:var(--text-soft)]/50 outline-none transition focus:border-[color:var(--brand)] focus:ring-2 focus:ring-[color:var(--brand)]/20"
                     placeholder="you@email.com"
                   />
                 </div>
@@ -122,7 +122,7 @@ export function ContactForm({ branches }: { branches: Branch[] }) {
 
               <div className="grid gap-6 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <label htmlFor="phone" className="block text-xs font-semibold uppercase tracking-[0.2em] text-[--text-soft]">
+                  <label htmlFor="phone" className="block text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
                     Phone / WhatsApp / Telegram
                   </label>
                   <input
@@ -130,12 +130,12 @@ export function ContactForm({ branches }: { branches: Branch[] }) {
                     name="phone"
                     type="tel"
                     autoComplete="tel"
-                    className="w-full rounded-xl border border-[--border-strong] bg-white px-4 py-3 text-sm text-[--text-main] placeholder-[--text-soft]/50 outline-none transition focus:border-[--brand] focus:ring-2 focus:ring-[--brand]/20"
+                    className="w-full rounded-xl border border-[color:var(--border-strong)] bg-white px-4 py-3 text-sm text-[color:var(--text-main)] placeholder-[color:var(--text-soft)]/50 outline-none transition focus:border-[color:var(--brand)] focus:ring-2 focus:ring-[color:var(--brand)]/20"
                     placeholder="+855 ..."
                   />
                 </div>
                 <div className="space-y-2">
-                  <label htmlFor="country" className="block text-xs font-semibold uppercase tracking-[0.2em] text-[--text-soft]">
+                  <label htmlFor="country" className="block text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
                     Country
                   </label>
                   <input
@@ -143,7 +143,7 @@ export function ContactForm({ branches }: { branches: Branch[] }) {
                     name="country"
                     type="text"
                     autoComplete="country-name"
-                    className="w-full rounded-xl border border-[--border-strong] bg-white px-4 py-3 text-sm text-[--text-main] placeholder-[--text-soft]/50 outline-none transition focus:border-[--brand] focus:ring-2 focus:ring-[--brand]/20"
+                    className="w-full rounded-xl border border-[color:var(--border-strong)] bg-white px-4 py-3 text-sm text-[color:var(--text-main)] placeholder-[color:var(--text-soft)]/50 outline-none transition focus:border-[color:var(--brand)] focus:ring-2 focus:ring-[color:var(--brand)]/20"
                     placeholder="Cambodia"
                   />
                 </div>
@@ -151,13 +151,13 @@ export function ContactForm({ branches }: { branches: Branch[] }) {
 
               <div className="grid gap-6 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <label htmlFor="service" className="block text-xs font-semibold uppercase tracking-[0.2em] text-[--text-soft]">
+                  <label htmlFor="service" className="block text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
                     Treatment Needed
                   </label>
                   <select
                     id="service"
                     name="service"
-                    className="w-full rounded-xl border border-[--border-strong] bg-white px-4 py-3 text-sm text-[--text-main] outline-none transition focus:border-[--brand] focus:ring-2 focus:ring-[--brand]/20"
+                    className="w-full rounded-xl border border-[color:var(--border-strong)] bg-white px-4 py-3 text-sm text-[color:var(--text-main)] outline-none transition focus:border-[color:var(--brand)] focus:ring-2 focus:ring-[color:var(--brand)]/20"
                   >
                     <option value="">Select a treatment (optional)</option>
                     {SERVICES.map((s) => (
@@ -168,13 +168,13 @@ export function ContactForm({ branches }: { branches: Branch[] }) {
                   </select>
                 </div>
                 <div className="space-y-2">
-                  <label htmlFor="branch" className="block text-xs font-semibold uppercase tracking-[0.2em] text-[--text-soft]">
+                  <label htmlFor="branch" className="block text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
                     Preferred Branch
                   </label>
                   <select
                     id="branch"
                     name="branch"
-                    className="w-full rounded-xl border border-[--border-strong] bg-white px-4 py-3 text-sm text-[--text-main] outline-none transition focus:border-[--brand] focus:ring-2 focus:ring-[--brand]/20"
+                    className="w-full rounded-xl border border-[color:var(--border-strong)] bg-white px-4 py-3 text-sm text-[color:var(--text-main)] outline-none transition focus:border-[color:var(--brand)] focus:ring-2 focus:ring-[color:var(--brand)]/20"
                   >
                     <option value="">Any branch (optional)</option>
                     {branches.map((b) => (
@@ -187,7 +187,7 @@ export function ContactForm({ branches }: { branches: Branch[] }) {
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="doctor" className="block text-xs font-semibold uppercase tracking-[0.2em] text-[--text-soft]">
+                <label htmlFor="doctor" className="block text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
                   Preferred Doctor
                 </label>
                 <input
@@ -196,28 +196,28 @@ export function ContactForm({ branches }: { branches: Branch[] }) {
                   type="text"
                   value={preferredDoctor}
                   onChange={(e) => setPreferredDoctor(e.target.value)}
-                  className="w-full rounded-xl border border-[--border-strong] bg-white px-4 py-3 text-sm text-[--text-main] placeholder-[--text-soft]/50 outline-none transition focus:border-[--brand] focus:ring-2 focus:ring-[--brand]/20"
+                  className="w-full rounded-xl border border-[color:var(--border-strong)] bg-white px-4 py-3 text-sm text-[color:var(--text-main)] placeholder-[color:var(--text-soft)]/50 outline-none transition focus:border-[color:var(--brand)] focus:ring-2 focus:ring-[color:var(--brand)]/20"
                   placeholder="Any doctor (optional)"
                 />
               </div>
 
               <div className="space-y-2">
-                <label className="block text-xs font-semibold uppercase tracking-[0.2em] text-[--text-soft]">
+                <label className="block text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
                   Preferred Appointment Date
                 </label>
                 <DatePicker name="date" />
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="message" className="block text-xs font-semibold uppercase tracking-[0.2em] text-[--text-soft]">
-                  Message <span className="text-[--brand]">*</span>
+                <label htmlFor="message" className="block text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
+                  Message <span className="text-[color:var(--brand)]">*</span>
                 </label>
                 <textarea
                   id="message"
                   name="message"
                   required
                   rows={5}
-                  className="w-full resize-none rounded-xl border border-[--border-strong] bg-white px-4 py-3 text-sm text-[--text-main] placeholder-[--text-soft]/50 outline-none transition focus:border-[--brand] focus:ring-2 focus:ring-[--brand]/20"
+                  className="w-full resize-none rounded-xl border border-[color:var(--border-strong)] bg-white px-4 py-3 text-sm text-[color:var(--text-main)] placeholder-[color:var(--text-soft)]/50 outline-none transition focus:border-[color:var(--brand)] focus:ring-2 focus:ring-[color:var(--brand)]/20"
                   placeholder="Tell us about your dental concerns or what you're hoping to achieve..."
                 />
               </div>
@@ -230,7 +230,7 @@ export function ContactForm({ branches }: { branches: Branch[] }) {
                 {submitting ? "Sending…" : "Send Enquiry"}
               </button>
 
-              <p className="text-center text-xs text-[--text-soft]">
+              <p className="text-center text-xs text-[color:var(--text-soft)]">
                 We respond within one business day. Your information is kept private.
               </p>
             </form>
@@ -239,22 +239,22 @@ export function ContactForm({ branches }: { branches: Branch[] }) {
 
         {/* Branch info */}
         <div id="branches" className="space-y-4">
-          <h2 className="font-display text-2xl text-[--text-main]">Our Branches</h2>
+          <h2 className="font-display text-2xl text-[color:var(--text-main)]">Our Branches</h2>
           {branches.map((branch) => (
             <div
               key={branch.id}
-              className="rounded-2xl border border-[--border-strong] bg-[color:var(--surface)] p-5"
+              className="rounded-2xl border border-[color:var(--border-strong)] bg-[color:var(--surface)] p-5"
             >
-              <p className="font-semibold text-[--text-main]">{branch.name}</p>
-              <p className="mt-1 text-sm leading-6 text-[--text-soft]">{branch.address}</p>
-              <p className="mt-1 text-sm text-[--text-soft]">{branch.phone}</p>
+              <p className="font-semibold text-[color:var(--text-main)]">{branch.name}</p>
+              <p className="mt-1 text-sm leading-6 text-[color:var(--text-soft)]">{branch.address}</p>
+              <p className="mt-1 text-sm text-[color:var(--text-soft)]">{branch.phone}</p>
               {branch.mobile && (
-                <p className="text-sm text-[--text-soft]">{branch.mobile}</p>
+                <p className="text-sm text-[color:var(--text-soft)]">{branch.mobile}</p>
               )}
               {branch.email && (
-                <p className="text-sm text-[--text-soft]">{branch.email}</p>
+                <p className="text-sm text-[color:var(--text-soft)]">{branch.email}</p>
               )}
-              <p className="mt-1 text-xs text-[--text-soft]/70">{branch.hours}</p>
+              <p className="mt-1 text-xs text-[color:var(--text-soft)]/70">{branch.hours}</p>
               <a
                 href={`https://maps.google.com/?q=${encodeURIComponent(branch.address)}`}
                 target="_blank"
@@ -268,8 +268,8 @@ export function ContactForm({ branches }: { branches: Branch[] }) {
           ))}
 
           {/* Messaging links */}
-          <div className="rounded-2xl border border-[--border-strong] bg-[color:var(--brand-soft)] p-5">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[--brand-deep]">
+          <div className="rounded-2xl border border-[color:var(--border-strong)] bg-[color:var(--brand-soft)] p-5">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--brand-deep)]">
               Message Us
             </p>
             <div className="mt-3 flex flex-col gap-3">

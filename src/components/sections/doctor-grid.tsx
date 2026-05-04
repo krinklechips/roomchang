@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
-import { ArrowRight, X } from "lucide-react";
+import { X } from "lucide-react";
 import type { Doctor } from "@/lib/data";
 
 const LANGUAGES = ["Khmer", "English", "Mandarin", "Japanese", "German", "French"];

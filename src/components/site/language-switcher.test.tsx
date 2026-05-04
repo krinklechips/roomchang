@@ -8,7 +8,7 @@ describe("LanguageSwitcher", () => {
     render(<LanguageSwitcher />);
 
     expect(screen.getByRole("button", { name: /change language/i }).className).toContain(
-      "hover:border-[--brand]",
+      "hover:border-[color:var(--brand)]",
     );
   });
 

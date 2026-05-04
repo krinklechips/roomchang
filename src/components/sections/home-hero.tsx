@@ -7,7 +7,7 @@ const FALLBACK_SLIDES: HeroSlide[] = [
   {
     id: "team",
     eyebrow: "Cambodia's leading dental group",
-    title: "30+ Specialist Dentists, One Team",
+    title: "37 Specialist Dentists, One Team",
     description: "Implantologists, orthodontists, cosmetic specialists, and general dentists — all under one roof, across five branches in Phnom Penh.",
     imageSrc: "/hero/hero-team-photo.jpg",
     imageAlt: "Roomchang Dental Hospital full team photo",
@@ -37,7 +37,7 @@ const FALLBACK_SLIDES: HeroSlide[] = [
     id: "digital",
     eyebrow: "Digital dentistry",
     title: "Precision Technology, Every Treatment",
-    description: "CAD/CAM in-house milling, 3D CBCT imaging, intraoral scanning, and proprietary CA® clear aligners — made and fitted right here.",
+    description: "CAD/CAM technology, 3D CBCT imaging, intraoral scanning, and CA (Clear Aligner) fabrication — made and fitted right here.",
     imageSrc: "/hero/roomchang-digital-lab.jpeg",
     imageAlt: "Roomchang staff working with digital dental laboratory technology",
     imagePosition: "center center",

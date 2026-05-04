@@ -13,7 +13,6 @@ import {
   Moon,
   Zap,
   Shield,
-  Bone,
   ArrowRight,
   type LucideIcon,
 } from "lucide-react";
@@ -26,7 +25,7 @@ export const metadata: Metadata = {
 
 const HERO_TRUST = [
   { value: "11",  label: "Specialties" },
-  { value: "30+", label: "Specialists" },
+  { value: "37",  label: "Specialists" },
   { value: "5",   label: "Locations" },
   { value: "6",   label: "Languages" },
 ];
@@ -60,16 +59,16 @@ export default async function ServicesPage() {
   return (
     <SiteShell>
       {/* Page header */}
-      <div className="border-b border-[--border-strong] bg-[color:var(--surface)]">
+      <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--surface)]">
         <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8 lg:grid lg:grid-cols-2 lg:items-center lg:gap-16">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[--brand]">
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--brand)]">
               What We Treat
             </p>
-            <h1 className="mt-3 font-display text-5xl leading-none text-[--text-main] sm:text-6xl">
+            <h1 className="mt-3 font-display text-5xl leading-none text-[color:var(--text-main)] sm:text-6xl">
               Dental Services
             </h1>
-            <p className="mt-5 max-w-2xl text-base leading-7 text-[--text-soft]">
+            <p className="mt-5 max-w-2xl text-base leading-7 text-[color:var(--text-soft)]">
               Roomchang offers hospital-level dental care across all major specialties. Whether
               you&apos;re based in Phnom Penh or travelling from overseas, our multilingual team
               is here to guide you through every step.
@@ -98,38 +97,38 @@ export default async function ServicesPage() {
               <article
                 key={service.id}
                 id={service.slug}
-                className="group flex flex-col overflow-hidden rounded-3xl border border-[--border-strong] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_60px_rgba(57,28,45,0.1)]"
+                className="group flex flex-col overflow-hidden rounded-3xl border border-[color:var(--border-strong)] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_60px_rgba(57,28,45,0.1)]"
               >
-                <div className="flex items-center gap-4 border-b border-[--border-strong] px-6 py-5">
+                <div className="flex items-center gap-4 border-b border-[color:var(--border-strong)] px-6 py-5">
                   <span
-                    className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[color:var(--surface-strong)] text-[--brand-deep]"
+                    className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[color:var(--surface-strong)] text-[color:var(--brand-deep)]"
                     aria-hidden="true"
                   >
                     <Icon size={22} strokeWidth={1.75} />
                   </span>
-                  <h2 className="font-display text-[1.5rem] leading-tight text-[--text-main]">
+                  <h2 className="font-display text-[1.5rem] leading-tight text-[color:var(--text-main)]">
                     {service.name}
                   </h2>
                 </div>
                 <div className="flex flex-1 flex-col gap-4 p-6">
-                  <p className="flex-1 text-sm leading-7 text-[--text-soft]">{service.description}</p>
+                  <p className="flex-1 text-sm leading-7 text-[color:var(--text-soft)]">{service.description}</p>
                   <div className="flex flex-wrap gap-2">
                     {(service.features ?? []).map((tag) => (
                       <span
                         key={tag}
-                        className="rounded-full bg-[color:var(--brand-soft)] px-3 py-1 text-[0.7rem] font-semibold text-[--brand-deep]"
+                        className="rounded-full bg-[color:var(--brand-soft)] px-3 py-1 text-[0.7rem] font-semibold text-[color:var(--brand-deep)]"
                       >
                         {tag}
                       </span>
                     ))}
                   </div>
                   {subServices.length > 0 && (
-                    <div className="flex flex-wrap gap-2 border-t border-[--border-strong] pt-3">
+                    <div className="flex flex-wrap gap-2 border-t border-[color:var(--border-strong)] pt-3">
                       {subServices.map((sub) => (
                         <Link
                           key={sub.href}
                           href={sub.href}
-                          className="rounded-full border border-[--border-strong] px-3 py-1 text-[0.7rem] font-semibold text-[--brand-deep] transition hover:border-[--brand] hover:bg-[color:var(--brand-soft)]"
+                          className="rounded-full border border-[color:var(--border-strong)] px-3 py-1 text-[0.7rem] font-semibold text-[color:var(--brand-deep)] transition hover:border-[color:var(--brand)] hover:bg-[color:var(--brand-soft)]"
                         >
                           {sub.label}
                         </Link>
@@ -138,7 +137,7 @@ export default async function ServicesPage() {
                   )}
                   <Link
                     href={`/services/${service.slug}`}
-                    className="inline-flex items-center gap-2 text-sm font-semibold text-[--brand-deep] transition hover:text-[--brand]"
+                    className="inline-flex items-center gap-2 text-sm font-semibold text-[color:var(--brand-deep)] transition hover:text-[color:var(--brand)]"
                   >
                     Learn more
                     <ArrowRight size={14} strokeWidth={2} aria-hidden="true" className="transition group-hover:translate-x-1" />
@@ -151,12 +150,12 @@ export default async function ServicesPage() {
       </div>
 
       {/* CTA band */}
-      <div className="border-t border-[--border-strong] bg-[color:var(--surface)]">
+      <div className="border-t border-[color:var(--border-strong)] bg-[color:var(--surface)]">
         <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8">
           <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h2 className="font-display text-3xl text-[--text-main]">Not sure which treatment?</h2>
-              <p className="mt-2 text-sm leading-7 text-[--text-soft]">
+              <h2 className="font-display text-3xl text-[color:var(--text-main)]">Not sure which treatment?</h2>
+              <p className="mt-2 text-sm leading-7 text-[color:var(--text-soft)]">
                 Send us a message or call and our team will help you find the right path.
               </p>
             </div>

@@ -44,7 +44,7 @@ const NAV_ITEMS: NavItem[] = [
     href: "/technology",
     children: [
       { label: "CAD/CAM Digital Dentistry", href: "/technology/cad-cam" },
-      { label: "CA® Clear Aligner Splint", href: "/technology/ca-clear-aligner" },
+      { label: "CA (Clear Aligner)", href: "/technology/ca-clear-aligner" },
       { label: "Invisalign Clear Aligners", href: "/technology/invisalign" },
       { label: "Ortho-Tain® System", href: "/technology/ortho-tain" },
       { label: "Beyond® Teeth Whitening", href: "/technology/beyond-whitening" },
@@ -94,7 +94,7 @@ export function MobileNav() {
         aria-label={open ? "Close menu" : "Open menu"}
         aria-expanded={open}
         onClick={() => setOpen((prev) => !prev)}
-        className="flex h-10 w-10 items-center justify-center rounded-full border border-[--border-strong] bg-white/80 text-[--text-main] backdrop-blur transition hover:bg-[color:var(--surface-strong)]"
+        className="flex h-10 w-10 items-center justify-center rounded-full border border-[color:var(--border-strong)] bg-white/80 text-[color:var(--text-main)] backdrop-blur transition hover:bg-[color:var(--surface-strong)]"
       >
         {open ? (
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -124,18 +124,18 @@ export function MobileNav() {
         }`}
       >
         {/* Scrollable panel — max full screen height with overflow scroll */}
-        <div className="flex max-h-[100dvh] flex-col border-b border-[--border-strong] bg-[color:rgba(255,250,251,0.97)] shadow-[0_20px_60px_rgba(36,20,31,0.14)] backdrop-blur-xl">
+        <div className="flex max-h-[100dvh] flex-col border-b border-[color:var(--border-strong)] bg-[color:rgba(255,250,251,0.97)] shadow-[0_20px_60px_rgba(36,20,31,0.14)] backdrop-blur-xl">
 
           {/* Fixed header — never scrolls away */}
           <div className="flex shrink-0 items-center justify-between px-4 pb-4 pt-4 sm:px-6">
-            <Link href="/" onClick={close} className="font-display text-2xl text-[--brand-deep]">
+            <Link href="/" onClick={close} className="font-display text-2xl text-[color:var(--brand-deep)]">
               Roomchang
             </Link>
             <button
               type="button"
               aria-label="Close menu"
               onClick={close}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-[--border-strong] bg-white/80 text-[--text-main]"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-[color:var(--border-strong)] bg-white/80 text-[color:var(--text-main)]"
             >
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                 <line x1="2" y1="2" x2="14" y2="14" />
@@ -155,7 +155,7 @@ export function MobileNav() {
                       <Link
                         href={item.href}
                         onClick={close}
-                        className="flex-1 rounded-xl px-4 py-3 text-base font-semibold text-[--text-main] transition hover:bg-[color:var(--surface-strong)] hover:text-[--brand-deep]"
+                        className="flex-1 rounded-xl px-4 py-3 text-base font-semibold text-[color:var(--text-main)] transition hover:bg-[color:var(--surface-strong)] hover:text-[color:var(--brand-deep)]"
                       >
                         {item.label}
                       </Link>
@@ -163,7 +163,7 @@ export function MobileNav() {
                         type="button"
                         aria-label={`Toggle ${item.label} submenu`}
                         onClick={() => toggle(item.label)}
-                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-[--text-soft] transition hover:bg-[color:var(--surface-strong)] hover:text-[--brand-deep]"
+                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-[color:var(--text-soft)] transition hover:bg-[color:var(--surface-strong)] hover:text-[color:var(--brand-deep)]"
                       >
                         <svg
                           width="14" height="14" viewBox="0 0 14 14" fill="none"
@@ -176,13 +176,13 @@ export function MobileNav() {
 
                     {/* Collapsible children */}
                     {expanded === item.label && (
-                      <div className="mb-1 ml-4 flex flex-col gap-0.5 border-l border-[--border-strong] pl-3">
+                      <div className="mb-1 ml-4 flex flex-col gap-0.5 border-l border-[color:var(--border-strong)] pl-3">
                         {item.children.map((child) => (
                           <Link
                             key={child.href}
                             href={child.href}
                             onClick={close}
-                            className="rounded-lg px-3 py-2.5 text-sm font-medium text-[--text-soft] transition hover:bg-[color:var(--surface-strong)] hover:text-[--brand-deep]"
+                            className="rounded-lg px-3 py-2.5 text-sm font-medium text-[color:var(--text-soft)] transition hover:bg-[color:var(--surface-strong)] hover:text-[color:var(--brand-deep)]"
                           >
                             {child.label}
                           </Link>
@@ -195,7 +195,7 @@ export function MobileNav() {
                     key={item.label}
                     href={item.href}
                     onClick={close}
-                    className="rounded-xl px-4 py-3 text-base font-semibold text-[--text-main] transition hover:bg-[color:var(--surface-strong)] hover:text-[--brand-deep]"
+                    className="rounded-xl px-4 py-3 text-base font-semibold text-[color:var(--text-main)] transition hover:bg-[color:var(--surface-strong)] hover:text-[color:var(--brand-deep)]"
                   >
                     {item.label}
                   </Link>
@@ -205,7 +205,7 @@ export function MobileNav() {
           </nav>
 
           {/* Fixed footer CTA */}
-          <div className="shrink-0 border-t border-[--border-strong] px-4 pb-6 pt-4 sm:px-6">
+          <div className="shrink-0 border-t border-[color:var(--border-strong)] px-4 pb-6 pt-4 sm:px-6">
             <Link
               href="/contact"
               onClick={close}

@@ -82,7 +82,7 @@ export function DatePicker({ name, required }: Props) {
       <button
         type="button"
         onClick={() => setOpen(o => !o)}
-        className="flex w-full items-center justify-between rounded-xl border border-[--border-strong] bg-white px-4 py-3 text-left text-sm outline-none transition focus:border-[color:var(--brand)] focus:ring-2 focus:ring-[color:var(--brand)]/20"
+        className="flex w-full items-center justify-between rounded-xl border border-[color:var(--border-strong)] bg-white px-4 py-3 text-left text-sm outline-none transition focus:border-[color:var(--brand)] focus:ring-2 focus:ring-[color:var(--brand)]/20"
       >
         <span className={selected ? "text-[color:var(--text-main)]" : "text-[color:var(--text-soft)]/50"}>
           {selected ? formatDisplay(selected) : "Select a date"}
@@ -95,7 +95,7 @@ export function DatePicker({ name, required }: Props) {
 
       {/* Calendar popup */}
       {open && (
-        <div className="absolute left-0 top-[calc(100%+8px)] z-50 w-72 overflow-hidden rounded-2xl border border-[--border-strong] bg-white shadow-[0_20px_60px_rgba(33,23,31,0.16)]">
+        <div className="absolute left-0 top-[calc(100%+8px)] z-50 w-72 overflow-hidden rounded-2xl border border-[color:var(--border-strong)] bg-white shadow-[0_20px_60px_rgba(33,23,31,0.16)]">
           {/* Month header */}
           <div className="flex items-center justify-between bg-[color:var(--brand)] px-4 py-3">
             <button
@@ -162,7 +162,7 @@ export function DatePicker({ name, required }: Props) {
           </div>
 
           {/* Today shortcut */}
-          <div className="border-t border-[--border-strong] px-4 py-2.5 text-center">
+          <div className="border-t border-[color:var(--border-strong)] px-4 py-2.5 text-center">
             <button
               type="button"
               onClick={() => { setSelected(today); setViewYear(today.getFullYear()); setViewMonth(today.getMonth()); setOpen(false); }}

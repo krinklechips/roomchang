@@ -18,7 +18,7 @@ const FALLBACK_STATS: Record<string, DisplayStat> = {
   patients_per_month: { display_value: "4,000+", label: "Patients per month" },
   countries_served: { display_value: "20+", label: "Countries served" },
   clinical_experience: { display_value: "30 yrs", label: "Clinical experience" },
-  specialist_dentists: { display_value: "37+", label: "Specialist Dentists" },
+  specialist_dentists: { display_value: "37", label: "Specialist Dentists" },
   patients_treated: { display_value: "100,000+", label: "Patients Treated" },
 };
 
@@ -39,7 +39,7 @@ export default async function ClinicalResultsPage() {
   return (
     <SiteShell>
       {/* Header */}
-      <div className="border-b border-[--border-strong] bg-[color:var(--surface)]">
+      <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--surface)]">
         <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8 lg:grid lg:grid-cols-2 lg:items-center lg:gap-16">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--brand)]">
@@ -73,7 +73,7 @@ export default async function ClinicalResultsPage() {
       </div>
 
       {/* Stats band */}
-      <div className="border-b border-[--border-strong] bg-[color:var(--brand)]">
+      <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--brand)]">
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
             {[

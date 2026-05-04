@@ -49,7 +49,7 @@ const NAV_ITEMS: NavItem[] = [
     href: "/technology",
     children: [
       { label: "CAD/CAM Digital Dentistry", href: "/technology/cad-cam" },
-      { label: "CA® Clear Aligner Splint", href: "/technology/ca-clear-aligner" },
+      { label: "CA (Clear Aligner)", href: "/technology/ca-clear-aligner" },
       { label: "Invisalign Clear Aligners", href: "/technology/invisalign" },
       { label: "Ortho-Tain® System", href: "/technology/ortho-tain" },
       { label: "Beyond® Teeth Whitening", href: "/technology/beyond-whitening" },
@@ -125,12 +125,12 @@ export function SiteHeader() {
 
                   {/* Dropdown */}
                   <div className="invisible absolute left-0 top-[calc(100%+0.25rem)] z-50 min-w-52 opacity-0 transition-all duration-150 group-hover:visible group-hover:opacity-100">
-                    <div className="rounded-2xl border border-[--border-strong] bg-white/98 p-1.5 shadow-[0_20px_50px_rgba(61,24,47,0.14)] backdrop-blur">
+                    <div className="rounded-2xl border border-[color:var(--border-strong)] bg-white/98 p-1.5 shadow-[0_20px_50px_rgba(61,24,47,0.14)] backdrop-blur">
                       {item.children.map((child) => (
                         <Link
                           key={child.label}
                           href={child.href}
-                          className="flex items-center rounded-xl px-3 py-2.5 text-sm font-medium text-[--text-main] transition-colors hover:bg-[color:var(--brand-soft)] hover:text-[color:var(--brand-deep)]"
+                          className="flex items-center rounded-xl px-3 py-2.5 text-sm font-medium text-[color:var(--text-main)] transition-colors hover:bg-[color:var(--brand-soft)] hover:text-[color:var(--brand-deep)]"
                         >
                           {child.label}
                         </Link>

@@ -10,7 +10,7 @@ export const revalidate = 60;
 export const metadata: Metadata = {
   title: "Technology | Roomchang Dental Hospital",
   description:
-    "Roomchang Dental Hospital uses the latest in digital dentistry — CAD/CAM milling, CBCT imaging, CA® Clear Aligners, and advanced sterilisation systems.",
+    "Roomchang Dental Hospital uses the latest in digital dentistry — CAD/CAM technology, CBCT imaging, CA Clear Aligners, and advanced sterilisation systems.",
 };
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -24,7 +24,7 @@ const CATEGORY_COLORS: Record<string, string> = {
 const HERO_TRUST = [
   { value: "CAD/CAM", label: "In-house Lab" },
   { value: "3D",      label: "CBCT Imaging" },
-  { value: "CA®",     label: "Clear Aligners" },
+  { value: "CA",      label: "Clear Aligners" },
   { value: "Class B", label: "Sterilisation" },
 ];
 
@@ -34,16 +34,16 @@ export default async function TechnologyPage() {
   return (
     <SiteShell>
       {/* Header */}
-      <div className="border-b border-[--border-strong] bg-[color:var(--surface)]">
+      <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--surface)]">
         <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8 lg:grid lg:grid-cols-2 lg:items-center lg:gap-16">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[--brand]">
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--brand)]">
               Precision & Innovation
             </p>
-            <h1 className="mt-3 font-display text-5xl leading-none text-[--text-main] sm:text-6xl">
+            <h1 className="mt-3 font-display text-5xl leading-none text-[color:var(--text-main)] sm:text-6xl">
               Our Technology
             </h1>
-            <p className="mt-5 max-w-2xl text-base leading-7 text-[--text-soft]">
+            <p className="mt-5 max-w-2xl text-base leading-7 text-[color:var(--text-soft)]">
               Roomchang invests continuously in the tools and systems that make dental care safer,
               faster, and more precise. From in-house aligner fabrication to 3D surgical planning,
               technology is at the core of how we work.
@@ -68,7 +68,7 @@ export default async function TechnologyPage() {
           {technologies.map((tech, i) => (
             <article
               key={tech.id}
-              className={`grid gap-0 overflow-hidden rounded-3xl border border-[--border-strong] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)] lg:grid-cols-2 ${
+              className={`grid gap-0 overflow-hidden rounded-3xl border border-[color:var(--border-strong)] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)] lg:grid-cols-2 ${
                 i % 2 === 1 ? "lg:[&>:first-child]:order-2" : ""
               }`}
             >
@@ -101,17 +101,17 @@ export default async function TechnologyPage() {
                     {tech.category}
                   </span>
                 </div>
-                <h2 className="font-display text-3xl leading-tight text-[--text-main] sm:text-4xl">
+                <h2 className="font-display text-3xl leading-tight text-[color:var(--text-main)] sm:text-4xl">
                   {tech.name}
                 </h2>
-                <p className="text-sm leading-7 text-[--text-soft]">{tech.description}</p>
+                <p className="text-sm leading-7 text-[color:var(--text-soft)]">{tech.description}</p>
                 <ul className="space-y-2">
                   {tech.highlights.map((h) => (
                     <li
                       key={h}
-                      className="flex items-start gap-2.5 text-sm text-[--text-main]"
+                      className="flex items-start gap-2.5 text-sm text-[color:var(--text-main)]"
                     >
-                      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[color:var(--brand-soft)] text-[--brand-deep]">
+                      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[color:var(--brand-soft)] text-[color:var(--brand-deep)]">
                         <Check size={11} strokeWidth={3} aria-hidden="true" />
                       </span>
                       {h}
@@ -121,14 +121,14 @@ export default async function TechnologyPage() {
                 {tech.slug ? (
                   <Link
                     href={`/technology/${tech.slug}`}
-                    className="inline-flex items-center gap-2 text-sm font-semibold text-[--brand-deep] transition hover:text-[--brand]"
+                    className="inline-flex items-center gap-2 text-sm font-semibold text-[color:var(--brand-deep)] transition hover:text-[color:var(--brand)]"
                   >
                     Learn more <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
                   </Link>
                 ) : (
                   <Link
                     href="/contact"
-                    className="inline-flex items-center gap-2 text-sm font-semibold text-[--brand-deep] transition hover:text-[--brand]"
+                    className="inline-flex items-center gap-2 text-sm font-semibold text-[color:var(--brand-deep)] transition hover:text-[color:var(--brand)]"
                   >
                     Ask about this <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
                   </Link>
@@ -139,10 +139,10 @@ export default async function TechnologyPage() {
         </div>
 
         {/* CTA */}
-        <div className="mt-16 flex flex-col items-start gap-6 rounded-3xl border border-[--border-strong] bg-[color:var(--surface)] p-10 sm:flex-row sm:items-center sm:justify-between sm:p-12">
+        <div className="mt-16 flex flex-col items-start gap-6 rounded-3xl border border-[color:var(--border-strong)] bg-[color:var(--surface)] p-10 sm:flex-row sm:items-center sm:justify-between sm:p-12">
           <div>
-            <h2 className="font-display text-3xl text-[--text-main]">See it in person</h2>
-            <p className="mt-2 text-sm leading-7 text-[--text-soft]">
+            <h2 className="font-display text-3xl text-[color:var(--text-main)]">See it in person</h2>
+            <p className="mt-2 text-sm leading-7 text-[color:var(--text-soft)]">
               Book a consultation and our team will walk you through exactly what technology
               applies to your treatment.
             </p>
