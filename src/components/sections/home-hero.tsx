@@ -37,7 +37,7 @@ const FALLBACK_SLIDES: HeroSlide[] = [
     id: "digital",
     eyebrow: "Digital dentistry",
     title: "Precision Technology, Every Treatment",
-    description: "CAD/CAM technology, 3D CBCT imaging, intraoral scanning, and CA (Clear Aligner) fabrication — made and fitted right here.",
+    description: "CAD/CAM technology, 3D CBCT imaging, intraoral scanning, and Clear Aligner (CA) fabrication — made and fitted right here.",
     imageSrc: "/hero/roomchang-digital-lab.jpeg",
     imageAlt: "Roomchang staff working with digital dental laboratory technology",
     imagePosition: "center center",

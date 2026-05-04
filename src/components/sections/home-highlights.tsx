@@ -51,7 +51,7 @@ const featuredCards = [
   },
   {
     id: "aligner",
-    title: "CA (Clear Aligner)",
+    title: "Clear Aligner (CA)",
     description:
       "Designed, fabricated, and fitted in-house for a precise, discreet result.",
     imageSrc: "/hero/roomchang-clear-aligner.jpg",

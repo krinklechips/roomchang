@@ -77,7 +77,7 @@ const ABOUT_SECTIONS: { title: string; description: string; href: string; icon: 
   {
     title: "Technology",
     description:
-      "CAD/CAM technology, digital intraoral scanning, Invisalign, Beyond® whitening, and the CA (Clear Aligner) system.",
+      "CAD/CAM technology, digital intraoral scanning, Invisalign, Beyond® whitening, and the Clear Aligner (CA) system.",
     href: "/technology",
     icon: Cpu,
   },

@@ -29,7 +29,7 @@ const FACILITY_SECTIONS = [
       "Digital intraoral scanners",
       "CAD/CAM technology from Germany",
       "3D printers for precision restorations",
-      "CA (Clear Aligner) fabrication",
+      "Clear Aligner (CA) fabrication",
     ],
   },
   {
