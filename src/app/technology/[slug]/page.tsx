@@ -137,11 +137,30 @@ function Steps({ s }: { s: Extract<TechSection, { type: "steps" }> }) {
   );
 }
 
+function VideoEmbed({ s }: { s: Extract<TechSection, { type: "video" }> }) {
+  return (
+    <div>
+      {s.heading && <h2 className="font-display text-3xl text-[color:var(--text-main)]">{s.heading}</h2>}
+      {s.subheading && <p className="mt-3 text-sm text-[color:var(--text-soft)]">{s.subheading}</p>}
+      <div className={`${s.heading ? "mt-8" : ""} relative aspect-video overflow-hidden rounded-2xl border border-[color:var(--border-strong)] shadow-[0_16px_48px_rgba(57,28,45,0.08)]`}>
+        <iframe
+          src={`https://www.youtube.com/embed/${s.videoId}`}
+          title={s.heading ?? "Video"}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          className="absolute inset-0 h-full w-full"
+        />
+      </div>
+    </div>
+  );
+}
+
 function RenderSection({ s }: { s: TechSection }) {
   if (s.type === "callout") return <Callout s={s} />;
   if (s.type === "text")    return <TextBlock s={s} />;
   if (s.type === "cards")   return <Cards s={s} />;
   if (s.type === "steps")   return <Steps s={s} />;
+  if (s.type === "video")   return <VideoEmbed s={s} />;
   return null;
 }
 

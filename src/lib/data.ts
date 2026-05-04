@@ -91,7 +91,8 @@ export type TechSection =
   | { type: "callout"; icon?: string; title: string; body: string }
   | { type: "text"; heading: string; body: string; card?: boolean }
   | { type: "cards"; heading: string; subheading?: string; columns?: number; items: { title: string; body: string; icon?: string }[] }
-  | { type: "steps"; heading: string; subheading?: string; items: { step: string; detail: string }[] };
+  | { type: "steps"; heading: string; subheading?: string; items: { step: string; detail: string }[] }
+  | { type: "video"; heading?: string; subheading?: string; videoId: string };
 
 export type TechnologyItem = {
   id: string;
