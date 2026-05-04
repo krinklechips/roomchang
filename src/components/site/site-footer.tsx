@@ -32,10 +32,10 @@ const FOOTER_LINKS = [
     heading: "International Patients",
     links: [
       { label: "Coming to Cambodia?", href: "/international" },
-      { label: "Price Comparison", href: "/pricing" },
       { label: "How It Works", href: "/international#how-it-works" },
-      { label: "Before & After Gallery", href: "/clinical-results" },
-      { label: "Treatment Cost Guide", href: "/pricing" },
+      { label: "Treatment Costs", href: "/pricing" },
+      { label: "Price Comparison", href: "/pricing/price-comparison" },
+      { label: "Clinical Results", href: "/clinical-results" },
     ],
   },
   {

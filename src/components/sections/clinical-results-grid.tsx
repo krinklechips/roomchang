@@ -75,14 +75,13 @@ export function ClinicalResultsGrid({ cases }: { cases: ClinicalCase[] }) {
             href={`/clinical-results/${c.slug}`}
             className="group flex flex-col overflow-hidden rounded-3xl border border-[color:var(--border-strong)] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_60px_rgba(57,28,45,0.1)]"
           >
-            <div className="relative overflow-hidden bg-[linear-gradient(135deg,var(--brand-soft),var(--surface-strong))]">
+            <div className="relative aspect-[4/3] overflow-hidden bg-[linear-gradient(135deg,var(--brand-soft),var(--surface-strong))]">
               {c.cardImage && (
                 <Image
                   src={c.cardImage}
                   alt={`Before and after — ${c.title}`}
-                  width={800}
-                  height={600}
-                  className="w-full h-auto transition duration-500 group-hover:scale-[1.03]"
+                  fill
+                  className="object-cover object-center transition duration-500 group-hover:scale-[1.03]"
                   sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                 />
               )}
@@ -91,13 +90,13 @@ export function ClinicalResultsGrid({ cases }: { cases: ClinicalCase[] }) {
               </span>
             </div>
 
-            <div className="flex flex-1 flex-col gap-3 p-6">
+            <div className="flex flex-1 flex-col gap-2.5 p-6">
               <h2 className="font-display text-xl leading-tight text-[color:var(--text-main)] transition group-hover:text-[color:var(--brand-deep)]">
                 {c.title}
               </h2>
-              <p className="text-xs font-semibold text-[color:var(--brand-deep)]">{c.treatment}</p>
-              <p className="flex-1 text-sm leading-6 text-[color:var(--text-soft)]">{c.description}</p>
-              <div className="flex items-center justify-between border-t border-[color:var(--border-strong)] pt-3">
+              <p className="line-clamp-2 text-xs font-semibold leading-snug text-[color:var(--brand-deep)]">{c.treatment}</p>
+              <p className="line-clamp-3 flex-1 text-sm leading-6 text-[color:var(--text-soft)]">{c.description}</p>
+              <div className="mt-auto flex items-center justify-between border-t border-[color:var(--border-strong)] pt-3">
                 <span className="text-xs text-[color:var(--text-soft)]">
                   Duration: <span className="font-semibold text-[color:var(--text-main)]">{c.duration}</span>
                 </span>
