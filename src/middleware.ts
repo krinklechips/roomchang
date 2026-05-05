@@ -38,12 +38,54 @@ function adminAuth(request: NextRequest): NextResponse | null {
   return null; // authenticated
 }
 
+function previewAuth(request: NextRequest): NextResponse | null {
+  const previewToken = process.env.CMS_PREVIEW_TOKEN;
+
+  // No token configured → block in production, allow in dev
+  if (!previewToken) {
+    if (process.env.NODE_ENV === "production") {
+      return new NextResponse("Preview access is disabled.", { status: 403 });
+    }
+    return null;
+  }
+
+  // Check ?token= query param
+  const tokenParam = request.nextUrl.searchParams.get("token");
+  if (tokenParam === previewToken) {
+    // Valid token — set a cookie so subsequent navigations don't need it in URL
+    const response = NextResponse.next();
+    response.cookies.set("rc_preview_token", previewToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      path: "/",
+      maxAge: 60 * 60 * 2, // 2 hours
+    });
+    return response;
+  }
+
+  // Check cookie
+  const cookieToken = request.cookies.get("rc_preview_token")?.value;
+  if (cookieToken === previewToken) {
+    return null; // authenticated via cookie
+  }
+
+  // Fall back to Basic Auth (same as admin)
+  return adminAuth(request);
+}
+
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Protect all /admin/* pages and /api/admin/* routes
   if (pathname.startsWith("/admin") || pathname.startsWith("/api/admin")) {
     const deny = adminAuth(request);
+    if (deny) return deny;
+  }
+
+  // Protect /preview/* routes with token OR Basic Auth
+  if (pathname.startsWith("/preview")) {
+    const deny = previewAuth(request);
     if (deny) return deny;
   }
 
