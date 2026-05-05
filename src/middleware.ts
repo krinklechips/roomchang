@@ -1,7 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
+import { createHmac } from "crypto";
 
 const COOKIE_NAME = "rc_ref";
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 30; // 30 days
+
+const PREVIEW_COOKIE = "rc_preview_session";
+const PREVIEW_COOKIE_MAX_AGE = 60 * 60 * 2; // 2 hours
+
+// ─── Admin Basic Auth ──────────────────────────────────────────────────────
 
 function adminAuth(request: NextRequest): NextResponse | null {
   const adminUser = process.env.ADMIN_USER;
@@ -38,41 +44,79 @@ function adminAuth(request: NextRequest): NextResponse | null {
   return null; // authenticated
 }
 
+// ─── Preview Auth ──────────────────────────────────────────────────────────
+
+/** Create an HMAC signature from the preview token (never stores raw secret in cookie) */
+function signPreviewCookie(token: string): string {
+  const expiry = Math.floor(Date.now() / 1000) + PREVIEW_COOKIE_MAX_AGE;
+  const payload = `preview:${expiry}`;
+  const sig = createHmac("sha256", token).update(payload).digest("hex");
+  return `${payload}:${sig}`;
+}
+
+/** Verify an HMAC-signed preview cookie */
+function verifyPreviewCookie(cookie: string, token: string): boolean {
+  const parts = cookie.split(":");
+  if (parts.length !== 3) return false;
+
+  const [prefix, expiryStr, sig] = parts;
+  const payload = `${prefix}:${expiryStr}`;
+  const expected = createHmac("sha256", token).update(payload).digest("hex");
+
+  // Timing-safe comparison
+  if (sig.length !== expected.length) return false;
+  const bufSig = Buffer.from(sig);
+  const bufExp = Buffer.from(expected);
+  let match = 0;
+  for (let i = 0; i < bufSig.length; i++) {
+    match |= bufSig[i] ^ bufExp[i];
+  }
+  if (match !== 0) return false;
+
+  // Check expiry
+  const expiry = parseInt(expiryStr, 10);
+  if (isNaN(expiry) || expiry < Math.floor(Date.now() / 1000)) return false;
+
+  return true;
+}
+
 function previewAuth(request: NextRequest): NextResponse | null {
   const previewToken = process.env.CMS_PREVIEW_TOKEN;
 
-  // No token configured → block in production, allow in dev
+  // No token configured → fall back to Basic Auth
   if (!previewToken) {
-    if (process.env.NODE_ENV === "production") {
-      return new NextResponse("Preview access is disabled.", { status: 403 });
-    }
-    return null;
+    return adminAuth(request);
   }
 
-  // Check ?token= query param
+  // Check ?token= query param — if valid, set signed cookie and redirect without token
   const tokenParam = request.nextUrl.searchParams.get("token");
   if (tokenParam === previewToken) {
-    // Valid token — set a cookie so subsequent navigations don't need it in URL
-    const response = NextResponse.next();
-    response.cookies.set("rc_preview_token", previewToken, {
+    // Redirect to the same URL without the token param (prevents leaking in browser history/Referer)
+    const cleanUrl = new URL(request.nextUrl.toString());
+    cleanUrl.searchParams.delete("token");
+
+    const response = NextResponse.redirect(cleanUrl);
+    response.cookies.set(PREVIEW_COOKIE, signPreviewCookie(previewToken), {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
       path: "/",
-      maxAge: 60 * 60 * 2, // 2 hours
+      maxAge: PREVIEW_COOKIE_MAX_AGE,
     });
     return response;
   }
 
-  // Check cookie
-  const cookieToken = request.cookies.get("rc_preview_token")?.value;
-  if (cookieToken === previewToken) {
+  // Check signed cookie
+  const cookieValue = request.cookies.get(PREVIEW_COOKIE)?.value;
+  if (cookieValue && verifyPreviewCookie(cookieValue, previewToken)) {
     return null; // authenticated via cookie
   }
 
   // Fall back to Basic Auth (same as admin)
   return adminAuth(request);
 }
+
+// ─── Main middleware ───────────────────────────────────────────────────────
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;

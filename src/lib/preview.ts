@@ -108,6 +108,47 @@ export async function deleteDraft(
   return true;
 }
 
+// ─── Safety helpers ────────────────────────────────────────────────────────
+
+/**
+ * Safely merge draft data over live data with runtime type guards.
+ * Prevents crashes from malformed drafts (e.g. `{ highlights: null }`).
+ */
+function safeMerge<T extends Record<string, unknown>>(
+  live: T,
+  draft: Record<string, unknown>,
+): T {
+  const merged = { ...live };
+
+  for (const [key, value] of Object.entries(draft)) {
+    if (!(key in live)) continue; // skip unknown keys
+
+    const liveValue = live[key];
+
+    // Protect array fields from being overwritten with null/non-array
+    if (Array.isArray(liveValue)) {
+      if (Array.isArray(value)) {
+        (merged as Record<string, unknown>)[key] = value;
+      }
+      // else: skip — don't replace array with null/string/etc.
+      continue;
+    }
+
+    // Protect object fields (like content) from being set to non-object
+    if (liveValue !== null && typeof liveValue === "object" && !Array.isArray(liveValue)) {
+      if (value !== null && typeof value === "object" && !Array.isArray(value)) {
+        (merged as Record<string, unknown>)[key] = value;
+      }
+      continue;
+    }
+
+    // For primitives, allow the override (including null)
+    (merged as Record<string, unknown>)[key] = value;
+  }
+
+  return merged;
+}
+
 // ─── Preview data helpers ──────────────────────────────────────────────────
 // These fetch draft data and merge over live data so the preview
 // shows the exact same shape the live components expect.
@@ -128,7 +169,7 @@ export async function getPreviewService(
   // Check for draft
   const draft = await getDraft("service", live.id);
   if (draft) {
-    return { ...live, ...draft.draft_data } as Service;
+    return safeMerge(live, draft.draft_data) as Service;
   }
   return live as Service;
 }
@@ -147,7 +188,7 @@ export async function getPreviewTechnology(
 
   const draft = await getDraft("technology", live.id);
   if (draft) {
-    return { ...live, ...draft.draft_data } as TechnologyItem;
+    return safeMerge(live, draft.draft_data) as TechnologyItem;
   }
   return live as TechnologyItem;
 }
@@ -167,6 +208,8 @@ export async function getPreviewDoctors(): Promise<Doctor[]> {
 
   return live.map((doc) => {
     const draftData = draftMap.get(doc.id);
-    return draftData ? ({ ...doc, ...draftData } as Doctor) : (doc as Doctor);
+    return draftData
+      ? (safeMerge(doc, draftData) as Doctor)
+      : (doc as Doctor);
   });
 }

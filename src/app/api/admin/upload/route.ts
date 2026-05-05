@@ -1,5 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { uploadToR2, validateUpload, isR2Configured } from "@/lib/r2";
+import {
+  uploadToR2,
+  deleteFromR2,
+  validateUpload,
+  validateFileContent,
+  isR2Configured,
+} from "@/lib/r2";
 import { supabaseServer } from "@/lib/supabase-server";
 import { randomUUID } from "crypto";
 
@@ -9,7 +15,7 @@ export const runtime = "nodejs";
  * POST /api/admin/upload
  *
  * Accepts multipart form data with a single file.
- * Uploads to R2 and records in cms_images.
+ * Validates MIME by magic bytes, uploads to R2, records in cms_images.
  *
  * Protected by Basic Auth via middleware.
  *
@@ -23,7 +29,10 @@ export const runtime = "nodejs";
 export async function POST(request: NextRequest) {
   if (!isR2Configured()) {
     return NextResponse.json(
-      { error: "R2 storage is not configured. Set R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY." },
+      {
+        error:
+          "R2 storage is not configured. Set R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, and NEXT_PUBLIC_CDN_URL.",
+      },
       { status: 503 },
     );
   }
@@ -33,7 +42,10 @@ export async function POST(request: NextRequest) {
     formData = await request.formData();
   } catch {
     return NextResponse.json(
-      { error: "Invalid form data. Send multipart/form-data with a 'file' field." },
+      {
+        error:
+          "Invalid form data. Send multipart/form-data with a 'file' field.",
+      },
       { status: 400 },
     );
   }
@@ -46,10 +58,19 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  // Validate type and size
+  // Validate declared type and size
   const validationError = validateUpload({ type: file.type, size: file.size });
   if (validationError) {
     return NextResponse.json({ error: validationError }, { status: 400 });
+  }
+
+  // Read file into buffer for magic byte check + upload
+  const buffer = Buffer.from(await file.arrayBuffer());
+
+  // Validate actual file content matches declared MIME type
+  const contentError = validateFileContent(buffer, file.type);
+  if (contentError) {
+    return NextResponse.json({ error: contentError }, { status: 400 });
   }
 
   // Build the R2 key
@@ -63,7 +84,6 @@ export async function POST(request: NextRequest) {
   const key = `roomchang/${folder}/${safeName}-${randomUUID().slice(0, 8)}.${ext}`;
 
   // Upload to R2
-  const buffer = Buffer.from(await file.arrayBuffer());
   const { url } = await uploadToR2(key, buffer, file.type);
 
   // Record in database
@@ -88,8 +108,16 @@ export async function POST(request: NextRequest) {
 
   if (dbError) {
     console.error("[Upload] Failed to record image:", dbError.message);
-    // Image was uploaded to R2 but DB record failed — still return the URL
-    return NextResponse.json({ url, key, warning: "Uploaded but DB record failed" });
+    // Cleanup: remove orphaned blob from R2
+    try {
+      await deleteFromR2(key);
+    } catch (cleanupErr) {
+      console.error("[Upload] Failed to cleanup orphaned R2 object:", cleanupErr);
+    }
+    return NextResponse.json(
+      { error: `Upload succeeded but metadata record failed: ${dbError.message}` },
+      { status: 500 },
+    );
   }
 
   return NextResponse.json({
