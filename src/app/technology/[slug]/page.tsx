@@ -255,10 +255,10 @@ export default async function TechnologyDetailPage({
       {tech.highlights.length > 0 && (
         <div className="border-b border-[color:var(--border-strong)] bg-white">
           <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-            <ul className="flex flex-wrap gap-x-8 gap-y-3">
+            <ul className="grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
               {tech.highlights.map((h) => (
-                <li key={h} className="flex items-center gap-2.5 text-sm font-medium text-[color:var(--text-main)]">
-                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[color:var(--brand-soft)] text-[color:var(--brand-deep)]">
+                <li key={h} className="flex items-start gap-2.5 text-sm font-medium text-[color:var(--text-main)]">
+                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[color:var(--brand-soft)] text-[color:var(--brand-deep)]">
                     <Check size={11} strokeWidth={3} aria-hidden="true" />
                   </span>
                   {h}
