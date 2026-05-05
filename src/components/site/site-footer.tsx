@@ -64,7 +64,7 @@ export function SiteFooter() {
     <footer className="border-t border-[color:var(--border-strong)] bg-[color:var(--surface)]">
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         {/* Top row */}
-        <div className="grid gap-10 lg:grid-cols-[1.6fr_repeat(4,1fr)]">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.6fr_repeat(4,1fr)]">
           {/* Brand */}
           <div className="space-y-4">
             <div className="relative h-[60px] w-[120px]">
@@ -125,7 +125,7 @@ export function SiteFooter() {
           <p className="text-xs text-[color:var(--text-soft)]">
             © {new Date().getFullYear()} Roomchang Dental Hospital. Operated by Kravan Healthcare Co., Ltd.
           </p>
-          <div className="flex items-center gap-5">
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
             {SOCIAL.map((s) => (
               <a
                 key={s.label}

@@ -265,12 +265,12 @@ export function DoctorGrid({ doctors }: { doctors: Doctor[] }) {
               </button>
             ))}
 
-            {activeLanguage && (
-              <span className="ml-1 text-xs text-[color:var(--text-soft)]">
-                — {filtered.length} doctor{filtered.length !== 1 ? "s" : ""} speak {activeLanguage}
-              </span>
-            )}
           </div>
+          {activeLanguage && (
+            <p className="mt-2 text-xs text-[color:var(--text-soft)]">
+              {filtered.length} doctor{filtered.length !== 1 ? "s" : ""} speak {activeLanguage}
+            </p>
+          )}
         </div>
       </div>
 

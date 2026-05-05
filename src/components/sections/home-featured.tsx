@@ -71,7 +71,7 @@ export async function HomeFeatured() {
   return (
     <section className="border-t border-[color:var(--border-strong)] bg-[color:var(--surface)]">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
-        <div className="grid gap-6 lg:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {cards.map((card) => (
             <article
               key={card.id}
