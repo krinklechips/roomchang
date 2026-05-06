@@ -44,11 +44,11 @@ const NAV_ITEMS: NavItem[] = [
     href: "/technology",
     children: [
       { label: "CAD/CAM Digital Dentistry", href: "/technology/cad-cam" },
-      { label: "ICON® Vestibular", href: "/technology/icon-vestibular" },
       { label: "Clear Aligner (CA)", href: "/technology/ca-clear-aligner" },
       { label: "Invisalign Clear Aligners", href: "/technology/invisalign" },
       { label: "Ortho-Tain® System", href: "/technology/ortho-tain" },
       { label: "Beyond® Teeth Whitening", href: "/technology/beyond-whitening" },
+      { label: "ICON® Vestibular", href: "/technology/icon-vestibular" },
       { label: "Sterilisation Technologies", href: "/technology/sterilisation" },
     ],
   },
