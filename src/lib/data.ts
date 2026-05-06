@@ -419,3 +419,77 @@ export const getSeoPageMeta = cache(async function getSeoPageMeta(path: string):
     noIndex: Boolean(data.noindex),
   };
 });
+
+// ─── Blog & FAQ Types ─────────────────────────────────────────────────────
+
+export type FaqItem = {
+  id: string;
+  question: string;
+  answer: string;
+  category: string | null;
+  sort_order: number;
+};
+
+export type BlogPost = {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string | null;
+  body: string | null;
+  category: "dentist-talks" | "publications";
+  author_name: string | null;
+  author_id: string | null;
+  cover_image: string | null;
+  featured: boolean;
+  published_at: string | null;
+};
+
+// ─── Blog & FAQ Queries ───────────────────────────────────────────────────
+
+export async function getFaqItems(): Promise<FaqItem[]> {
+  const { data, error } = await supabase
+    .from("faq_items")
+    .select("id, question, answer, category, sort_order")
+    .eq("published", true)
+    .order("sort_order");
+
+  if (error) {
+    console.error("Failed to fetch FAQ items:", error.message);
+    return [];
+  }
+  return data ?? [];
+}
+
+export async function getBlogPosts(category?: "dentist-talks" | "publications"): Promise<BlogPost[]> {
+  let query = supabase
+    .from("blog_posts")
+    .select("id, title, slug, excerpt, body, category, author_name, author_id, cover_image, featured, published_at")
+    .eq("published", true)
+    .order("sort_order");
+
+  if (category) {
+    query = query.eq("category", category);
+  }
+
+  const { data, error } = await query;
+  if (error) {
+    console.error("Failed to fetch blog posts:", error.message);
+    return [];
+  }
+  return data ?? [];
+}
+
+export const getBlogPostBySlug = cache(async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
+  const { data, error } = await supabase
+    .from("blog_posts")
+    .select("id, title, slug, excerpt, body, category, author_name, author_id, cover_image, featured, published_at")
+    .eq("slug", slug)
+    .eq("published", true)
+    .single();
+
+  if (error) {
+    console.error("Failed to fetch blog post:", error.message);
+    return null;
+  }
+  return data ?? null;
+});

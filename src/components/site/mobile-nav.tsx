@@ -18,7 +18,6 @@ const NAV_ITEMS: NavItem[] = [
       { label: "Message from Our Director", href: "/about/director-message" },
       { label: "Community & Charity", href: "/about/community" },
       { label: "Corporate Partnerships", href: "/about/partnerships" },
-      { label: "Patient Testimonials", href: "/about/testimonials" },
     ],
   },
   {
@@ -73,6 +72,16 @@ const NAV_ITEMS: NavItem[] = [
       { label: "Implant Bridges", href: "/clinical-results#bridges" },
       { label: "Orthodontics", href: "/clinical-results#orthodontics" },
       { label: "Cosmetic & E-Max", href: "/clinical-results#cosmetic" },
+      { label: "Patient Testimonials", href: "/about/testimonials" },
+    ],
+  },
+  {
+    label: "Education Blog",
+    href: "/blog",
+    children: [
+      { label: "FAQ", href: "/blog/faq" },
+      { label: "Dentist Talks", href: "/blog/dentist-talks" },
+      { label: "Publications", href: "/blog/publications" },
     ],
   },
 ];
