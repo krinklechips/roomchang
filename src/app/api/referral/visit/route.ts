@@ -4,13 +4,15 @@ import { supabaseAdmin } from "@/lib/supabase-admin";
 export async function POST(request: NextRequest) {
   try {
     // Only accept calls from our own middleware (passes a shared internal secret).
-    // If the env var is not configured (dev), allow through.
+    // Fail closed: reject if INTERNAL_SECRET is not configured.
     const internalSecret = process.env.INTERNAL_SECRET;
-    if (internalSecret) {
-      const provided = request.headers.get("x-internal-secret");
-      if (provided !== internalSecret) {
-        return NextResponse.json({ ok: true }); // silently ignore — don't leak info
-      }
+    if (!internalSecret) {
+      console.warn("[referral/visit] INTERNAL_SECRET not set — rejecting request (fail closed)");
+      return NextResponse.json({ ok: true }); // silently reject — don't leak info
+    }
+    const provided = request.headers.get("x-internal-secret");
+    if (provided !== internalSecret) {
+      return NextResponse.json({ ok: true }); // silently ignore — don't leak info
     }
 
     const { agent_code, page } = await request.json();
