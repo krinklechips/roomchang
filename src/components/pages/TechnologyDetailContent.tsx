@@ -105,8 +105,12 @@ function Steps({ s }: { s: Extract<TechSection, { type: "steps" }> }) {
 }
 
 function InlineImage({ s }: { s: Extract<TechSection, { type: "image" }> }) {
+  const sizeClass =
+    s.size === "small"  ? "max-w-md mx-auto" :
+    s.size === "medium" ? "max-w-2xl mx-auto" :
+    "";
   return (
-    <figure>
+    <figure className={sizeClass}>
       <div className="overflow-hidden rounded-2xl border border-[color:var(--border-strong)] shadow-[0_16px_48px_rgba(57,28,45,0.08)]">
         <Image
           src={s.src}
@@ -115,6 +119,66 @@ function InlineImage({ s }: { s: Extract<TechSection, { type: "image" }> }) {
           height={700}
           className="w-full h-auto"
           sizes="(min-width: 1024px) 80vw, 100vw"
+        />
+      </div>
+      {s.caption && (
+        <figcaption className="mt-3 text-center text-xs text-[color:var(--text-soft)]">{s.caption}</figcaption>
+      )}
+    </figure>
+  );
+}
+
+function ImagePair({ s }: { s: Extract<TechSection, { type: "image_pair" }> }) {
+  const isVideo = (src: string) => /\.(mp4|webm)$/i.test(src);
+
+  return (
+    <div className="grid gap-6 sm:grid-cols-2">
+      {[s.left, s.right].map((img) => (
+        <figure key={img.src}>
+          <div className="overflow-hidden rounded-2xl border border-[color:var(--border-strong)] shadow-[0_16px_48px_rgba(57,28,45,0.08)]">
+            {isVideo(img.src) ? (
+              /* eslint-disable-next-line jsx-a11y/media-has-caption */
+              <video
+                src={img.src}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-auto"
+              />
+            ) : (
+              <Image
+                src={img.src}
+                alt={img.alt}
+                width={600}
+                height={400}
+                className="w-full h-auto"
+                sizes="(min-width: 640px) 50vw, 100vw"
+              />
+            )}
+          </div>
+          {img.caption && (
+            <figcaption className="mt-2 text-center text-xs text-[color:var(--text-soft)]">{img.caption}</figcaption>
+          )}
+        </figure>
+      ))}
+    </div>
+  );
+}
+
+function SelfVideo({ s }: { s: Extract<TechSection, { type: "self_video" }> }) {
+  return (
+    <figure>
+      {s.heading && <h2 className="mb-6 font-display text-3xl text-[color:var(--text-main)]">{s.heading}</h2>}
+      <div className="overflow-hidden rounded-2xl border border-[color:var(--border-strong)] shadow-[0_16px_48px_rgba(57,28,45,0.08)]">
+        {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+        <video
+          src={s.src}
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-auto"
         />
       </div>
       {s.caption && (
@@ -143,12 +207,14 @@ function VideoEmbed({ s }: { s: Extract<TechSection, { type: "video" }> }) {
 }
 
 function RenderSection({ s }: { s: TechSection }) {
-  if (s.type === "callout") return <Callout s={s} />;
-  if (s.type === "text")    return <TextBlock s={s} />;
-  if (s.type === "cards")   return <Cards s={s} />;
-  if (s.type === "steps")   return <Steps s={s} />;
-  if (s.type === "video")   return <VideoEmbed s={s} />;
-  if (s.type === "image")   return <InlineImage s={s} />;
+  if (s.type === "callout")    return <Callout s={s} />;
+  if (s.type === "text")       return <TextBlock s={s} />;
+  if (s.type === "cards")      return <Cards s={s} />;
+  if (s.type === "steps")      return <Steps s={s} />;
+  if (s.type === "video")      return <VideoEmbed s={s} />;
+  if (s.type === "image")      return <InlineImage s={s} />;
+  if (s.type === "image_pair") return <ImagePair s={s} />;
+  if (s.type === "self_video") return <SelfVideo s={s} />;
   return null;
 }
 

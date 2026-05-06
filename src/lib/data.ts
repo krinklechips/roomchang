@@ -93,7 +93,9 @@ export type TechSection =
   | { type: "cards"; heading: string; subheading?: string; columns?: number; items: { title: string; body: string; icon?: string }[] }
   | { type: "steps"; heading: string; subheading?: string; items: { step: string; detail: string }[] }
   | { type: "video"; heading?: string; subheading?: string; videoId: string }
-  | { type: "image"; src: string; alt: string; caption?: string };
+  | { type: "image"; src: string; alt: string; caption?: string; size?: "small" | "medium" | "full" }
+  | { type: "image_pair"; left: { src: string; alt: string; caption?: string }; right: { src: string; alt: string; caption?: string } }
+  | { type: "self_video"; src: string; heading?: string; caption?: string };
 
 export type TechnologyItem = {
   id: string;

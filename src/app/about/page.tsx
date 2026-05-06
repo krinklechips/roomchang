@@ -21,7 +21,7 @@ const FALLBACK_STATS: Record<string, DisplayStat> = {
   year_established: { display_value: "1996", label: "Year Established" },
   branches_count: { display_value: "5", label: "Phnom Penh Branches" },
   specialist_dentists: { display_value: "37", label: "Specialist Dentists" },
-  dental_chairs: { display_value: "74", label: "Dental Chairs" },
+  dental_chairs: { display_value: "74", label: "Dental Chairs across 5 branches" },
 };
 
 const ABOUT_SECTIONS: { title: string; description: string; href: string; icon: LucideIcon }[] = [
