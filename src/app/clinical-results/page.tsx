@@ -15,7 +15,6 @@ export const metadata: Metadata = {
 type DisplayStat = { display_value: string; label: string };
 
 const FALLBACK_STATS: Record<string, DisplayStat> = {
-  patients_per_month: { display_value: "4,000+", label: "Patients per month" },
   countries_served: { display_value: "20+", label: "Countries served" },
   clinical_experience: { display_value: "30 yrs", label: "Clinical experience" },
   specialist_dentists: { display_value: "37", label: "Specialist Dentists" },
@@ -75,9 +74,8 @@ export default async function ClinicalResultsPage() {
       {/* Stats band */}
       <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--brand)]">
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
+          <div className="grid grid-cols-3 gap-8">
             {[
-              stat("patients_per_month"),
               stat("countries_served"),
               stat("clinical_experience"),
               stat("specialist_dentists"),
