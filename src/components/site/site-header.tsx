@@ -18,8 +18,10 @@ const NAV_ITEMS: NavItem[] = [
       { label: "Our Facilities", href: "/about/facilities" },
       { label: "Vision, Mission & Values", href: "/about/vision-mission-values" },
       { label: "Message from Our Director", href: "/about/director-message" },
+      { label: "News & Events", href: "/about/news" },
       { label: "Community & Charity", href: "/about/community" },
       { label: "Corporate Partnerships", href: "/about/partnerships" },
+      { label: "Job Listing", href: "/about/careers" },
     ],
   },
   {

@@ -25,7 +25,6 @@ const FOOTER_LINKS = [
       { label: "Our Doctors", href: "/team" },
       { label: "Technology", href: "/technology" },
       { label: "Community & Charity", href: "/about/community" },
-      { label: "Patient Testimonials", href: "/about/testimonials" },
     ],
   },
   {
