@@ -25,6 +25,7 @@ const NAV_ITEMS: NavItem[] = [
     label: "Services",
     href: "/services",
     children: [
+      { label: "Preventive Dentistry", href: "/services/preventive-dentistry" },
       { label: "Cosmetic Dentistry", href: "/services/cosmetic-dentistry" },
       { label: "Endodontics", href: "/services/endodontics" },
       { label: "Dental Crowns", href: "/services/dental-crowns" },

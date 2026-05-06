@@ -32,6 +32,7 @@ const HERO_TRUST = [
 
 // Maps service slug → lucide icon component
 const SERVICE_ICONS: Record<string, LucideIcon> = {
+  "preventive-dentistry":     Shield,
   "dental-implants":          CircleDot,
   "dental-crowns":            Crown,
   "orthodontics":             AlignCenter,
