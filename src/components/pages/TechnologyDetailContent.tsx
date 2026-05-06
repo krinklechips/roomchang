@@ -135,7 +135,7 @@ function ImagePair({ s }: { s: Extract<TechSection, { type: "image_pair" }> }) {
     <div className="grid gap-6 sm:grid-cols-2">
       {[s.left, s.right].map((img) => (
         <figure key={img.src}>
-          <div className="overflow-hidden rounded-2xl border border-[color:var(--border-strong)] shadow-[0_16px_48px_rgba(57,28,45,0.08)]">
+          <div className="relative aspect-video overflow-hidden rounded-2xl border border-[color:var(--border-strong)] bg-[color:var(--surface)] shadow-[0_16px_48px_rgba(57,28,45,0.08)]">
             {isVideo(img.src) ? (
               /* eslint-disable-next-line jsx-a11y/media-has-caption */
               <video
@@ -144,15 +144,14 @@ function ImagePair({ s }: { s: Extract<TechSection, { type: "image_pair" }> }) {
                 loop
                 muted
                 playsInline
-                className="w-full h-auto"
+                className="absolute inset-0 h-full w-full object-cover"
               />
             ) : (
               <Image
                 src={img.src}
                 alt={img.alt}
-                width={600}
-                height={400}
-                className="w-full h-auto"
+                fill
+                className="object-cover"
                 sizes="(min-width: 640px) 50vw, 100vw"
               />
             )}
