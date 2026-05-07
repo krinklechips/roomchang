@@ -313,9 +313,6 @@ export function ContactForm({ branches }: { branches: Branch[] }) {
                 </a>
               ))}
             </div>
-            <p className="mt-4 text-xs text-[color:var(--text-soft)]">
-              WeChat ID: <span className="font-semibold text-[color:var(--text-main)]">viliyanpink</span> — available for all branches
-            </p>
           </div>
         </div>
       </div>

@@ -49,6 +49,7 @@ const NAV_ITEMS: NavItem[] = [
       { label: "Clear Aligner (CA)", href: "/technology/ca-clear-aligner" },
       { label: "Invisalign Clear Aligners", href: "/technology/invisalign" },
       { label: "Ortho-Tain® System", href: "/technology/ortho-tain" },
+      { label: "ResMed ApneaLink Air™", href: "/technology/resmed-apnealink" },
       { label: "Beyond® Teeth Whitening", href: "/technology/beyond-whitening" },
       { label: "ICON® Vestibular", href: "/technology/icon-vestibular" },
       { label: "Sterilisation Technologies", href: "/technology/sterilisation" },
