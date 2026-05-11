@@ -25,6 +25,7 @@ const FOOTER_LINKS = [
       { label: "Our Doctors", href: "/team" },
       { label: "Technology", href: "/technology" },
       { label: "Community & Charity", href: "/about/community" },
+      { label: "Employment Opportunities", href: "/about/careers" },
     ],
   },
   {
@@ -41,8 +42,8 @@ const FOOTER_LINKS = [
     heading: "Contact",
     links: [
       { label: "Book Appointment", href: "/contact" },
-      { label: "Our 5 Branches", href: "/contact#branches" },
-      { label: "WhatsApp (+855 69 811 338)", href: "https://wa.me/85569811338" },
+      { label: "Branches", href: "/contact#branches" },
+      { label: "WhatsApp", href: "https://wa.me/85569811338" },
       { label: "Telegram", href: "https://t.me/roomchang" },
       { label: "Facebook", href: "https://www.facebook.com/roomchangdental" },
     ],

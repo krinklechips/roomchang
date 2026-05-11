@@ -65,9 +65,9 @@ export function HomeStats({ stats }: { stats: StatItem[] }) {
           {stats.map((stat) => (
             <div
               key={stat.label}
-              className="flex flex-col items-center justify-center gap-1 bg-[color:var(--surface)] px-4 py-8 text-center sm:px-6"
+              className="flex flex-col items-center justify-center gap-0.5 bg-[color:var(--surface)] px-3 py-5 text-center sm:gap-1 sm:px-6 sm:py-8"
             >
-              <p className="font-display text-[2.6rem] leading-none text-[color:var(--brand-deep)] lg:text-[3rem]">
+              <p className="font-display text-[2rem] leading-none text-[color:var(--brand-deep)] sm:text-[2.6rem] lg:text-[3rem]">
                 <CountUp target={stat.numeric_value} suffix={stat.suffix} started={started} />
               </p>
               <p className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">

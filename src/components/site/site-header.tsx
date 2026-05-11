@@ -21,7 +21,7 @@ const NAV_ITEMS: NavItem[] = [
       { label: "News & Events", href: "/about/news" },
       { label: "Community & Charity", href: "/about/community" },
       { label: "Corporate Partnerships", href: "/about/partnerships" },
-      { label: "Job Listing", href: "/about/careers" },
+      { label: "Employment Opportunities", href: "/about/careers" },
     ],
   },
   {
@@ -100,15 +100,15 @@ export function SiteHeader() {
       aria-label="Roomchang Dental Hospital"
       className="sticky top-0 z-50 border-b border-black/5 bg-[color:rgba(255,250,251,0.92)] backdrop-blur-xl"
     >
-      <div className="flex w-full items-center justify-between gap-4 px-4 py-3 sm:px-6 sm:py-4 lg:px-8 lg:py-4">
+      <div className="flex w-full items-center justify-between gap-4 px-4 py-2 sm:px-6 sm:py-4 lg:px-8 lg:py-4">
         <Link href="/" className="flex min-w-0 items-center" aria-label="Roomchang Dental Hospital home">
-          <div className="relative h-[64px] w-[125px] sm:h-[74px] sm:w-[145px] lg:h-[84px] lg:w-[164px]">
+          <div className="relative h-[52px] w-[105px] sm:h-[74px] sm:w-[145px] lg:h-[84px] lg:w-[164px]">
             <Image
               src="/brand/roomchang-logo-header-padded.png"
               alt="Roomchang Dental Hospital logo"
               fill
               priority
-              sizes="(max-width: 640px) 125px, (max-width: 1024px) 145px, 164px"
+              sizes="(max-width: 640px) 105px, (max-width: 1024px) 145px, 164px"
               className="object-contain object-left"
             />
           </div>

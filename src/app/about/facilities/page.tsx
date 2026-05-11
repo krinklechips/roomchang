@@ -1,8 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { SiteShell } from "@/components/site/site-shell";
-import { ArrowLeft, Check } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, MapPin, Clock, Phone as PhoneIcon } from "lucide-react";
 import { supabaseServer } from "@/lib/supabase-server";
+import { BRANCHES } from "@/lib/branches";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -135,7 +136,7 @@ export default async function FacilitiesPage() {
             {/* Tall building portrait */}
             <div className="relative overflow-hidden rounded-3xl shadow-[0_20px_60px_rgba(57,28,45,0.12)]">
               <Image
-                src="/facilities/building-exterior.jpg"
+                src="/facilities/EDJI_0381.jpg"
                 alt="Roomchang Dental Hospital — 10-storey building, Monivong Boulevard, Phnom Penh"
                 width={769}
                 height={1280}
@@ -190,8 +191,72 @@ export default async function FacilitiesPage() {
           ))}
         </div>
 
+        {/* Our Locations */}
+        <div className="mt-16">
+          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--brand)]">
+            Our Locations
+          </p>
+          <h2 className="mt-3 font-display text-4xl text-[color:var(--text-main)] sm:text-5xl">
+            Five Branches Across Phnom Penh
+          </h2>
+          <p className="mt-4 max-w-2xl text-sm leading-7 text-[color:var(--text-soft)]">
+            Every Roomchang branch delivers the same specialist care and hospital-grade standards —
+            with the same team quality, equipment, and sterilisation protocols.
+          </p>
+
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {BRANCHES.map((branch) => (
+              <div
+                key={branch.slug}
+                className="flex flex-col rounded-3xl border border-[color:var(--border-strong)] bg-white shadow-[0_12px_40px_rgba(57,28,45,0.05)] overflow-hidden"
+              >
+                <div className="relative h-44 w-full overflow-hidden">
+                  <Image
+                    src={branch.imageSrc}
+                    alt={branch.imageAlt}
+                    fill
+                    className="object-cover"
+                    sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                  />
+                  <div className="absolute left-3 top-3">
+                    <span className="rounded-full bg-white/90 px-3 py-1 text-[0.65rem] font-bold uppercase tracking-[0.18em] text-[color:var(--brand-deep)] backdrop-blur-sm">
+                      {branch.badge}
+                    </span>
+                  </div>
+                </div>
+                <div className="flex flex-1 flex-col p-6">
+                  <h3 className="font-display text-lg text-[color:var(--text-main)]">{branch.name}</h3>
+                  <p className="mt-2 text-xs leading-5 text-[color:var(--text-soft)]">{branch.description}</p>
+                  <div className="mt-4 space-y-2">
+                    <div className="flex items-start gap-2 text-xs text-[color:var(--text-soft)]">
+                      <MapPin size={13} strokeWidth={2} className="mt-0.5 shrink-0 text-[color:var(--brand)]" aria-hidden="true" />
+                      <span>{branch.address}{branch.addressLine2 ? `, ${branch.addressLine2}` : ""}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-[color:var(--text-soft)]">
+                      <Clock size={13} strokeWidth={2} className="shrink-0 text-[color:var(--brand)]" aria-hidden="true" />
+                      <span>{branch.hours}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-[color:var(--text-soft)]">
+                      <PhoneIcon size={13} strokeWidth={2} className="shrink-0 text-[color:var(--brand)]" aria-hidden="true" />
+                      <span>{branch.phone}</span>
+                    </div>
+                  </div>
+                  <div className="mt-auto pt-5">
+                    <Link
+                      href={`/contact#${branch.slug}`}
+                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-[color:var(--brand-deep)] transition hover:text-[color:var(--brand)]"
+                    >
+                      Discover This Location <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* Quality callout */}
-        <div className="mt-12 rounded-3xl bg-[color:var(--brand-soft)] p-10 sm:p-12">
+        <div className="mt-16 rounded-3xl bg-[color:var(--brand-soft)] p-10 sm:p-12">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--brand-deep)]">

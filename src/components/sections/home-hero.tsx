@@ -66,8 +66,8 @@ export async function HomeHero() {
     <section className="relative overflow-hidden sm:min-h-[calc(100svh-6.625rem)] lg:min-h-[calc(100svh-7.25rem)]">
 
       {/* Trust pill — always overlaid on the image */}
-      <div className="absolute left-4 top-4 z-20 sm:left-7 sm:top-7">
-        <p className="inline-flex rounded-full border border-[rgba(33,23,31,0.2)] bg-white/96 px-3.5 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-[color:var(--text-main)] shadow-[0_10px_28px_rgba(29,19,27,0.08)] backdrop-blur-sm">
+      <div className="absolute left-3 top-3 z-20 sm:left-7 sm:top-7">
+        <p className="inline-flex rounded-full border border-[rgba(33,23,31,0.2)] bg-white/96 px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-[0.24em] text-[color:var(--text-main)] shadow-[0_10px_28px_rgba(29,19,27,0.08)] backdrop-blur-sm sm:px-3.5 sm:py-1.5 sm:text-[0.7rem]">
           Trusted Since 1996
         </p>
       </div>
@@ -98,23 +98,23 @@ export async function HomeHero() {
       </div>
 
       {/* CTA dock — in flow below image on mobile, absolute bottom on sm+ */}
-      <div className="relative z-20 flex justify-center px-4 pb-5 pt-3 sm:absolute sm:inset-x-0 sm:bottom-10 sm:pb-0 sm:pt-0">
-        <div className="flex w-full max-w-xs flex-col gap-2 sm:w-auto sm:max-w-none sm:flex-row sm:rounded-full sm:border sm:border-white/18 sm:bg-[color:rgba(20,10,18,0.16)] sm:p-1.5 sm:shadow-[0_10px_30px_rgba(20,10,18,0.14)] sm:backdrop-blur-md">
+      <div className="relative z-20 flex justify-center px-4 pb-3 pt-2 sm:absolute sm:inset-x-0 sm:bottom-10 sm:pb-0 sm:pt-0">
+        <div className="flex w-full max-w-xs flex-col gap-1.5 sm:w-auto sm:max-w-none sm:flex-row sm:gap-2 sm:rounded-full sm:border sm:border-white/18 sm:bg-[color:rgba(20,10,18,0.16)] sm:p-1.5 sm:shadow-[0_10px_30px_rgba(20,10,18,0.14)] sm:backdrop-blur-md">
           <Link
             href="/contact"
-            className="btn-primary justify-center whitespace-nowrap !px-5 !py-3 !text-xs"
+            className="btn-primary justify-center whitespace-nowrap !px-4 !py-2.5 !text-[0.7rem] sm:!px-5 sm:!py-3 sm:!text-xs"
           >
             Request An Appointment
           </Link>
           <Link
             href="/services"
-            className="inline-flex items-center justify-center whitespace-nowrap rounded-full border border-[rgba(33,23,31,0.12)] bg-[rgba(255,255,255,0.72)] px-5 py-3 text-xs font-semibold text-[color:var(--text-main)] transition hover:-translate-y-px hover:bg-[rgba(255,255,255,0.92)] sm:border-white/22 sm:bg-[color:rgba(255,255,255,0.12)] sm:text-white sm:hover:bg-[color:rgba(255,255,255,0.22)]"
+            className="inline-flex items-center justify-center whitespace-nowrap rounded-full border border-[rgba(33,23,31,0.12)] bg-[rgba(255,255,255,0.72)] px-4 py-2.5 text-[0.7rem] font-semibold text-[color:var(--text-main)] transition hover:-translate-y-px hover:bg-[rgba(255,255,255,0.92)] sm:border-white/22 sm:bg-[color:rgba(255,255,255,0.12)] sm:px-5 sm:py-3 sm:text-xs sm:text-white sm:hover:bg-[color:rgba(255,255,255,0.22)]"
           >
             Explore Services
           </Link>
           <Link
             href="/team"
-            className="inline-flex items-center justify-center whitespace-nowrap rounded-full border border-[rgba(33,23,31,0.12)] bg-[rgba(255,255,255,0.72)] px-5 py-3 text-xs font-semibold text-[color:var(--text-main)] transition hover:-translate-y-px hover:bg-[rgba(255,255,255,0.92)] sm:border-white/22 sm:bg-[color:rgba(255,255,255,0.12)] sm:text-white sm:hover:bg-[color:rgba(255,255,255,0.22)]"
+            className="inline-flex items-center justify-center whitespace-nowrap rounded-full border border-[rgba(33,23,31,0.12)] bg-[rgba(255,255,255,0.72)] px-4 py-2.5 text-[0.7rem] font-semibold text-[color:var(--text-main)] transition hover:-translate-y-px hover:bg-[rgba(255,255,255,0.92)] sm:border-white/22 sm:bg-[color:rgba(255,255,255,0.12)] sm:px-5 sm:py-3 sm:text-xs sm:text-white sm:hover:bg-[color:rgba(255,255,255,0.22)]"
           >
             Our Doctors
           </Link>

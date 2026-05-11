@@ -70,8 +70,8 @@ export async function HomeFeatured() {
 
   return (
     <section className="border-t border-[color:var(--border-strong)] bg-[color:var(--surface)]">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-20 lg:px-8">
+        <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {cards.map((card) => (
             <article
               key={card.id}
@@ -90,8 +90,8 @@ export async function HomeFeatured() {
                   priority={card.id === "international"}
                 />
               </div>
-              <div className="flex flex-1 flex-col gap-3 p-6">
-                <h3 className="font-display text-[1.8rem] leading-tight text-[color:var(--text-main)]">
+              <div className="flex flex-1 flex-col gap-2 p-5 sm:gap-3 sm:p-6">
+                <h3 className="font-display text-xl leading-tight text-[color:var(--text-main)] sm:text-[1.8rem]">
                   {card.title}
                 </h3>
                 <p className="text-sm leading-7 text-[color:var(--text-soft)]">{card.description}</p>

@@ -19,7 +19,7 @@ const NAV_ITEMS: NavItem[] = [
       { label: "News & Events", href: "/about/news" },
       { label: "Community & Charity", href: "/about/community" },
       { label: "Corporate Partnerships", href: "/about/partnerships" },
-      { label: "Job Listing", href: "/about/careers" },
+      { label: "Employment Opportunities", href: "/about/careers" },
     ],
   },
   {

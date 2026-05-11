@@ -56,7 +56,7 @@ export function FloatingContact() {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
+    <div className="fixed bottom-4 right-4 z-50 flex flex-col items-end gap-2.5 sm:bottom-6 sm:right-6 sm:gap-3">
       {/* Contact options */}
       {open && (
         <div className="flex flex-col gap-2.5 animate-[fadeSlideUp_0.2s_ease-out]">
@@ -81,7 +81,7 @@ export function FloatingContact() {
         type="button"
         aria-label={open ? "Close contact options" : "Open contact options"}
         onClick={() => setOpen((o) => !o)}
-        className="relative flex h-14 w-14 items-center justify-center rounded-full bg-[color:var(--brand)] shadow-[0_8px_28px_rgba(204,55,113,0.45)] transition hover:bg-[color:var(--brand-deep)] hover:scale-105 active:scale-95"
+        className="relative flex h-12 w-12 items-center justify-center rounded-full bg-[color:var(--brand)] shadow-[0_8px_28px_rgba(204,55,113,0.45)] transition hover:bg-[color:var(--brand-deep)] hover:scale-105 active:scale-95 sm:h-14 sm:w-14"
       >
         {/* X icon when open */}
         <span

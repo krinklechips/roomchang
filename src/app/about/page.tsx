@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { SiteShell } from "@/components/site/site-shell";
 import { AboutTimeline } from "@/components/sections/about-timeline";
-import { Building2, Star, Mail, Stethoscope, Heart, Handshake, ImagePlay, Cpu, ArrowRight, type LucideIcon } from "lucide-react";
+import { Building2, Star, Mail, Stethoscope, Heart, Handshake, ImagePlay, Cpu, Briefcase, ArrowRight, type LucideIcon } from "lucide-react";
 import { BRANCHES } from "@/lib/branches";
 import { supabaseServer } from "@/lib/supabase-server";
 import type { Metadata } from "next";
@@ -80,6 +80,13 @@ const ABOUT_SECTIONS: { title: string; description: string; href: string; icon: 
       "CAD/CAM technology, digital intraoral scanning, Invisalign, Beyond® whitening, and the Clear Aligner (CA) system.",
     href: "/technology",
     icon: Cpu,
+  },
+  {
+    title: "Employment Opportunities",
+    description:
+      "Join Cambodia's leading dental group — clinical fellowships, dental assistant, dentist, and customer service positions available.",
+    href: "/about/careers",
+    icon: Briefcase,
   },
 ];
 

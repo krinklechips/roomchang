@@ -15,7 +15,7 @@ export async function HomeBrands() {
   const items = [...brands, ...brands, ...brands];
 
   return (
-    <div id="brands" className="mt-10 overflow-hidden border-y border-[color:var(--border-strong)] bg-[color:var(--surface)] py-6 sm:mt-14">
+    <div id="brands" className="overflow-hidden border-y border-[color:var(--border-strong)] bg-[color:var(--surface)] py-4 sm:py-6">
       <div className="flex w-max animate-marquee items-center [animation-play-state:running] hover:[animation-play-state:paused]">
         {items.map((brand, i) => (
           // Fixed-width slot so every logo gets equal space regardless of its own width

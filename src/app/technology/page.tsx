@@ -45,8 +45,10 @@ export default async function TechnologyPage() {
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-[color:var(--text-soft)]">
               Roomchang invests continuously in the tools and systems that make dental care safer,
-              faster, and more precise. From in-house aligner fabrication to 3D surgical planning,
-              technology is at the core of how we work.
+              faster, and more precise — from in-house CAD/CAM fabrication and 3D surgical planning,
+              to specialised systems like Ortho-Tain&reg; for early orthodontics, ResMed ApneaLink
+              Air&trade; for sleep diagnostics, and ICON&reg; Vestibular for minimally invasive
+              enamel repair.
             </p>
           </div>
           <div className="hidden lg:flex lg:justify-end">

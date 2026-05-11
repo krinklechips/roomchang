@@ -61,7 +61,7 @@ export function HomeTestimonials({
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      <div className="mx-auto max-w-4xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
+      <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 sm:py-24 lg:px-8">
         {/* Quote mark */}
         <div className="flex justify-center">
           <svg

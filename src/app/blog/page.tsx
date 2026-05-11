@@ -20,14 +20,14 @@ const BLOG_SECTIONS = [
   {
     title: "Dentist Talks",
     description:
-      "Educational articles and insights from our specialist dentists — practical advice you can trust.",
+      "Watch our specialist dentists explain common dental concerns, treatment options, and modern technologies in short, informative videos.",
     href: "/blog/dentist-talks",
     icon: Mic,
   },
   {
-    title: "Publications",
+    title: "Publications & Research",
     description:
-      "Research papers, clinical studies, and professional publications authored by Roomchang dentists.",
+      "Peer-reviewed research papers and clinical studies published by Roomchang dentists, advancing evidence-based care.",
     href: "/blog/publications",
     icon: BookOpen,
   },

@@ -1,61 +1,95 @@
 /**
  * CMS Preview Route — /preview/[slug]
  *
- * Stub for future CMS integration. When the CMS platform is connected,
- * this route will:
- *  1. Verify a shared preview token (x-preview-token header or ?token= param)
- *  2. Fetch the page's block data from the CMS API
- *  3. Render each block using the same components as the live site
+ * Fetches unpublished page data directly from the CMS tenant API using a
+ * shared preview token. Bypasses the published-only filter so editors can
+ * preview draft content before publishing.
  *
- * Until integration is live, this returns a clearly visible placeholder so the
- * editor's "Preview" button has a real destination to link to.
+ * Required environment variables:
+ *   CMS_API_URL          - Base URL of the cms-platform server
+ *   CMS_PREVIEW_TOKEN    - Shared secret checked against ?token= query param
+ *   CMS_TENANT_SLUG      - Tenant identifier (default "roomchang")
  */
 
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+import { SiteShell } from "@/components/site/site-shell";
+import { BlockRenderer } from "@/components/blocks/BlockRenderer";
+import type { CmsPage } from "@/lib/cms";
 
-// Preview is disabled until the CMS is connected.
-// Set to true once the CMS API integration is wired up.
-const CMS_PREVIEW_ENABLED = false;
-
-export default async function PreviewPage({
-  params,
-}: {
+interface Props {
   params: Promise<{ slug: string }>;
-}) {
-  const { slug } = await params;
+  searchParams: Promise<{ token?: string }>;
+}
 
-  if (!CMS_PREVIEW_ENABLED) {
+const CMS_API_URL = process.env.CMS_API_URL?.replace(/\/$/, "") ?? "";
+const CMS_PREVIEW_TOKEN = process.env.CMS_PREVIEW_TOKEN ?? "";
+const CMS_TENANT_SLUG = process.env.CMS_TENANT_SLUG ?? "roomchang";
+
+async function getPreviewPage(slug: string): Promise<CmsPage | null> {
+  if (!CMS_API_URL) return null;
+
+  const url = `${CMS_API_URL}/api/public/pages/${encodeURIComponent(slug)}?tenantSlug=${CMS_TENANT_SLUG}&preview=1`;
+  const res = await fetch(url, { cache: "no-store" });
+
+  if (res.status === 404) return null;
+  if (!res.ok) {
+    throw new Error(`CMS preview API error ${res.status} for "${slug}"`);
+  }
+
+  const json = await res.json();
+  return (json?.item as CmsPage) ?? null;
+}
+
+export default async function PreviewPage({ params, searchParams }: Props) {
+  const { slug } = await params;
+  const { token } = await searchParams;
+
+  // Gate: require matching token unless CMS_PREVIEW_TOKEN is not configured
+  if (CMS_PREVIEW_TOKEN && token !== CMS_PREVIEW_TOKEN) {
     notFound();
   }
 
-  // TODO: fetch page blocks from CMS API
-  // const cmsApiUrl = process.env.CMS_API_URL
-  // const previewToken = process.env.CMS_PREVIEW_TOKEN
-  // const res = await fetch(`${cmsApiUrl}/api/tenant/pages/by-slug/${slug}`, {
-  //   headers: { Authorization: `Bearer ${previewToken}` },
-  //   cache: "no-store",
-  // })
-  // if (!res.ok) notFound()
-  // const page = await res.json()
+  if (!CMS_API_URL) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 p-8">
+        <p className="rounded-lg border border-amber-300 bg-amber-50 px-6 py-4 text-sm font-medium text-amber-700">
+          Preview not available — <code className="font-mono">CMS_API_URL</code> is not set.
+        </p>
+      </div>
+    );
+  }
 
-  // Render blocks
-  // return <PageRenderer page={page} />
+  let page: CmsPage | null;
+  try {
+    page = await getPreviewPage(slug);
+  } catch (err) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 p-8">
+        <p className="rounded-lg border border-red-300 bg-red-50 px-6 py-4 text-sm font-medium text-red-700">
+          CMS preview error: {String(err)}
+        </p>
+      </div>
+    );
+  }
+
+  if (!page) notFound();
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 p-8">
-      <p className="text-sm text-gray-400">Preview not yet enabled for {slug}</p>
-    </div>
+    <SiteShell>
+      <main>
+        <BlockRenderer blocks={page.blocks} />
+      </main>
+    </SiteShell>
   );
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   return {
     title: `Preview — ${slug}`,
     robots: { index: false, follow: false },
   };
 }
+
+export const dynamic = "force-dynamic";
