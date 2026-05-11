@@ -57,6 +57,13 @@ const PARTNER_CATEGORIES: PartnerCategory[] = [
     ],
   },
   {
+    title: "Healthcare",
+    partners: [
+      { name: "Orienda International Hospital" },
+      { name: "KHEMA International Polyclinic" },
+    ],
+  },
+  {
     title: "Insurance",
     partners: [
       { name: "AIA",       logo: "/partners/logos/aia.svg" },
@@ -90,9 +97,8 @@ const PARTNER_CATEGORIES: PartnerCategory[] = [
     ],
   },
   {
-    title: "Healthcare & Other",
+    title: "Other",
     partners: [
-      { name: "Orienda International Hospital" },
       { name: "PwC Cambodia", logo: "/partners/logos/pwc.svg" },
       { name: "Pathmazing" },
       { name: "Dragonair" },
@@ -122,10 +128,12 @@ function PartnerLogo({ partner }: { partner: Partner }) {
     );
   }
 
-  // Text badge fallback
+  // Text fallback — matches logo card height/structure
   return (
-    <div className="flex items-center justify-center rounded-2xl border border-[color:var(--border-strong)] bg-white px-4 py-5 text-center shadow-[0_4px_16px_rgba(57,28,45,0.04)]">
-      <span className="text-sm font-semibold text-[color:var(--text-soft)]">{partner.name}</span>
+    <div className="group flex flex-col items-center justify-center rounded-2xl border border-[color:var(--border-strong)] bg-white p-4 shadow-[0_4px_16px_rgba(57,28,45,0.04)] transition hover:shadow-[0_8px_24px_rgba(57,28,45,0.08)]">
+      <div className="flex h-12 w-full items-center justify-center">
+        <span className="text-center text-sm font-semibold leading-tight text-[color:var(--text-main)]">{partner.name}</span>
+      </div>
     </div>
   );
 }
