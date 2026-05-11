@@ -188,7 +188,29 @@ export default async function AboutPage() {
       {/* History — full-bleed timeline */}
       <AboutTimeline />
 
-      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
+      {/* Discover locations CTA — bridge between timeline and branches */}
+      <div className="border-y border-[color:var(--border-strong)] bg-[color:var(--surface)]">
+        <div className="mx-auto flex max-w-4xl flex-col items-center px-4 py-12 text-center sm:py-16">
+          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--brand)]">
+            5 Branches Across Phnom Penh
+          </p>
+          <h2 className="mt-3 font-display text-3xl text-[color:var(--text-main)] sm:text-4xl">
+            Discover Our Locations
+          </h2>
+          <p className="mt-4 max-w-lg text-sm leading-7 text-[color:var(--text-soft)]">
+            From our flagship 10-storey hospital to convenient mall branches — find the Roomchang closest to you.
+          </p>
+          <a
+            href="#branches"
+            className="btn-primary mt-6 inline-flex items-center gap-2"
+          >
+            Discover These Locations
+            <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
+          </a>
+        </div>
+      </div>
+
+      <div id="branches" className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
         {/* Branch gallery */}
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--brand)]">

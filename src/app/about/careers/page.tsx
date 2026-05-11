@@ -41,7 +41,7 @@ export default function CareersPage() {
           </div>
           <div className="flex items-center gap-2 text-sm font-medium text-white">
             <Phone size={15} strokeWidth={2} aria-hidden="true" />
-            <span>098 843 322</span>
+            <span>+855 98 843 322</span>
           </div>
         </div>
       </div>
@@ -51,7 +51,7 @@ export default function CareersPage() {
           Interested applicants should send their resume with related references and a cover letter
           to <strong className="text-[color:var(--text-main)]">hr@roomchang.com</strong>. For
           further information please contact:{" "}
-          <strong className="text-[color:var(--text-main)]">098 843 322</strong>.
+          <strong className="text-[color:var(--text-main)]">+855 98 843 322</strong>.
         </p>
 
         <div className="grid gap-6 sm:grid-cols-2">
