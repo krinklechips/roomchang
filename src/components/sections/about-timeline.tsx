@@ -9,7 +9,7 @@ const ERAS = [
     caption: "The beginning",
     heading: "Our First Home",
     body: "A single practice. A single belief — that Cambodians deserved world-class dental care at home. Dr. Tith Hong Yoeu opens Roomchang as Cambodia's first specialist dental clinic built to international standards.",
-    src: "/facilities/2014.jpg",
+    src: "/about/history-clinic-1996.jpg",
     alt: "Roomchang — the original clinic, 1996",
     objectPos: "object-center",
   },
