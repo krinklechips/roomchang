@@ -18,8 +18,7 @@ type Publication = {
   doi: string;
 };
 
-// Roomchang dentist names to highlight in bold
-// Eang Sonita, Tithphit Aliza, Keo Preksa, Chea C., Haing S.
+// Roomchang-affiliated author names to highlight in bold
 const B = ({ children }: { children: ReactNode }) => (
   <strong className="font-semibold text-[color:var(--text-main)]">{children}</strong>
 );
@@ -32,7 +31,7 @@ const PUBLICATIONS: Publication[] = [
       "Preliminary orthodontic insights into facial soft tissue thickness measurements using semi-automated cephalometric analysis in a Cambodian cohort",
     citation: (
       <>
-        <B>Sonita, E.</B>, Sally, M., Kimheng, C., Marya, A., Nalabothu, P., Ryna, L., Kanetaka, H., Kurniawan, A., Tabnjh, A. K., &amp; Selvaraj, S. (2025). Preliminary orthodontic insights into facial soft tissue thickness measurements using semi-automated cephalometric analysis in a Cambodian cohort. <em>Frontiers in Dental Medicine</em>, 6, Article 1714360.{" "}
+        <B>Sonita, E.</B>, <B>Sally, M.</B>, Kimheng, C., Marya, A., Nalabothu, P., Ryna, L., Kanetaka, H., Kurniawan, A., Tabnjh, A. K., &amp; Selvaraj, S. (2025). Preliminary orthodontic insights into facial soft tissue thickness measurements using semi-automated cephalometric analysis in a Cambodian cohort. <em>Frontiers in Dental Medicine</em>, 6, Article 1714360.{" "}
         <a href="https://doi.org/10.3389/fdmed.2025.1714360" target="_blank" rel="noopener noreferrer" className="text-[color:var(--brand-deep)] underline decoration-[color:var(--brand-light)] underline-offset-2 transition hover:text-[color:var(--brand)]">https://doi.org/10.3389/fdmed.2025.1714360</a>
       </>
     ),
@@ -45,7 +44,7 @@ const PUBLICATIONS: Publication[] = [
       "Analysis of Maxillary Anterior Tooth Dimensions and Proportions in Young Cambodians: A Cross-Sectional Study",
     citation: (
       <>
-        <B>Tithphit, A.</B>, Schneider, B., Othman, A., Phit, V., Tith, H. Y., &amp; von See, C. (2025). Analysis of Maxillary Anterior Tooth Dimensions and Proportions in Young Cambodians: A Cross-Sectional Study. <em>Oral</em>, 5(4), 99.{" "}
+        <B>Tithphit, A.</B>, Schneider, B., Othman, A., <B>Phit, V.</B>, <B>Tith, H. Y.</B>, &amp; von See, C. (2025). Analysis of Maxillary Anterior Tooth Dimensions and Proportions in Young Cambodians: A Cross-Sectional Study. <em>Oral</em>, 5(4), 99.{" "}
         <a href="https://doi.org/10.3390/oral5040099" target="_blank" rel="noopener noreferrer" className="text-[color:var(--brand-deep)] underline decoration-[color:var(--brand-light)] underline-offset-2 transition hover:text-[color:var(--brand)]">https://doi.org/10.3390/oral5040099</a>
       </>
     ),
