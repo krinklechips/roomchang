@@ -52,20 +52,31 @@ export default async function FaqPage() {
             FAQs are being prepared. Please check back soon.
           </p>
         ) : (
-          <div className="space-y-12">
+          <div className="space-y-14">
             {categories.map((cat) => (
               <div key={cat}>
-                <h2 className="font-display text-2xl text-[color:var(--text-main)]">{cat}</h2>
-                <div className="mt-6 divide-y divide-[color:var(--border-strong)]">
+                <h2 className="font-display text-3xl text-[color:var(--text-main)] sm:text-4xl">{cat}</h2>
+                <div className="mt-8 divide-y divide-[color:var(--border-strong)]">
                   {grouped[cat].map((faq) => (
-                    <details key={faq.id} className="group py-5">
-                      <summary className="flex cursor-pointer items-center justify-between gap-4 text-sm font-semibold text-[color:var(--text-main)] transition hover:text-[color:var(--brand-deep)] [&::-webkit-details-marker]:hidden">
-                        {faq.question}
-                        <span className="shrink-0 text-[color:var(--text-soft)] transition group-open:rotate-45">+</span>
+                    <details key={faq.id} className="group">
+                      <summary className="flex cursor-pointer items-center justify-between gap-6 py-6 text-base font-semibold leading-snug text-[color:var(--text-main)] transition hover:text-[color:var(--brand-deep)] sm:py-7 sm:text-lg [&::-webkit-details-marker]:hidden">
+                        <span className="flex-1">{faq.question}</span>
+                        <svg
+                          width="20"
+                          height="20"
+                          viewBox="0 0 20 20"
+                          fill="none"
+                          aria-hidden="true"
+                          className="shrink-0 text-[color:var(--text-soft)] transition-transform duration-200 group-open:rotate-180"
+                        >
+                          <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
                       </summary>
-                      <p className="mt-3 text-sm leading-7 text-[color:var(--text-soft)]">
-                        {faq.answer}
-                      </p>
+                      <div className="pb-7 pr-12">
+                        <p className="text-base leading-8 text-[color:var(--text-soft)]">
+                          {faq.answer}
+                        </p>
+                      </div>
                     </details>
                   ))}
                 </div>
