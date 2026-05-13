@@ -111,13 +111,13 @@ function PartnerLogo({ partner }: { partner: Partner }) {
   if (partner.logo) {
     return (
       <div className="group flex flex-col items-center justify-center gap-2 rounded-2xl border border-[color:var(--border-strong)] bg-white p-4 shadow-[0_4px_16px_rgba(57,28,45,0.04)] transition hover:shadow-[0_8px_24px_rgba(57,28,45,0.08)]">
-        <div className="relative flex h-12 w-full items-center justify-center">
+        <div className="relative flex h-16 w-full items-center justify-center">
           <Image
             src={partner.logo}
             alt={partner.name}
-            width={120}
-            height={48}
-            className="max-h-12 w-auto object-contain"
+            width={180}
+            height={64}
+            className="max-h-16 w-auto object-contain"
             unoptimized={partner.logo.endsWith(".svg")}
           />
         </div>
@@ -131,7 +131,7 @@ function PartnerLogo({ partner }: { partner: Partner }) {
   // Text fallback — matches logo card height/structure
   return (
     <div className="group flex flex-col items-center justify-center rounded-2xl border border-[color:var(--border-strong)] bg-white p-4 shadow-[0_4px_16px_rgba(57,28,45,0.04)] transition hover:shadow-[0_8px_24px_rgba(57,28,45,0.08)]">
-      <div className="flex h-12 w-full items-center justify-center">
+      <div className="flex h-16 w-full items-center justify-center">
         <span className="text-center text-sm font-semibold leading-tight text-[color:var(--text-main)]">{partner.name}</span>
       </div>
     </div>
