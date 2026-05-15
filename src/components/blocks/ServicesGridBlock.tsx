@@ -1,14 +1,5 @@
-import { supabaseServer } from "@/lib/supabase-server";
 import Link from "next/link";
-
-interface Service {
-  id: string;
-  name: string;
-  description: string | null;
-  icon: string | null;
-  category: string | null;
-  slug: string | null;
-}
+import { getServices } from "@/lib/data";
 
 export async function ServicesGridBlock({
   title,
@@ -19,24 +10,18 @@ export async function ServicesGridBlock({
   filter?: string;
   limit?: number;
 }) {
-  const supabase = supabaseServer;
   const take = limit || 6;
-
-  let query = supabase
-    .from("services")
-    .select("id, name, description, icon, category, slug")
-    .eq("status", "published")
-    .order("sort_order", { ascending: true })
-    .limit(take);
-
-  if (filter?.trim()) {
-    query = query.ilike("category", `%${filter.trim()}%`);
-  }
-
-  const { data: services, error } = await query;
-  if (error) console.error("[ServicesGridBlock] Supabase error:", error.message);
-
-  const items: Service[] = services ?? [];
+  const normalizedFilter = filter?.trim().toLowerCase();
+  const services = await getServices();
+  const items = services
+    .filter((service) => {
+      if (!normalizedFilter) return true;
+      return (
+        service.category?.toLowerCase().includes(normalizedFilter) ||
+        service.name.toLowerCase().includes(normalizedFilter)
+      );
+    })
+    .slice(0, take);
 
   return (
     <section className="px-6 py-16 lg:px-8 lg:py-20">

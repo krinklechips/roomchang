@@ -1,15 +1,6 @@
-import { supabaseServer } from "@/lib/supabase-server";
 import Image from "next/image";
 import Link from "next/link";
-
-interface Doctor {
-  id: string;
-  name: string;
-  title: string | null;
-  specialty: string | null;
-  photo_url: string | null;
-  slug: string | null;
-}
+import { getDoctors } from "@/lib/data";
 
 export async function TeamGridBlock({
   title,
@@ -20,24 +11,19 @@ export async function TeamGridBlock({
   filter?: string;
   limit?: number;
 }) {
-  const supabase = supabaseServer;
   const take = limit || 8;
-
-  let query = supabase
-    .from("team_members")
-    .select("id, name, title, specialty, photo_url, slug")
-    .eq("status", "published")
-    .order("sort_order", { ascending: true })
-    .limit(take);
-
-  if (filter?.trim()) {
-    query = query.ilike("specialty", `%${filter.trim()}%`);
-  }
-
-  const { data: doctors, error } = await query;
-  if (error) console.error("[TeamGridBlock] Supabase error:", error.message);
-
-  const items: Doctor[] = doctors ?? [];
+  const normalizedFilter = filter?.trim().toLowerCase();
+  const doctors = await getDoctors();
+  const items = doctors
+    .filter((doctor) => {
+      if (!normalizedFilter) return true;
+      return (
+        doctor.department?.toLowerCase().includes(normalizedFilter) ||
+        doctor.role.toLowerCase().includes(normalizedFilter) ||
+        doctor.specialty.some((item) => item.toLowerCase().includes(normalizedFilter))
+      );
+    })
+    .slice(0, take);
 
   return (
     <section className="px-6 py-16 lg:px-8 lg:py-20">
@@ -54,36 +40,37 @@ export async function TeamGridBlock({
             {items.map((doc) => (
               <div key={doc.id} className="panel-card overflow-hidden p-0">
                 <div className="relative h-56 w-full bg-[color:var(--brand-soft)]">
-                  {doc.photo_url ? (
+                  {doc.photoUrl ? (
                     <Image
-                      src={doc.photo_url}
+                      src={doc.photoUrl}
                       alt={doc.name}
                       fill
                       className="object-cover object-top"
                       sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
                     />
                   ) : (
-                    <div className="flex h-full items-center justify-center text-4xl text-[color:var(--brand-soft)]">
-                      👤
+                    <div className="flex h-full items-center justify-center text-4xl font-semibold text-[color:var(--brand-deep)]/40">
+                      {doc.initials}
                     </div>
                   )}
                 </div>
                 <div className="p-4">
                   <p className="font-semibold text-[color:var(--text-main)]">{doc.name}</p>
-                  {doc.title && (
-                    <p className="text-xs text-[color:var(--brand)]">{doc.title}</p>
+                  {doc.credentials && (
+                    <p className="text-xs text-[color:var(--brand)]">{doc.credentials}</p>
                   )}
-                  {doc.specialty && (
-                    <p className="mt-0.5 text-xs text-[color:var(--text-soft)]">{doc.specialty}</p>
+                  <p className="mt-0.5 text-xs text-[color:var(--text-soft)]">{doc.role}</p>
+                  {doc.specialty.length > 0 && (
+                    <p className="mt-0.5 line-clamp-2 text-xs text-[color:var(--text-soft)]">
+                      {doc.specialty.join(" · ")}
+                    </p>
                   )}
-                  {doc.slug && (
-                    <Link
-                      href={`/team/${doc.slug}`}
-                      className="mt-2 inline-block text-xs font-medium text-[color:var(--brand)] hover:underline"
-                    >
-                      View profile →
-                    </Link>
-                  )}
+                  <Link
+                    href={`/contact?doctor=${encodeURIComponent(doc.name)}`}
+                    className="mt-2 inline-block text-xs font-medium text-[color:var(--brand)] hover:underline"
+                  >
+                    Book appointment
+                  </Link>
                 </div>
               </div>
             ))}

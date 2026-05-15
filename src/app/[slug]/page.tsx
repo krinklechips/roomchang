@@ -1,0 +1,59 @@
+/**
+ * CMS catch-all page route — /[slug]
+ *
+ * Resolves after all specific static routes (/, /about, /services, /team, etc.)
+ * because Next.js always prefers explicit routes over dynamic segments.
+ *
+ * Fetches page content from the CMS platform API and renders it using the
+ * BlockRenderer. Returns 404 when the CMS is not configured, the page does not
+ * exist, or the page is not published.
+ */
+
+import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+import { getCmsPage } from "@/lib/cms";
+import { CmsPageContent } from "@/components/pages/CmsPageContent";
+
+interface Props {
+  params: Promise<{ slug: string }>;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const page = await getCmsPage(slug).catch(() => null);
+
+  if (!page) {
+    return { title: "Page not found" };
+  }
+
+  return {
+    title: page.seoTitle || page.title,
+    description: page.seoDescription || undefined,
+    openGraph: page.seoImage
+      ? { images: [{ url: page.seoImage }] }
+      : undefined,
+  };
+}
+
+export default async function CmsPage({ params }: Props) {
+  const { slug } = await params;
+
+  let page;
+  try {
+    page = await getCmsPage(slug);
+  } catch (err) {
+    // Surface config/network errors loudly in development
+    if (process.env.NODE_ENV !== "production") {
+      throw err;
+    }
+    notFound();
+  }
+
+  if (!page) notFound();
+
+  return <CmsPageContent page={page} />;
+}
+
+// Static params are not pre-generated because CMS pages are dynamic by
+// nature. ISR (revalidate: 60 in getCmsPage) handles caching.
+export const dynamic = "force-dynamic";

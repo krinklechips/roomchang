@@ -1,13 +1,4 @@
-import { supabaseServer } from "@/lib/supabase-server";
-
-interface Testimonial {
-  id: string;
-  patient_name: string;
-  quote: string;
-  rating: number | null;
-  treatment: string | null;
-  country: string | null;
-}
+import { getTestimonials } from "@/lib/data";
 
 export async function TestimonialsBlock({
   title,
@@ -16,22 +7,11 @@ export async function TestimonialsBlock({
   title?: string;
   limit?: number;
 }) {
-  const supabase = supabaseServer;
   const take = limit || 3;
-
-  const { data: testimonials, error } = await supabase
-    .from("testimonials")
-    .select("id, patient_name, quote, rating, treatment, country")
-    .eq("status", "published")
-    .eq("featured", true)
-    .order("sort_order", { ascending: true })
-    .limit(take);
-
-  if (error) {
-    console.error("[TestimonialsBlock] Supabase error:", error.message);
-  }
-
-  const items: Testimonial[] = testimonials ?? [];
+  const testimonials = await getTestimonials();
+  const items = testimonials
+    .filter((testimonial) => testimonial.isFeatured)
+    .slice(0, take);
 
   return (
     <section className="bg-[color:var(--surface)] px-6 py-16 lg:px-8 lg:py-20">
@@ -47,12 +27,12 @@ export async function TestimonialsBlock({
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {items.map((t) => (
               <div key={t.id} className="panel-card flex flex-col gap-3">
-                {t.rating && (
+                {t.rating > 0 && (
                   <div className="flex gap-0.5" aria-label={`${t.rating} stars`}>
                     {Array.from({ length: 5 }).map((_, i) => (
                       <span
                         key={i}
-                        className={i < t.rating! ? "text-[color:var(--brand)]" : "text-gray-200"}
+                        className={i < t.rating ? "text-[color:var(--brand)]" : "text-gray-200"}
                       >
                         ★
                       </span>
@@ -64,11 +44,11 @@ export async function TestimonialsBlock({
                 </p>
                 <div className="mt-auto">
                   <p className="text-sm font-semibold text-[color:var(--text-main)]">
-                    {t.patient_name}
+                    {t.authorName}
                   </p>
-                  {(t.treatment || t.country) && (
+                  {t.authorTitle && (
                     <p className="text-xs text-[color:var(--text-soft)]">
-                      {[t.treatment, t.country].filter(Boolean).join(" · ")}
+                      {t.authorTitle}
                     </p>
                   )}
                 </div>

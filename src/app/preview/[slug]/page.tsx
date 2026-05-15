@@ -13,17 +13,14 @@
 
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { SiteShell } from "@/components/site/site-shell";
-import { BlockRenderer } from "@/components/blocks/BlockRenderer";
+import { CmsPageContent } from "@/components/pages/CmsPageContent";
 import type { CmsPage } from "@/lib/cms";
 
 interface Props {
   params: Promise<{ slug: string }>;
-  searchParams: Promise<{ token?: string }>;
 }
 
 const CMS_API_URL = process.env.CMS_API_URL?.replace(/\/$/, "") ?? "";
-const CMS_PREVIEW_TOKEN = process.env.CMS_PREVIEW_TOKEN ?? "";
 const CMS_TENANT_SLUG = process.env.CMS_TENANT_SLUG ?? "roomchang";
 
 async function getPreviewPage(slug: string): Promise<CmsPage | null> {
@@ -41,14 +38,8 @@ async function getPreviewPage(slug: string): Promise<CmsPage | null> {
   return (json?.item as CmsPage) ?? null;
 }
 
-export default async function PreviewPage({ params, searchParams }: Props) {
+export default async function PreviewPage({ params }: Props) {
   const { slug } = await params;
-  const { token } = await searchParams;
-
-  // Gate: require matching token unless CMS_PREVIEW_TOKEN is not configured
-  if (CMS_PREVIEW_TOKEN && token !== CMS_PREVIEW_TOKEN) {
-    notFound();
-  }
 
   if (!CMS_API_URL) {
     return (
@@ -75,13 +66,7 @@ export default async function PreviewPage({ params, searchParams }: Props) {
 
   if (!page) notFound();
 
-  return (
-    <SiteShell>
-      <main>
-        <BlockRenderer blocks={page.blocks} />
-      </main>
-    </SiteShell>
-  );
+  return <CmsPageContent page={page} />;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

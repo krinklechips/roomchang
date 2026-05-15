@@ -20,6 +20,12 @@ import { StatsBlock } from "./StatsBlock";
 import { VideoBlock } from "./VideoBlock";
 import { TeamGridBlock } from "./TeamGridBlock";
 import { ServicesGridBlock } from "./ServicesGridBlock";
+import { BrandsMarqueeBlock } from "./BrandsMarqueeBlock";
+import { HighlightsBlock } from "./HighlightsBlock";
+import { FeaturedCardsBlock } from "./FeaturedCardsBlock";
+import { TimelineBlock } from "./TimelineBlock";
+import { ClinicalResultsBlock } from "./ClinicalResultsBlock";
+import { HeroSlideshowBlock } from "./HeroSlideshowBlock";
 
 export function BlockRenderer({ blocks }: { blocks: CmsBlock[] }) {
   if (!blocks || blocks.length === 0) return null;
@@ -63,16 +69,7 @@ function BlockSwitch({ block }: { block: CmsBlock }) {
       );
 
     case "hero_slideshow":
-      // The hero slideshow is managed separately — this block just signals its placement.
-      // The live site has a dedicated HeroSlideshow component wired to the DB.
-      // For CMS-rendered pages we show a placeholder with a note.
-      return (
-        <div className="flex min-h-[200px] items-center justify-center bg-[color:var(--brand-soft)] text-center px-8 py-16">
-          <p className="text-sm text-[color:var(--brand-deep)] font-medium">
-            Hero slideshow — managed in the Hero Images section
-          </p>
-        </div>
-      );
+      return <HeroSlideshowBlock />;
 
     case "cta":
       return (
@@ -176,6 +173,21 @@ function BlockSwitch({ block }: { block: CmsBlock }) {
           limit={d.servicesLimit as number}
         />
       );
+
+    case "brands_marquee":
+      return <BrandsMarqueeBlock />;
+
+    case "highlights":
+      return <HighlightsBlock />;
+
+    case "featured_cards":
+      return <FeaturedCardsBlock />;
+
+    case "timeline":
+      return <TimelineBlock />;
+
+    case "clinical_results":
+      return <ClinicalResultsBlock />;
 
     default:
       // Unknown block type — fail visibly in development, hide in production.

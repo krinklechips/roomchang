@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createHmac } from "crypto";
 
 const COOKIE_NAME = "rc_ref";
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 30; // 30 days
@@ -29,8 +28,22 @@ function adminAuth(request: NextRequest): NextResponse | null {
     });
   }
 
-  const decoded = Buffer.from(auth.slice(6), "base64").toString("utf-8");
+  let decoded: string;
+  try {
+    decoded = atob(auth.slice(6));
+  } catch {
+    return new NextResponse("Unauthorized", {
+      status: 401,
+      headers: { "WWW-Authenticate": 'Basic realm="Roomchang Admin"' },
+    });
+  }
   const colon = decoded.indexOf(":");
+  if (colon < 0) {
+    return new NextResponse("Unauthorized", {
+      status: 401,
+      headers: { "WWW-Authenticate": 'Basic realm="Roomchang Admin"' },
+    });
+  }
   const user = decoded.slice(0, colon);
   const pass = decoded.slice(colon + 1);
 
@@ -47,29 +60,42 @@ function adminAuth(request: NextRequest): NextResponse | null {
 // ─── Preview Auth ──────────────────────────────────────────────────────────
 
 /** Create an HMAC signature from the preview token (never stores raw secret in cookie) */
-function signPreviewCookie(token: string): string {
+async function signPayload(payload: string, token: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    "raw",
+    encoder.encode(token),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"],
+  );
+  const signature = await crypto.subtle.sign("HMAC", key, encoder.encode(payload));
+  return Array.from(new Uint8Array(signature), (byte) =>
+    byte.toString(16).padStart(2, "0"),
+  ).join("");
+}
+
+async function signPreviewCookie(token: string): Promise<string> {
   const expiry = Math.floor(Date.now() / 1000) + PREVIEW_COOKIE_MAX_AGE;
   const payload = `preview:${expiry}`;
-  const sig = createHmac("sha256", token).update(payload).digest("hex");
+  const sig = await signPayload(payload, token);
   return `${payload}:${sig}`;
 }
 
 /** Verify an HMAC-signed preview cookie */
-function verifyPreviewCookie(cookie: string, token: string): boolean {
+async function verifyPreviewCookie(cookie: string, token: string): Promise<boolean> {
   const parts = cookie.split(":");
   if (parts.length !== 3) return false;
 
   const [prefix, expiryStr, sig] = parts;
   const payload = `${prefix}:${expiryStr}`;
-  const expected = createHmac("sha256", token).update(payload).digest("hex");
+  const expected = await signPayload(payload, token);
 
   // Timing-safe comparison
   if (sig.length !== expected.length) return false;
-  const bufSig = Buffer.from(sig);
-  const bufExp = Buffer.from(expected);
   let match = 0;
-  for (let i = 0; i < bufSig.length; i++) {
-    match |= bufSig[i] ^ bufExp[i];
+  for (let i = 0; i < sig.length; i++) {
+    match |= sig.charCodeAt(i) ^ expected.charCodeAt(i);
   }
   if (match !== 0) return false;
 
@@ -80,7 +106,7 @@ function verifyPreviewCookie(cookie: string, token: string): boolean {
   return true;
 }
 
-function previewAuth(request: NextRequest): NextResponse | null {
+async function previewAuth(request: NextRequest): Promise<NextResponse | null> {
   const previewToken = process.env.CMS_PREVIEW_TOKEN;
 
   // No token configured → fall back to Basic Auth
@@ -96,7 +122,7 @@ function previewAuth(request: NextRequest): NextResponse | null {
     cleanUrl.searchParams.delete("token");
 
     const response = NextResponse.redirect(cleanUrl);
-    response.cookies.set(PREVIEW_COOKIE, signPreviewCookie(previewToken), {
+    response.cookies.set(PREVIEW_COOKIE, await signPreviewCookie(previewToken), {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
@@ -108,7 +134,7 @@ function previewAuth(request: NextRequest): NextResponse | null {
 
   // Check signed cookie
   const cookieValue = request.cookies.get(PREVIEW_COOKIE)?.value;
-  if (cookieValue && verifyPreviewCookie(cookieValue, previewToken)) {
+  if (cookieValue && await verifyPreviewCookie(cookieValue, previewToken)) {
     return null; // authenticated via cookie
   }
 
@@ -118,7 +144,7 @@ function previewAuth(request: NextRequest): NextResponse | null {
 
 // ─── Main middleware ───────────────────────────────────────────────────────
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Protect all /admin/* pages and /api/admin/* routes
@@ -129,7 +155,7 @@ export function middleware(request: NextRequest) {
 
   // Protect /preview/* routes with token OR Basic Auth
   if (pathname.startsWith("/preview")) {
-    const deny = previewAuth(request);
+    const deny = await previewAuth(request);
     if (deny) return deny;
   }
 
