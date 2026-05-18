@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
 import localFont from "next/font/local";
+import { CmsPreviewInteractionGuard } from "@/components/site/cms-preview-interaction-guard";
 import "./globals.css";
 
 const manrope = Manrope({
@@ -95,6 +96,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
         />
+        <CmsPreviewInteractionGuard />
         {children}
       </body>
     </html>
