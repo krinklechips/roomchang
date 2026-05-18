@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { SiteShell } from "@/components/site/site-shell";
 import { getServices } from "@/lib/data";
 import type { Metadata } from "next";
@@ -43,6 +44,49 @@ const SERVICE_ICONS: Record<string, LucideIcon> = {
   "sleep-apnea":              Moon,
   "teeth-whitening":          Zap,
   "endodontics":              Shield,
+};
+
+const SERVICE_IMAGES: Record<string, { src: string; alt: string }> = {
+  "preventive-dentistry": {
+    src: "/services/Preventive Dentistry.jpg",
+    alt: "Preventive dentistry consultation at Roomchang Dental Hospital",
+  },
+  "dental-implants": {
+    src: "/services/Implants.jpg",
+    alt: "Dental implant treatment at Roomchang Dental Hospital",
+  },
+  "dental-crowns": {
+    src: "/services/Dental Crowns.jpg",
+    alt: "Dental crowns treatment at Roomchang Dental Hospital",
+  },
+  "orthodontics": {
+    src: "/services/Orthodontics 1.jpg",
+    alt: "Orthodontic treatment at Roomchang Dental Hospital",
+  },
+  "cosmetic-dentistry": {
+    src: "/services/Cosmetic Dentistry.jpg",
+    alt: "Cosmetic dentistry treatment at Roomchang Dental Hospital",
+  },
+  "oral-surgery": {
+    src: "/services/Oral Surgery.jpg",
+    alt: "Oral surgery treatment at Roomchang Dental Hospital",
+  },
+  "pediatric-dentistry": {
+    src: "/services/Pediatric Dentistry.jpg",
+    alt: "Pediatric dentistry treatment at Roomchang Dental Hospital",
+  },
+  "sleep-apnea": {
+    src: "/services/Sleep Apnea.jpg",
+    alt: "Sleep apnea dental appliance consultation at Roomchang Dental Hospital",
+  },
+  "teeth-whitening": {
+    src: "/services/Whitening 1.jpg",
+    alt: "Teeth whitening treatment at Roomchang Dental Hospital",
+  },
+  "endodontics": {
+    src: "/services/Endodontics.JPG",
+    alt: "Endodontic treatment at Roomchang Dental Hospital",
+  },
 };
 
 // Sub-services shown as links inside their parent card rather than as top-level cards
@@ -93,6 +137,7 @@ export default async function ServicesPage() {
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {services.filter((s) => !HIDDEN_FROM_GRID.has(s.slug)).map((service) => {
             const Icon = SERVICE_ICONS[service.slug] ?? CircleDot;
+            const serviceImage = SERVICE_IMAGES[service.slug];
             const subServices = SUB_SERVICES[service.slug] ?? [];
             return (
               <article
@@ -100,6 +145,17 @@ export default async function ServicesPage() {
                 id={service.slug}
                 className="group flex flex-col overflow-hidden rounded-3xl border border-[color:var(--border-strong)] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_60px_rgba(57,28,45,0.1)]"
               >
+                {serviceImage && (
+                  <div className="relative aspect-[4/3] overflow-hidden border-b border-[color:var(--border-strong)] bg-[color:var(--surface)]">
+                    <Image
+                      src={serviceImage.src}
+                      alt={serviceImage.alt}
+                      fill
+                      sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                      className="object-cover transition duration-500 group-hover:scale-105"
+                    />
+                  </div>
+                )}
                 <div className="flex items-center gap-4 border-b border-[color:var(--border-strong)] px-6 py-5">
                   <span
                     className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[color:var(--surface-strong)] text-[color:var(--brand-deep)]"

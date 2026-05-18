@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { SiteShell } from "@/components/site/site-shell";
-import { getFaqItems } from "@/lib/data";
+import { getFaqItems, type FaqItem } from "@/lib/data";
 import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
 
@@ -12,8 +12,25 @@ export const metadata: Metadata = {
     "Frequently asked questions about dental treatments, costs, and visiting Roomchang Dental Hospital in Phnom Penh.",
 };
 
+const STATIC_FAQS: FaqItem[] = [
+  {
+    id: "static-overall-health-xray-pregnancy-preparation",
+    category: "Overall Health",
+    question: "How long should you wait after getting an x-ray before starting preparations for pregnancy?",
+    answer:
+      "It is not necessary to wait after an x-ray before preparing for pregnancy. Dental x-ray is usually safe, even for emergency treatments during pregnancy. However, it is better if the patient takes it to detect any dental problems before preparing for pregnancy. Should a problem be detected, the treatment should be done in advance of pregnancy.",
+    sort_order: 999,
+  },
+];
+
 export default async function FaqPage() {
-  const faqs = await getFaqItems();
+  const fetchedFaqs = await getFaqItems();
+  const faqs = [
+    ...fetchedFaqs,
+    ...STATIC_FAQS.filter(
+      (staticFaq) => !fetchedFaqs.some((faq) => faq.question === staticFaq.question),
+    ),
+  ];
 
   // Group by category
   const grouped = faqs.reduce<Record<string, typeof faqs>>((acc, faq) => {

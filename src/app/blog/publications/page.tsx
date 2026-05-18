@@ -70,7 +70,7 @@ const PUBLICATIONS: Publication[] = [
       "Molecular Mechanisms of Inhibitory Effects of Bovine Lactoferrin on Invasion of Oral Squamous Cell Carcinoma",
     citation: (
       <>
-        <B>Chea, C.</B>, Miyauchi, M., Inubushi, T., Okamoto, K., <B>Haing, S.</B>, &amp; Takata, T. (2023). Molecular mechanisms of inhibitory effects of bovine lactoferrin on invasion of oral squamous cell carcinoma. <em>Pharmaceutics</em>, 15(2), Article 562.{" "}
+        Chea, C., Miyauchi, M., Inubushi, T., Okamoto, K., <B>Haing, S.</B>, &amp; Takata, T. (2023). Molecular mechanisms of inhibitory effects of bovine lactoferrin on invasion of oral squamous cell carcinoma. <em>Pharmaceutics</em>, 15(2), Article 562.{" "}
         <a href="https://doi.org/10.3390/pharmaceutics15020562" target="_blank" rel="noopener noreferrer" className="text-[color:var(--brand-deep)] underline decoration-[color:var(--brand-light)] underline-offset-2 transition hover:text-[color:var(--brand)]">https://doi.org/10.3390/pharmaceutics15020562</a>
       </>
     ),
@@ -96,7 +96,7 @@ const PUBLICATIONS: Publication[] = [
       "Molecular mechanisms underlying the inhibitory effects of bovine lactoferrin on osteosarcoma",
     citation: (
       <>
-        <B>Chea, C.</B>, <B>Haing, S.</B>, Miyauchi, M., Shrestha, M., Imanaka, H., &amp; Takata, T. (2019). Molecular mechanisms underlying the inhibitory effects of bovine lactoferrin on osteosarcoma. <em>Biochemical and Biophysical Research Communications</em>, 508(3), 946–952.{" "}
+        Chea, C., <B>Haing, S.</B>, Miyauchi, M., Shrestha, M., Imanaka, H., &amp; Takata, T. (2019). Molecular mechanisms underlying the inhibitory effects of bovine lactoferrin on osteosarcoma. <em>Biochemical and Biophysical Research Communications</em>, 508(3), 946–952.{" "}
         <a href="https://doi.org/10.1016/j.bbrc.2018.11.204" target="_blank" rel="noopener noreferrer" className="text-[color:var(--brand-deep)] underline decoration-[color:var(--brand-light)] underline-offset-2 transition hover:text-[color:var(--brand)]">https://doi.org/10.1016/j.bbrc.2018.11.204</a>
       </>
     ),
@@ -109,7 +109,7 @@ const PUBLICATIONS: Publication[] = [
       "Bovine lactoferrin reverses programming of epithelial-to-mesenchymal transition to mesenchymal-to-epithelial transition in oral squamous cell carcinoma",
     citation: (
       <>
-        <B>Chea, C.</B>, Miyauchi, M., Inubushi, T., Okamoto, K., <B>Haing, S.</B>, Nguyen, P. T., Imanaka, H., &amp; Takata, T. (2018). Bovine lactoferrin reverses programming of epithelial-to-mesenchymal transition to mesenchymal-to-epithelial transition in oral squamous cell carcinoma. <em>Biochemical and Biophysical Research Communications</em>, 507(1–4), 142–147.{" "}
+        Chea, C., Miyauchi, M., Inubushi, T., Okamoto, K., <B>Haing, S.</B>, Nguyen, P. T., Imanaka, H., &amp; Takata, T. (2018). Bovine lactoferrin reverses programming of epithelial-to-mesenchymal transition to mesenchymal-to-epithelial transition in oral squamous cell carcinoma. <em>Biochemical and Biophysical Research Communications</em>, 507(1–4), 142–147.{" "}
         <a href="https://doi.org/10.1016/j.bbrc.2018.10.193" target="_blank" rel="noopener noreferrer" className="text-[color:var(--brand-deep)] underline decoration-[color:var(--brand-light)] underline-offset-2 transition hover:text-[color:var(--brand)]">https://doi.org/10.1016/j.bbrc.2018.10.193</a>
       </>
     ),
@@ -122,7 +122,7 @@ const PUBLICATIONS: Publication[] = [
       "Molecular mechanism of inhibitory effects of bovine lactoferrin on the growth of oral squamous cell carcinoma",
     citation: (
       <>
-        <B>Chea, C.</B>, Miyauchi, M., Inubushi, T., Ayuningtyas, N. F., Subarnbhesaj, A., Nguyen, P. T., Shrestha, M., <B>Haing, S.</B>, Ohta, K., Yamada, S., &amp; Takata, T. (2018). Molecular mechanism of inhibitory effects of bovine lactoferrin on the growth of oral squamous cell carcinoma. <em>PLOS ONE</em>, 13(1), Article e0191683.{" "}
+        Chea, C., Miyauchi, M., Inubushi, T., Ayuningtyas, N. F., Subarnbhesaj, A., Nguyen, P. T., Shrestha, M., <B>Haing, S.</B>, Ohta, K., Yamada, S., &amp; Takata, T. (2018). Molecular mechanism of inhibitory effects of bovine lactoferrin on the growth of oral squamous cell carcinoma. <em>PLOS ONE</em>, 13(1), Article e0191683.{" "}
         <a href="https://doi.org/10.1371/journal.pone.0191683" target="_blank" rel="noopener noreferrer" className="text-[color:var(--brand-deep)] underline decoration-[color:var(--brand-light)] underline-offset-2 transition hover:text-[color:var(--brand)]">https://doi.org/10.1371/journal.pone.0191683</a>
       </>
     ),
