@@ -53,9 +53,9 @@ const FOOTER_LINKS = [
 const SOCIAL = [
   { label: "Facebook",  href: "https://www.facebook.com/roomchangdental" },
   { label: "YouTube",   href: "https://www.youtube.com/@roomchang" },
-  { label: "Instagram", href: "https://www.instagram.com/roomchang/" },
+  { label: "Instagram", href: "https://www.instagram.com/roomchangdental" },
   { label: "Telegram",  href: "https://t.me/roomchang" },
-  { label: "TikTok",    href: "https://www.tiktok.com/@roomchangdentalhospital" },
+  { label: "TikTok",    href: "https://www.tiktok.com/@roomchangdental" },
   { label: "LinkedIn",  href: "https://www.linkedin.com/company/roomchang/" },
 ];
 
