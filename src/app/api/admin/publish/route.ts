@@ -14,7 +14,7 @@ const TABLE_MAP: Record<EntityType, string> = {
 
 // Allowlisted columns per entity type — only these keys can be published
 const ALLOWED_KEYS: Record<EntityType, Set<string>> = {
-  service: new Set(["name", "slug", "description", "category", "features", "icon", "isFeatured", "order", "published", "eyebrow", "heroDescription", "content"]),
+  service: new Set(["name", "slug", "description", "category", "features", "icon", "imageSrc", "isFeatured", "order", "published", "eyebrow", "heroDescription", "content"]),
   technology: new Set(["name", "slug", "category", "description", "highlights", "imageSrc", "order", "published", "content"]),
   doctor: new Set(["name", "credentials", "role", "department", "specialty", "languages", "bio", "note", "initials", "photoUrl", "order", "published"]),
   clinical_case: new Set(["slug", "title", "category", "treatment", "duration", "description", "tag", "imageUrl", "fullText", "images", "order", "published"]),

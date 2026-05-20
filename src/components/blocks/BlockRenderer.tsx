@@ -20,12 +20,13 @@ import { StatsBlock } from "./StatsBlock";
 import { VideoBlock } from "./VideoBlock";
 import { TeamGridBlock } from "./TeamGridBlock";
 import { ServicesGridBlock } from "./ServicesGridBlock";
-import { BrandsMarqueeBlock } from "./BrandsMarqueeBlock";
-import { HighlightsBlock } from "./HighlightsBlock";
-import { FeaturedCardsBlock } from "./FeaturedCardsBlock";
+import { IconCardGridBlock } from "./IconCardGridBlock";
+import { ImageGalleryBlock } from "./ImageGalleryBlock";
+import { VideoGridBlock } from "./VideoGridBlock";
+import { PartnerLogoGridBlock } from "./PartnerLogoGridBlock";
+import { ArticleCardGridBlock } from "./ArticleCardGridBlock";
+import { ProfileMessageBlock } from "./ProfileMessageBlock";
 import { TimelineBlock } from "./TimelineBlock";
-import { ClinicalResultsBlock } from "./ClinicalResultsBlock";
-import { HeroSlideshowBlock } from "./HeroSlideshowBlock";
 
 export function BlockRenderer({ blocks }: { blocks: CmsBlock[] }) {
   if (!blocks || blocks.length === 0) return null;
@@ -69,7 +70,16 @@ function BlockSwitch({ block }: { block: CmsBlock }) {
       );
 
     case "hero_slideshow":
-      return <HeroSlideshowBlock />;
+      // The hero slideshow is managed separately — this block just signals its placement.
+      // The live site has a dedicated HeroSlideshow component wired to the DB.
+      // For CMS-rendered pages we show a placeholder with a note.
+      return (
+        <div className="flex min-h-[200px] items-center justify-center bg-[color:var(--brand-soft)] text-center px-8 py-16">
+          <p className="text-sm text-[color:var(--brand-deep)] font-medium">
+            Hero slideshow — managed in the Hero Images section
+          </p>
+        </div>
+      );
 
     case "cta":
       return (
@@ -174,20 +184,110 @@ function BlockSwitch({ block }: { block: CmsBlock }) {
         />
       );
 
-    case "brands_marquee":
-      return <BrandsMarqueeBlock />;
+    case "icon_card_grid":
+      return (
+        <IconCardGridBlock
+          iconCardTitle={d.iconCardTitle as string}
+          iconCardColumns={d.iconCardColumns as 2 | 3 | 4}
+          iconCardItems={
+            d.iconCardItems as {
+              icon?: string;
+              title: string;
+              description: string;
+              href?: string;
+            }[]
+          }
+        />
+      );
 
-    case "highlights":
-      return <HighlightsBlock />;
+    case "image_gallery":
+      return (
+        <ImageGalleryBlock
+          galleryTitle={d.galleryTitle as string}
+          galleryColumns={d.galleryColumns as 2 | 3 | 4}
+          galleryItems={
+            d.galleryItems as {
+              src: string;
+              alt: string;
+              caption?: string;
+            }[]
+          }
+        />
+      );
 
-    case "featured_cards":
-      return <FeaturedCardsBlock />;
+    case "video_grid":
+      return (
+        <VideoGridBlock
+          videoGridTitle={d.videoGridTitle as string}
+          videoGridSubtitle={d.videoGridSubtitle as string}
+          videoGridColumns={d.videoGridColumns as 2 | 3}
+          videoGridItems={
+            d.videoGridItems as {
+              url: string;
+              title: string;
+              description?: string;
+              thumbnail?: string;
+            }[]
+          }
+        />
+      );
+
+    case "partner_logo_grid":
+      return (
+        <PartnerLogoGridBlock
+          partnerTitle={d.partnerTitle as string}
+          partnerSubtitle={d.partnerSubtitle as string}
+          partnerCategories={
+            d.partnerCategories as {
+              name: string;
+              logos: { name: string; logo: string }[];
+            }[]
+          }
+        />
+      );
+
+    case "article_card_grid":
+      return (
+        <ArticleCardGridBlock
+          articleTitle={d.articleTitle as string}
+          articleItems={
+            d.articleItems as {
+              title: string;
+              description: string;
+              image?: string;
+              imageAlt?: string;
+              href?: string;
+            }[]
+          }
+        />
+      );
+
+    case "profile_message":
+      return (
+        <ProfileMessageBlock
+          profileName={d.profileName as string}
+          profileTitle={d.profileTitle as string}
+          profileImage={d.profileImage as string}
+          profileMessage={d.profileMessage as string}
+        />
+      );
 
     case "timeline":
-      return <TimelineBlock />;
-
-    case "clinical_results":
-      return <ClinicalResultsBlock />;
+      return (
+        <TimelineBlock
+          timelineTitle={d.timelineTitle as string}
+          timelineItems={
+            d.timelineItems as {
+              year: string;
+              caption: string;
+              heading: string;
+              body: string;
+              src: string;
+              alt: string;
+            }[]
+          }
+        />
+      );
 
     default:
       // Unknown block type — fail visibly in development, hide in production.

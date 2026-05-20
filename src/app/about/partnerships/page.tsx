@@ -23,6 +23,7 @@ const PARTNER_CATEGORIES: PartnerCategory[] = [
       { name: "Vattanac Bank",           logo: "/partners/logos/vattanac-bank.jpg" },
       { name: "Cambodia Post Bank",       logo: "/partners/logos/cambodia-post-bank.webp" },
       { name: "Chip Mong Bank",           logo: "/partners/logos/chip-mong-bank.png" },
+      { name: "Prince Bank" },
       { name: "BRED Bank",                logo: "/partners/logos/bred-bank.webp" },
       { name: "Phillip Bank",             logo: "/partners/logos/phillip-bank.svg" },
       { name: "Maybank",                  logo: "/partners/logos/maybank.png" },
@@ -40,6 +41,7 @@ const PARTNER_CATEGORIES: PartnerCategory[] = [
       { name: "AEON Specialized Bank" },
       { name: "Oriental Bank",            logo: "/partners/logos/oriental-bank.jpg" },
       { name: "Bridge Bank" },
+      { name: "CCU Bank" },
     ],
   },
   {
@@ -71,6 +73,7 @@ const PARTNER_CATEGORIES: PartnerCategory[] = [
       { name: "Prosur Insurance" },
       { name: "CB Insurance" },
       { name: "South Asia Services" },
+      { name: "Assurnet" },
     ],
   },
   {

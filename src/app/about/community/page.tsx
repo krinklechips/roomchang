@@ -139,9 +139,6 @@ export default function CommunityPage() {
                 <p className="mt-3 flex-1 text-sm leading-7 text-[color:var(--text-soft)]">
                   {article.description}
                 </p>
-                <p className="mt-4 text-sm font-semibold text-[color:var(--brand-deep)] transition hover:text-[color:var(--brand)] cursor-pointer">
-                  Read More&hellip;
-                </p>
               </div>
             </article>
           ))}

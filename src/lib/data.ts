@@ -67,6 +67,7 @@ export type Service = {
   category: string | null;
   features: string[];
   icon: string | null;
+  imageSrc: string | null;
   isFeatured: boolean;
   order: number;
   published: boolean;
@@ -493,3 +494,154 @@ export const getBlogPostBySlug = cache(async function getBlogPostBySlug(slug: st
   }
   return data ?? null;
 });
+
+// ── Videos ──
+export type Video = {
+  id: string;
+  title: string;
+  url: string;
+  thumbnail: string | null;
+  description: string | null;
+  category: string;
+  doctor: string | null;
+  topic: string | null;
+  treatment: string | null;
+  order: number;
+  published: boolean;
+};
+
+export async function getVideos(category?: string): Promise<Video[]> {
+  let query = supabase
+    .from("videos")
+    .select("*")
+    .eq("published", true)
+    .order("order");
+  if (category) query = query.eq("category", category);
+  const { data, error } = await query;
+  if (error) {
+    console.error("Failed to fetch videos:", error.message);
+    return [];
+  }
+  return data ?? [];
+}
+
+// ── Career Positions ──
+export type CareerPosition = {
+  id: string;
+  title: string;
+  slug: string;
+  department: string | null;
+  type: string | null;
+  location: string | null;
+  description: string | null;
+  requirements: string[];
+  benefits: string[];
+  order: number;
+  published: boolean;
+};
+
+export async function getCareerPositions(): Promise<CareerPosition[]> {
+  const { data, error } = await supabase
+    .from("career_positions")
+    .select("*")
+    .eq("published", true)
+    .order("order");
+  if (error) {
+    console.error("Failed to fetch career positions:", error.message);
+    return [];
+  }
+  return data ?? [];
+}
+
+export async function getCareerPositionBySlug(slug: string): Promise<CareerPosition | null> {
+  const { data, error } = await supabase
+    .from("career_positions")
+    .select("*")
+    .eq("slug", slug)
+    .eq("published", true)
+    .single();
+  if (error) {
+    console.error("Failed to fetch career position:", error.message);
+    return null;
+  }
+  return data ?? null;
+}
+
+// ── Community Articles ──
+export type CommunityArticle = {
+  id: string;
+  title: string;
+  description: string | null;
+  image: string | null;
+  imageAlt: string | null;
+  href: string | null;
+  order: number;
+  published: boolean;
+};
+
+export async function getCommunityArticles(): Promise<CommunityArticle[]> {
+  const { data, error } = await supabase
+    .from("community_articles")
+    .select("*")
+    .eq("published", true)
+    .order("order");
+  if (error) {
+    console.error("Failed to fetch community articles:", error.message);
+    return [];
+  }
+  return data ?? [];
+}
+
+// ── Timeline Events ──
+export type TimelineEvent = {
+  id: string;
+  year: string;
+  caption: string;
+  heading: string;
+  body: string;
+  imageSrc: string;
+  imageAlt: string | null;
+  imagePosition: string | null;
+  order: number;
+  published: boolean;
+};
+
+export async function getTimelineEvents(): Promise<TimelineEvent[]> {
+  const { data, error } = await supabase
+    .from("timeline_events")
+    .select("*")
+    .eq("published", true)
+    .order("order");
+  if (error) {
+    console.error("Failed to fetch timeline events:", error.message);
+    return [];
+  }
+  return data ?? [];
+}
+
+// ── Publications ──
+export type Publication = {
+  id: string;
+  title: string;
+  authors: string | null;
+  journal: string | null;
+  year: number;
+  doi: string | null;
+  url: string | null;
+  abstract: string | null;
+  order: number;
+  published: boolean;
+};
+
+export async function getPublications(): Promise<Publication[]> {
+  const { data, error } = await supabase
+    .from("publications")
+    .select("*")
+    .eq("published", true)
+    .order("year", { ascending: false });
+  if (error) {
+    console.error("Failed to fetch publications:", error.message);
+    return [];
+  }
+  return data ?? [];
+}

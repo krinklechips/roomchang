@@ -1,9 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import { SiteShell } from "@/components/site/site-shell";
 import { AboutTimeline } from "@/components/sections/about-timeline";
 import { Building2, Star, Mail, Stethoscope, Heart, Handshake, ImagePlay, Cpu, Briefcase, ArrowRight, type LucideIcon } from "lucide-react";
-import { BRANCHES } from "@/lib/branches";
 import { supabaseServer } from "@/lib/supabase-server";
 import type { Metadata } from "next";
 
@@ -188,95 +186,7 @@ export default async function AboutPage() {
       {/* History — full-bleed timeline */}
       <AboutTimeline />
 
-      {/* Discover locations CTA — bridge between timeline and branches */}
-      <div className="border-y border-[color:var(--border-strong)] bg-[color:var(--surface)]">
-        <div className="mx-auto flex max-w-4xl flex-col items-center px-4 py-12 text-center sm:py-16">
-          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--brand)]">
-            5 Branches Across Phnom Penh
-          </p>
-          <h2 className="mt-3 font-display text-3xl text-[color:var(--text-main)] sm:text-4xl">
-            Discover Our Locations
-          </h2>
-          <p className="mt-4 max-w-lg text-sm leading-7 text-[color:var(--text-soft)]">
-            From our flagship 10-storey hospital to convenient mall branches — find the Roomchang closest to you.
-          </p>
-          <a
-            href="#branches"
-            className="btn-primary mt-6 inline-flex items-center gap-2"
-          >
-            Discover These Locations
-            <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
-          </a>
-        </div>
-      </div>
-
-      <div id="branches" className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
-        {/* Branch gallery */}
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--brand)]">
-            5 Locations Across Phnom Penh
-          </p>
-          <h2 className="mt-3 font-display text-4xl text-[color:var(--text-main)]">Our Branches</h2>
-          <p className="mt-4 max-w-2xl text-sm leading-7 text-[color:var(--text-soft)]">
-            Each branch delivers the full range of Roomchang services — same specialist team, same
-            hospital-grade equipment, same standard of care.
-          </p>
-
-          {/* Main branch — full-width hero, clickable */}
-          <Link href={`/about/branches/${BRANCHES[0].slug}`} className="mt-8 block relative overflow-hidden rounded-3xl group">
-            <Image
-              src={BRANCHES[0].imageSrc}
-              alt={BRANCHES[0].imageAlt}
-              width={1280}
-              height={600}
-              className="h-80 w-full object-cover object-center sm:h-[26rem] transition duration-500 group-hover:scale-[1.02]"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[rgba(44,26,40,0.75)] via-[rgba(44,26,40,0.2)] to-transparent" />
-            <div className="absolute bottom-0 left-0 px-8 pb-8">
-              <span className="inline-block rounded-full bg-[color:var(--brand)] px-3 py-1 text-[0.65rem] font-bold uppercase tracking-[0.2em] text-white mb-3">
-                {BRANCHES[0].badge}
-              </span>
-              <h3 className="font-display text-3xl text-white leading-tight">{BRANCHES[0].shortName}</h3>
-              <p className="mt-1.5 text-sm text-white/80">10-storey purpose-built dental hospital · 46 chairs · 4 operation rooms</p>
-              <p className="mt-1 text-xs text-white/60">{BRANCHES[0].address} · {BRANCHES[0].hours} · {BRANCHES[0].phone}</p>
-            </div>
-            <span className="absolute right-6 top-6 flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1.5 text-[0.65rem] font-bold uppercase tracking-[0.15em] text-white backdrop-blur-sm opacity-0 transition group-hover:opacity-100">
-              View details <ArrowRight size={11} strokeWidth={2.5} />
-            </span>
-          </Link>
-
-          {/* Other 4 branches — 2×2 grid, all clickable */}
-          <div className="mt-4 grid gap-4 sm:grid-cols-2">
-            {BRANCHES.slice(1).map((branch) => (
-              <Link
-                key={branch.slug}
-                href={`/about/branches/${branch.slug}`}
-                className="group relative overflow-hidden rounded-2xl"
-              >
-                <Image
-                  src={branch.imageSrc}
-                  alt={branch.imageAlt}
-                  width={640}
-                  height={420}
-                  className="h-64 w-full object-cover transition duration-500 group-hover:scale-[1.04]"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[rgba(44,26,40,0.82)] via-[rgba(44,26,40,0.25)] to-transparent" />
-                <div className="absolute bottom-0 left-0 px-6 pb-6">
-                  <span className="mb-2 inline-block rounded-full border border-white/30 bg-white/10 px-2.5 py-0.5 text-[0.6rem] font-bold uppercase tracking-[0.18em] text-white/80 backdrop-blur-sm">
-                    {branch.badge}
-                  </span>
-                  <h3 className="font-display text-2xl text-white leading-snug">{branch.shortName}</h3>
-                  <p className="mt-1 text-xs text-white/70 leading-relaxed">{branch.address}</p>
-                  <p className="mt-0.5 text-xs text-white/55">{branch.hours} · {branch.phone}</p>
-                </div>
-                <span className="absolute right-4 top-4 flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1.5 text-[0.65rem] font-bold uppercase tracking-[0.15em] text-white backdrop-blur-sm opacity-0 transition group-hover:opacity-100">
-                  View details <ArrowRight size={11} strokeWidth={2.5} />
-                </span>
-              </Link>
-            ))}
-          </div>
-        </div>
-
+      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
         {/* Section cards grid */}
         <div className="mt-20 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {ABOUT_SECTIONS.map((section) => (

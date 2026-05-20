@@ -137,7 +137,7 @@ export default async function FacilitiesPage() {
             <div className="relative overflow-hidden rounded-3xl shadow-[0_20px_60px_rgba(57,28,45,0.12)]">
               <Image
                 src="/facilities/EDJI_0381.jpg"
-                alt="Roomchang Dental Hospital — 10-storey building, Monivong Boulevard, Phnom Penh"
+                alt="Roomchang Dental Hospital — 10-storey building, Sisowath High School, Phnom Penh"
                 width={769}
                 height={1280}
                 className="h-full w-full object-cover object-center"
@@ -147,7 +147,7 @@ export default async function FacilitiesPage() {
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[rgba(44,26,40,0.7)] to-transparent px-6 pb-6 pt-16">
                 <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/70">Main Hospital</p>
                 <p className="mt-1 font-display text-2xl text-white">10-Storey Building</p>
-                <p className="mt-0.5 text-xs text-white/60">No. 4, Street 184, Monivong Blvd, Phnom Penh</p>
+                <p className="mt-0.5 text-xs text-white/60">No. 4, Street 184, Khan Daun Penh, Phnom Penh</p>
               </div>
             </div>
 
