@@ -6,6 +6,7 @@
  */
 
 import Link from "next/link";
+import Image from "next/image";
 import {
   Check,
   DollarSign,
@@ -23,6 +24,7 @@ import {
 } from "lucide-react";
 import { SiteShell } from "@/components/site/site-shell";
 import type { Service, ServiceSection } from "@/lib/data";
+import { cdnUrl } from "@/lib/supabase";
 
 // Maps icon name strings (stored in DB) → Lucide components
 const ICON_MAP: Record<string, LucideIcon> = {
@@ -44,6 +46,12 @@ function ServiceIcon({ name, className }: { name: string; className?: string }) 
   const Icon = ICON_MAP[name];
   if (!Icon) return null;
   return <Icon size={24} strokeWidth={1.75} className={className} aria-hidden="true" />;
+}
+
+function resolveServiceImage(src: string | null | undefined): string | null {
+  if (!src) return null;
+  if (src.startsWith("/") || src.startsWith("http")) return src;
+  return cdnUrl(src);
 }
 
 // ─── Section renderers ───────────────────────────────────────────────────────
@@ -221,27 +229,42 @@ function RenderSection({ s }: { s: ServiceSection }) {
 
 export function ServiceDetailContent({ service }: { service: Service }) {
   const sections = service.content?.sections ?? [];
+  const heroImage = resolveServiceImage(service.imageSrc);
 
   return (
     <SiteShell>
       {/* Hero */}
       <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--surface)]">
-        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
-          {service.eyebrow && (
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--brand)]">
-              {service.eyebrow}
+        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 sm:py-20 lg:grid-cols-[minmax(0,1fr)_minmax(360px,520px)] lg:items-center lg:px-8">
+          <div>
+            {service.eyebrow && (
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--brand)]">
+                {service.eyebrow}
+              </p>
+            )}
+            <h1 className="mt-3 font-display text-5xl leading-none text-[color:var(--text-main)] sm:text-6xl">
+              {service.name}
+            </h1>
+            <p className="mt-5 max-w-2xl text-base leading-7 text-[color:var(--text-soft)]">
+              {service.heroDescription ?? service.description}
             </p>
-          )}
-          <h1 className="mt-3 font-display text-5xl leading-none text-[color:var(--text-main)] sm:text-6xl">
-            {service.name}
-          </h1>
-          <p className="mt-5 max-w-2xl text-base leading-7 text-[color:var(--text-soft)]">
-            {service.heroDescription ?? service.description}
-          </p>
-          <div className="mt-8 flex flex-wrap gap-4">
-            <Link href="/contact" className="btn-primary">Book a Consultation</Link>
-            <Link href="/services" className="btn-secondary">All Services</Link>
+            <div className="mt-8 flex flex-wrap gap-4">
+              <Link href="/contact" className="btn-primary">Book a Consultation</Link>
+              <Link href="/services" className="btn-secondary">All Services</Link>
+            </div>
           </div>
+          {heroImage && (
+            <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-[color:var(--border-strong)] bg-white shadow-[0_20px_60px_rgba(57,28,45,0.10)]">
+              <Image
+                src={heroImage}
+                alt={`${service.name} at Roomchang Dental Hospital`}
+                fill
+                priority
+                sizes="(min-width: 1024px) 520px, 100vw"
+                className="object-cover"
+              />
+            </div>
+          )}
         </div>
       </div>
 

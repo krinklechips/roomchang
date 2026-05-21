@@ -9,6 +9,7 @@ const FOOTER_LINKS = [
       { label: "Endodontics", href: "/services/endodontics" },
       { label: "Dental Crowns", href: "/services/dental-crowns" },
       { label: "Orthodontics", href: "/services/orthodontics" },
+      { label: "Dentures", href: "/services/dentures" },
       { label: "Dental Implants", href: "/services/dental-implants" },
       { label: "Oral Surgery", href: "/services/oral-surgery" },
       { label: "Full Mouth Reconstruction", href: "/services/full-mouth-reconstruction" },

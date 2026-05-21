@@ -10,21 +10,23 @@ describe("SiteHeader", () => {
 
     expect(logo).toBeInTheDocument();
     expect(logo.className).toContain("object-contain");
-    expect(logo).toHaveAttribute("sizes", "(max-width: 640px) 125px, (max-width: 1024px) 145px, 164px");
+    expect(logo).toHaveAttribute("sizes", "(max-width: 640px) 105px, (max-width: 1024px) 145px, 164px");
     expect(logo.className).not.toContain("object-[center_62%]");
   });
 
-  it("links to Endodontics immediately after Oral Surgery in the services menu", () => {
+  it("links to Dentures between Periodontal Dentistry and Dental Implants in the services menu", () => {
     render(<SiteHeader />);
 
     const serviceLinks = screen
       .getAllByRole("link")
       .filter((link) => link.getAttribute("href")?.startsWith("/services/"));
     const labels = serviceLinks.map((link) => link.textContent);
-    const oralSurgeryIndex = labels.indexOf("Oral Surgery");
-    const endodonticsIndex = labels.indexOf("Endodontics");
+    const periodonticsIndex = labels.indexOf("Periodontal Dentistry");
+    const denturesIndex = labels.indexOf("Dentures");
+    const implantsIndex = labels.indexOf("Dental Implants");
 
-    expect(serviceLinks[endodonticsIndex]).toHaveAttribute("href", "/services/endodontics");
-    expect(endodonticsIndex).toBe(oralSurgeryIndex + 1);
+    expect(serviceLinks[denturesIndex]).toHaveAttribute("href", "/services/dentures");
+    expect(denturesIndex).toBe(periodonticsIndex + 1);
+    expect(implantsIndex).toBe(denturesIndex + 1);
   });
 });

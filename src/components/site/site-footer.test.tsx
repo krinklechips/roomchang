@@ -11,17 +11,17 @@ describe("SiteFooter", () => {
     expect(logo).toHaveAttribute("sizes", "120px");
   });
 
-  it("links to Endodontics immediately after Oral Surgery in the services links", () => {
+  it("links to Dentures before Dental Implants in the services links", () => {
     render(<SiteFooter />);
 
     const serviceLinks = screen
       .getAllByRole("link")
       .filter((link) => link.getAttribute("href")?.startsWith("/services/"));
     const labels = serviceLinks.map((link) => link.textContent);
-    const oralSurgeryIndex = labels.indexOf("Oral Surgery");
-    const endodonticsIndex = labels.indexOf("Endodontics");
+    const denturesIndex = labels.indexOf("Dentures");
+    const implantsIndex = labels.indexOf("Dental Implants");
 
-    expect(serviceLinks[endodonticsIndex]).toHaveAttribute("href", "/services/endodontics");
-    expect(endodonticsIndex).toBe(oralSurgeryIndex + 1);
+    expect(serviceLinks[denturesIndex]).toHaveAttribute("href", "/services/dentures");
+    expect(implantsIndex).toBe(denturesIndex + 1);
   });
 });

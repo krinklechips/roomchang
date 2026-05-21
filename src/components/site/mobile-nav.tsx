@@ -33,6 +33,7 @@ const NAV_ITEMS: NavItem[] = [
       { label: "Orthodontics", href: "/services/orthodontics" },
       { label: "Pediatric Dentistry", href: "/services/pediatric-dentistry" },
       { label: "Periodontal Dentistry", href: "/services/periodontics" },
+      { label: "Dentures", href: "/services/dentures" },
       { label: "Dental Implants", href: "/services/dental-implants" },
       { label: "Oral Surgery", href: "/services/oral-surgery" },
       { label: "Full Mouth Reconstruction", href: "/services/full-mouth-reconstruction" },

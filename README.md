@@ -1,36 +1,130 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Roomchang Dental Hospital
+
+Official website for Roomchang Dental Hospital — Cambodia's leading dental group since 1996, with five locations across Phnom Penh.
+
+**Production:** [roomchang.vercel.app](https://roomchang.vercel.app)
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 16 (App Router, Turbopack) |
+| Language | TypeScript 5 |
+| UI | React 19, Tailwind CSS 4, Lucide icons |
+| Database | Supabase (PostgreSQL) |
+| ORM | Prisma 7 |
+| Email | Resend |
+| Media | Cloudflare R2 |
+| Hosting | Vercel |
+| Testing | Vitest, Testing Library |
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Node.js 20+
+- npm
+
+### Environment Variables
+
+Copy `.env.example` to `.env.local` and fill in the required values:
+
+```
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+RESEND_API_KEY=
+ENQUIRY_TO_EMAIL=
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Development
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm install
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The dev server runs at [http://localhost:3000](http://localhost:3000) with Turbopack hot reload.
 
-## Learn More
+### Build & Test
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run build    # Production build
+npm run start    # Start production server
+npm run test     # Run test suite
+npm run lint     # ESLint
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+├── app/                    # Next.js App Router pages
+│   ├── about/              # About, history, branches, careers, news, partnerships
+│   ├── api/                # API routes (enquiry, referral, admin)
+│   ├── blog/               # Dentist Talks, publications
+│   ├── clinical-results/   # Before/after case gallery
+│   ├── contact/            # Enquiry form + branch information
+│   ├── international/      # International patient guide, cost comparison
+│   ├── preview/            # CMS draft preview routes
+│   ├── pricing/            # Treatment pricing tables
+│   ├── services/           # 12 dental specialties + sub-service pages
+│   ├── team/               # Doctor profiles
+│   └── technology/         # Equipment & technology deep-dives
+├── components/
+│   ├── blocks/             # CMS block components (used by page builder)
+│   ├── pages/              # Full page content renderers
+│   ├── sections/           # Homepage sections (hero, stats, testimonials)
+│   ├── site/               # Layout shell, header, footer, mobile nav
+│   └── ui/                 # Shared UI primitives
+└── lib/                    # Data fetching, utilities, Supabase clients
+```
 
-## Deploy on Vercel
+## Key Features
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **12 dental specialties** with detailed service pages, pricing, and content sections
+- **Doctor profiles** with credentials, specialties, and multilingual support
+- **International patient guide** with cost comparisons and step-by-step process
+- **Clinical case gallery** with before/after imagery
+- **Enquiry system** — form submissions saved to Supabase + email notifications via Resend
+- **Referral tracking** — agent referral codes via cookie-based attribution
+- **CMS preview** — draft content preview at `/preview/*` routes with ISR revalidation
+- **SEO** — dynamic metadata, sitemap generation, Open Graph tags
+- **Responsive design** — mobile-first with tailored layouts across breakpoints
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Data Architecture
+
+Content is stored in Supabase PostgreSQL with the following primary tables:
+
+- `services` — dental specialties with rich JSON content sections
+- `doctors` — team profiles, credentials, photos
+- `branches` — location information and hours
+- `hero_slides` — homepage slideshow with configurable display modes
+- `pricing_categories` / `pricing_items` — treatment pricing
+- `clinical_cases` — before/after cases with image galleries
+- `technology` — equipment pages with rich content
+- `testimonials` — patient reviews
+- `enquiries` — form submissions
+- `blog_posts` — dentist talks and publications
+- `faq_items` — frequently asked questions
+- `seo_page_meta` — per-page SEO overrides
+
+Service and technology pages use a section-based content model (stored as JSONB) supporting: callouts, text blocks, bullet lists, card grids, step sequences, pricing tables, two-column layouts, images, and video embeds.
+
+## Deployment
+
+The site deploys automatically via Vercel's GitHub integration:
+
+- **Production** — pushes to `main` deploy to production
+- **Preview** — branch pushes generate preview deployments
+
+ISR (Incremental Static Regeneration) with 60-second revalidation ensures content updates propagate without full rebuilds.
+
+## Fonts
+
+- **Manrope** — primary sans-serif (body text, UI)
+- **Cormorant Garamond** — display serif (headings, titles)
+
+## License
+
+Proprietary. All rights reserved by Roomchang Dental Hospital.

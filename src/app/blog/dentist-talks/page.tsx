@@ -9,54 +9,128 @@ export const metadata: Metadata = {
     "Watch Roomchang dentists explain common dental concerns, treatment options, and modern technologies in short, informative videos.",
 };
 
-const DENTIST_TALKS = [
+const YOUTUBE_PLAYLIST_ID = "PL2Dq5LzBKy4wi9hCaXPEoFhY1xY-LoN46";
+
+export const DENTIST_TALKS = [
   {
     id: "Sj212poMjQQ",
-    title: "Solutions to Bad Breath",
-    doctor: "Dr. Peung Kimsreang",
+    title: 'ប្រធានបទ  " ដំណោះស្រាយចំពោះបញ្ហាក្លិនមាត់ "',
     topic: "Oral Hygiene",
-    description:
-      "Bad breath can affect confidence and may also be a sign of underlying dental problems. Dr. Peung Kimsreang explains the common causes of bad breath, including poor oral hygiene, food buildup, gum disease, tooth decay, dry mouth, and other oral health concerns. The video also shares practical ways to manage and prevent bad breath, such as brushing properly, flossing daily, cleaning the tongue, drinking enough water, and visiting the dentist for professional cleaning and diagnosis when the problem continues.",
+  },
+  {
+    id: "zajv8AuutfE",
+    title: 'ប្រធានបទ  " ការធ្វើធ្មេញឲ្យសស្អាត "',
+    topic: "Cosmetic Dentistry",
+  },
+  {
+    id: "cilwCM3Iguc",
+    title: "ប្រធាន “ ភាពខុសគ្នារវាងការសម្អាតធ្មេញ និង ការធ្វើអោយធ្មេញស ”",
+    topic: "Cosmetic Dentistry",
+  },
+  {
+    id: "H-57t06LuqE",
+    title: 'ប្រធានបទ " ជំងឺរលាកអញ្ចាញធ្មេញ "',
+    topic: "Periodontal Dentistry",
+  },
+  {
+    id: "xQrmC7xfpis",
+    title: "ប្រធានបទៈ វិធីថែទាំ និងការព្យាបាលធ្មេញកុមារ",
+    topic: "Pediatric Dentistry",
+  },
+  {
+    id: "p7Elqx5UUo4",
+    title: "តើលោកអ្នកគួរតែទៅជួបពេទ្យធ្មេញដែរឬទេ  ប្រសិនបើអ្នកមិនឈឺធ្មេញ?",
+    topic: "Preventive Dentistry",
+  },
+  {
+    id: "aseJoChyLM8",
+    title: "ការបិតការពារ ចង្អូរធ្មេញកុមារ Fissure Sealant",
+    topic: "Pediatric Dentistry",
+  },
+  {
+    id: "X8GvbpfjMAU",
+    title: "ប្រធានបទ​ ៖ ការការពារធ្មេញសឹក ពីការសង្កៀតធ្មេញ",
+    topic: "Preventive Dentistry",
+  },
+  {
+    id: "vTLQyPsjEvo",
+    title: 'លោកទន្តបណ្ឌិត "ស៊ឺន រតនៈ" បកស្រាយលើប្រធានបទ "ស្រៀវធ្មេញ"',
+    topic: "General Dentistry",
+  },
+  {
+    id: "8I06e8cQzAo",
+    title: "តើពេលណាជាពេលវេលាល្អ សម្រាប់កុមារក្នុងការពិភាក្សាពត់ធ្មេញលើកដំបូង?",
+    topic: "Orthodontics",
+  },
+  {
+    id: "TjCpgw7GDYQ",
+    title: "ជំងឺរលាកជាលិកាជុំវិញធ្មេញ ឬជំងឺរាក់សុីធ្មេញ  បកស្រាយដោយ ទន្តបណ្ឌិត ម៉េង ហាំង",
+    topic: "Periodontal Dentistry",
+  },
+  {
+    id: "WsaRFqhtULQ",
+    title: 'ទន្តបណ្ឌិត "សំ ចាន់ផល្លីកា" | "តើស្ត្រីមានផ្ទៃពោះគួរទៅពិនិត្យសុខភាពមាត់ធ្មេញដែរឬទេ? "',
+    topic: "Preventive Dentistry",
   },
   {
     id: "3IeYTNI9hR8",
-    title: "Early Childhood Caries",
-    doctor: "Dr. Callum Durward",
+    title: "ជំងឺមាត់ធ្មេញលេីកុមារតូចៗ​  Early Childhood Carries",
     topic: "Pediatric Dentistry",
-    description:
-      "Dr. Callum Durward explains Early Childhood Caries, a common dental condition that affects young children. The video discusses how tooth decay can develop at an early age, what signs parents should look for, and why early dental visits are important for prevention and treatment. Parents will learn practical ways to protect their child’s teeth, including proper brushing habits, reducing sugary foods and drinks, and building a healthy dental routine from a young age.",
   },
   {
-    id: "FqxjxR7Rr6Y",
-    title: "Understanding Dental Implants",
-    doctor: "Roomchang Dental Hospital",
+    id: "7GFKeh5GlSA",
+    title: 'ការថែទាំសុខភាពមាត់ធ្មេញឲ្យបានត្រឹមត្រូវ (បកស្រាយដោយ "ទន្តបណ្ឌិត ឡៅ ច័ន្ទវត្តី )',
+    topic: "Preventive Dentistry",
+  },
+  {
+    id: "FDTUTfFDESI",
+    title: 'ប្រធានបទ "ផលប៉ះពាល់នៃការគេងស្រមុក និងស្ទះដង្ហើមពេលគេង"',
+    topic: "Sleep Apnea",
+  },
+  {
+    id: "ZpQZqMHN4us",
+    title: "សុខភាពមាត់ធ្មេញទារក និងកុមារ",
+    topic: "Pediatric Dentistry",
+  },
+  {
+    id: "sUghKx1CrnA",
+    title: "Interview Dr_ Kyhak Topic Implantology",
     topic: "Implantology",
-    description:
-      "Learn about the dental implant process at Roomchang — from initial consultation and assessment through to placement and final restoration. This video covers who is a good candidate for implants, what to expect during the procedure, and how modern technology makes the process more predictable and comfortable.",
   },
   {
-    id: "k2nkrF91gHQ",
-    title: "Orthodontic Treatment Options",
-    doctor: "Roomchang Dental Hospital",
-    topic: "Orthodontics",
-    description:
-      "Explore the different orthodontic treatment options available at Roomchang, including traditional metal braces, ceramic braces, lingual braces, and clear aligners. This video helps patients understand which option may be right for their situation.",
+    id: "0dxBq4qkGDY",
+    title: "Roomchang Dental Hospital with Dr. Tith Hong Yoeu _ Dentistry Uncensored with Howard Farran",
+    topic: "Interview",
   },
   {
-    id: "S7p9ZtfJxvI",
-    title: "Teeth Whitening Explained",
-    doctor: "Roomchang Dental Hospital",
-    topic: "Cosmetic Dentistry",
-    description:
-      "Professional teeth whitening at Roomchang uses the Beyond® Whitening system for safe, effective results. Learn about the process, what to expect, and how to maintain your brighter smile after treatment.",
+    id: "cWWiy-CxvJI",
+    title: "Roomchang in the news [Implant, crown, teeth, dentistry]",
+    topic: "News",
   },
   {
-    id: "ztfm0LjFBt8",
-    title: "Root Canal Treatment",
-    doctor: "Roomchang Dental Hospital",
-    topic: "Endodontics",
-    description:
-      "Root canal treatment saves teeth that would otherwise need to be extracted. This video explains the procedure step by step, addresses common concerns about pain, and shows how modern techniques make the treatment comfortable and predictable.",
+    id: "lOlr2xdYjlM",
+    title: "Roomchang TVC En",
+    topic: "Roomchang",
+  },
+  {
+    id: "GKftQhBRz4U",
+    title: "Roomchang Dental & Aesthetic Hospital",
+    topic: "Roomchang",
+  },
+  {
+    id: "vesEO_2BoOI",
+    title: "Roomchang Dental & Aesthetic Hospital",
+    topic: "Roomchang",
+  },
+  {
+    id: "LnhaRxo0JRs",
+    title: "Roomchang Dental & Aesthetic Hospital",
+    topic: "Roomchang",
+  },
+  {
+    id: "98xjrKSG2Tg",
+    title: '​"ធ្មេញថ្គាមទាល់" បកស្រាយដោយទន្តបណ្ឌិត​  តារា ណារិទ្ធ',
+    topic: "Oral Surgery",
   },
 ];
 
@@ -134,7 +208,7 @@ export default function DentistTalksPage() {
                 {/* Video embed */}
                 <div className="aspect-video w-full">
                   <iframe
-                    src={`https://www.youtube-nocookie.com/embed/${video.id}`}
+                    src={`https://www.youtube-nocookie.com/embed/${video.id}?list=${YOUTUBE_PLAYLIST_ID}&rel=0`}
                     title={video.title}
                     className="h-full w-full"
                     loading="lazy"
@@ -151,7 +225,7 @@ export default function DentistTalksPage() {
                         {video.title}
                       </p>
                       <p className="mt-1 text-xs font-semibold text-[color:var(--brand)]">
-                        {video.doctor}
+                        Roomchang Dental Hospital
                       </p>
                     </div>
                     <span className="mt-0.5 shrink-0 rounded-full bg-[color:var(--brand-soft)] px-2.5 py-0.5 text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-[color:var(--brand-deep)]">
@@ -159,7 +233,7 @@ export default function DentistTalksPage() {
                     </span>
                   </div>
                   <p className="mt-3 text-sm leading-6 text-[color:var(--text-soft)]">
-                    {video.description}
+                    Watch this Roomchang Dentist Talks video from the official YouTube playlist.
                   </p>
                 </div>
               </div>

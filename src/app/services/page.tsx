@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { SiteShell } from "@/components/site/site-shell";
 import { getServices } from "@/lib/data";
+import { cdnUrl } from "@/lib/supabase";
 import type { Metadata } from "next";
 import {
   CircleDot,
@@ -28,7 +29,6 @@ const HERO_TRUST = [
   { value: "11",  label: "Specialties" },
   { value: "37",  label: "Specialists" },
   { value: "5",   label: "Locations" },
-  { value: "6",   label: "Languages" },
 ];
 
 // Maps service slug → lucide icon component
@@ -44,6 +44,7 @@ const SERVICE_ICONS: Record<string, LucideIcon> = {
   "sleep-apnea":              Moon,
   "teeth-whitening":          Zap,
   "endodontics":              Shield,
+  "dentures":                 Smile,
 };
 
 const SERVICE_IMAGES: Record<string, { src: string; alt: string }> = {
@@ -88,6 +89,12 @@ const SERVICE_IMAGES: Record<string, { src: string; alt: string }> = {
     alt: "Endodontic treatment at Roomchang Dental Hospital",
   },
 };
+
+function resolveServiceImage(src: string | null | undefined): string | null {
+  if (!src) return null;
+  if (src.startsWith("/") || src.startsWith("http")) return src;
+  return cdnUrl(src);
+}
 
 // Sub-services shown as links inside their parent card rather than as top-level cards
 const HIDDEN_FROM_GRID = new Set(["all-on-4", "implant-bridges"]);
@@ -138,6 +145,8 @@ export default async function ServicesPage() {
           {services.filter((s) => !HIDDEN_FROM_GRID.has(s.slug)).map((service) => {
             const Icon = SERVICE_ICONS[service.slug] ?? CircleDot;
             const serviceImage = SERVICE_IMAGES[service.slug];
+            const imageSrc = resolveServiceImage(service.imageSrc ?? serviceImage?.src);
+            const imageAlt = serviceImage?.alt ?? `${service.name} treatment at Roomchang Dental Hospital`;
             const subServices = SUB_SERVICES[service.slug] ?? [];
             return (
               <article
@@ -145,11 +154,11 @@ export default async function ServicesPage() {
                 id={service.slug}
                 className="group flex flex-col overflow-hidden rounded-3xl border border-[color:var(--border-strong)] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_60px_rgba(57,28,45,0.1)]"
               >
-                {serviceImage && (
+                {imageSrc && (
                   <div className="relative aspect-[4/3] overflow-hidden border-b border-[color:var(--border-strong)] bg-[color:var(--surface)]">
                     <Image
-                      src={serviceImage.src}
-                      alt={serviceImage.alt}
+                      src={imageSrc}
+                      alt={imageAlt}
                       fill
                       sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                       className="object-cover transition duration-500 group-hover:scale-105"
