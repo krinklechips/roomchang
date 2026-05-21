@@ -5,19 +5,20 @@ import { getServices } from "@/lib/data";
 import { cdnUrl } from "@/lib/supabase";
 import type { Metadata } from "next";
 import {
-  CircleDot,
+  ShieldCheck,
+  Tooth,
   Crown,
-  AlignCenter,
-  Sparkles,
-  RefreshCcw,
+  Sparkle,
+  ArrowsClockwise,
   Scissors,
-  Smile,
+  SmileyWink,
   Moon,
-  Zap,
-  Shield,
+  Lightning,
   ArrowRight,
-  type LucideIcon,
-} from "lucide-react";
+  Target,
+  FirstAidKit,
+} from "@phosphor-icons/react/dist/ssr";
+import type { Icon as PhosphorIcon } from "@phosphor-icons/react/dist/lib/types";
 
 export const metadata: Metadata = {
   title: "Dental Services | Roomchang Dental Hospital",
@@ -31,20 +32,20 @@ const HERO_TRUST = [
   { value: "5",   label: "Locations" },
 ];
 
-// Maps service slug → lucide icon component
-const SERVICE_ICONS: Record<string, LucideIcon> = {
-  "preventive-dentistry":     Shield,
-  "dental-implants":          CircleDot,
+// Maps service slug → Phosphor icon component (duotone)
+const SERVICE_ICONS: Record<string, PhosphorIcon> = {
+  "preventive-dentistry":     ShieldCheck,
+  "dental-implants":          Target,
   "dental-crowns":            Crown,
-  "orthodontics":             AlignCenter,
-  "cosmetic-dentistry":       Sparkles,
-  "full-mouth-reconstruction":RefreshCcw,
+  "orthodontics":             FirstAidKit,
+  "cosmetic-dentistry":       Sparkle,
+  "full-mouth-reconstruction":ArrowsClockwise,
   "oral-surgery":             Scissors,
-  "pediatric-dentistry":      Smile,
+  "pediatric-dentistry":      SmileyWink,
   "sleep-apnea":              Moon,
-  "teeth-whitening":          Zap,
-  "endodontics":              Shield,
-  "dentures":                 Smile,
+  "teeth-whitening":          Lightning,
+  "endodontics":              Tooth,
+  "dentures":                 SmileyWink,
 };
 
 const SERVICE_IMAGES: Record<string, { src: string; alt: string }> = {
@@ -143,7 +144,7 @@ export default async function ServicesPage() {
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8">
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {services.filter((s) => !HIDDEN_FROM_GRID.has(s.slug)).map((service) => {
-            const Icon = SERVICE_ICONS[service.slug] ?? CircleDot;
+            const Icon = SERVICE_ICONS[service.slug] ?? Tooth;
             const serviceImage = SERVICE_IMAGES[service.slug];
             const imageSrc = resolveServiceImage(service.imageSrc ?? serviceImage?.src);
             const imageAlt = serviceImage?.alt ?? `${service.name} treatment at Roomchang Dental Hospital`;
@@ -170,7 +171,7 @@ export default async function ServicesPage() {
                     className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[color:var(--surface-strong)] text-[color:var(--brand-deep)]"
                     aria-hidden="true"
                   >
-                    <Icon size={22} strokeWidth={1.75} />
+                    <Icon size={22} weight="duotone" />
                   </span>
                   <h2 className="font-display text-[1.5rem] leading-tight text-[color:var(--text-main)]">
                     {service.name}
@@ -206,7 +207,7 @@ export default async function ServicesPage() {
                     className="inline-flex items-center gap-2 text-sm font-semibold text-[color:var(--brand-deep)] transition hover:text-[color:var(--brand)]"
                   >
                     Learn more
-                    <ArrowRight size={14} strokeWidth={2} aria-hidden="true" className="transition group-hover:translate-x-1" />
+                    <ArrowRight size={14} weight="bold" aria-hidden="true" className="transition group-hover:translate-x-1" />
                   </Link>
                 </div>
               </article>

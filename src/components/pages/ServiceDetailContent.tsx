@@ -8,44 +8,50 @@
 import Link from "next/link";
 import Image from "next/image";
 import {
-  Check,
-  DollarSign,
+  CheckCircle,
+  CurrencyDollar,
   Bone,
-  Sparkles,
-  Dumbbell,
-  Smile,
+  Sparkle,
+  Barbell,
+  Smiley,
   Clock,
-  CircleDot,
+  Crosshair,
   Heart,
-  Shield,
+  ShieldCheck,
   Star,
-  Zap,
-  type LucideIcon,
-} from "lucide-react";
+  Lightning,
+  Tooth,
+  Eye,
+  FirstAidKit,
+} from "@phosphor-icons/react/dist/ssr";
+import type { Icon as PhosphorIcon } from "@phosphor-icons/react/dist/lib/types";
 import { SiteShell } from "@/components/site/site-shell";
 import type { Service, ServiceSection } from "@/lib/data";
 import { cdnUrl } from "@/lib/supabase";
 
-// Maps icon name strings (stored in DB) → Lucide components
-const ICON_MAP: Record<string, LucideIcon> = {
-  DollarSign,
+// Maps icon name strings (stored in DB) → Phosphor components
+const ICON_MAP: Record<string, PhosphorIcon> = {
+  DollarSign: CurrencyDollar,
   Bone,
-  Sparkles,
-  Dumbbell,
-  Smile,
+  Sparkles: Sparkle,
+  Dumbbell: Barbell,
+  Smile: Smiley,
   Clock,
-  CircleDot,
+  CircleDot: Crosshair,
   Heart,
-  Shield,
+  Shield: ShieldCheck,
   Star,
-  Zap,
-  Check,
+  Zap: Lightning,
+  Check: CheckCircle,
+  Tooth,
+  Eye,
+  FirstAidKit,
 };
 
 function ServiceIcon({ name, className }: { name: string; className?: string }) {
   const Icon = ICON_MAP[name];
   if (!Icon) return null;
-  return <Icon size={24} strokeWidth={1.75} className={className} aria-hidden="true" />;
+  return <Icon size={24} weight="duotone" className={className} aria-hidden="true" />;
 }
 
 function resolveServiceImage(src: string | null | undefined): string | null {
@@ -109,7 +115,7 @@ function BulletList({ s }: { s: Extract<ServiceSection, { type: "list" }> }) {
       <div className="grid gap-3 sm:grid-cols-2">
         {s.items.map((item) => (
           <div key={item} className="flex items-start gap-3 rounded-2xl border border-[color:var(--border-strong)] bg-white px-5 py-4">
-            <span className="mt-0.5 h-4 w-4 shrink-0 rounded-full bg-[color:var(--brand)] text-white flex items-center justify-center"><Check size={9} strokeWidth={3.5} aria-hidden="true" /></span>
+            <span className="mt-0.5 h-4 w-4 shrink-0 rounded-full bg-[color:var(--brand)] text-white flex items-center justify-center"><CheckCircle size={9} weight="bold" aria-hidden="true" /></span>
             <span className="text-sm leading-6 text-[color:var(--text-soft)]">{item}</span>
           </div>
         ))}
