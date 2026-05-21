@@ -60,8 +60,8 @@ const SERVICE_IMAGES: Record<string, { src: string; alt: string }> = {
     alt: "Dental crowns treatment at Roomchang Dental Hospital",
   },
   "orthodontics": {
-    src: "/services/Orthodontics 1.jpg",
-    alt: "Orthodontic treatment at Roomchang Dental Hospital",
+    src: "/services/Orthodontics 2.jpg",
+    alt: "Orthodontic clear aligner treatment at Roomchang Dental Hospital",
   },
   "cosmetic-dentistry": {
     src: "/services/Cosmetic Dentistry.jpg",
