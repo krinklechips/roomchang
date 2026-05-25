@@ -283,15 +283,17 @@ export function TechnologyDetailContent({ tech }: { tech: TechnologyItem }) {
       {/* Product image */}
       {tech.imageSrc && (
         <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--surface)]">
-          <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 flex justify-center">
-            <Image
-              src={tech.imageSrc}
-              alt={tech.name}
-              width={900}
-              height={600}
-              className="max-h-[480px] w-auto rounded-2xl object-contain"
-              priority
-            />
+          <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
+            <div className="relative aspect-[3/2] overflow-hidden rounded-2xl">
+              <Image
+                src={tech.imageSrc}
+                alt={tech.name}
+                fill
+                priority
+                sizes="(min-width: 1024px) 768px, 100vw"
+                className="object-contain"
+              />
+            </div>
           </div>
         </div>
       )}
