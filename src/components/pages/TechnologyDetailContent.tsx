@@ -215,6 +215,14 @@ function RenderSection({ s }: { s: TechSection }) {
   if (s.type === "image")      return <InlineImage s={s} />;
   if (s.type === "image_pair") return <ImagePair s={s} />;
   if (s.type === "self_video") return <SelfVideo s={s} />;
+  if (s.type === "twocol") {
+    return (
+      <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
+        <RenderSection s={s.left} />
+        <RenderSection s={s.right} />
+      </div>
+    );
+  }
   return null;
 }
 

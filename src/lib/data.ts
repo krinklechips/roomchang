@@ -96,7 +96,8 @@ export type TechSection =
   | { type: "video"; heading?: string; subheading?: string; videoId: string }
   | { type: "image"; src: string; alt: string; caption?: string; size?: "small" | "medium" | "full" }
   | { type: "image_pair"; left: { src: string; alt: string; caption?: string }; right: { src: string; alt: string; caption?: string } }
-  | { type: "self_video"; src: string; heading?: string; caption?: string };
+  | { type: "self_video"; src: string; heading?: string; caption?: string }
+  | { type: "twocol"; left: TechSection; right: TechSection };
 
 export type TechnologyItem = {
   id: string;
