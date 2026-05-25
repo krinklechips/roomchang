@@ -289,7 +289,7 @@ export function TechnologyDetailContent({ tech }: { tech: TechnologyItem }) {
               alt={tech.name}
               width={900}
               height={600}
-              className="max-h-[320px] w-auto rounded-2xl object-contain"
+              className="max-h-[480px] w-auto rounded-2xl object-contain"
               priority
             />
           </div>
