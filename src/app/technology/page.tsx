@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { SiteShell } from "@/components/site/site-shell";
-import { Check, ArrowRight } from "lucide-react";
+import { CheckCircle, ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import { getTechnology } from "@/lib/data";
 import type { Metadata } from "next";
 
@@ -10,7 +10,7 @@ export const revalidate = 60;
 export const metadata: Metadata = {
   title: "Technology | Roomchang Dental Hospital",
   description:
-    "Roomchang Dental Hospital uses the latest in digital dentistry — CAD/CAM technology, CBCT imaging, CA Clear Aligners, and advanced sterilisation systems.",
+    "Roomchang Dental Hospital uses the latest in digital dentistry — CAD/CAM technology, CBCT imaging, in-house Clear Aligners®, and advanced sterilisation systems.",
 };
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -24,7 +24,7 @@ const CATEGORY_COLORS: Record<string, string> = {
 const HERO_TRUST = [
   { value: "CAD/CAM", label: "In-house Lab" },
   { value: "3D",      label: "CBCT Imaging" },
-  { value: "CA",      label: "Clear Aligners" },
+  { value: "In-House", label: "Clear Aligners®" },
   { value: "Class B", label: "Sterilisation" },
 ];
 
@@ -114,7 +114,7 @@ export default async function TechnologyPage() {
                       className="flex items-start gap-2.5 text-sm text-[color:var(--text-main)]"
                     >
                       <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[color:var(--brand-soft)] text-[color:var(--brand-deep)]">
-                        <Check size={11} strokeWidth={3} aria-hidden="true" />
+                        <CheckCircle size={14} weight="duotone" aria-hidden="true" />
                       </span>
                       {h}
                     </li>
@@ -125,14 +125,14 @@ export default async function TechnologyPage() {
                     href={`/technology/${tech.slug}`}
                     className="inline-flex items-center gap-2 text-sm font-semibold text-[color:var(--brand-deep)] transition hover:text-[color:var(--brand)]"
                   >
-                    Learn more <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
+                    Learn more <ArrowRight size={14} weight="bold" aria-hidden="true" />
                   </Link>
                 ) : (
                   <Link
                     href="/contact"
                     className="inline-flex items-center gap-2 text-sm font-semibold text-[color:var(--brand-deep)] transition hover:text-[color:var(--brand)]"
                   >
-                    Ask about this <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
+                    Ask about this <ArrowRight size={14} weight="bold" aria-hidden="true" />
                   </Link>
                 )}
               </div>

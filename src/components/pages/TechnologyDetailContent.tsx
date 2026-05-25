@@ -1,24 +1,25 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, Check, ArrowRight,
-  Star, Shield, Sparkles, Zap, Clock, DollarSign,
-  Heart, Bone, CircleDot, RotateCcw,
-  type LucideIcon,
-} from "lucide-react";
+import {
+  ArrowLeft, CheckCircle, ArrowRight,
+  Star, ShieldCheck, Sparkle, Lightning, Clock, CurrencyDollar,
+  Heart, Bone, Crosshair, ArrowCounterClockwise,
+} from "@phosphor-icons/react/dist/ssr";
+import type { Icon as PhosphorIcon } from "@phosphor-icons/react/dist/lib/types";
 import { SiteShell } from "@/components/site/site-shell";
 import type { TechnologyItem, TechSection } from "@/lib/data";
 
 // ─── Icon map ────────────────────────────────────────────────────────────────
 
-const ICON_MAP: Record<string, LucideIcon> = {
-  Star, Shield, Sparkles, Zap, Clock, DollarSign,
-  Heart, Bone, CircleDot, RotateCcw, Check, ArrowRight,
+const ICON_MAP: Record<string, PhosphorIcon> = {
+  Star, Shield: ShieldCheck, Sparkles: Sparkle, Zap: Lightning, Clock, DollarSign: CurrencyDollar,
+  Heart, Bone, CircleDot: Crosshair, RotateCcw: ArrowCounterClockwise, Check: CheckCircle, ArrowRight,
 };
 
 function TechIcon({ name, size = 22 }: { name: string; size?: number }) {
   const Icon = ICON_MAP[name];
   if (!Icon) return null;
-  return <Icon size={size} strokeWidth={1.75} aria-hidden="true" />;
+  return <Icon size={size} weight="duotone" aria-hidden="true" />;
 }
 
 // ─── Section renderers ────────────────────────────────────────────────────────
@@ -245,7 +246,7 @@ export function TechnologyDetailContent({ tech }: { tech: TechnologyItem }) {
             href="/technology"
             className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--brand)] transition hover:text-[color:var(--brand-deep)]"
           >
-            <ArrowLeft size={13} strokeWidth={2.5} aria-hidden="true" /> Technology
+            <ArrowLeft size={13} weight="bold" aria-hidden="true" /> Technology
           </Link>
           <div className="mt-4">
             <span className={`inline-block rounded-full px-3 py-1 text-[0.68rem] font-bold uppercase tracking-[0.22em] text-white ${CATEGORY_COLORS[tech.category] ?? "bg-[color:var(--brand)]"}`}>
@@ -289,7 +290,7 @@ export function TechnologyDetailContent({ tech }: { tech: TechnologyItem }) {
               {tech.highlights.map((h) => (
                 <li key={h} className="flex items-start gap-2.5 text-sm font-medium text-[color:var(--text-main)]">
                   <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[color:var(--brand-soft)] text-[color:var(--brand-deep)]">
-                    <Check size={11} strokeWidth={3} aria-hidden="true" />
+                    <CheckCircle size={14} weight="duotone" aria-hidden="true" />
                   </span>
                   {h}
                 </li>
