@@ -217,9 +217,15 @@ function RenderSection({ s }: { s: TechSection }) {
   if (s.type === "self_video") return <SelfVideo s={s} />;
   if (s.type === "twocol") {
     return (
-      <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
-        <RenderSection s={s.left} />
-        <RenderSection s={s.right} />
+      <div className="overflow-hidden rounded-3xl border border-[color:var(--border-strong)] bg-white">
+        <div className="grid lg:grid-cols-[1fr_auto] lg:items-center">
+          <div className="p-8">
+            <RenderSection s={s.left} />
+          </div>
+          <div className="max-h-[320px] max-w-[360px] overflow-hidden">
+            <RenderSection s={s.right} />
+          </div>
+        </div>
       </div>
     );
   }
