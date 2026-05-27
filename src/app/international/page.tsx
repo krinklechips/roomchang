@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import { SiteShell } from "@/components/site/site-shell";
 import { getInternationalSteps, getInternationalWhyItems, getInternationalPopularTreatments } from "@/lib/data";
 import type { Metadata } from "next";
@@ -17,21 +18,27 @@ const HERO_TRUST = [
   { value: "30 yrs", label: "Experience" },
 ];
 
-function renderDescription(text: string) {
-  const keyword = "our testimonials";
-  const idx = text.indexOf(keyword);
-  if (idx === -1) return text;
+function renderWhyCard(item: { title: string; description: string }) {
+  const keyword = "Read their stories in our testimonials.";
+  const hasTestimonials = item.description.includes(keyword);
+  const cleanDesc = hasTestimonials ? item.description.replace(keyword, "").trim() : item.description;
+
   return (
-    <>
-      {text.slice(0, idx)}
-      <Link
-        href="/about/testimonials"
-        className="font-semibold text-[color:var(--brand-deep)] underline underline-offset-2 transition hover:text-[color:var(--brand)]"
-      >
-        {keyword}
-      </Link>
-      {text.slice(idx + keyword.length)}
-    </>
+    <div
+      key={item.title}
+      className="rounded-2xl border border-[color:var(--border-strong)] bg-white p-6 shadow-[0_12px_40px_rgba(57,28,45,0.05)]"
+    >
+      <h3 className="font-display text-xl text-[color:var(--brand-deep)]">{item.title}</h3>
+      <p className="mt-3 text-sm leading-6 text-[color:var(--text-soft)]">{cleanDesc}</p>
+      {hasTestimonials && (
+        <Link
+          href="/about/testimonials"
+          className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-[color:var(--brand-soft)] px-4 py-2 text-xs font-bold text-[color:var(--brand-deep)] transition hover:bg-[color:var(--brand-light)] hover:text-white"
+        >
+          Read Patient Testimonials <ArrowRight size={13} weight="bold" aria-hidden="true" />
+        </Link>
+      )}
+    </div>
   );
 }
 
@@ -105,15 +112,7 @@ export default async function InternationalPage() {
             deliberate choice by patients who have done their research.
           </p>
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {whyItems.map((item) => (
-              <div
-                key={item.title}
-                className="rounded-2xl border border-[color:var(--border-strong)] bg-white p-6 shadow-[0_12px_40px_rgba(57,28,45,0.05)]"
-              >
-                <h3 className="font-display text-xl text-[color:var(--brand-deep)]">{item.title}</h3>
-                <p className="mt-3 text-sm leading-6 text-[color:var(--text-soft)]">{renderDescription(item.description)}</p>
-              </div>
-            ))}
+            {whyItems.map((item) => renderWhyCard(item))}
           </div>
         </section>
 
