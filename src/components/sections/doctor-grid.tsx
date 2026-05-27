@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { useState, useEffect, useRef } from "react";
+import { useTranslations } from "next-intl";
 import { X } from "lucide-react";
 import type { Doctor } from "@/lib/data";
 
@@ -29,6 +30,7 @@ function cleanCredentials(raw: string): string {
 
 function DoctorModal({ doctor, onClose }: { doctor: Doctor; onClose: () => void }) {
   const panelRef = useRef<HTMLDivElement>(null);
+  const t = useTranslations("doctorGrid.modal");
 
   useEffect(() => {
     function handleKey(e: KeyboardEvent) {
@@ -65,7 +67,7 @@ function DoctorModal({ doctor, onClose }: { doctor: Doctor; onClose: () => void 
         <button
           onClick={onClose}
           className="absolute right-5 top-5 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white/80 text-[color:var(--text-soft)] shadow-sm backdrop-blur-sm transition hover:bg-[color:var(--brand-soft)] hover:text-[color:var(--brand-deep)]"
-          aria-label="Close"
+          aria-label={t("close")}
         >
           <X size={16} strokeWidth={2} />
         </button>
@@ -111,7 +113,7 @@ function DoctorModal({ doctor, onClose }: { doctor: Doctor; onClose: () => void 
           {doctor.bio && (
             <div>
               <p className="text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-[color:var(--text-soft)]">
-                About
+                {t("about")}
               </p>
               <p className="mt-2 text-sm leading-7 text-[color:var(--text-main)] whitespace-pre-line">
                 {doctor.bio}
@@ -122,7 +124,7 @@ function DoctorModal({ doctor, onClose }: { doctor: Doctor; onClose: () => void 
           {/* Specialties */}
           <div>
             <p className="text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-[color:var(--text-soft)]">
-              Specialties
+              {t("specialties")}
             </p>
             <div className="mt-2 flex flex-wrap gap-1.5">
               {doctor.specialty.map((s) => (
@@ -139,7 +141,7 @@ function DoctorModal({ doctor, onClose }: { doctor: Doctor; onClose: () => void 
           {/* Languages */}
           <div>
             <p className="text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-[color:var(--text-soft)]">
-              Languages
+              {t("languages")}
             </p>
             <p className="mt-1 text-sm text-[color:var(--text-main)]">
               {doctor.languages.join(" · ")}
@@ -156,7 +158,7 @@ function DoctorModal({ doctor, onClose }: { doctor: Doctor; onClose: () => void 
             href={`/contact?doctor=${encodeURIComponent(doctor.name)}`}
             className="btn-primary mt-2 self-start"
           >
-            Book with Dr. {doctor.name.split(" ").at(-1)}
+            {t("bookWith", { lastName: doctor.name.split(" ").at(-1) ?? "" })}
           </Link>
         </div>
       </div>
@@ -209,6 +211,7 @@ function DoctorCard({ doctor, onSelect }: { doctor: Doctor; onSelect: (d: Doctor
 export function DoctorGrid({ doctors }: { doctors: Doctor[] }) {
   const [activeLanguage, setActiveLanguage] = useState<string | null>(null);
   const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null);
+  const t = useTranslations("doctorGrid");
 
   const filtered = activeLanguage
     ? doctors.filter((d) =>
@@ -237,7 +240,7 @@ export function DoctorGrid({ doctors }: { doctors: Doctor[] }) {
         <div className="mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:px-8">
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
-              Filter by language:
+              {t("filterLabel")}
             </span>
 
             <button
@@ -248,7 +251,7 @@ export function DoctorGrid({ doctors }: { doctors: Doctor[] }) {
                   : "border-[color:var(--border-strong)] bg-white text-[color:var(--text-soft)] hover:border-[color:var(--brand)] hover:text-[color:var(--brand-deep)]"
               }`}
             >
-              All
+              {t("filterAll")}
             </button>
 
             {LANGUAGES.map((lang) => (
@@ -268,7 +271,7 @@ export function DoctorGrid({ doctors }: { doctors: Doctor[] }) {
           </div>
           {activeLanguage && (
             <p className="mt-2 text-xs text-[color:var(--text-soft)]">
-              {filtered.length} doctor{filtered.length !== 1 ? "s" : ""} speak {activeLanguage}
+              {t("filterResult", { count: filtered.length, language: activeLanguage })}
             </p>
           )}
         </div>
@@ -300,13 +303,13 @@ export function DoctorGrid({ doctors }: { doctors: Doctor[] }) {
         {filtered.length === 0 && (
           <div className="py-20 text-center">
             <p className="text-base text-[color:var(--text-soft)]">
-              No doctors found for <span className="font-semibold">{activeLanguage}</span>.
+              {t("noResults", { language: activeLanguage ?? "" })}
             </p>
             <button
               onClick={() => setActiveLanguage(null)}
               className="mt-4 text-sm font-semibold text-[color:var(--brand)] underline"
             >
-              Show all doctors
+              {t("showAll")}
             </button>
           </div>
         )}
@@ -316,14 +319,14 @@ export function DoctorGrid({ doctors }: { doctors: Doctor[] }) {
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 className="font-display text-3xl text-[color:var(--text-main)]">
-                Not sure who to see?
+                {t("cta.heading")}
               </h2>
               <p className="mt-2 text-sm leading-7 text-[color:var(--text-soft)]">
-                Tell us what you&apos;re looking for and we&apos;ll match you with the right specialist.
+                {t("cta.body")}
               </p>
             </div>
             <Link href="/contact" className="btn-primary shrink-0">
-              Get Matched
+              {t("cta.button")}
             </Link>
           </div>
         </div>

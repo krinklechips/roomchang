@@ -1,10 +1,11 @@
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { notFound } from "next/navigation";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, ArrowRight, Clock, Tag } from "lucide-react";
 import { getClinicalCases, getClinicalCaseBySlug, getSeoPageMeta } from "@/lib/data";
 import { buildSeoMetadata } from "@/lib/seo";
+import { getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -46,6 +47,8 @@ export default async function ClinicalCaseDetailPage({
   const c = await getClinicalCaseBySlug(slug);
   if (!c) notFound();
 
+  const t = await getTranslations("caseDetail");
+
   // Adjacent cases for prev/next navigation
   const allCases = await getClinicalCases();
   const idx = allCases.findIndex((x) => x.slug === slug);
@@ -61,7 +64,7 @@ export default async function ClinicalCaseDetailPage({
             href="/clinical-results"
             className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--brand)] transition hover:text-[color:var(--brand-deep)]"
           >
-            <ArrowLeft size={13} strokeWidth={2.5} aria-hidden="true" /> Clinical Results
+            <ArrowLeft size={13} strokeWidth={2.5} aria-hidden="true" /> {t("backLink")}
           </Link>
 
           <div className="mt-4 flex flex-wrap items-start justify-between gap-4">
@@ -129,7 +132,7 @@ export default async function ClinicalCaseDetailPage({
 
             {/* Clinical narrative */}
             <div className="rounded-3xl border border-[color:var(--border-strong)] bg-white p-8 shadow-[0_12px_40px_rgba(57,28,45,0.05)] sm:p-10">
-              <h2 className="font-display text-2xl text-[color:var(--text-main)]">Clinical Notes</h2>
+              <h2 className="font-display text-2xl text-[color:var(--text-main)]">{t("clinicalNotes")}</h2>
               <div className="mt-5 space-y-4 text-sm leading-7 text-[color:var(--text-soft)] whitespace-pre-line">
                 {c.fullText}
               </div>
@@ -142,35 +145,35 @@ export default async function ClinicalCaseDetailPage({
 
             {/* Treatment summary card */}
             <div className="rounded-3xl border border-[color:var(--border-strong)] bg-white p-8 shadow-[0_12px_40px_rgba(57,28,45,0.05)]">
-              <h2 className="font-display text-2xl text-[color:var(--text-main)]">Treatment Summary</h2>
+              <h2 className="font-display text-2xl text-[color:var(--text-main)]">{t("treatmentSummary")}</h2>
               <dl className="mt-6 flex flex-col gap-5">
                 <div>
-                  <dt className="text-xs font-semibold uppercase tracking-[0.15em] text-[color:var(--text-soft)]">Category</dt>
+                  <dt className="text-xs font-semibold uppercase tracking-[0.15em] text-[color:var(--text-soft)]">{t("categoryLabel")}</dt>
                   <dd className="mt-1 text-sm font-medium text-[color:var(--text-main)]">{c.category}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs font-semibold uppercase tracking-[0.15em] text-[color:var(--text-soft)]">Treatment</dt>
+                  <dt className="text-xs font-semibold uppercase tracking-[0.15em] text-[color:var(--text-soft)]">{t("treatmentLabel")}</dt>
                   <dd className="mt-1 text-sm font-medium text-[color:var(--text-main)]">{c.treatment}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs font-semibold uppercase tracking-[0.15em] text-[color:var(--text-soft)]">Treatment Duration</dt>
+                  <dt className="text-xs font-semibold uppercase tracking-[0.15em] text-[color:var(--text-soft)]">{t("durationLabel")}</dt>
                   <dd className="mt-1 text-sm font-medium text-[color:var(--text-main)]">{c.duration}</dd>
                 </div>
               </dl>
 
               <div className="mt-8 flex flex-col gap-3">
                 <Link href="/contact" className="btn-primary w-full justify-center">
-                  Book a Consultation
+                  {t("bookConsultation")}
                 </Link>
                 <Link href="/pricing" className="btn-secondary w-full justify-center">
-                  View Pricing
+                  {t("viewPricing")}
                 </Link>
               </div>
             </div>
 
             {/* Disclaimer */}
             <p className="text-xs leading-5 text-[color:var(--text-soft)]">
-              * Cases shown with patient consent. Individual results may vary depending on oral health, bone density, and treatment complexity.
+              {t("disclaimer")}
             </p>
 
           </div>
@@ -186,7 +189,7 @@ export default async function ClinicalCaseDetailPage({
               >
                 <ArrowLeft size={18} strokeWidth={2} className="shrink-0 text-[color:var(--brand)] transition group-hover:text-[color:var(--brand-deep)]" />
                 <div>
-                  <p className="text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[color:var(--text-soft)]">Previous Case</p>
+                  <p className="text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[color:var(--text-soft)]">{t("previousCase")}</p>
                   <p className="mt-0.5 font-display text-base text-[color:var(--text-main)] group-hover:text-[color:var(--brand-deep)]">{prev.title}</p>
                 </div>
               </Link>
@@ -200,7 +203,7 @@ export default async function ClinicalCaseDetailPage({
                 className="group flex flex-1 items-center justify-end gap-3 rounded-[1.5rem] border border-[color:var(--border-strong)] bg-white p-5 text-right transition hover:border-[color:var(--brand-light)] hover:shadow-[0_8px_24px_rgba(57,28,45,0.08)]"
               >
                 <div>
-                  <p className="text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[color:var(--text-soft)]">Next Case</p>
+                  <p className="text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[color:var(--text-soft)]">{t("nextCase")}</p>
                   <p className="mt-0.5 font-display text-base text-[color:var(--text-main)] group-hover:text-[color:var(--brand-deep)]">{next.title}</p>
                 </div>
                 <ArrowRight size={18} strokeWidth={2} className="shrink-0 text-[color:var(--brand)] transition group-hover:text-[color:var(--brand-deep)]" />

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { ArrowRight } from "lucide-react";
 import type { ClinicalCase } from "@/lib/data";
 
@@ -23,6 +24,7 @@ const HASH_TO_CATEGORY: Record<string, string> = {
 };
 
 export function ClinicalResultsGrid({ cases }: { cases: ClinicalCase[] }) {
+  const t = useTranslations("clinicalResultsGrid");
   const rawCategories = Array.from(new Set(cases.map((c) => c.category)));
   const categories = [
     "All",
@@ -61,7 +63,7 @@ export function ClinicalResultsGrid({ cases }: { cases: ClinicalCase[] }) {
                   : "border-[color:var(--border-strong)] bg-white text-[color:var(--text-soft)] hover:border-[color:var(--brand)] hover:text-[color:var(--brand-deep)]"
               }`}
             >
-              {cat}
+              {cat === "All" ? t("filterAll") : cat}
             </button>
           );
         })}
@@ -79,7 +81,7 @@ export function ClinicalResultsGrid({ cases }: { cases: ClinicalCase[] }) {
               {c.cardImage && (
                 <Image
                   src={c.cardImage}
-                  alt={`Before and after — ${c.title}`}
+                  alt={t("altPattern", { title: c.title })}
                   fill
                   className="object-contain transition duration-500 group-hover:scale-[1.03]"
                   sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
@@ -98,10 +100,10 @@ export function ClinicalResultsGrid({ cases }: { cases: ClinicalCase[] }) {
               <p className="line-clamp-3 flex-1 text-sm leading-6 text-[color:var(--text-soft)]">{c.description}</p>
               <div className="mt-auto flex items-center justify-between border-t border-[color:var(--border-strong)] pt-3">
                 <span className="text-xs text-[color:var(--text-soft)]">
-                  Duration: <span className="font-semibold text-[color:var(--text-main)]">{c.duration}</span>
+                  {t("duration")} <span className="font-semibold text-[color:var(--text-main)]">{c.duration}</span>
                 </span>
                 <span className="inline-flex items-center gap-1 text-xs font-semibold text-[color:var(--brand-deep)] transition group-hover:text-[color:var(--brand)]">
-                  View case <ArrowRight size={12} strokeWidth={2} aria-hidden="true" />
+                  {t("viewCase")} <ArrowRight size={12} strokeWidth={2} aria-hidden="true" />
                 </span>
               </div>
             </div>
@@ -111,35 +113,33 @@ export function ClinicalResultsGrid({ cases }: { cases: ClinicalCase[] }) {
 
       {filtered.length === 0 && (
         <p className="text-center text-sm text-[color:var(--text-soft)]">
-          No cases found for <span className="font-semibold">{active}</span>.{" "}
+          {t("noResults", { category: active })}{" "}
           <button
             onClick={() => setActive("All")}
             className="font-semibold text-[color:var(--brand)] underline"
           >
-            Show all
+            {t("showAll")}
           </button>
         </p>
       )}
 
       {/* Disclaimer */}
       <p className="text-xs text-[color:var(--text-soft)]">
-        * Patient images and full case photography available upon request in clinic. Cases shown with patient consent.
-        Individual results may vary depending on oral health, bone density, and treatment complexity.
+        {t("disclaimer")}
       </p>
 
       {/* CTA */}
       <section className="rounded-3xl bg-[color:var(--brand-soft)] p-10 sm:p-12">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h2 className="font-display text-4xl text-[color:var(--text-main)]">Achieve similar results</h2>
+            <h2 className="font-display text-4xl text-[color:var(--text-main)]">{t("cta.heading")}</h2>
             <p className="mt-2 max-w-md text-sm leading-7 text-[color:var(--text-soft)]">
-              Book a consultation and our specialists will assess your case and show you what&apos;s
-              possible — with a personalised treatment plan and clear pricing.
+              {t("cta.body")}
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
-            <Link href="/contact" className="btn-primary shrink-0">Book a Consultation</Link>
-            <Link href="/pricing" className="btn-secondary shrink-0">View Pricing</Link>
+            <Link href="/contact" className="btn-primary shrink-0">{t("cta.bookButton")}</Link>
+            <Link href="/pricing" className="btn-secondary shrink-0">{t("cta.pricingButton")}</Link>
           </div>
         </div>
       </section>
