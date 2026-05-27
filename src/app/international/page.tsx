@@ -92,9 +92,9 @@ export default async function InternationalPage() {
 
       {/* Hero image */}
       <div className="border-b border-[color:var(--border-strong)]">
-        <div className="relative aspect-[900/370] overflow-hidden sm:aspect-[21/8]">
+        <div className="relative aspect-[2500/1050] overflow-hidden sm:aspect-[21/8]">
           <Image
-            src="/international/Customer-Service-with-A-Smile-900x370.jpg"
+            src="/hero/hero-customer-service.jpg"
             alt="Roomchang dental team welcoming an international patient"
             fill
             priority
