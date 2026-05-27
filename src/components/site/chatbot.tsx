@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback, type ReactNode } from "react";
 import {
   CalendarDots,
   ChatCircleDots,
@@ -53,6 +53,72 @@ function stripBookingBlock(text: string): string {
 
 function hasDatePickerMarker(text: string): boolean {
   return text.includes("<<<SHOW_DATE_PICKER>>>");
+}
+
+// ─── Markdown renderer ─────────────────────────────────────────────────────
+
+function renderMarkdown(text: string): ReactNode {
+  // Split into paragraphs by double newline
+  const blocks = text.split(/\n\n+/);
+
+  return blocks.map((block, bi) => {
+    const trimmed = block.trim();
+    if (!trimmed) return null;
+
+    // Check if this block is a list (lines starting with - or *)
+    const lines = trimmed.split("\n");
+    const isList = lines.every((l) => /^\s*[-*]\s/.test(l));
+
+    if (isList) {
+      return (
+        <ul key={bi} className="my-1.5 ml-4 list-disc space-y-0.5">
+          {lines.map((line, li) => (
+            <li key={li} className="text-sm leading-relaxed">
+              {renderInline(line.replace(/^\s*[-*]\s+/, ""))}
+            </li>
+          ))}
+        </ul>
+      );
+    }
+
+    // Regular paragraph — render inline formatting
+    return (
+      <p key={bi} className={bi > 0 ? "mt-2" : ""}>
+        {renderInline(trimmed.replace(/\n/g, " "))}
+      </p>
+    );
+  });
+}
+
+function renderInline(text: string): ReactNode {
+  // Split by bold (**text**) and process
+  const parts: ReactNode[] = [];
+  let remaining = text;
+  let key = 0;
+
+  while (remaining.length > 0) {
+    const boldMatch = remaining.match(/\*\*(.+?)\*\*/);
+    if (!boldMatch || boldMatch.index === undefined) {
+      parts.push(remaining);
+      break;
+    }
+
+    // Text before bold
+    if (boldMatch.index > 0) {
+      parts.push(remaining.slice(0, boldMatch.index));
+    }
+
+    // Bold text
+    parts.push(
+      <strong key={key++} className="font-semibold">
+        {boldMatch[1]}
+      </strong>,
+    );
+
+    remaining = remaining.slice(boldMatch.index + boldMatch[0].length);
+  }
+
+  return parts.length === 1 ? parts[0] : <>{parts}</>;
 }
 
 // ─── Date helpers ───────────────────────────────────────────────────────────
@@ -178,7 +244,7 @@ function BookingCard({
 
 function DatePicker({ onSelect }: { onSelect: (date: string) => void }) {
   const [weekOffset, setWeekOffset] = useState(0);
-  const allDates = getAvailableDates(24); // ~4 weeks of Mon–Sat dates
+  const allDates = getAvailableDates(312); // ~1 year of Mon–Sat dates
 
   // Group into weeks (Mon–Sat rows)
   const weeks: Date[][] = [];
@@ -256,7 +322,7 @@ function DatePicker({ onSelect }: { onSelect: (date: string) => void }) {
           <CaretLeft size={12} weight="bold" /> Previous
         </button>
         <span className="text-[10px] text-[color:var(--text-soft)]">
-          Mon – Sat • 8:00–17:30
+          Mon – Sat &bull; 8:00–17:30
         </span>
         <button
           type="button"
@@ -271,30 +337,37 @@ function DatePicker({ onSelect }: { onSelect: (date: string) => void }) {
   );
 }
 
-// ─── FAQ quick-reply suggestions ────────────────────────────────────────────
+// ─── Persistent suggestion bar ──────────────────────────────────────────────
 
-const FAQ_SUGGESTIONS = [
+const SUGGESTIONS = [
   { label: "Our services", text: "What dental services do you offer?" },
   { label: "Meet our doctors", text: "Tell me about your doctors" },
-  { label: "Treatment prices", text: "How much do dental implants cost?" },
+  { label: "Implant prices", text: "How much do dental implants cost?" },
   { label: "Book appointment", text: "I'd like to book an appointment" },
+  { label: "Teeth whitening", text: "Do you offer teeth whitening? How much does it cost?" },
+  { label: "Braces options", text: "What braces and aligner options do you have?" },
+  { label: "Visiting from abroad", text: "I'm travelling from abroad — how does it work?" },
+  { label: "Opening hours", text: "What are your opening hours and location?" },
 ];
 
-function SuggestionChips({
+function SuggestionBar({
   onSelect,
+  disabled,
 }: {
   onSelect: (text: string) => void;
+  disabled: boolean;
 }) {
   return (
-    <div className="flex flex-wrap gap-2 px-4 pt-1 pb-2">
-      {FAQ_SUGGESTIONS.map((faq) => (
+    <div className="flex shrink-0 gap-2 overflow-x-auto border-t border-[color:var(--border-strong)] bg-[color:var(--surface)] px-3 py-2 scrollbar-none">
+      {SUGGESTIONS.map((s) => (
         <button
-          key={faq.label}
+          key={s.label}
           type="button"
-          onClick={() => onSelect(faq.text)}
-          className="rounded-full border border-[color:var(--brand-light)] bg-white px-3 py-1.5 text-xs font-semibold text-[color:var(--brand)] transition hover:bg-[color:var(--brand-soft)] active:scale-95"
+          disabled={disabled}
+          onClick={() => onSelect(s.text)}
+          className="shrink-0 rounded-full border border-[color:var(--brand-light)] bg-white px-3 py-1.5 text-[11px] font-semibold text-[color:var(--brand)] transition hover:bg-[color:var(--brand-soft)] active:scale-95 disabled:opacity-40"
         >
-          {faq.label}
+          {s.label}
         </button>
       ))}
     </div>
@@ -322,7 +395,6 @@ export function Chatbot() {
   const [bookingResult, setBookingResult] = useState<
     "success" | "error" | null
   >(null);
-  const [showSuggestions, setShowSuggestions] = useState(true);
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -359,11 +431,7 @@ export function Chatbot() {
 
   function handleSuggestionClick(text: string) {
     if (isStreaming) return;
-    setInput(text);
-    // Use setTimeout so React batches the state update, then submit
-    setTimeout(() => {
-      sendMessage(text);
-    }, 0);
+    sendMessage(text);
   }
 
   function handleDateSelect(dateStr: string) {
@@ -391,7 +459,6 @@ export function Chatbot() {
     setMessages((prev) => [...prev, userMsg, assistantMsg]);
     setInput("");
     setIsStreaming(true);
-    setShowSuggestions(false);
 
     try {
       // Build history (exclude greeting and empty assistant messages)
@@ -554,7 +621,7 @@ export function Chatbot() {
                     <ChatCircleDots size={14} weight="fill" />
                   </div>
                   <div className="max-w-[85%] rounded-2xl rounded-tl-md bg-[color:var(--surface)] px-4 py-2.5 text-sm leading-relaxed text-[color:var(--text-main)]">
-                    {msg.content || <TypingDots />}
+                    {msg.content ? renderMarkdown(msg.content) : <TypingDots />}
                   </div>
                 </div>
               ) : (
@@ -564,23 +631,6 @@ export function Chatbot() {
                   </div>
                 </div>
               ),
-            )}
-
-            {isStreaming &&
-              messages[messages.length - 1]?.content === "" && (
-                <div className="flex gap-2.5">
-                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[color:var(--brand-soft)] text-[color:var(--brand)]">
-                    <ChatCircleDots size={14} weight="fill" />
-                  </div>
-                  <div className="rounded-2xl rounded-tl-md bg-[color:var(--surface)] px-4 py-2.5">
-                    <TypingDots />
-                  </div>
-                </div>
-              )}
-
-            {/* FAQ suggestion chips — shown only before first message */}
-            {showSuggestions && messages.length === 1 && !isStreaming && (
-              <SuggestionChips onSelect={handleSuggestionClick} />
             )}
           </div>
 
@@ -616,6 +666,12 @@ export function Chatbot() {
             </p>
           )}
 
+          {/* Suggestion bar — always visible, scrollable */}
+          <SuggestionBar
+            onSelect={handleSuggestionClick}
+            disabled={isStreaming}
+          />
+
           {/* Input */}
           <form
             onSubmit={handleSend}
@@ -624,6 +680,7 @@ export function Chatbot() {
             <input
               ref={inputRef}
               type="text"
+              name="chatbot-msg"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Type your message..."

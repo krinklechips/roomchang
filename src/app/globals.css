@@ -104,6 +104,14 @@ a {
   animation: marquee 100s linear infinite;
 }
 
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
 .panel-card {
   border: 1px solid var(--border-strong);
   background: rgba(255, 255, 255, 0.8);
