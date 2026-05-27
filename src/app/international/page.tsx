@@ -2,6 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import { SiteShell } from "@/components/site/site-shell";
+import { InteractiveSteps } from "@/components/sections/interactive-steps";
+import { ChecklistForm } from "@/components/sections/checklist-form";
 import { getInternationalSteps, getInternationalWhyItems, getInternationalPopularTreatments } from "@/lib/data";
 import type { Metadata } from "next";
 
@@ -152,22 +154,8 @@ export default async function InternationalPage() {
             From your first message to your last appointment, we make every step clear and
             manageable — even from the other side of the world.
           </p>
-          <div className="mt-10 space-y-6">
-            {steps.map((s) => (
-              <div
-                key={s.step_label}
-                className="flex gap-6 rounded-2xl border border-[color:var(--border-strong)] bg-white p-6 shadow-[0_8px_30px_rgba(57,28,45,0.04)]"
-              >
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[color:var(--brand)] font-bold text-white text-sm">
-                  {s.step_label}
-                </div>
-                <div>
-                  <h3 className="font-semibold text-[color:var(--text-main)]">{s.title}</h3>
-                  <p className="mt-1.5 text-sm leading-6 text-[color:var(--text-soft)]">{s.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+          <InteractiveSteps steps={steps} />
+          <ChecklistForm />
         </section>
 
         {/* CTA */}
