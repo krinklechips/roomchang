@@ -121,7 +121,7 @@ export default async function InternationalPage() {
           <div className="px-8 py-8 border-b border-[color:var(--border-strong)]">
             <h2 className="font-display text-3xl text-[color:var(--text-main)]">Cost Comparison</h2>
             <p className="mt-2 text-sm leading-6 text-[color:var(--text-soft)]">
-              Indicative savings vs. equivalent treatments in Australia and Singapore.
+              Indicative savings vs. equivalent treatments in Australia, Singapore &amp; the UK.
             </p>
           </div>
           <div className="divide-y divide-[--border-strong]">
@@ -139,8 +139,8 @@ export default async function InternationalPage() {
           </div>
           <div className="px-8 py-5 bg-[color:var(--brand-soft)]">
             <p className="text-xs text-[color:var(--text-soft)]">
-              * Savings are estimates compared to typical Western prices. Exact quotes depend on
-              your specific treatment needs. Contact us for a personalised plan.
+              * Savings are estimates compared to typical prices in Australia, Singapore &amp; the UK. Exact quotes
+              depend on your specific treatment needs. Contact us for a personalised plan.
             </p>
           </div>
         </section>
