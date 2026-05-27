@@ -23,11 +23,19 @@ type BookingData = {
   name: string;
   email: string;
   phone: string;
+  telegram: string;
   treatment: string;
   date: string;
+  time: string;
   branch: string;
   doctor: string;
-  message: string;
+  notes?: string;
+  message?: string;
+};
+
+type SlotOption = {
+  time: string;
+  available: boolean;
 };
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -48,6 +56,7 @@ function stripBookingBlock(text: string): string {
   return text
     .replace(/<<<BOOKING_DATA>>>[\s\S]*?<<<END_BOOKING>>>/, "")
     .replace(/<<<SHOW_DATE_PICKER>>>/g, "")
+    .replace(/<<<SHOW_TIME_PICKER>>>/g, "")
     .trim();
 }
 
@@ -55,10 +64,17 @@ function hasDatePickerMarker(text: string): boolean {
   return text.includes("<<<SHOW_DATE_PICKER>>>");
 }
 
-// ─── Markdown renderer ─────────────────────────────────────────────────────
+function hasTimePickerMarker(text: string): boolean {
+  return text.includes("<<<SHOW_TIME_PICKER>>>");
+}
 
-function renderMarkdown(text: string): ReactNode {
-  // Split into paragraphs by double newline
+// ─── Markdown renderer ─────────────────────────────────────────────────────
+// onItemClick is optional — when provided, list items become clickable chips
+
+function renderMarkdown(
+  text: string,
+  onItemClick?: (item: string) => void,
+): ReactNode {
   const blocks = text.split(/\n\n+/);
 
   return blocks.map((block, bi) => {
@@ -72,11 +88,29 @@ function renderMarkdown(text: string): ReactNode {
     if (isList) {
       return (
         <ul key={bi} className="my-1.5 ml-4 list-disc space-y-0.5">
-          {lines.map((line, li) => (
-            <li key={li} className="text-sm leading-relaxed">
-              {renderInline(line.replace(/^\s*[-*]\s+/, ""))}
-            </li>
-          ))}
+          {lines.map((line, li) => {
+            const itemText = line.replace(/^\s*[-*]\s+/, "");
+            // Strip bold markers for the click text
+            const plainText = itemText.replace(/\*\*/g, "");
+
+            return (
+              <li key={li} className="text-sm leading-relaxed">
+                {onItemClick ? (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      onItemClick(`Tell me more about ${plainText}`)
+                    }
+                    className="text-left underline decoration-[color:var(--brand-light)] decoration-1 underline-offset-2 transition hover:text-[color:var(--brand)] hover:decoration-2"
+                  >
+                    {renderInline(itemText)}
+                  </button>
+                ) : (
+                  renderInline(itemText)
+                )}
+              </li>
+            );
+          })}
         </ul>
       );
     }
@@ -91,7 +125,6 @@ function renderMarkdown(text: string): ReactNode {
 }
 
 function renderInline(text: string): ReactNode {
-  // Split by bold (**text**) and process
   const parts: ReactNode[] = [];
   let remaining = text;
   let key = 0;
@@ -103,12 +136,10 @@ function renderInline(text: string): ReactNode {
       break;
     }
 
-    // Text before bold
     if (boldMatch.index > 0) {
       parts.push(remaining.slice(0, boldMatch.index));
     }
 
-    // Bold text
     parts.push(
       <strong key={key++} className="font-semibold">
         {boldMatch[1]}
@@ -133,28 +164,22 @@ const FULL_MONTH_NAMES = [
   "July", "August", "September", "October", "November", "December",
 ];
 
-function getAvailableDates(count: number): Date[] {
-  const dates: Date[] = [];
-  const today = new Date();
-  // Start from tomorrow
-  const cursor = new Date(today);
-  cursor.setDate(cursor.getDate() + 1);
-  cursor.setHours(0, 0, 0, 0);
-
-  while (dates.length < count) {
-    // Skip Sundays (day 0) — Roomchang is Mon–Sat
-    if (cursor.getDay() !== 0) {
-      dates.push(new Date(cursor));
-    }
-    cursor.setDate(cursor.getDate() + 1);
-  }
-  return dates;
-}
-
 function formatDateForMessage(date: Date): string {
   const day = DAY_NAMES[date.getDay()];
   const month = MONTH_NAMES[date.getMonth()];
   return `${day}, ${month} ${date.getDate()}, ${date.getFullYear()}`;
+}
+
+function formatDateForApi(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function extractIsoDate(text: string): string | null {
+  const match = text.match(/\b\d{4}-\d{2}-\d{2}\b/);
+  return match ? match[0] : null;
 }
 
 function uid() {
@@ -217,6 +242,16 @@ function BookingCard({
             <span className="font-semibold">Date:</span> {data.date}
           </p>
         )}
+        {data.time && (
+          <p>
+            <span className="font-semibold">Time:</span> {data.time}
+          </p>
+        )}
+        {data.telegram && (
+          <p>
+            <span className="font-semibold">Telegram:</span> {data.telegram}
+          </p>
+        )}
       </div>
       <div className="mt-3 flex gap-2">
         <button
@@ -240,36 +275,95 @@ function BookingCard({
   );
 }
 
-// ─── Date picker ────────────────────────────────────────────────────────────
+// ─── Date picker with month/year navigation ────────────────────────────────
 
 function DatePicker({ onSelect }: { onSelect: (date: string) => void }) {
-  const [weekOffset, setWeekOffset] = useState(0);
-  const allDates = getAvailableDates(312); // ~1 year of Mon–Sat dates
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
-  // Group into weeks (Mon–Sat rows)
-  const weeks: Date[][] = [];
-  let currentWeek: Date[] = [];
-  for (const d of allDates) {
-    if (currentWeek.length > 0 && d.getDay() === 1) {
-      weeks.push(currentWeek);
-      currentWeek = [];
-    }
-    currentWeek.push(d);
+  const [viewMonth, setViewMonth] = useState(today.getMonth());
+  const [viewYear, setViewYear] = useState(today.getFullYear());
+  const [showMonthPicker, setShowMonthPicker] = useState(false);
+
+  // Compute bounds: tomorrow to ~1 year out
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const maxDate = new Date(today);
+  maxDate.setFullYear(maxDate.getFullYear() + 1);
+
+  // Generate calendar grid for current view month
+  // Find first Monday on or before the 1st of the month
+  const firstOfMonth = new Date(viewYear, viewMonth, 1);
+  const lastOfMonth = new Date(viewYear, viewMonth + 1, 0);
+
+  // Build grid: 6 columns Mon–Sat (we skip Sundays)
+  const daysInMonth: (Date | null)[] = [];
+  for (let d = 1; d <= lastOfMonth.getDate(); d++) {
+    const date = new Date(viewYear, viewMonth, d);
+    const dow = date.getDay();
+    if (dow === 0) continue; // Skip Sundays
+    daysInMonth.push(date);
   }
-  if (currentWeek.length > 0) weeks.push(currentWeek);
 
-  const visibleWeek = weeks[weekOffset] ?? [];
-  const canPrev = weekOffset > 0;
-  const canNext = weekOffset < weeks.length - 1;
+  // Pad start: figure out what column the first non-Sunday day lands on
+  // Mon=1 → col 0, Tue=2 → col 1, ... Sat=6 → col 5
 
-  // Header label: "June 2026"
-  const headerDate = visibleWeek[0];
-  const headerLabel = headerDate
-    ? `${FULL_MONTH_NAMES[headerDate.getMonth()]} ${headerDate.getFullYear()}`
-    : "";
+  const canPrevMonth = () => {
+    if (viewYear > today.getFullYear()) return true;
+    if (viewYear === today.getFullYear() && viewMonth > today.getMonth())
+      return true;
+    return false;
+  };
+
+  const canNextMonth = () => {
+    if (viewYear < maxDate.getFullYear()) return true;
+    if (
+      viewYear === maxDate.getFullYear() &&
+      viewMonth < maxDate.getMonth()
+    )
+      return true;
+    return false;
+  };
+
+  const prevMonth = () => {
+    if (!canPrevMonth()) return;
+    if (viewMonth === 0) {
+      setViewMonth(11);
+      setViewYear((y) => y - 1);
+    } else {
+      setViewMonth((m) => m - 1);
+    }
+  };
+
+  const nextMonth = () => {
+    if (!canNextMonth()) return;
+    if (viewMonth === 11) {
+      setViewMonth(0);
+      setViewYear((y) => y + 1);
+    } else {
+      setViewMonth((m) => m + 1);
+    }
+  };
+
+  const isDateSelectable = (date: Date) => {
+    return date >= tomorrow && date <= maxDate;
+  };
+
+  // Generate available months for the picker
+  const availableMonths: { month: number; year: number; label: string }[] = [];
+  const cursor = new Date(today.getFullYear(), today.getMonth(), 1);
+  while (cursor <= maxDate) {
+    availableMonths.push({
+      month: cursor.getMonth(),
+      year: cursor.getFullYear(),
+      label: `${FULL_MONTH_NAMES[cursor.getMonth()]} ${cursor.getFullYear()}`,
+    });
+    cursor.setMonth(cursor.getMonth() + 1);
+  }
 
   return (
     <div className="mx-3 mb-3 rounded-xl border border-[color:var(--brand-soft)] bg-white p-3">
+      {/* Header with month/year */}
       <div className="mb-2 flex items-center justify-between">
         <div className="flex items-center gap-1.5 text-[color:var(--brand)]">
           <CalendarDots size={14} weight="fill" />
@@ -277,77 +371,262 @@ function DatePicker({ onSelect }: { onSelect: (date: string) => void }) {
             Pick a date
           </span>
         </div>
-        <span className="text-[11px] font-semibold text-[color:var(--text-soft)]">
-          {headerLabel}
-        </span>
       </div>
 
-      {/* Day labels */}
+      {/* Month/year navigation bar */}
+      <div className="mb-2 flex items-center justify-between">
+        <button
+          type="button"
+          onClick={prevMonth}
+          disabled={!canPrevMonth()}
+          className="flex h-7 w-7 items-center justify-center rounded-lg text-[color:var(--brand)] transition hover:bg-[color:var(--brand-soft)] disabled:opacity-30"
+          aria-label="Previous month"
+        >
+          <CaretLeft size={14} weight="bold" />
+        </button>
+
+        {/* Clickable month/year label — opens month picker */}
+        <button
+          type="button"
+          onClick={() => setShowMonthPicker((v) => !v)}
+          className="rounded-lg px-3 py-1 text-sm font-bold text-[color:var(--brand-deep)] transition hover:bg-[color:var(--brand-soft)]"
+        >
+          {FULL_MONTH_NAMES[viewMonth]} {viewYear}
+        </button>
+
+        <button
+          type="button"
+          onClick={nextMonth}
+          disabled={!canNextMonth()}
+          className="flex h-7 w-7 items-center justify-center rounded-lg text-[color:var(--brand)] transition hover:bg-[color:var(--brand-soft)] disabled:opacity-30"
+          aria-label="Next month"
+        >
+          <CaretRight size={14} weight="bold" />
+        </button>
+      </div>
+
+      {/* Month picker dropdown */}
+      {showMonthPicker && (
+        <div className="mb-2 grid grid-cols-3 gap-1 rounded-lg border border-[color:var(--brand-soft)] bg-[color:var(--surface)] p-2">
+          {availableMonths.map((m) => {
+            const isCurrent =
+              m.month === viewMonth && m.year === viewYear;
+            return (
+              <button
+                key={`${m.year}-${m.month}`}
+                type="button"
+                onClick={() => {
+                  setViewMonth(m.month);
+                  setViewYear(m.year);
+                  setShowMonthPicker(false);
+                }}
+                className={`rounded-lg px-1 py-1.5 text-[10px] font-semibold transition ${
+                  isCurrent
+                    ? "bg-[color:var(--brand)] text-white"
+                    : "text-[color:var(--text-main)] hover:bg-[color:var(--brand-soft)]"
+                }`}
+              >
+                {MONTH_NAMES[m.month]} {m.year !== today.getFullYear() ? m.year : ""}
+              </button>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Day-of-week labels */}
       <div className="mb-1 grid grid-cols-6 gap-1 text-center">
         {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d) => (
-          <span key={d} className="text-[10px] font-semibold text-[color:var(--text-soft)]">
+          <span
+            key={d}
+            className="text-[10px] font-semibold text-[color:var(--text-soft)]"
+          >
             {d}
           </span>
         ))}
       </div>
 
-      {/* Date buttons */}
+      {/* Calendar grid */}
       <div className="grid grid-cols-6 gap-1">
-        {visibleWeek.map((date) => {
-          const dayCol = date.getDay() - 1; // Mon=0, Tue=1, ... Sat=5
+        {daysInMonth.map((date) => {
+          if (!date) return null;
+          const dow = date.getDay(); // Mon=1 ... Sat=6
+          const col = dow === 0 ? 6 : dow; // shouldn't happen (Sundays skipped) but just in case
+          const selectable = isDateSelectable(date);
+          const isToday =
+            date.getDate() === today.getDate() &&
+            date.getMonth() === today.getMonth() &&
+            date.getFullYear() === today.getFullYear();
+
           return (
             <button
               key={date.toISOString()}
               type="button"
-              onClick={() => onSelect(formatDateForMessage(date))}
-              style={{ gridColumn: dayCol + 1 }}
-              className="flex flex-col items-center rounded-lg border border-[color:var(--border-strong)] bg-[color:var(--surface)] px-1 py-1.5 text-center transition hover:border-[color:var(--brand-light)] hover:bg-[color:var(--brand-soft)] active:scale-95"
+              disabled={!selectable}
+              onClick={() => onSelect(formatDateForApi(date))}
+              style={{ gridColumn: col }}
+              className={`flex h-8 items-center justify-center rounded-lg text-center text-sm transition ${
+                selectable
+                  ? "font-bold text-[color:var(--text-main)] hover:border-[color:var(--brand-light)] hover:bg-[color:var(--brand-soft)] active:scale-95"
+                  : "text-[color:var(--text-soft)]/30 cursor-not-allowed"
+              } ${isToday ? "ring-1 ring-[color:var(--brand-light)]" : ""}`}
             >
-              <span className="text-sm font-bold text-[color:var(--text-main)]">
-                {date.getDate()}
-              </span>
+              {date.getDate()}
             </button>
           );
         })}
       </div>
 
-      {/* Week navigation */}
-      <div className="mt-2 flex items-center justify-between">
-        <button
-          type="button"
-          onClick={() => setWeekOffset((w) => w - 1)}
-          disabled={!canPrev}
-          className="flex items-center gap-0.5 text-[11px] font-semibold text-[color:var(--brand)] disabled:opacity-30"
-        >
-          <CaretLeft size={12} weight="bold" /> Previous
-        </button>
+      {/* Footer */}
+      <div className="mt-2 text-center">
         <span className="text-[10px] text-[color:var(--text-soft)]">
           Mon – Sat &bull; 8:00–17:30
         </span>
-        <button
-          type="button"
-          onClick={() => setWeekOffset((w) => w + 1)}
-          disabled={!canNext}
-          className="flex items-center gap-0.5 text-[11px] font-semibold text-[color:var(--brand)] disabled:opacity-30"
-        >
-          Next <CaretRight size={12} weight="bold" />
-        </button>
       </div>
     </div>
   );
 }
 
-// ─── Persistent suggestion bar ──────────────────────────────────────────────
+// ─── Time picker grouped by appointment period ──────────────────────────────
+
+const TIME_PERIODS = [
+  { label: "Morning", start: "08:00", end: "11:30" },
+  { label: "Midday", start: "12:00", end: "13:30" },
+  { label: "Afternoon", start: "14:00", end: "17:00" },
+];
+
+function timeToMinutes(time: string): number {
+  const [hour, minute] = time.split(":").map(Number);
+  return hour * 60 + minute;
+}
+
+function TimePicker({
+  date,
+  onSelect,
+}: {
+  date: string | null;
+  onSelect: (time: string) => void;
+}) {
+  const [slots, setSlots] = useState<SlotOption[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!date) return;
+
+    const controller = new AbortController();
+    setLoading(true);
+    setError(null);
+
+    fetch(`/api/slots?date=${encodeURIComponent(date)}`, {
+      signal: controller.signal,
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json() as Promise<SlotOption[]>;
+      })
+      .then((data) => setSlots(data))
+      .catch((err) => {
+        if (err instanceof DOMException && err.name === "AbortError") return;
+        console.error("[chatbot] Slot fetch error:", err);
+        setError("Unable to load times. Please type your preferred time.");
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setLoading(false);
+      });
+
+    return () => controller.abort();
+  }, [date]);
+
+  if (!date) {
+    return (
+      <div className="mx-3 mb-3 rounded-xl border border-[color:var(--brand-soft)] bg-white p-3 text-xs text-[color:var(--text-soft)]">
+        Please choose a date first so we can show available times.
+      </div>
+    );
+  }
+
+  return (
+    <div className="mx-3 mb-3 rounded-xl border border-[color:var(--brand-soft)] bg-white p-3">
+      <div className="mb-3 flex items-center gap-1.5 text-[color:var(--brand)]">
+        <CalendarDots size={14} weight="fill" />
+        <span className="text-xs font-bold uppercase tracking-widest">
+          Pick a time
+        </span>
+      </div>
+
+      {loading && (
+        <div className="flex items-center gap-2 text-xs text-[color:var(--text-soft)]">
+          <SpinnerGap size={14} className="animate-spin" />
+          Loading available times...
+        </div>
+      )}
+
+      {error && <p className="text-xs text-red-600">{error}</p>}
+
+      {!loading && !error && (
+        <div className="space-y-3">
+          {TIME_PERIODS.map((period) => {
+            const start = timeToMinutes(period.start);
+            const end = timeToMinutes(period.end);
+            const periodSlots = slots.filter((slot) => {
+              const minutes = timeToMinutes(slot.time);
+              return minutes >= start && minutes <= end;
+            });
+
+            return (
+              <div key={period.label}>
+                <p className="mb-1.5 text-[10px] font-bold uppercase tracking-widest text-[color:var(--text-soft)]">
+                  {period.label}
+                </p>
+                <div className="grid grid-cols-3 gap-1.5">
+                  {periodSlots.map((slot) => (
+                    <button
+                      key={slot.time}
+                      type="button"
+                      disabled={!slot.available}
+                      onClick={() => onSelect(slot.time)}
+                      className={`h-8 rounded-lg text-xs font-bold transition ${
+                        slot.available
+                          ? "border border-[color:var(--brand-light)] bg-white text-[color:var(--brand)] hover:bg-[color:var(--brand-soft)] active:scale-95"
+                          : "cursor-not-allowed border border-[color:var(--border-strong)] bg-[color:var(--surface-strong)] text-[color:var(--text-soft)]/45"
+                      }`}
+                    >
+                      {slot.time}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── Persistent suggestion bar with scroll chevrons ─────────────────────────
 
 const SUGGESTIONS = [
   { label: "Our services", text: "What dental services do you offer?" },
   { label: "Meet our doctors", text: "Tell me about your doctors" },
   { label: "Implant prices", text: "How much do dental implants cost?" },
   { label: "Book appointment", text: "I'd like to book an appointment" },
-  { label: "Teeth whitening", text: "Do you offer teeth whitening? How much does it cost?" },
-  { label: "Braces options", text: "What braces and aligner options do you have?" },
-  { label: "Visiting from abroad", text: "I'm travelling from abroad — how does it work?" },
-  { label: "Opening hours", text: "What are your opening hours and location?" },
+  {
+    label: "Teeth whitening",
+    text: "Do you offer teeth whitening? How much does it cost?",
+  },
+  {
+    label: "Braces options",
+    text: "What braces and aligner options do you have?",
+  },
+  {
+    label: "Visiting from abroad",
+    text: "I'm travelling from abroad — how does it work?",
+  },
+  {
+    label: "Opening hours",
+    text: "What are your opening hours and location?",
+  },
 ];
 
 function SuggestionBar({
@@ -357,19 +636,84 @@ function SuggestionBar({
   onSelect: (text: string) => void;
   disabled: boolean;
 }) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [showLeft, setShowLeft] = useState(false);
+  const [showRight, setShowRight] = useState(true);
+
+  const checkScroll = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setShowLeft(el.scrollLeft > 4);
+    setShowRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 4);
+  }, []);
+
+  useEffect(() => {
+    checkScroll();
+    const el = scrollRef.current;
+    if (!el) return;
+    el.addEventListener("scroll", checkScroll, { passive: true });
+    window.addEventListener("resize", checkScroll);
+    return () => {
+      el.removeEventListener("scroll", checkScroll);
+      window.removeEventListener("resize", checkScroll);
+    };
+  }, [checkScroll]);
+
+  const scrollBy = (dir: number) => {
+    scrollRef.current?.scrollBy({ left: dir * 160, behavior: "smooth" });
+  };
+
   return (
-    <div className="flex shrink-0 gap-2 overflow-x-auto border-t border-[color:var(--border-strong)] bg-[color:var(--surface)] px-3 py-2 scrollbar-none">
-      {SUGGESTIONS.map((s) => (
+    <div className="relative shrink-0 border-t border-[color:var(--border-strong)] bg-[color:var(--surface)]">
+      {/* Left chevron */}
+      {showLeft && (
         <button
-          key={s.label}
           type="button"
-          disabled={disabled}
-          onClick={() => onSelect(s.text)}
-          className="shrink-0 rounded-full border border-[color:var(--brand-light)] bg-white px-3 py-1.5 text-[11px] font-semibold text-[color:var(--brand)] transition hover:bg-[color:var(--brand-soft)] active:scale-95 disabled:opacity-40"
+          onClick={() => scrollBy(-1)}
+          aria-label="Scroll suggestions left"
+          className="absolute left-0 top-0 z-10 flex h-full w-7 items-center justify-center bg-gradient-to-r from-[color:var(--surface)] via-[color:var(--surface)] to-transparent"
         >
-          {s.label}
+          <CaretLeft
+            size={14}
+            weight="bold"
+            className="text-[color:var(--brand)]"
+          />
         </button>
-      ))}
+      )}
+
+      {/* Scrollable chips */}
+      <div
+        ref={scrollRef}
+        className="flex gap-2 overflow-x-auto px-3 py-2 scrollbar-none"
+      >
+        {SUGGESTIONS.map((s) => (
+          <button
+            key={s.label}
+            type="button"
+            disabled={disabled}
+            onClick={() => onSelect(s.text)}
+            className="shrink-0 rounded-full border border-[color:var(--brand-light)] bg-white px-3 py-1.5 text-[11px] font-semibold text-[color:var(--brand)] transition hover:bg-[color:var(--brand-soft)] active:scale-95 disabled:opacity-40"
+          >
+            {s.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Right chevron */}
+      {showRight && (
+        <button
+          type="button"
+          onClick={() => scrollBy(1)}
+          aria-label="Scroll suggestions right"
+          className="absolute right-0 top-0 z-10 flex h-full w-7 items-center justify-center bg-gradient-to-l from-[color:var(--surface)] via-[color:var(--surface)] to-transparent"
+        >
+          <CaretRight
+            size={14}
+            weight="bold"
+            className="text-[color:var(--brand)]"
+          />
+        </button>
+      )}
     </div>
   );
 }
@@ -396,6 +740,8 @@ export function Chatbot() {
     "success" | "error" | null
   >(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showTimePicker, setShowTimePicker] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -411,7 +757,7 @@ export function Chatbot() {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages, isStreaming, showDatePicker, scrollToBottom]);
+  }, [messages, isStreaming, showDatePicker, showTimePicker, scrollToBottom]);
 
   // Focus input when opened
   useEffect(() => {
@@ -435,8 +781,20 @@ export function Chatbot() {
   }
 
   function handleDateSelect(dateStr: string) {
+    setSelectedDate(dateStr);
     setShowDatePicker(false);
     sendMessage(dateStr);
+  }
+
+  function handleTimeSelect(timeStr: string) {
+    setShowTimePicker(false);
+    sendMessage(timeStr);
+  }
+
+  // Clickable list items in assistant messages trigger follow-up questions
+  function handleListItemClick(text: string) {
+    if (isStreaming) return;
+    sendMessage(text);
   }
 
   async function handleSend(e: React.FormEvent) {
@@ -448,6 +806,11 @@ export function Chatbot() {
 
   async function sendMessage(text: string) {
     if (!text || isStreaming) return;
+
+    const isoDate = extractIsoDate(text);
+    if (isoDate) {
+      setSelectedDate(isoDate);
+    }
 
     const userMsg: Message = { id: uid(), role: "user", content: text };
     const assistantMsg: Message = {
@@ -461,7 +824,6 @@ export function Chatbot() {
     setIsStreaming(true);
 
     try {
-      // Build history (exclude greeting and empty assistant messages)
       const history = [...messages.filter((m) => m.id !== "greeting"), userMsg]
         .filter((m) => m.content.trim())
         .map((m) => ({ role: m.role, content: m.content }));
@@ -522,6 +884,14 @@ export function Chatbot() {
       if (hasDatePickerMarker(fullContent)) {
         setShowDatePicker(true);
       }
+
+      if (hasTimePickerMarker(fullContent)) {
+        const assistantDate = extractIsoDate(fullContent);
+        if (assistantDate) {
+          setSelectedDate(assistantDate);
+        }
+        setShowTimePicker(true);
+      }
     } catch (err) {
       console.error("[chatbot] Error:", err);
       setMessages((prev) =>
@@ -547,18 +917,20 @@ export function Chatbot() {
     setBookingSubmitting(true);
 
     try {
-      const res = await fetch("/api/enquiry", {
+      const res = await fetch("/api/book", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: pendingBooking.name,
           email: pendingBooking.email || "",
           phone: pendingBooking.phone || "",
+          telegram: pendingBooking.telegram || "",
           treatment: pendingBooking.treatment || "",
           date: pendingBooking.date || "",
+          time: pendingBooking.time || "",
           branch: pendingBooking.branch || "",
           doctor: pendingBooking.doctor || "",
-          message: `[AI Chatbot Booking] ${pendingBooking.message || ""}`,
+          notes: `[AI Chatbot Booking] ${pendingBooking.notes || pendingBooking.message || ""}`,
         }),
       });
 
@@ -593,9 +965,7 @@ export function Chatbot() {
           <div className="flex shrink-0 items-center justify-between bg-[color:var(--brand)] px-5 py-4">
             <div>
               <p className="font-display text-lg text-white">Roomchang</p>
-              <p className="text-[11px] text-white/70">
-                Virtual Assistant
-              </p>
+              <p className="text-[11px] text-white/70">Virtual Assistant</p>
             </div>
             <button
               type="button"
@@ -621,7 +991,11 @@ export function Chatbot() {
                     <ChatCircleDots size={14} weight="fill" />
                   </div>
                   <div className="max-w-[85%] rounded-2xl rounded-tl-md bg-[color:var(--surface)] px-4 py-2.5 text-sm leading-relaxed text-[color:var(--text-main)]">
-                    {msg.content ? renderMarkdown(msg.content) : <TypingDots />}
+                    {msg.content ? (
+                      renderMarkdown(msg.content, handleListItemClick)
+                    ) : (
+                      <TypingDots />
+                    )}
                   </div>
                 </div>
               ) : (
@@ -639,6 +1013,11 @@ export function Chatbot() {
             <DatePicker onSelect={handleDateSelect} />
           )}
 
+          {/* Time picker — appears when AI asks for preferred time */}
+          {showTimePicker && !isStreaming && (
+            <TimePicker date={selectedDate} onSelect={handleTimeSelect} />
+          )}
+
           {/* Booking confirmation */}
           {pendingBooking && (
             <BookingCard
@@ -651,8 +1030,7 @@ export function Chatbot() {
                   {
                     id: uid(),
                     role: "assistant",
-                    content:
-                      "No problem! What would you like to change?",
+                    content: "No problem! What would you like to change?",
                   },
                 ]);
               }}
@@ -666,7 +1044,7 @@ export function Chatbot() {
             </p>
           )}
 
-          {/* Suggestion bar — always visible, scrollable */}
+          {/* Suggestion bar with scroll chevrons */}
           <SuggestionBar
             onSelect={handleSuggestionClick}
             disabled={isStreaming}
