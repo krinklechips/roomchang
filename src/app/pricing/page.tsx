@@ -1,23 +1,22 @@
 import Link from "next/link";
 import {
-  Search,
-  ScanLine,
-  Droplets,
-  Sparkles,
-  Crown,
+  MagnifyingGlass,
+  Scan,
+  Drop,
+  Sparkle,
+  CrownSimple,
   Minus,
-  CircleDot,
-  AlignCenter,
+  CircleHalf,
+  TextAlignCenter,
   Scissors,
-  Zap,
+  Lightning,
   Moon,
-  Smile,
-  ChevronDown,
-  type LucideIcon,
-} from "lucide-react";
+  SmileyWink,
+  CaretDown,
+} from "@phosphor-icons/react/dist/ssr";
+import type { Icon } from "@phosphor-icons/react/dist/lib/types";
 import { SiteShell } from "@/components/site/site-shell";
 import { getPricingCategories } from "@/lib/data";
-import { supabaseServer } from "@/lib/supabase-server";
 import type { Metadata } from "next";
 
 // Re-fetch pricing categories from Supabase at most every 60s so CMS edits
@@ -31,38 +30,36 @@ export const metadata: Metadata = {
 };
 
 const HERO_TRUST = [
-  { value: "$0",     label: "Consultation" },
-  { value: "USD",    label: "All Prices" },
-  { value: "40–70%", label: "vs. AUS/UK" },
+  { value: "40–70%", label: "vs. Aus/UK" },
   { value: "No",     label: "Hidden Fees" },
 ];
 
-const CATEGORY_ICONS: Record<string, LucideIcon> = {
-  "examination": Search,
-  "cleaning":    Droplets,
-  "x-ray":       ScanLine,
-  "digital":     ScanLine,
-  "filling":     Sparkles,
-  "cosmetic":    Sparkles,
-  "aesthetic":   Sparkles,
-  "crown":       Crown,
-  "bridge":      Crown,
+const CATEGORY_ICONS: Record<string, Icon> = {
+  "examination": MagnifyingGlass,
+  "cleaning":    Drop,
+  "x-ray":       Scan,
+  "digital":     Scan,
+  "filling":     Sparkle,
+  "cosmetic":    Sparkle,
+  "aesthetic":   Sparkle,
+  "crown":       CrownSimple,
+  "bridge":      CrownSimple,
   "root canal":  Minus,
-  "implant":     CircleDot,
-  "orthodontic": AlignCenter,
+  "implant":     CircleHalf,
+  "orthodontic": TextAlignCenter,
   "surgery":     Scissors,
-  "whitening":   Zap,
+  "whitening":   Lightning,
   "sleep":       Moon,
-  "paediatric":  Smile,
-  "pediatric":   Smile,
+  "paediatric":  SmileyWink,
+  "pediatric":   SmileyWink,
 };
 
-function getCategoryIcon(title: string): LucideIcon {
+function getCategoryIcon(title: string): Icon {
   const lower = title.toLowerCase();
   for (const [key, Icon] of Object.entries(CATEGORY_ICONS)) {
     if (lower.includes(key)) return Icon;
   }
-  return Sparkles;
+  return Sparkle;
 }
 
 /** Extract numeric min/max across all items and return a human-readable range */
@@ -92,16 +89,6 @@ function getPriceRange(items: { price: string }[]): string {
 
 export default async function PricingPage() {
   const categories = await getPricingCategories();
-  const { data: comparisonRows } = await supabaseServer
-    .from("pricing_comparison_rows")
-    .select("ada, treatment, roomchang_price, australia_price")
-    .order("sort_order");
-  const comparisons = (comparisonRows ?? []).map((r) => ({
-    ada: r.ada ?? "",
-    treatment: r.treatment,
-    roomchang: r.roomchang_price ?? "",
-    australia: r.australia_price ?? "",
-  }));
 
   return (
     <SiteShell>
@@ -158,7 +145,7 @@ export default async function PricingPage() {
                       className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[color:var(--surface-strong)] text-[color:var(--brand-deep)]"
                       aria-hidden="true"
                     >
-                      <Icon className="h-5 w-5" />
+                      <Icon size={20} weight="duotone" />
                     </span>
 
                     {/* Title + item count */}
@@ -179,8 +166,10 @@ export default async function PricingPage() {
                     )}
 
                     {/* Chevron — rotates when open */}
-                    <ChevronDown
-                      className="h-4 w-4 shrink-0 text-[color:var(--text-soft)] transition-transform duration-200 group-open:rotate-180"
+                    <CaretDown
+                      size={16}
+                      weight="bold"
+                      className="shrink-0 text-[color:var(--text-soft)] transition-transform duration-200 group-open:rotate-180"
                       aria-hidden="true"
                     />
                   </summary>
@@ -207,55 +196,13 @@ export default async function PricingPage() {
               );
             })}
           </div>
-          <p className="mt-6 text-xs text-[color:var(--text-soft)]">
-            * All prices in USD. Final pricing confirmed after clinical assessment. Prices subject to change — please contact us for the latest quote.
-          </p>
-        </section>
-
-        {/* International comparison */}
-        <section>
-          <h2 className="font-display text-4xl text-[color:var(--text-main)]">Price Comparison</h2>
-          <p className="mt-3 max-w-xl text-sm leading-7 text-[color:var(--text-soft)]">
-            See how Roomchang&apos;s prices compare to equivalent treatments in Australia —
-            without compromising on quality or safety. Patients save up to 70%.
-          </p>
-
-          <div className="mt-10 overflow-hidden rounded-3xl border border-[color:var(--brand-soft)] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)]">
-            <div className="overflow-x-auto">
-              <table className="w-full min-w-[560px] text-sm">
-                <thead>
-                  <tr className="border-b border-[color:var(--brand-soft)] bg-[color:var(--surface)]">
-                    <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
-                      Treatment
-                    </th>
-                    <th className="px-6 py-4 text-center text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
-                      ADA
-                    </th>
-                    <th className="px-6 py-4 text-right text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--brand-deep)]">
-                      Roomchang (USD)
-                    </th>
-                    <th className="px-6 py-4 text-right text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
-                      Australia (AUD)
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-[color:var(--brand-soft)]">
-                  {(comparisons as { ada: string; treatment: string; roomchang: string; australia: string }[]).map((row) => (
-                    <tr key={row.ada} className="transition hover:bg-[color:var(--surface)]">
-                      <td className="px-6 py-4 font-medium text-[color:var(--text-main)]">{row.treatment}</td>
-                      <td className="px-6 py-4 text-center text-xs text-[color:var(--text-soft)]">{row.ada}</td>
-                      <td className="px-6 py-4 text-right font-bold text-[color:var(--brand-deep)]">{row.roomchang}</td>
-                      <td className="px-6 py-4 text-right text-[color:var(--text-soft)]">{row.australia}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <div className="border-t border-[color:var(--brand-soft)] bg-[color:var(--brand-soft)] px-6 py-4">
-              <p className="text-xs text-[color:var(--text-soft)]">
-                * ADA codes reference the Australian Dental Association Schedule. Australian prices sourced from ADA survey data. Contact us for a personalised comparison.
-              </p>
-            </div>
+          <div className="mt-6 rounded-2xl border border-[color:var(--brand-soft)] bg-[color:var(--surface)] px-6 py-4 space-y-2">
+            <p className="text-sm font-semibold text-[color:var(--text-main)]">
+              Free initial consultation*
+            </p>
+            <p className="text-xs leading-relaxed text-[color:var(--text-soft)]">
+              *Subject to case complexity. Some cases may incur a consultation fee. All prices in USD. Final pricing confirmed after clinical assessment. Prices subject to change — please contact us for the latest quote.
+            </p>
           </div>
         </section>
 
