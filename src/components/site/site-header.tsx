@@ -101,29 +101,29 @@ export function SiteHeader() {
       aria-label="Roomchang Dental Hospital"
       className="sticky top-0 z-50 border-b border-black/5 bg-[color:rgba(255,250,251,0.92)] backdrop-blur-xl"
     >
-      <div className="flex w-full items-center justify-between gap-4 px-4 py-2 sm:px-6 sm:py-4 lg:px-8 lg:py-4">
+      <div className="flex w-full items-center justify-between gap-4 px-4 py-2 sm:px-6 sm:py-4 lg:gap-2 lg:px-4 lg:py-4 xl:gap-4 xl:px-6 2xl:px-8">
         <Link href="/" className="flex min-w-0 items-center" aria-label="Roomchang Dental Hospital home">
-          <div className="relative h-[52px] w-[105px] sm:h-[74px] sm:w-[145px] lg:h-[84px] lg:w-[164px]">
+          <div className="relative h-[52px] w-[105px] sm:h-[74px] sm:w-[145px] lg:h-[62px] lg:w-[122px] xl:h-[74px] xl:w-[145px] 2xl:h-[84px] 2xl:w-[164px]">
             <Image
               src="/brand/roomchang-logo-header-padded.png"
               alt="Roomchang Dental Hospital logo"
               fill
               priority
-              sizes="(max-width: 640px) 105px, (max-width: 1024px) 145px, 164px"
+              sizes="(max-width: 640px) 105px, (max-width: 1024px) 145px, (max-width: 1280px) 122px, (max-width: 1536px) 145px, 164px"
               className="object-contain object-left"
             />
           </div>
         </Link>
 
         {/* Desktop nav */}
-        <div className="hidden items-center gap-6 lg:flex">
-          <nav aria-label="Primary" className="flex items-center gap-1">
+        <div className="hidden items-center gap-2 xl:gap-3 2xl:gap-6 lg:flex">
+          <nav aria-label="Primary" className="flex items-center gap-0 2xl:gap-1">
             {NAV_ITEMS.map((item) =>
               item.children ? (
                 <div key={item.label} className="group relative">
                   <Link
                     href={item.href}
-                    className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-semibold text-[color:var(--text-soft)] transition-colors hover:bg-[color:var(--brand-soft)] hover:text-[color:var(--brand-deep)]"
+                    className="flex items-center gap-0.5 rounded-lg px-1 py-2 text-[10px] font-semibold text-[color:var(--text-soft)] transition-colors hover:bg-[color:var(--brand-soft)] hover:text-[color:var(--brand-deep)] xl:gap-1 xl:px-1.5 xl:text-xs 2xl:px-3 2xl:text-sm"
                   >
                     {item.label}
                     <svg
@@ -132,7 +132,7 @@ export function SiteHeader() {
                       viewBox="0 0 12 12"
                       fill="none"
                       aria-hidden="true"
-                      className="mt-px transition-transform duration-200 group-hover:rotate-180"
+                      className="mt-px size-2.5 transition-transform duration-200 group-hover:rotate-180 2xl:size-3"
                     >
                       <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
@@ -157,7 +157,7 @@ export function SiteHeader() {
                 <Link
                   key={item.label}
                   href={item.href}
-                  className="rounded-lg px-3 py-2 text-sm font-semibold text-[color:var(--text-soft)] transition-colors hover:bg-[color:var(--brand-soft)] hover:text-[color:var(--brand-deep)]"
+                  className="rounded-lg px-1 py-2 text-[10px] font-semibold text-[color:var(--text-soft)] transition-colors hover:bg-[color:var(--brand-soft)] hover:text-[color:var(--brand-deep)] xl:px-1.5 xl:text-xs 2xl:px-3 2xl:text-sm"
                 >
                   {item.label}
                 </Link>
@@ -165,7 +165,7 @@ export function SiteHeader() {
             )}
           </nav>
           <LanguageSwitcher />
-          <Link href="/contact" className="btn-primary">
+          <Link href="/contact" className="btn-primary btn-primary-sm whitespace-nowrap">
             Book Appointment
           </Link>
         </div>
