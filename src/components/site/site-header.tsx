@@ -120,14 +120,14 @@ export function SiteHeader() {
         </Link>
 
         {/* Desktop nav */}
-        <div className="hidden items-center gap-2 xl:gap-3 2xl:gap-6 lg:flex">
-          <nav aria-label="Primary" className="flex items-center gap-0 2xl:gap-1">
+        <div className="hidden items-center gap-3 xl:gap-4 2xl:gap-6 lg:flex">
+          <nav aria-label="Primary" className="flex items-center gap-px xl:gap-0.5 2xl:gap-1">
             {NAV_ITEMS.map((item) =>
               item.children ? (
                 <div key={item.tKey} className="group relative">
                   <Link
                     href={item.href}
-                    className="flex items-center gap-0.5 rounded-lg px-1 py-2 text-[10px] font-semibold text-[color:var(--text-soft)] transition-colors hover:bg-[color:var(--brand-soft)] hover:text-[color:var(--brand-deep)] xl:gap-1 xl:px-1.5 xl:text-xs 2xl:px-3 2xl:text-sm"
+                    className="flex items-center gap-0.5 rounded-lg px-1.5 py-2 text-[11px] font-semibold text-[color:var(--text-soft)] transition-colors hover:bg-[color:var(--brand-soft)] hover:text-[color:var(--brand-deep)] xl:gap-1 xl:px-2 xl:text-[13px] 2xl:px-3 2xl:text-sm"
                   >
                     {t(item.tKey)}
                     <svg
@@ -161,7 +161,7 @@ export function SiteHeader() {
                 <Link
                   key={item.tKey}
                   href={item.href}
-                  className="rounded-lg px-1 py-2 text-[10px] font-semibold text-[color:var(--text-soft)] transition-colors hover:bg-[color:var(--brand-soft)] hover:text-[color:var(--brand-deep)] xl:px-1.5 xl:text-xs 2xl:px-3 2xl:text-sm"
+                  className="rounded-lg px-1.5 py-2 text-[11px] font-semibold text-[color:var(--text-soft)] transition-colors hover:bg-[color:var(--brand-soft)] hover:text-[color:var(--brand-deep)] xl:px-2 xl:text-[13px] 2xl:px-3 2xl:text-sm"
                 >
                   {t(item.tKey)}
                 </Link>
