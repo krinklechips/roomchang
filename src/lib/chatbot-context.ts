@@ -3,7 +3,13 @@ import { supabase } from "./supabase";
 export type ChatbotContext = {
   services: string[];
   pricingSnapshot: string[];
-  doctors: { name: string; title: string }[];
+  doctors: {
+    name: string;
+    credentials: string;
+    role: string;
+    specialty: string[];
+    languages: string[];
+  }[];
 };
 
 let cached: { data: ChatbotContext; ts: number } | null = null;
@@ -20,7 +26,11 @@ export async function getChatbotContext(): Promise<ChatbotContext> {
       .select("name, price, categoryId")
       .order("order")
       .limit(60),
-    supabase.from("doctors").select("name, title").order("order"),
+    supabase
+      .from("doctors")
+      .select("name, credentials, role, specialty, languages")
+      .eq("published", true)
+      .order("order"),
   ]);
 
   const services = (servicesRes.data ?? []).map(
@@ -32,9 +42,18 @@ export async function getChatbotContext(): Promise<ChatbotContext> {
   );
 
   const doctors = (doctorsRes.data ?? []).map(
-    (d: { name: string; title: string }) => ({
+    (d: {
+      name: string;
+      credentials: string;
+      role: string;
+      specialty: string[];
+      languages: string[];
+    }) => ({
       name: d.name,
-      title: d.title,
+      credentials: d.credentials || "",
+      role: d.role || "",
+      specialty: d.specialty || [],
+      languages: d.languages || [],
     }),
   );
 

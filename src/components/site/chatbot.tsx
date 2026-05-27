@@ -130,6 +130,36 @@ function BookingCard({
   );
 }
 
+// ─── FAQ quick-reply suggestions ────────────────────────────────────────────
+
+const FAQ_SUGGESTIONS = [
+  { label: "Our services", text: "What dental services do you offer?" },
+  { label: "Meet our doctors", text: "Tell me about your doctors" },
+  { label: "Treatment prices", text: "How much do dental implants cost?" },
+  { label: "Book appointment", text: "I'd like to book an appointment" },
+];
+
+function SuggestionChips({
+  onSelect,
+}: {
+  onSelect: (text: string) => void;
+}) {
+  return (
+    <div className="flex flex-wrap gap-2 px-4 pt-1 pb-2">
+      {FAQ_SUGGESTIONS.map((faq) => (
+        <button
+          key={faq.label}
+          type="button"
+          onClick={() => onSelect(faq.text)}
+          className="rounded-full border border-[color:var(--brand-light)] bg-white px-3 py-1.5 text-xs font-semibold text-[color:var(--brand)] transition hover:bg-[color:var(--brand-soft)] active:scale-95"
+        >
+          {faq.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 // ─── Main chatbot ────────────────────────────────────────────────────────────
 
 const GREETING: Message = {
@@ -151,6 +181,7 @@ export function Chatbot() {
   const [bookingResult, setBookingResult] = useState<
     "success" | "error" | null
   >(null);
+  const [showSuggestions, setShowSuggestions] = useState(true);
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -184,9 +215,23 @@ export function Chatbot() {
 
   // ─── Send message ─────────────────────────────────────────────────────────
 
+  function handleSuggestionClick(text: string) {
+    if (isStreaming) return;
+    setInput(text);
+    // Use setTimeout so React batches the state update, then submit
+    setTimeout(() => {
+      sendMessage(text);
+    }, 0);
+  }
+
   async function handleSend(e: React.FormEvent) {
     e.preventDefault();
     const text = input.trim();
+    if (!text || isStreaming) return;
+    sendMessage(text);
+  }
+
+  async function sendMessage(text: string) {
     if (!text || isStreaming) return;
 
     const userMsg: Message = { id: uid(), role: "user", content: text };
@@ -199,6 +244,7 @@ export function Chatbot() {
     setMessages((prev) => [...prev, userMsg, assistantMsg]);
     setInput("");
     setIsStreaming(true);
+    setShowSuggestions(false);
 
     try {
       // Build history (exclude greeting and empty assistant messages)
@@ -379,6 +425,11 @@ export function Chatbot() {
                   </div>
                 </div>
               )}
+
+            {/* FAQ suggestion chips — shown only before first message */}
+            {showSuggestions && messages.length === 1 && !isStreaming && (
+              <SuggestionChips onSelect={handleSuggestionClick} />
+            )}
           </div>
 
           {/* Booking confirmation */}
