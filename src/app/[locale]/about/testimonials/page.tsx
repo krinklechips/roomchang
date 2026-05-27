@@ -1,5 +1,5 @@
 import { Link } from "@/i18n/navigation";
-import { ArrowLeft, Star } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { SiteShell } from "@/components/site/site-shell";
 import { getTestimonials } from "@/lib/data";
 import type { Metadata } from "next";
@@ -20,22 +20,6 @@ function parseOriginAndTreatment(authorTitle: string | null): { origin: string; 
 
 function getInitials(name: string): string {
   return name.split(/\s+/).map((w) => w[0]).join("").toUpperCase().slice(0, 2);
-}
-
-function StarRating({ rating }: { rating: number }) {
-  return (
-    <div className="flex gap-0.5" aria-label={`${rating} out of 5 stars`}>
-      {Array.from({ length: 5 }).map((_, i) => (
-        <Star
-          key={i}
-          size={14}
-          strokeWidth={0}
-          className={i < rating ? "fill-[color:var(--brand)]" : "fill-[color:var(--border-strong)]"}
-          aria-hidden="true"
-        />
-      ))}
-    </div>
-  );
 }
 
 const VIDEO_TESTIMONIALS = [
@@ -173,7 +157,6 @@ export default async function TestimonialsPage() {
                     key={t.id}
                     className="flex flex-col gap-4 rounded-3xl border border-[color:var(--brand-soft)] bg-white p-8 shadow-[0_12px_40px_rgba(57,28,45,0.05)]"
                   >
-                    <StarRating rating={t.rating} />
                     <blockquote className="flex-1 text-sm leading-7 text-[color:var(--text-main)]">
                       &ldquo;{t.quote}&rdquo;
                     </blockquote>

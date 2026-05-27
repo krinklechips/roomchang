@@ -22,7 +22,6 @@ export default async function ClinicalResultsPage() {
   const tStat = await getTranslations("clinicalResults.stat");
 
   const FALLBACK_STATS: Record<string, DisplayStat> = {
-    countries_served: { display_value: "20+", label: tStat("countriesServed") },
     clinical_experience: { display_value: "30 yrs", label: tStat("clinicalExperience") },
     specialist_dentists: { display_value: "37", label: tStat("specialistDentists") },
     patients_treated: { display_value: "100,000+", label: tStat("patientsTreated") },
@@ -58,10 +57,9 @@ export default async function ClinicalResultsPage() {
             </p>
           </div>
           <div className="hidden lg:flex lg:justify-end">
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-3 gap-3">
               {[
                 stat("patients_treated"),
-                stat("countries_served"),
                 stat("clinical_experience"),
                 stat("specialist_dentists"),
               ].map((item) => (
@@ -80,9 +78,9 @@ export default async function ClinicalResultsPage() {
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
           <div className="grid grid-cols-3 gap-8">
             {[
-              stat("countries_served"),
               stat("clinical_experience"),
               stat("specialist_dentists"),
+              stat("patients_treated"),
             ].map((item) => (
               <div key={item.label} className="text-center">
                 <p className="font-display text-4xl font-bold text-white sm:text-5xl">{item.display_value}</p>
