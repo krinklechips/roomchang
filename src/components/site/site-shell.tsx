@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { SiteFooter } from "./site-footer";
 import { SiteHeader } from "./site-header";
 import { FloatingContact } from "./floating-contact";
+import { Chatbot } from "./chatbot";
 
 type SiteShellProps = {
   children: ReactNode;
@@ -14,6 +15,7 @@ export function SiteShell({ children }: SiteShellProps) {
       <main className="flex-1">{children}</main>
       <SiteFooter />
       <FloatingContact />
+      <Chatbot />
     </div>
   );
 }
