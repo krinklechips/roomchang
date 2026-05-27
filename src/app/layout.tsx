@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
 import localFont from "next/font/local";
+import { getLocale } from "next-intl/server";
 import { CmsPreviewInteractionGuard } from "@/components/site/cms-preview-interaction-guard";
 import "./globals.css";
 
@@ -81,14 +82,16 @@ const localBusinessJsonLd = {
   ],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+
   return (
     <html
-      lang="en"
+      lang={locale}
       className={`${manrope.variable} ${gotham.variable} h-full scroll-smooth antialiased`}
     >
       <body className="min-h-full flex flex-col">

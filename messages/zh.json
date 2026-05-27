@@ -365,6 +365,16 @@
       "heading": "不确定需要哪种治疗？",
       "body": "给我们发送消息或致电，我们的团队将帮助您找到最合适的方案。",
       "button": "预约咨询"
+    },
+    "detail": {
+      "bookConsultation": "预约咨询",
+      "allServices": "所有服务",
+      "imageAlt": "Roomchang牙科医院{name}",
+      "pricingTreatment": "诊疗项目",
+      "pricingPrice": "价格（美元）",
+      "ctaHeading": "准备恢复您的微笑？",
+      "ctaBody": "拨打 {phone} 或发送咨询，我们将在一个工作日内回复您。",
+      "ctaButton": "预约咨询"
     }
   },
   "team": {
@@ -730,6 +740,26 @@
     "inputPlaceholder": "输入您的消息...",
     "sendAriaLabel": "发送消息",
     "openAriaLabel": "在线咨询"
+  },
+  "technologyDetail": {
+    "backLink": "医疗技术",
+    "bookConsultation": "预约咨询",
+    "allTechnology": "全部技术",
+    "ctaHeading": "想知道这是否适合您？",
+    "ctaBody": "预约咨询，我们的专科医生将评估您的情况并提供最佳方案建议。"
+  },
+  "caseDetail": {
+    "backLink": "临床案例",
+    "clinicalNotes": "临床记录",
+    "treatmentSummary": "治疗摘要",
+    "categoryLabel": "类别",
+    "treatmentLabel": "治疗项目",
+    "durationLabel": "治疗周期",
+    "bookConsultation": "预约咨询",
+    "viewPricing": "查看价格",
+    "disclaimer": "* 所示案例均获患者同意。个人效果可能因口腔健康状况、骨密度和治疗复杂度而异。",
+    "previousCase": "上一案例",
+    "nextCase": "下一案例"
   },
   "common": {
     "learnMore": "了解更多",

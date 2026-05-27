@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { getPricingCategories } from "@/lib/data";
 
 export async function PricingBlock({

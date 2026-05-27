@@ -5,7 +5,7 @@
  * /preview/service/[slug] preview route so they render identically.
  */
 
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import {
   CheckCircle,
@@ -28,6 +28,7 @@ import type { Icon as PhosphorIcon } from "@phosphor-icons/react/dist/lib/types"
 import { SiteShell } from "@/components/site/site-shell";
 import type { Service, ServiceSection } from "@/lib/data";
 import { cdnUrl } from "@/lib/supabase";
+import { getTranslations } from "next-intl/server";
 
 // Maps icon name strings (stored in DB) → Phosphor components
 const ICON_MAP: Record<string, PhosphorIcon> = {
@@ -186,7 +187,15 @@ function Steps({ s }: { s: Extract<ServiceSection, { type: "steps" }> }) {
   );
 }
 
-function PricingTable({ s }: { s: Extract<ServiceSection, { type: "pricing" }> }) {
+function PricingTable({
+  s,
+  treatmentLabel,
+  priceLabel,
+}: {
+  s: Extract<ServiceSection, { type: "pricing" }>;
+  treatmentLabel: string;
+  priceLabel: string;
+}) {
   return (
     <div>
       {s.heading && <h2 className="font-display text-3xl text-[color:var(--text-main)]">{s.heading}</h2>}
@@ -195,8 +204,8 @@ function PricingTable({ s }: { s: Extract<ServiceSection, { type: "pricing" }> }
         <table className="w-full text-sm">
           <thead className="bg-[color:var(--surface)]">
             <tr>
-              <th className="px-6 py-4 text-left font-semibold text-[color:var(--text-main)]">Treatment</th>
-              <th className="px-6 py-4 text-right font-semibold text-[color:var(--text-main)]">Price (USD)</th>
+              <th className="px-6 py-4 text-left font-semibold text-[color:var(--text-main)]">{treatmentLabel}</th>
+              <th className="px-6 py-4 text-right font-semibold text-[color:var(--text-main)]">{priceLabel}</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-[--border-strong] bg-white">
@@ -213,18 +222,26 @@ function PricingTable({ s }: { s: Extract<ServiceSection, { type: "pricing" }> }
   );
 }
 
-function RenderSection({ s }: { s: ServiceSection }) {
+function RenderSection({
+  s,
+  treatmentLabel,
+  priceLabel,
+}: {
+  s: ServiceSection;
+  treatmentLabel: string;
+  priceLabel: string;
+}) {
   if (s.type === "callout") return <Callout s={s} />;
   if (s.type === "text") return <TextBlock s={s} />;
   if (s.type === "list") return <BulletList s={s} />;
   if (s.type === "cards") return <Cards s={s} />;
   if (s.type === "steps") return <Steps s={s} />;
-  if (s.type === "pricing") return <PricingTable s={s} />;
+  if (s.type === "pricing") return <PricingTable s={s} treatmentLabel={treatmentLabel} priceLabel={priceLabel} />;
   if (s.type === "twocol") {
     return (
       <div className="grid gap-8 lg:grid-cols-2">
-        <RenderSection s={s.left} />
-        <RenderSection s={s.right} />
+        <RenderSection s={s.left} treatmentLabel={treatmentLabel} priceLabel={priceLabel} />
+        <RenderSection s={s.right} treatmentLabel={treatmentLabel} priceLabel={priceLabel} />
       </div>
     );
   }
@@ -233,9 +250,12 @@ function RenderSection({ s }: { s: ServiceSection }) {
 
 // ─── Main content component ─────────────────────────────────────────────────
 
-export function ServiceDetailContent({ service }: { service: Service }) {
+export async function ServiceDetailContent({ service }: { service: Service }) {
+  const t = await getTranslations("services.detail");
   const sections = service.content?.sections ?? [];
   const heroImage = resolveServiceImage(service.imageSrc);
+  const treatmentLabel = t("pricingTreatment");
+  const priceLabel = t("pricingPrice");
 
   return (
     <SiteShell>
@@ -255,15 +275,15 @@ export function ServiceDetailContent({ service }: { service: Service }) {
               {service.heroDescription ?? service.description}
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
-              <Link href="/contact" className="btn-primary">Book a Consultation</Link>
-              <Link href="/services" className="btn-secondary">All Services</Link>
+              <Link href="/contact" className="btn-primary">{t("bookConsultation")}</Link>
+              <Link href="/services" className="btn-secondary">{t("allServices")}</Link>
             </div>
           </div>
           {heroImage && (
             <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-[color:var(--border-strong)] bg-white shadow-[0_20px_60px_rgba(57,28,45,0.10)]">
               <Image
                 src={heroImage}
-                alt={`${service.name} at Roomchang Dental Hospital`}
+                alt={t("imageAlt", { name: service.name })}
                 fill
                 priority
                 sizes="(min-width: 1024px) 520px, 100vw"
@@ -278,7 +298,7 @@ export function ServiceDetailContent({ service }: { service: Service }) {
       {sections.length > 0 && (
         <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8 space-y-16">
           {sections.map((s, i) => (
-            <RenderSection key={i} s={s} />
+            <RenderSection key={i} s={s} treatmentLabel={treatmentLabel} priceLabel={priceLabel} />
           ))}
         </div>
       )}
@@ -287,16 +307,12 @@ export function ServiceDetailContent({ service }: { service: Service }) {
       <div className="border-t border-[color:var(--border-strong)] bg-[color:var(--surface)]">
         <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8 flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h2 className="font-display text-3xl text-[color:var(--text-main)]">Ready to restore your smile?</h2>
+            <h2 className="font-display text-3xl text-[color:var(--text-main)]">{t("ctaHeading")}</h2>
             <p className="mt-2 text-sm text-[color:var(--text-soft)]">
-              Call us on{" "}
-              <a href="tel:+85569811338" className="font-semibold text-[color:var(--brand)]">
-                +855 69 811 338
-              </a>{" "}
-              or send an enquiry and we&apos;ll get back to you within one business day.
+              {t("ctaBody", { phone: "+855 69 811 338" })}
             </p>
           </div>
-          <Link href="/contact" className="btn-primary shrink-0">Book a Consultation</Link>
+          <Link href="/contact" className="btn-primary shrink-0">{t("ctaButton")}</Link>
         </div>
       </div>
     </SiteShell>

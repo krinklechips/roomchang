@@ -1,112 +1,116 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { LanguageSwitcher } from "./language-switcher";
 import { MobileNav } from "./mobile-nav";
 
-type NavChild = { label: string; href: string };
-type NavItem = { label: string; href: string; children?: NavChild[] };
+type NavChild = { tKey: string; href: string };
+type NavItem = { tKey: string; href: string; children?: NavChild[] };
 
 const NAV_ITEMS: NavItem[] = [
-  { label: "Home", href: "/" },
+  { tKey: "home", href: "/" },
   {
-    label: "About",
+    tKey: "about",
     href: "/about",
     children: [
-      { label: "About Roomchang", href: "/about" },
-      { label: "Our Facilities", href: "/about/facilities" },
-      { label: "Vision, Mission & Values", href: "/about/vision-mission-values" },
-      { label: "Message from Our Director", href: "/about/director-message" },
-      { label: "News & Events", href: "/about/news" },
-      { label: "Community & Charity", href: "/about/community" },
-      { label: "Corporate Partnerships", href: "/about/partnerships" },
-      { label: "Employment Opportunities", href: "/about/careers" },
+      { tKey: "aboutRoomchang", href: "/about" },
+      { tKey: "ourFacilities", href: "/about/facilities" },
+      { tKey: "visionMission", href: "/about/vision-mission-values" },
+      { tKey: "directorMessage", href: "/about/director-message" },
+      { tKey: "newsEvents", href: "/about/news" },
+      { tKey: "communityCharity", href: "/about/community" },
+      { tKey: "corporatePartnerships", href: "/about/partnerships" },
+      { tKey: "employmentOpportunities", href: "/about/careers" },
     ],
   },
   {
-    label: "Services",
+    tKey: "services",
     href: "/services",
     children: [
-      { label: "Preventive Dentistry", href: "/services/preventive-dentistry" },
-      { label: "Cosmetic Dentistry", href: "/services/cosmetic-dentistry" },
-      { label: "Endodontics", href: "/services/endodontics" },
-      { label: "Dental Crowns", href: "/services/dental-crowns" },
-      { label: "Orthodontics", href: "/services/orthodontics" },
-      { label: "Pediatric Dentistry", href: "/services/pediatric-dentistry" },
-      { label: "Periodontal Dentistry", href: "/services/periodontics" },
-      { label: "Dentures", href: "/services/dentures" },
-      { label: "Dental Implants", href: "/services/dental-implants" },
-      { label: "Oral Surgery", href: "/services/oral-surgery" },
-      { label: "Full Mouth Reconstruction", href: "/services/full-mouth-reconstruction" },
-      { label: "Teeth Whitening", href: "/services/teeth-whitening" },
-      { label: "Snoring & Sleep Apnea", href: "/services/sleep-apnea" },
+      { tKey: "preventiveDentistry", href: "/services/preventive-dentistry" },
+      { tKey: "cosmeticDentistry", href: "/services/cosmetic-dentistry" },
+      { tKey: "endodontics", href: "/services/endodontics" },
+      { tKey: "dentalCrowns", href: "/services/dental-crowns" },
+      { tKey: "orthodontics", href: "/services/orthodontics" },
+      { tKey: "pediatricDentistry", href: "/services/pediatric-dentistry" },
+      { tKey: "periodontalDentistry", href: "/services/periodontics" },
+      { tKey: "dentures", href: "/services/dentures" },
+      { tKey: "dentalImplants", href: "/services/dental-implants" },
+      { tKey: "oralSurgery", href: "/services/oral-surgery" },
+      { tKey: "fullMouthReconstruction", href: "/services/full-mouth-reconstruction" },
+      { tKey: "teethWhitening", href: "/services/teeth-whitening" },
+      { tKey: "snoringApnea", href: "/services/sleep-apnea" },
     ],
   },
   {
-    label: "Doctors",
+    tKey: "doctors",
     href: "/team",
   },
   {
-    label: "Technology",
+    tKey: "technology",
     href: "/technology",
     children: [
-      { label: "CAD/CAM Digital Dentistry", href: "/technology/cad-cam" },
-      { label: "Clear Aligner® (CA)", href: "/technology/ca-clear-aligner" },
-      { label: "Invisalign®", href: "/technology/invisalign" },
-      { label: "Ortho-Tain® System", href: "/technology/ortho-tain" },
-      { label: "ResMed ApneaLink Air™", href: "/technology/resmed-apnealink" },
-      { label: "Beyond® Teeth Whitening", href: "/technology/beyond-whitening" },
-      { label: "ICON® Vestibular", href: "/technology/icon-vestibular" },
-      { label: "Sterilisation Technologies", href: "/technology/sterilisation" },
+      { tKey: "cadCam", href: "/technology/cad-cam" },
+      { tKey: "clearAligner", href: "/technology/ca-clear-aligner" },
+      { tKey: "invisalign", href: "/technology/invisalign" },
+      { tKey: "orthoTain", href: "/technology/ortho-tain" },
+      { tKey: "resmedApnealink", href: "/technology/resmed-apnealink" },
+      { tKey: "beyondWhitening", href: "/technology/beyond-whitening" },
+      { tKey: "iconVestibular", href: "/technology/icon-vestibular" },
+      { tKey: "sterilisationTech", href: "/technology/sterilisation" },
     ],
   },
-  { label: "International", href: "/international" },
+  { tKey: "international", href: "/international" },
   {
-    label: "Pricing",
+    tKey: "pricing",
     href: "/pricing",
     children: [
-      { label: "Dental Treatment Costs", href: "/pricing" },
-      { label: "Price Comparison", href: "/pricing/price-comparison" },
-      { label: "Dental Implants Price Comparison", href: "/pricing/implants-comparison" },
+      { tKey: "dentalTreatmentCosts", href: "/pricing" },
+      { tKey: "priceComparison", href: "/pricing/price-comparison" },
+      { tKey: "implantsComparison", href: "/pricing/implants-comparison" },
     ],
   },
   {
-    label: "Clinical Results",
+    tKey: "clinicalResults",
     href: "/clinical-results",
     children: [
-      { label: "All Cases", href: "/clinical-results" },
-      { label: "Full Mouth Reconstruction", href: "/clinical-results#full-mouth" },
-      { label: "Implants & Crowns", href: "/clinical-results#implants" },
-      { label: "Implant Bridges", href: "/clinical-results#bridges" },
-      { label: "Orthodontics", href: "/clinical-results#orthodontics" },
-      { label: "Cosmetic & E-Max", href: "/clinical-results#cosmetic" },
-      { label: "Patient Testimonials", href: "/about/testimonials" },
+      { tKey: "allCases", href: "/clinical-results" },
+      { tKey: "fullMouthReconstructionResults", href: "/clinical-results#full-mouth" },
+      { tKey: "implantsCrowns", href: "/clinical-results#implants" },
+      { tKey: "implantBridges", href: "/clinical-results#bridges" },
+      { tKey: "orthodonticsResults", href: "/clinical-results#orthodontics" },
+      { tKey: "cosmeticEmax", href: "/clinical-results#cosmetic" },
+      { tKey: "patientTestimonials", href: "/about/testimonials" },
     ],
   },
   {
-    label: "Education Blog",
+    tKey: "educationBlog",
     href: "/blog",
     children: [
-      { label: "FAQ", href: "/blog/faq" },
-      { label: "Dentist Talks", href: "/blog/dentist-talks" },
-      { label: "Publications", href: "/blog/publications" },
+      { tKey: "faq", href: "/blog/faq" },
+      { tKey: "dentistTalks", href: "/blog/dentist-talks" },
+      { tKey: "publications", href: "/blog/publications" },
     ],
   },
 ];
 
 export function SiteHeader() {
+  const t = useTranslations("nav");
+  const tHeader = useTranslations("header");
+
   return (
     <header
-      aria-label="Roomchang Dental Hospital"
+      aria-label={tHeader("ariaLabel")}
       className="sticky top-0 z-50 border-b border-black/5 bg-[color:rgba(255,250,251,0.92)] backdrop-blur-xl"
     >
       <div className="flex w-full items-center justify-between gap-4 px-4 py-2 sm:px-6 sm:py-4 lg:gap-2 lg:px-4 lg:py-4 xl:gap-4 xl:px-6 2xl:px-8">
-        <Link href="/" className="flex min-w-0 items-center" aria-label="Roomchang Dental Hospital home">
+        <Link href="/" className="flex min-w-0 items-center" aria-label={tHeader("homeAriaLabel")}>
           <div className="relative h-[52px] w-[105px] sm:h-[74px] sm:w-[145px] lg:h-[62px] lg:w-[122px] xl:h-[74px] xl:w-[145px] 2xl:h-[84px] 2xl:w-[164px]">
             <Image
               src="/brand/roomchang-logo-header-padded.png"
-              alt="Roomchang Dental Hospital logo"
+              alt={tHeader("logoAlt")}
               fill
               priority
               sizes="(max-width: 640px) 105px, (max-width: 1024px) 145px, (max-width: 1280px) 122px, (max-width: 1536px) 145px, 164px"
@@ -120,12 +124,12 @@ export function SiteHeader() {
           <nav aria-label="Primary" className="flex items-center gap-0 2xl:gap-1">
             {NAV_ITEMS.map((item) =>
               item.children ? (
-                <div key={item.label} className="group relative">
+                <div key={item.tKey} className="group relative">
                   <Link
                     href={item.href}
                     className="flex items-center gap-0.5 rounded-lg px-1 py-2 text-[10px] font-semibold text-[color:var(--text-soft)] transition-colors hover:bg-[color:var(--brand-soft)] hover:text-[color:var(--brand-deep)] xl:gap-1 xl:px-1.5 xl:text-xs 2xl:px-3 2xl:text-sm"
                   >
-                    {item.label}
+                    {t(item.tKey)}
                     <svg
                       width="12"
                       height="12"
@@ -143,11 +147,11 @@ export function SiteHeader() {
                     <div className="rounded-2xl border border-[color:var(--border-strong)] bg-white/98 p-1.5 shadow-[0_20px_50px_rgba(61,24,47,0.14)] backdrop-blur">
                       {item.children.map((child) => (
                         <Link
-                          key={child.label}
+                          key={child.tKey}
                           href={child.href}
                           className="flex items-center rounded-xl px-3 py-2.5 text-sm font-medium text-[color:var(--text-main)] transition-colors hover:bg-[color:var(--brand-soft)] hover:text-[color:var(--brand-deep)]"
                         >
-                          {child.label}
+                          {t(child.tKey)}
                         </Link>
                       ))}
                     </div>
@@ -155,18 +159,18 @@ export function SiteHeader() {
                 </div>
               ) : (
                 <Link
-                  key={item.label}
+                  key={item.tKey}
                   href={item.href}
                   className="rounded-lg px-1 py-2 text-[10px] font-semibold text-[color:var(--text-soft)] transition-colors hover:bg-[color:var(--brand-soft)] hover:text-[color:var(--brand-deep)] xl:px-1.5 xl:text-xs 2xl:px-3 2xl:text-sm"
                 >
-                  {item.label}
+                  {t(item.tKey)}
                 </Link>
               )
             )}
           </nav>
           <LanguageSwitcher />
           <Link href="/contact" className="btn-primary btn-primary-sm whitespace-nowrap">
-            Book Appointment
+            {tHeader("bookAppointment")}
           </Link>
         </div>
 

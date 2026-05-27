@@ -365,6 +365,16 @@
       "heading": "Not sure which treatment?",
       "body": "Send us a message or call and our team will help you find the right path.",
       "button": "Request a Consultation"
+    },
+    "detail": {
+      "bookConsultation": "Book a Consultation",
+      "allServices": "All Services",
+      "imageAlt": "{name} at Roomchang Dental Hospital",
+      "pricingTreatment": "Treatment",
+      "pricingPrice": "Price (USD)",
+      "ctaHeading": "Ready to restore your smile?",
+      "ctaBody": "Call us on {phone} or send an enquiry and we'll get back to you within one business day.",
+      "ctaButton": "Book a Consultation"
     }
   },
   "team": {
@@ -730,6 +740,26 @@
     "inputPlaceholder": "Type your message...",
     "sendAriaLabel": "Send message",
     "openAriaLabel": "Chat with us"
+  },
+  "technologyDetail": {
+    "backLink": "Technology",
+    "bookConsultation": "Book a Consultation",
+    "allTechnology": "All Technology",
+    "ctaHeading": "Want to know if this is right for you?",
+    "ctaBody": "Book a consultation and our specialists will assess your case and advise on the best approach."
+  },
+  "caseDetail": {
+    "backLink": "Clinical Results",
+    "clinicalNotes": "Clinical Notes",
+    "treatmentSummary": "Treatment Summary",
+    "categoryLabel": "Category",
+    "treatmentLabel": "Treatment",
+    "durationLabel": "Treatment Duration",
+    "bookConsultation": "Book a Consultation",
+    "viewPricing": "View Pricing",
+    "disclaimer": "* Cases shown with patient consent. Individual results may vary depending on oral health, bone density, and treatment complexity.",
+    "previousCase": "Previous Case",
+    "nextCase": "Next Case"
   },
   "common": {
     "learnMore": "Learn more",

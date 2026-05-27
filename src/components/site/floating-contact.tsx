@@ -2,11 +2,12 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 const CONTACTS = [
   {
     id: "messenger",
-    label: "Messenger",
+    tKey: "messenger",
     href: "https://m.me/roomchangdental",
     iconBg: "bg-gradient-to-br from-[#0078FF] to-[#A334FA]",
     icon: (
@@ -17,7 +18,7 @@ const CONTACTS = [
   },
   {
     id: "whatsapp",
-    label: "WhatsApp",
+    tKey: "whatsapp",
     href: "https://api.whatsapp.com/send/?phone=85569811338&text=",
     iconBg: "bg-[#25D366]",
     icon: (
@@ -28,7 +29,7 @@ const CONTACTS = [
   },
   {
     id: "telegram",
-    label: "Telegram",
+    tKey: "telegram",
     href: "https://telegram.me/roomchang",
     iconBg: "bg-[#2AABEE]",
     icon: (
@@ -39,7 +40,7 @@ const CONTACTS = [
   },
   {
     id: "enquiry",
-    label: "Enquiry",
+    tKey: "enquiry",
     href: "/contact",
     iconBg: "bg-[color:var(--brand-soft)]",
     icon: (
@@ -54,6 +55,7 @@ const CONTACTS = [
 
 export function FloatingContact() {
   const [open, setOpen] = useState(false);
+  const t = useTranslations("floatingContact");
 
   return (
     <div className="fixed bottom-4 right-4 z-50 flex flex-col items-end gap-2.5 sm:bottom-6 sm:right-6 sm:gap-3">
@@ -66,8 +68,8 @@ export function FloatingContact() {
               href={c.href}
               target={c.id === "enquiry" ? "_self" : "_blank"}
               rel={c.id === "enquiry" ? undefined : "noopener noreferrer"}
-              aria-label={c.label}
-              title={c.label}
+              aria-label={t(c.tKey)}
+              title={t(c.tKey)}
               className={`flex h-12 w-12 items-center justify-center rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.18)] transition hover:-translate-y-0.5 hover:shadow-[0_8px_28px_rgba(0,0,0,0.22)] ${c.iconBg}`}
             >
               {c.icon}
@@ -79,7 +81,7 @@ export function FloatingContact() {
       {/* Toggle button — Roomchang mark */}
       <button
         type="button"
-        aria-label={open ? "Close contact options" : "Open contact options"}
+        aria-label={open ? t("closeAriaLabel") : t("openAriaLabel")}
         onClick={() => setOpen((o) => !o)}
         className="relative flex h-12 w-12 items-center justify-center rounded-full bg-[color:var(--brand)] shadow-[0_8px_28px_rgba(204,55,113,0.45)] transition hover:bg-[color:var(--brand-deep)] hover:scale-105 active:scale-95 sm:h-14 sm:w-14"
       >
@@ -102,7 +104,7 @@ export function FloatingContact() {
         >
           <Image
             src="/brand/roomchang-mark.jpeg"
-            alt="Contact Roomchang"
+            alt={t("contactAlt")}
             width={36}
             height={36}
             className="rounded-full object-cover"

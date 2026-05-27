@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { getServices } from "@/lib/data";
 
 export async function ServicesGridBlock({

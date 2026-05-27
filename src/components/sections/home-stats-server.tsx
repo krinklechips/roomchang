@@ -1,8 +1,19 @@
+import { getTranslations } from "next-intl/server";
 import { supabaseServer } from "@/lib/supabase-server";
 import { HomeStats } from "./home-stats";
 import { getHomepageStats, HOMEPAGE_STAT_KEYS, type HomeStatRow } from "./home-stats-data";
 
+/** Map known English fallback labels to translation keys */
+const STAT_LABEL_KEYS: Record<string, string> = {
+  "Years of Experience": "yearsOfExperience",
+  "Specialist Dentists": "specialistDentists",
+  "Phnom Penh Branches": "phnomPenhBranches",
+  "Patients Treated": "patientsTreated",
+};
+
 export async function HomeStatsServer() {
+  const t = await getTranslations("homeStats");
+
   const { data, error } = await supabaseServer
     .from("site_stats")
     .select("key, numeric_value, suffix, label")
@@ -15,5 +26,11 @@ export async function HomeStatsServer() {
 
   const stats = getHomepageStats(data as HomeStatRow[] | null);
 
-  return <HomeStats stats={stats} />;
+  // Translate known stat labels (fallback labels and DB labels with matching keys)
+  const translatedStats = stats.map((stat) => {
+    const tKey = STAT_LABEL_KEYS[stat.label];
+    return tKey ? { ...stat, label: t(tKey) } : stat;
+  });
+
+  return <HomeStats stats={translatedStats} />;
 }

@@ -1,0 +1,82 @@
+import { Link } from "@/i18n/navigation";
+import { SiteShell } from "@/components/site/site-shell";
+import { ArrowRight, HelpCircle, Mic, BookOpen } from "lucide-react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Education Blog | Roomchang Dental Hospital",
+  description:
+    "Dental health education from Roomchang — FAQs, dentist talks, and published research by our specialist team.",
+};
+
+const BLOG_SECTIONS = [
+  {
+    title: "FAQ",
+    description:
+      "Answers to the most common questions about dental treatments, costs, and what to expect at Roomchang.",
+    href: "/blog/faq",
+    icon: HelpCircle,
+  },
+  {
+    title: "Dentist Talks",
+    description:
+      "Watch our specialist dentists explain common dental concerns, treatment options, and modern technologies in short, informative videos.",
+    href: "/blog/dentist-talks",
+    icon: Mic,
+  },
+  {
+    title: "Publications & Research",
+    description:
+      "Peer-reviewed research papers and clinical studies published by Roomchang dentists, advancing evidence-based care.",
+    href: "/blog/publications",
+    icon: BookOpen,
+  },
+];
+
+export default function BlogPage() {
+  return (
+    <SiteShell>
+      {/* Hero */}
+      <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--surface)]">
+        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
+          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--brand)]">
+            Learn
+          </p>
+          <h1 className="mt-3 font-display text-5xl leading-none text-[color:var(--text-main)] sm:text-6xl">
+            Education Blog
+          </h1>
+          <p className="mt-5 max-w-2xl text-base leading-7 text-[color:var(--text-soft)]">
+            Dental health education from our specialist team — frequently asked questions,
+            expert talks, and published research.
+          </p>
+        </div>
+      </div>
+
+      {/* Section cards */}
+      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
+        <div className="grid gap-8 sm:grid-cols-3">
+          {BLOG_SECTIONS.map((section) => (
+            <Link
+              key={section.href}
+              href={section.href}
+              className="group flex flex-col rounded-3xl border border-[color:var(--border-strong)] bg-white p-8 shadow-[0_12px_40px_rgba(57,28,45,0.05)] transition hover:border-[color:var(--brand-light)] hover:shadow-[0_16px_48px_rgba(204,55,113,0.1)]"
+            >
+              <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-[color:var(--brand-soft)] text-[color:var(--brand-deep)]">
+                <section.icon size={24} strokeWidth={1.75} aria-hidden="true" />
+              </span>
+              <h2 className="mt-5 font-display text-2xl text-[color:var(--text-main)] group-hover:text-[color:var(--brand-deep)]">
+                {section.title}
+              </h2>
+              <p className="mt-3 flex-1 text-sm leading-7 text-[color:var(--text-soft)]">
+                {section.description}
+              </p>
+              <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-[color:var(--brand-deep)] transition group-hover:text-[color:var(--brand)]">
+                Browse <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
+              </span>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </SiteShell>
+  );
+}

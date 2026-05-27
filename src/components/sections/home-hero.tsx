@@ -1,51 +1,53 @@
-import Link from "next/link";
+import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import { HeroSlideshow, type HeroSlide } from "./hero-slideshow";
 import { getHeroSlides } from "@/lib/data";
 
-// Fallback slides used if the database returns nothing
-const FALLBACK_SLIDES: HeroSlide[] = [
-  {
-    id: "team",
-    eyebrow: "Cambodia's leading dental group",
-    title: "37 Specialist Dentists, One Team",
-    description: "Implantologists, orthodontists, cosmetic specialists, and general dentists — all under one roof, across five branches in Phnom Penh.",
-    imageSrc: "/hero/hero-team-photo.jpg",
-    imageAlt: "Roomchang Dental Hospital full team photo",
-    imagePosition: "center center",
-    imageSize: "cover",
-  },
-  {
-    id: "care",
-    eyebrow: "Patient-first care",
-    title: "Dentistry That Puts You at Ease",
-    description: "Our multilingual team speaks your language — literally. Consultations in English, Khmer, Mandarin, Japanese, German, and French.",
-    imageSrc: "/hero/hero-patient-care.jpeg",
-    imageAlt: "Roomchang staff with a patient in a treatment room",
-    imagePosition: "center center",
-  },
-  {
-    id: "all-staff",
-    eyebrow: "Trusted since 1996",
-    title: "Nearly 30 Years of Exceptional Care",
-    description: "From a single practice to Cambodia's most trusted dental hospital — hospital-grade standards, multilingual care, and built for every patient.",
-    imageSrc: "/hero/hero-all-staff.jpg",
-    imageAlt: "Roomchang Dental Hospital all staff group photo",
-    imagePosition: "center top",
-    imageSize: "cover",
-  },
-  {
-    id: "digital",
-    eyebrow: "Digital dentistry",
-    title: "Precision Technology, Every Treatment",
-    description: "CAD/CAM technology, 3D CBCT imaging, intraoral scanning, and Clear Aligner (CA) fabrication — made and fitted right here.",
-    imageSrc: "/hero/roomchang-digital-lab.jpeg",
-    imageAlt: "Roomchang staff working with digital dental laboratory technology",
-    imagePosition: "center center",
-  },
-];
-
 export async function HomeHero() {
+  const t = await getTranslations("homeHero");
   const dbSlides = await getHeroSlides();
+
+  // Fallback slides use translation keys; DB slides use their own text
+  const fallbackSlides: HeroSlide[] = [
+    {
+      id: "team",
+      eyebrow: t("slide.team.eyebrow"),
+      title: t("slide.team.title"),
+      description: t("slide.team.description"),
+      imageSrc: "/hero/hero-team-photo.jpg",
+      imageAlt: t("slide.team.alt"),
+      imagePosition: "center center",
+      imageSize: "cover",
+    },
+    {
+      id: "care",
+      eyebrow: t("slide.care.eyebrow"),
+      title: t("slide.care.title"),
+      description: t("slide.care.description"),
+      imageSrc: "/hero/hero-patient-care.jpeg",
+      imageAlt: t("slide.care.alt"),
+      imagePosition: "center center",
+    },
+    {
+      id: "all-staff",
+      eyebrow: t("slide.allStaff.eyebrow"),
+      title: t("slide.allStaff.title"),
+      description: t("slide.allStaff.description"),
+      imageSrc: "/hero/hero-all-staff.jpg",
+      imageAlt: t("slide.allStaff.alt"),
+      imagePosition: "center top",
+      imageSize: "cover",
+    },
+    {
+      id: "digital",
+      eyebrow: t("slide.digital.eyebrow"),
+      title: t("slide.digital.title"),
+      description: t("slide.digital.description"),
+      imageSrc: "/hero/roomchang-digital-lab.jpeg",
+      imageAlt: t("slide.digital.alt"),
+      imagePosition: "center center",
+    },
+  ];
 
   const heroSlides: HeroSlide[] =
     dbSlides.length > 0
@@ -60,7 +62,7 @@ export async function HomeHero() {
           imageSize: s.imageSize ?? undefined,
           preserveFullImage: s.preserveFullImage,
         }))
-      : FALLBACK_SLIDES;
+      : fallbackSlides;
 
   return (
     <section className="relative overflow-hidden sm:min-h-[calc(100svh-6.625rem)] lg:min-h-[calc(100svh-7.25rem)]">
@@ -68,7 +70,7 @@ export async function HomeHero() {
       {/* Trust pill — always overlaid on the image */}
       <div className="absolute left-3 top-3 z-20 sm:left-7 sm:top-7">
         <p className="inline-flex rounded-full border border-[rgba(33,23,31,0.2)] bg-white/96 px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-[0.24em] text-[color:var(--text-main)] shadow-[0_10px_28px_rgba(29,19,27,0.08)] backdrop-blur-sm sm:px-3.5 sm:py-1.5 sm:text-[0.7rem]">
-          Trusted Since 1996
+          {t("trustPill")}
         </p>
       </div>
 
@@ -88,7 +90,7 @@ export async function HomeHero() {
         {/* Scroll chevron — desktop only */}
         <a
           href="#brands"
-          aria-label="Scroll to next section"
+          aria-label={t("scrollAriaLabel")}
           className="absolute bottom-1 left-1/2 z-10 hidden -translate-x-1/2 animate-bounce text-white/60 transition hover:text-white sm:block"
         >
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -104,19 +106,19 @@ export async function HomeHero() {
             href="/contact"
             className="btn-primary justify-center whitespace-nowrap !px-4 !py-2.5 !text-[0.7rem] sm:!px-5 sm:!py-3 sm:!text-xs"
           >
-            Request An Appointment
+            {t("ctaPrimary")}
           </Link>
           <Link
             href="/services"
             className="inline-flex items-center justify-center whitespace-nowrap rounded-full border border-[rgba(33,23,31,0.12)] bg-[rgba(255,255,255,0.72)] px-4 py-2.5 text-[0.7rem] font-semibold text-[color:var(--text-main)] transition hover:-translate-y-px hover:bg-[rgba(255,255,255,0.92)] sm:border-white/22 sm:bg-[color:rgba(255,255,255,0.12)] sm:px-5 sm:py-3 sm:text-xs sm:text-white sm:hover:bg-[color:rgba(255,255,255,0.22)]"
           >
-            Explore Services
+            {t("ctaSecondary")}
           </Link>
           <Link
             href="/team"
             className="inline-flex items-center justify-center whitespace-nowrap rounded-full border border-[rgba(33,23,31,0.12)] bg-[rgba(255,255,255,0.72)] px-4 py-2.5 text-[0.7rem] font-semibold text-[color:var(--text-main)] transition hover:-translate-y-px hover:bg-[rgba(255,255,255,0.92)] sm:border-white/22 sm:bg-[color:rgba(255,255,255,0.12)] sm:px-5 sm:py-3 sm:text-xs sm:text-white sm:hover:bg-[color:rgba(255,255,255,0.22)]"
           >
-            Our Doctors
+            {t("ctaTertiary")}
           </Link>
         </div>
       </div>

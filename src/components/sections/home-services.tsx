@@ -1,32 +1,35 @@
-import Link from "next/link";
+import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import { CircleDot, Crown, AlignCenter, Sparkles, Sun, Scissors, ArrowRight, type LucideIcon } from "lucide-react";
 
-const SERVICES: { id: string; label: string; href: string; Icon: LucideIcon }[] = [
-  { id: "implants", label: "Dental Implants", href: "/services/dental-implants", Icon: CircleDot },
-  { id: "crowns", label: "Crowns & Bridges", href: "/services/dental-crowns", Icon: Crown },
-  { id: "aligners", label: "Clear Aligners", href: "/services/orthodontics", Icon: AlignCenter },
-  { id: "cosmetic", label: "Cosmetic Dentistry", href: "/services/cosmetic-dentistry", Icon: Sparkles },
-  { id: "whitening", label: "Teeth Whitening", href: "/services/teeth-whitening", Icon: Sun },
-  { id: "surgery", label: "Oral Surgery", href: "/services/oral-surgery", Icon: Scissors },
+const SERVICES: { id: string; tKey: string; href: string; Icon: LucideIcon }[] = [
+  { id: "implants", tKey: "implants", href: "/services/dental-implants", Icon: CircleDot },
+  { id: "crowns", tKey: "crowns", href: "/services/dental-crowns", Icon: Crown },
+  { id: "aligners", tKey: "aligners", href: "/services/orthodontics", Icon: AlignCenter },
+  { id: "cosmetic", tKey: "cosmetic", href: "/services/cosmetic-dentistry", Icon: Sparkles },
+  { id: "whitening", tKey: "whitening", href: "/services/teeth-whitening", Icon: Sun },
+  { id: "surgery", tKey: "surgery", href: "/services/oral-surgery", Icon: Scissors },
 ];
 
-export function HomeServices() {
+export async function HomeServices() {
+  const t = await getTranslations("homeServices");
+
   return (
     <section id="services" className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-20 lg:px-8">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--brand)]">
-            What We Offer
+            {t("eyebrow")}
           </p>
           <h2 className="mt-2 font-display text-3xl text-[color:var(--text-main)] sm:text-5xl">
-            Our Treatments
+            {t("heading")}
           </h2>
         </div>
         <Link
           href="/services"
           className="inline-flex items-center gap-2 text-sm font-semibold text-[color:var(--brand-deep)] transition hover:text-[color:var(--brand)]"
         >
-          See all services <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
+          {t("seeAll")} <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
         </Link>
       </div>
 
@@ -41,7 +44,7 @@ export function HomeServices() {
               <service.Icon size={22} strokeWidth={1.75} aria-hidden="true" className="sm:!h-7 sm:!w-7" />
             </div>
             <p className="text-[0.7rem] font-semibold leading-snug text-[color:var(--text-main)] sm:text-[0.82rem]">
-              {service.label}
+              {t(service.tKey)}
             </p>
           </Link>
         ))}

@@ -1,7 +1,8 @@
 "use client";
 
 import { startTransition, useEffect, useState } from "react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { ArrowRight } from "lucide-react";
 
 interface TestimonialData {
@@ -39,6 +40,7 @@ export function HomeTestimonials({
 }) {
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
+  const tTestimonials = useTranslations("homeTestimonials");
 
   useEffect(() => {
     if (paused || testimonials.length === 0) return;
@@ -105,7 +107,7 @@ export function HomeTestimonials({
               <button
                 key={t.id}
                 type="button"
-                aria-label={`Read testimonial from ${t.authorName}`}
+                aria-label={tTestimonials("readAriaLabel", { name: t.authorName })}
                 onClick={() => {
                   setPaused(true);
                   setActive(i);
@@ -128,7 +130,7 @@ export function HomeTestimonials({
             href="/about/testimonials"
             className="inline-flex items-center gap-1.5 text-sm font-semibold text-[color:var(--brand-deep)] transition hover:text-[color:var(--brand)]"
           >
-            See all patient reviews <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
+            {tTestimonials("seeAll")} <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
           </Link>
         </div>
       </div>

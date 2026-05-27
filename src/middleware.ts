@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
+import createIntlMiddleware from "next-intl/middleware";
+import { routing } from "./i18n/routing";
 
 const COOKIE_NAME = "rc_ref";
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 30; // 30 days
 
 const PREVIEW_COOKIE = "rc_preview_session";
 const PREVIEW_COOKIE_MAX_AGE = 60 * 60 * 2; // 2 hours
+
+const intlMiddleware = createIntlMiddleware(routing);
 
 // ─── Admin Basic Auth ──────────────────────────────────────────────────────
 
@@ -147,25 +151,36 @@ async function previewAuth(request: NextRequest): Promise<NextResponse | null> {
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // Skip locale routing for API routes, admin, and preview
+  const isApi = pathname.startsWith("/api");
+  const isAdmin = pathname.startsWith("/admin") || pathname.match(/^\/(en|zh|km)\/admin/);
+  const isPreview = pathname.startsWith("/preview") || pathname.match(/^\/(en|zh|km)\/preview/);
+
+  // Strip locale prefix for auth checks
+  const cleanPath = pathname.replace(/^\/(en|zh|km)/, "") || "/";
+
   // Protect all /admin/* pages and /api/admin/* routes
-  if (pathname.startsWith("/admin") || pathname.startsWith("/api/admin")) {
+  if (cleanPath.startsWith("/admin") || cleanPath.startsWith("/api/admin")) {
     const deny = adminAuth(request);
     if (deny) return deny;
   }
 
   // Protect /preview/* routes with token OR Basic Auth
-  if (pathname.startsWith("/preview")) {
+  if (cleanPath.startsWith("/preview")) {
     const deny = await previewAuth(request);
     if (deny) return deny;
   }
 
+  // Run next-intl middleware for locale routing (skip for API routes)
+  const response = isApi
+    ? NextResponse.next()
+    : intlMiddleware(request);
+
+  // Handle referral cookies
   const { searchParams } = request.nextUrl;
   const ref = searchParams.get("ref");
 
-  const response = NextResponse.next();
-
   if (ref && /^[a-zA-Z0-9_-]{2,40}$/.test(ref)) {
-    // Valid ref code found — set or refresh the cookie
     response.cookies.set(COOKIE_NAME, ref.toUpperCase(), {
       httpOnly: true,
       sameSite: "lax",
@@ -184,7 +199,7 @@ export async function middleware(request: NextRequest) {
       headers: internalHeaders,
       body: JSON.stringify({
         agent_code: ref.toUpperCase(),
-        page: request.nextUrl.pathname,
+        page: cleanPath,
       }),
     }).catch(() => {
       // Non-critical — ignore errors

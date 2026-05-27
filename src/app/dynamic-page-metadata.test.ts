@@ -28,7 +28,7 @@ describe("dynamic page generateMetadata", () => {
       }),
     }));
 
-    const { generateMetadata } = await import("./services/[slug]/page");
+    const { generateMetadata } = await import("./[locale]/services/[slug]/page");
     const metadata = await generateMetadata({
       params: Promise.resolve({ slug: "dental-implants" }),
     });
@@ -65,7 +65,7 @@ describe("dynamic page generateMetadata", () => {
       getSeoPageMeta: vi.fn().mockResolvedValue(null),
     }));
 
-    const { generateMetadata } = await import("./technology/[slug]/page");
+    const { generateMetadata } = await import("./[locale]/technology/[slug]/page");
     const metadata = await generateMetadata({
       params: Promise.resolve({ slug: "cbct-scanner" }),
     });
@@ -96,7 +96,7 @@ describe("dynamic page generateMetadata", () => {
       }),
     }));
 
-    const { generateMetadata } = await import("./clinical-results/[slug]/page");
+    const { generateMetadata } = await import("./[locale]/clinical-results/[slug]/page");
     const metadata = await generateMetadata({
       params: Promise.resolve({ slug: "all-on-4" }),
     });

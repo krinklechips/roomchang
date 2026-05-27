@@ -2,6 +2,7 @@
 
 import type { CSSProperties } from "react";
 import { startTransition, useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export type HeroSlide = {
@@ -44,6 +45,7 @@ export function HeroSlideshow({
   const [activeIndex, setActiveIndex] = useState(0);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
   const [isPaused, setIsPaused] = useState(false);
+  const t = useTranslations("heroSlideshow");
 
   const updateSlide = (nextIndex: number) => {
     startTransition(() => {
@@ -105,7 +107,7 @@ export function HeroSlideshow({
           <button
             key={slide.id}
             type="button"
-            aria-label={`Show ${slide.title}`}
+            aria-label={t("showSlide", { title: slide.title })}
             onClick={() => updateSlide(index)}
             className={`h-2 rounded-full transition-all duration-300 ${
               isActive ? "w-8 bg-white" : "w-2 bg-white/40"
@@ -118,7 +120,7 @@ export function HeroSlideshow({
 
   return (
     <section
-      aria-label="Roomchang hero slideshow"
+      aria-label={t("ariaLabel")}
       className={`${flush ? "" : "panel-card p-3 sm:p-4"} relative overflow-hidden lg:h-full ${className}`}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
@@ -179,7 +181,7 @@ export function HeroSlideshow({
         {/* Prev / Next controls */}
         <button
           type="button"
-          aria-label="Show previous slide"
+          aria-label={t("previousAriaLabel")}
           onClick={showPrevious}
           className="absolute left-4 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/24 bg-[color:rgba(255,255,255,0.12)] text-white backdrop-blur-md transition hover:bg-[color:rgba(255,255,255,0.24)] sm:flex"
         >
@@ -187,7 +189,7 @@ export function HeroSlideshow({
         </button>
         <button
           type="button"
-          aria-label="Show next slide"
+          aria-label={t("nextAriaLabel")}
           onClick={showNext}
           className="absolute right-4 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/24 bg-[color:rgba(255,255,255,0.12)] text-white backdrop-blur-md transition hover:bg-[color:rgba(255,255,255,0.24)] sm:flex"
         >
@@ -212,7 +214,7 @@ export function HeroSlideshow({
                 <button
                   key={slide.id}
                   type="button"
-                  aria-label={`Show ${slide.title}`}
+                  aria-label={t("showSlide", { title: slide.title })}
                   onClick={() => updateSlide(index)}
                   className={`h-2.5 rounded-full transition ${
                     isActive ? "w-10 bg-[color:var(--brand)]" : "w-2.5 bg-[color:var(--brand-soft)]"
@@ -222,7 +224,7 @@ export function HeroSlideshow({
             })}
           </div>
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[color:var(--text-soft)]">
-            Swipe on mobile
+            {t("swipeHint")}
           </p>
         </div>
       )}

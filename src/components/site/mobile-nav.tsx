@@ -1,91 +1,92 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 
-type NavChild = { label: string; href: string };
-type NavItem = { label: string; href: string; children?: NavChild[] };
+type NavChild = { tKey: string; href: string };
+type NavItem = { tKey: string; href: string; children?: NavChild[] };
 
 const NAV_ITEMS: NavItem[] = [
-  { label: "Home", href: "/" },
+  { tKey: "home", href: "/" },
   {
-    label: "About",
+    tKey: "about",
     href: "/about",
     children: [
-      { label: "About Roomchang", href: "/about" },
-      { label: "Our Facilities", href: "/about/facilities" },
-      { label: "Vision, Mission & Values", href: "/about/vision-mission-values" },
-      { label: "Message from Our Director", href: "/about/director-message" },
-      { label: "News & Events", href: "/about/news" },
-      { label: "Community & Charity", href: "/about/community" },
-      { label: "Corporate Partnerships", href: "/about/partnerships" },
-      { label: "Employment Opportunities", href: "/about/careers" },
+      { tKey: "aboutRoomchang", href: "/about" },
+      { tKey: "ourFacilities", href: "/about/facilities" },
+      { tKey: "visionMission", href: "/about/vision-mission-values" },
+      { tKey: "directorMessage", href: "/about/director-message" },
+      { tKey: "newsEvents", href: "/about/news" },
+      { tKey: "communityCharity", href: "/about/community" },
+      { tKey: "corporatePartnerships", href: "/about/partnerships" },
+      { tKey: "employmentOpportunities", href: "/about/careers" },
     ],
   },
   {
-    label: "Services",
+    tKey: "services",
     href: "/services",
     children: [
-      { label: "Preventive Dentistry", href: "/services/preventive-dentistry" },
-      { label: "Cosmetic Dentistry", href: "/services/cosmetic-dentistry" },
-      { label: "Endodontics", href: "/services/endodontics" },
-      { label: "Dental Crowns", href: "/services/dental-crowns" },
-      { label: "Orthodontics", href: "/services/orthodontics" },
-      { label: "Pediatric Dentistry", href: "/services/pediatric-dentistry" },
-      { label: "Periodontal Dentistry", href: "/services/periodontics" },
-      { label: "Dentures", href: "/services/dentures" },
-      { label: "Dental Implants", href: "/services/dental-implants" },
-      { label: "Oral Surgery", href: "/services/oral-surgery" },
-      { label: "Full Mouth Reconstruction", href: "/services/full-mouth-reconstruction" },
-      { label: "Teeth Whitening", href: "/services/teeth-whitening" },
-      { label: "Snoring & Sleep Apnea", href: "/services/sleep-apnea" },
+      { tKey: "preventiveDentistry", href: "/services/preventive-dentistry" },
+      { tKey: "cosmeticDentistry", href: "/services/cosmetic-dentistry" },
+      { tKey: "endodontics", href: "/services/endodontics" },
+      { tKey: "dentalCrowns", href: "/services/dental-crowns" },
+      { tKey: "orthodontics", href: "/services/orthodontics" },
+      { tKey: "pediatricDentistry", href: "/services/pediatric-dentistry" },
+      { tKey: "periodontalDentistry", href: "/services/periodontics" },
+      { tKey: "dentures", href: "/services/dentures" },
+      { tKey: "dentalImplants", href: "/services/dental-implants" },
+      { tKey: "oralSurgery", href: "/services/oral-surgery" },
+      { tKey: "fullMouthReconstruction", href: "/services/full-mouth-reconstruction" },
+      { tKey: "teethWhitening", href: "/services/teeth-whitening" },
+      { tKey: "snoringApnea", href: "/services/sleep-apnea" },
     ],
   },
-  { label: "Doctors", href: "/team" },
+  { tKey: "doctors", href: "/team" },
   {
-    label: "Technology",
+    tKey: "technology",
     href: "/technology",
     children: [
-      { label: "CAD/CAM Digital Dentistry", href: "/technology/cad-cam" },
-      { label: "Clear Aligner® (CA)", href: "/technology/ca-clear-aligner" },
-      { label: "Invisalign®", href: "/technology/invisalign" },
-      { label: "Ortho-Tain® System", href: "/technology/ortho-tain" },
-      { label: "ResMed ApneaLink Air™", href: "/technology/resmed-apnealink" },
-      { label: "Beyond® Teeth Whitening", href: "/technology/beyond-whitening" },
-      { label: "ICON® Vestibular", href: "/technology/icon-vestibular" },
-      { label: "Sterilisation Technologies", href: "/technology/sterilisation" },
+      { tKey: "cadCam", href: "/technology/cad-cam" },
+      { tKey: "clearAligner", href: "/technology/ca-clear-aligner" },
+      { tKey: "invisalign", href: "/technology/invisalign" },
+      { tKey: "orthoTain", href: "/technology/ortho-tain" },
+      { tKey: "resmedApnealink", href: "/technology/resmed-apnealink" },
+      { tKey: "beyondWhitening", href: "/technology/beyond-whitening" },
+      { tKey: "iconVestibular", href: "/technology/icon-vestibular" },
+      { tKey: "sterilisationTech", href: "/technology/sterilisation" },
     ],
   },
-  { label: "International", href: "/international" },
+  { tKey: "international", href: "/international" },
   {
-    label: "Pricing",
+    tKey: "pricing",
     href: "/pricing",
     children: [
-      { label: "Dental Treatment Costs", href: "/pricing" },
-      { label: "Price Comparison", href: "/pricing/price-comparison" },
-      { label: "Dental Implants Price Comparison", href: "/pricing/implants-comparison" },
+      { tKey: "dentalTreatmentCosts", href: "/pricing" },
+      { tKey: "priceComparison", href: "/pricing/price-comparison" },
+      { tKey: "implantsComparison", href: "/pricing/implants-comparison" },
     ],
   },
   {
-    label: "Clinical Results",
+    tKey: "clinicalResults",
     href: "/clinical-results",
     children: [
-      { label: "All Cases", href: "/clinical-results" },
-      { label: "Full Mouth Reconstruction", href: "/clinical-results#full-mouth" },
-      { label: "Implants & Crowns", href: "/clinical-results#implants" },
-      { label: "Implant Bridges", href: "/clinical-results#bridges" },
-      { label: "Orthodontics", href: "/clinical-results#orthodontics" },
-      { label: "Cosmetic & E-Max", href: "/clinical-results#cosmetic" },
-      { label: "Patient Testimonials", href: "/about/testimonials" },
+      { tKey: "allCases", href: "/clinical-results" },
+      { tKey: "fullMouthReconstructionResults", href: "/clinical-results#full-mouth" },
+      { tKey: "implantsCrowns", href: "/clinical-results#implants" },
+      { tKey: "implantBridges", href: "/clinical-results#bridges" },
+      { tKey: "orthodonticsResults", href: "/clinical-results#orthodontics" },
+      { tKey: "cosmeticEmax", href: "/clinical-results#cosmetic" },
+      { tKey: "patientTestimonials", href: "/about/testimonials" },
     ],
   },
   {
-    label: "Education Blog",
+    tKey: "educationBlog",
     href: "/blog",
     children: [
-      { label: "FAQ", href: "/blog/faq" },
-      { label: "Dentist Talks", href: "/blog/dentist-talks" },
-      { label: "Publications", href: "/blog/publications" },
+      { tKey: "faq", href: "/blog/faq" },
+      { tKey: "dentistTalks", href: "/blog/dentist-talks" },
+      { tKey: "publications", href: "/blog/publications" },
     ],
   },
 ];
@@ -93,9 +94,11 @@ const NAV_ITEMS: NavItem[] = [
 export function MobileNav() {
   const [open, setOpen] = useState(false);
   const [expanded, setExpanded] = useState<string | null>(null);
+  const t = useTranslations("nav");
+  const tMobile = useTranslations("mobileNav");
 
-  const toggle = (label: string) =>
-    setExpanded((prev) => (prev === label ? null : label));
+  const toggle = (tKey: string) =>
+    setExpanded((prev) => (prev === tKey ? null : tKey));
 
   const close = () => {
     setOpen(false);
@@ -106,7 +109,7 @@ export function MobileNav() {
     <>
       <button
         type="button"
-        aria-label={open ? "Close menu" : "Open menu"}
+        aria-label={open ? tMobile("closeMenu") : tMobile("openMenu")}
         aria-expanded={open}
         onClick={() => setOpen((prev) => !prev)}
         className="flex h-10 w-10 items-center justify-center rounded-full border border-[color:var(--border-strong)] bg-white/80 text-[color:var(--text-main)] backdrop-blur transition hover:bg-[color:var(--surface-strong)]"
@@ -144,11 +147,11 @@ export function MobileNav() {
           {/* Fixed header — never scrolls away */}
           <div className="flex shrink-0 items-center justify-between px-4 pb-4 pt-4 sm:px-6">
             <Link href="/" onClick={close} className="font-display text-2xl text-[color:var(--brand-deep)]">
-              Roomchang
+              {tMobile("brandName")}
             </Link>
             <button
               type="button"
-              aria-label="Close menu"
+              aria-label={tMobile("closeMenu")}
               onClick={close}
               className="flex h-10 w-10 items-center justify-center rounded-full border border-[color:var(--border-strong)] bg-white/80 text-[color:var(--text-main)]"
             >
@@ -164,7 +167,7 @@ export function MobileNav() {
             <div className="flex flex-col gap-0.5">
               {NAV_ITEMS.map((item) =>
                 item.children ? (
-                  <div key={item.label}>
+                  <div key={item.tKey}>
                     {/* Accordion toggle row */}
                     <div className="flex items-center">
                       <Link
@@ -172,17 +175,17 @@ export function MobileNav() {
                         onClick={close}
                         className="flex-1 rounded-xl px-4 py-3 text-base font-semibold text-[color:var(--text-main)] transition hover:bg-[color:var(--surface-strong)] hover:text-[color:var(--brand-deep)]"
                       >
-                        {item.label}
+                        {t(item.tKey)}
                       </Link>
                       <button
                         type="button"
-                        aria-label={`Toggle ${item.label} submenu`}
-                        onClick={() => toggle(item.label)}
+                        aria-label={tMobile("toggleSubmenu", { label: t(item.tKey) })}
+                        onClick={() => toggle(item.tKey)}
                         className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-[color:var(--text-soft)] transition hover:bg-[color:var(--surface-strong)] hover:text-[color:var(--brand-deep)]"
                       >
                         <svg
                           width="14" height="14" viewBox="0 0 14 14" fill="none"
-                          className={`transition-transform duration-200 ${expanded === item.label ? "rotate-180" : ""}`}
+                          className={`transition-transform duration-200 ${expanded === item.tKey ? "rotate-180" : ""}`}
                         >
                           <path d="M2 5l5 5 5-5" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
@@ -190,16 +193,16 @@ export function MobileNav() {
                     </div>
 
                     {/* Collapsible children */}
-                    {expanded === item.label && (
+                    {expanded === item.tKey && (
                       <div className="mb-1 ml-4 flex flex-col gap-0.5 border-l border-[color:var(--border-strong)] pl-3">
                         {item.children.map((child) => (
                           <Link
-                            key={child.href}
+                            key={child.tKey}
                             href={child.href}
                             onClick={close}
                             className="rounded-lg px-3 py-2.5 text-sm font-medium text-[color:var(--text-soft)] transition hover:bg-[color:var(--surface-strong)] hover:text-[color:var(--brand-deep)]"
                           >
-                            {child.label}
+                            {t(child.tKey)}
                           </Link>
                         ))}
                       </div>
@@ -207,12 +210,12 @@ export function MobileNav() {
                   </div>
                 ) : (
                   <Link
-                    key={item.label}
+                    key={item.tKey}
                     href={item.href}
                     onClick={close}
                     className="rounded-xl px-4 py-3 text-base font-semibold text-[color:var(--text-main)] transition hover:bg-[color:var(--surface-strong)] hover:text-[color:var(--brand-deep)]"
                   >
-                    {item.label}
+                    {t(item.tKey)}
                   </Link>
                 )
               )}
@@ -226,7 +229,7 @@ export function MobileNav() {
               onClick={close}
               className="btn-primary w-full justify-center"
             >
-              Book Appointment
+              {tMobile("bookAppointment")}
             </Link>
           </div>
         </div>

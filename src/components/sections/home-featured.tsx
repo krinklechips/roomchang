@@ -1,40 +1,8 @@
-import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
+import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import { supabaseServer } from "@/lib/supabase-server";
-
-const CARDS = [
-  {
-    id: "international",
-    title: "International Patients",
-    description:
-      "Thousands of patients from Australia, Japan, Singapore, and beyond visit Roomchang each year. We make the journey simple.",
-    imageSrc: "/hero/roomchang-patient-care.jpg",
-    imageAlt: "Roomchang patient care team",
-    href: "/international",
-    cta: "Plan your trip",
-  },
-  {
-    id: "team",
-    title: "Meet Our Team",
-    description:
-      "37 specialist dentists across every discipline — multilingual, experienced, and committed to your comfort.",
-    imageSrc: "/hero/roomchang-team.jpg",
-    imageAlt: "Roomchang dental hospital team",
-    href: "/team",
-    cta: "Meet the doctors",
-  },
-  {
-    id: "aligner",
-    title: "Clear Aligner (CA)",
-    description:
-      "Designed, fabricated, and fitted in-house for a precise, discreet result.",
-    imageSrc: "/hero/roomchang-clear-aligner.jpg",
-    imageAlt: "Roomchang clear aligner treatment",
-    href: "/technology/ca-clear-aligner",
-    cta: "Learn more",
-  },
-];
 
 type HomepageFeatureCardRow = {
   slug: string;
@@ -47,6 +15,39 @@ type HomepageFeatureCardRow = {
 };
 
 export async function HomeFeatured() {
+  const t = await getTranslations("homeHighlights.card");
+
+  // Fallback cards use translation keys; DB cards use their own text
+  const FALLBACK_CARDS = [
+    {
+      id: "international",
+      title: t("international.title"),
+      description: t("international.description"),
+      imageSrc: "/hero/roomchang-patient-care.jpg",
+      imageAlt: t("international.alt"),
+      href: "/international",
+      cta: t("international.cta"),
+    },
+    {
+      id: "team",
+      title: t("team.title"),
+      description: t("team.description"),
+      imageSrc: "/hero/roomchang-team.jpg",
+      imageAlt: t("team.alt"),
+      href: "/team",
+      cta: t("team.cta"),
+    },
+    {
+      id: "aligner",
+      title: t("aligner.title"),
+      description: t("aligner.description"),
+      imageSrc: "/hero/roomchang-clear-aligner.jpg",
+      imageAlt: t("aligner.alt"),
+      href: "/technology/ca-clear-aligner",
+      cta: t("aligner.cta"),
+    },
+  ];
+
   const { data, error } = await supabaseServer
     .from("homepage_feature_cards")
     .select("slug, title, description, image_src, image_alt, href, cta")
@@ -66,7 +67,7 @@ export async function HomeFeatured() {
         href: card.href,
         cta: card.cta,
       }))
-    : CARDS;
+    : FALLBACK_CARDS;
 
   return (
     <section className="border-t border-[color:var(--border-strong)] bg-[color:var(--surface)]">
@@ -77,9 +78,6 @@ export async function HomeFeatured() {
               key={card.id}
               className="group flex flex-col overflow-hidden rounded-3xl border border-[color:var(--border-strong)] bg-white shadow-[0_16px_50px_rgba(57,28,45,0.07)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_60px_rgba(57,28,45,0.12)]"
             >
-              {/* aspect-[19/8] matches the native 2.375:1 aspect of all three
-                  source photos, so object-cover yields no letterboxing and no
-                  meaningful crop. */}
               <div className="relative aspect-[19/8] overflow-hidden bg-white">
                 <Image
                   src={card.imageSrc}
