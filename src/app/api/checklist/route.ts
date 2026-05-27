@@ -176,8 +176,10 @@ export async function POST(request: NextRequest) {
 
     const html = buildHtml(cleanName);
 
+    // TODO: Switch to "Roomchang Dental <noreply@roomchang.com>" once
+    // roomchang.com domain is verified in Resend (resend.com/domains).
     const { error: emailError } = await resend.emails.send({
-      from: "Roomchang Dental <noreply@roomchang.com>",
+      from: "Roomchang Dental <onboarding@resend.dev>",
       to: [cleanEmail],
       subject: `Your Treatment Checklist — Roomchang Dental Hospital`,
       html,

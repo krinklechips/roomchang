@@ -165,8 +165,10 @@ export async function POST(request: NextRequest) {
 
     const resend = getResend();
     if (resend) {
+      // TODO: Switch to "Roomchang Website <noreply@roomchang.com>" once
+      // roomchang.com domain is verified in Resend (resend.com/domains).
       const { error: emailError } = await resend.emails.send({
-        from: "Roomchang Website <noreply@roomchang.com>",
+        from: "Roomchang Website <onboarding@resend.dev>",
         to: [toEmail],
         replyTo: cleanEmail || undefined,
         subject: `New Enquiry — ${cleanName}${cleanTreat ? ` (${cleanTreat})` : ""}`,
