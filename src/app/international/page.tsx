@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 const HERO_TRUST = [
-  { value: "40–70%", label: "Savings" },
+  { value: "35–60%", label: "Savings" },
   { value: "30 yrs", label: "Experience" },
 ];
 
