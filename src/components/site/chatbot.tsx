@@ -2,10 +2,13 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import {
+  CalendarDots,
   ChatCircleDots,
   PaperPlaneTilt,
   X,
   SpinnerGap,
+  CaretLeft,
+  CaretRight,
 } from "@phosphor-icons/react";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -44,7 +47,48 @@ function extractBooking(text: string): BookingData | null {
 function stripBookingBlock(text: string): string {
   return text
     .replace(/<<<BOOKING_DATA>>>[\s\S]*?<<<END_BOOKING>>>/, "")
+    .replace(/<<<SHOW_DATE_PICKER>>>/g, "")
     .trim();
+}
+
+function hasDatePickerMarker(text: string): boolean {
+  return text.includes("<<<SHOW_DATE_PICKER>>>");
+}
+
+// ─── Date helpers ───────────────────────────────────────────────────────────
+
+const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const MONTH_NAMES = [
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+];
+const FULL_MONTH_NAMES = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December",
+];
+
+function getAvailableDates(count: number): Date[] {
+  const dates: Date[] = [];
+  const today = new Date();
+  // Start from tomorrow
+  const cursor = new Date(today);
+  cursor.setDate(cursor.getDate() + 1);
+  cursor.setHours(0, 0, 0, 0);
+
+  while (dates.length < count) {
+    // Skip Sundays (day 0) — Roomchang is Mon–Sat
+    if (cursor.getDay() !== 0) {
+      dates.push(new Date(cursor));
+    }
+    cursor.setDate(cursor.getDate() + 1);
+  }
+  return dates;
+}
+
+function formatDateForMessage(date: Date): string {
+  const day = DAY_NAMES[date.getDay()];
+  const month = MONTH_NAMES[date.getMonth()];
+  return `${day}, ${month} ${date.getDate()}, ${date.getFullYear()}`;
 }
 
 function uid() {
@@ -130,6 +174,103 @@ function BookingCard({
   );
 }
 
+// ─── Date picker ────────────────────────────────────────────────────────────
+
+function DatePicker({ onSelect }: { onSelect: (date: string) => void }) {
+  const [weekOffset, setWeekOffset] = useState(0);
+  const allDates = getAvailableDates(24); // ~4 weeks of Mon–Sat dates
+
+  // Group into weeks (Mon–Sat rows)
+  const weeks: Date[][] = [];
+  let currentWeek: Date[] = [];
+  for (const d of allDates) {
+    if (currentWeek.length > 0 && d.getDay() === 1) {
+      weeks.push(currentWeek);
+      currentWeek = [];
+    }
+    currentWeek.push(d);
+  }
+  if (currentWeek.length > 0) weeks.push(currentWeek);
+
+  const visibleWeek = weeks[weekOffset] ?? [];
+  const canPrev = weekOffset > 0;
+  const canNext = weekOffset < weeks.length - 1;
+
+  // Header label: "June 2026"
+  const headerDate = visibleWeek[0];
+  const headerLabel = headerDate
+    ? `${FULL_MONTH_NAMES[headerDate.getMonth()]} ${headerDate.getFullYear()}`
+    : "";
+
+  return (
+    <div className="mx-3 mb-3 rounded-xl border border-[color:var(--brand-soft)] bg-white p-3">
+      <div className="mb-2 flex items-center justify-between">
+        <div className="flex items-center gap-1.5 text-[color:var(--brand)]">
+          <CalendarDots size={14} weight="fill" />
+          <span className="text-xs font-bold uppercase tracking-widest">
+            Pick a date
+          </span>
+        </div>
+        <span className="text-[11px] font-semibold text-[color:var(--text-soft)]">
+          {headerLabel}
+        </span>
+      </div>
+
+      {/* Day labels */}
+      <div className="mb-1 grid grid-cols-6 gap-1 text-center">
+        {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d) => (
+          <span key={d} className="text-[10px] font-semibold text-[color:var(--text-soft)]">
+            {d}
+          </span>
+        ))}
+      </div>
+
+      {/* Date buttons */}
+      <div className="grid grid-cols-6 gap-1">
+        {visibleWeek.map((date) => {
+          const dayCol = date.getDay() - 1; // Mon=0, Tue=1, ... Sat=5
+          return (
+            <button
+              key={date.toISOString()}
+              type="button"
+              onClick={() => onSelect(formatDateForMessage(date))}
+              style={{ gridColumn: dayCol + 1 }}
+              className="flex flex-col items-center rounded-lg border border-[color:var(--border-strong)] bg-[color:var(--surface)] px-1 py-1.5 text-center transition hover:border-[color:var(--brand-light)] hover:bg-[color:var(--brand-soft)] active:scale-95"
+            >
+              <span className="text-sm font-bold text-[color:var(--text-main)]">
+                {date.getDate()}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Week navigation */}
+      <div className="mt-2 flex items-center justify-between">
+        <button
+          type="button"
+          onClick={() => setWeekOffset((w) => w - 1)}
+          disabled={!canPrev}
+          className="flex items-center gap-0.5 text-[11px] font-semibold text-[color:var(--brand)] disabled:opacity-30"
+        >
+          <CaretLeft size={12} weight="bold" /> Previous
+        </button>
+        <span className="text-[10px] text-[color:var(--text-soft)]">
+          Mon – Sat • 8:00–17:30
+        </span>
+        <button
+          type="button"
+          onClick={() => setWeekOffset((w) => w + 1)}
+          disabled={!canNext}
+          className="flex items-center gap-0.5 text-[11px] font-semibold text-[color:var(--brand)] disabled:opacity-30"
+        >
+          Next <CaretRight size={12} weight="bold" />
+        </button>
+      </div>
+    </div>
+  );
+}
+
 // ─── FAQ quick-reply suggestions ────────────────────────────────────────────
 
 const FAQ_SUGGESTIONS = [
@@ -182,6 +323,7 @@ export function Chatbot() {
     "success" | "error" | null
   >(null);
   const [showSuggestions, setShowSuggestions] = useState(true);
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -197,7 +339,7 @@ export function Chatbot() {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages, isStreaming, scrollToBottom]);
+  }, [messages, isStreaming, showDatePicker, scrollToBottom]);
 
   // Focus input when opened
   useEffect(() => {
@@ -222,6 +364,11 @@ export function Chatbot() {
     setTimeout(() => {
       sendMessage(text);
     }, 0);
+  }
+
+  function handleDateSelect(dateStr: string) {
+    setShowDatePicker(false);
+    sendMessage(dateStr);
   }
 
   async function handleSend(e: React.FormEvent) {
@@ -302,6 +449,11 @@ export function Chatbot() {
       const booking = extractBooking(fullContent);
       if (booking) {
         setPendingBooking(booking);
+      }
+
+      // Check for date picker trigger
+      if (hasDatePickerMarker(fullContent)) {
+        setShowDatePicker(true);
       }
     } catch (err) {
       console.error("[chatbot] Error:", err);
@@ -431,6 +583,11 @@ export function Chatbot() {
               <SuggestionChips onSelect={handleSuggestionClick} />
             )}
           </div>
+
+          {/* Date picker — appears when AI asks for preferred date */}
+          {showDatePicker && !isStreaming && (
+            <DatePicker onSelect={handleDateSelect} />
+          )}
 
           {/* Booking confirmation */}
           {pendingBooking && (
