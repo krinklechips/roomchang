@@ -586,7 +586,8 @@
       "heading": "治疗价格",
       "body": "我们坚持清晰、公开的定价——没有隐藏费用。以下所有价格均以美元计，反映实际治疗费用。您的确切报价将在咨询和X光评估后确认。",
       "ctaPrimary": "获取个性化报价",
-      "ctaSecondary": "国际患者"
+      "ctaSecondary": "国际患者",
+      "consultationNote": "*视病例复杂程度而定。部分病例可能收取咨询费。"
     },
     "itemCount": "{count}项治疗",
     "ausAvg": "澳洲均价：",

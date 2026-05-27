@@ -586,7 +586,8 @@
       "heading": "Treatment Prices",
       "body": "We believe in clear, upfront pricing — no hidden fees. All prices below are in USD and reflect actual treatment costs. Your exact quote will be confirmed after consultation and X-rays.",
       "ctaPrimary": "Get a Personalised Quote",
-      "ctaSecondary": "International Patients"
+      "ctaSecondary": "International Patients",
+      "consultationNote": "*Subject to case complexity. Some cases may incur a consultation fee."
     },
     "itemCount": "{count, plural, one {# treatment} other {# treatments}}",
     "ausAvg": "AU avg:",

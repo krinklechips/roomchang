@@ -5,6 +5,7 @@ import {
   CalendarDots,
   ChatCircleDots,
   PaperPlaneTilt,
+  Tooth,
   X,
   SpinnerGap,
   CaretLeft,
@@ -87,27 +88,30 @@ function renderMarkdown(
 
     if (isList) {
       return (
-        <ul key={bi} className="my-1.5 ml-4 list-disc space-y-0.5">
+        <ul key={bi} className="my-1.5 space-y-1">
           {lines.map((line, li) => {
             const itemText = line.replace(/^\s*[-*]\s+/, "");
             // Strip bold markers for the click text
             const plainText = itemText.replace(/\*\*/g, "");
 
             return (
-              <li key={li} className="text-sm leading-relaxed">
-                {onItemClick ? (
-                  <button
-                    type="button"
-                    onClick={() =>
-                      onItemClick(`Tell me more about ${plainText}`)
-                    }
-                    className="text-left underline decoration-[color:var(--brand-light)] decoration-1 underline-offset-2 transition hover:text-[color:var(--brand)] hover:decoration-2"
-                  >
-                    {renderInline(itemText)}
-                  </button>
-                ) : (
-                  renderInline(itemText)
-                )}
+              <li key={li} className="flex items-start gap-2 text-sm leading-relaxed">
+                <Tooth size={12} weight="fill" className="mt-[5px] shrink-0 text-[color:var(--brand-light)]" aria-hidden="true" />
+                <span className="min-w-0">
+                  {onItemClick ? (
+                    <button
+                      type="button"
+                      onClick={() =>
+                        onItemClick(`Tell me more about ${plainText}`)
+                      }
+                      className="text-left underline decoration-[color:var(--brand-light)] decoration-1 underline-offset-2 transition hover:text-[color:var(--brand)] hover:decoration-2"
+                    >
+                      {renderInline(itemText)}
+                    </button>
+                  ) : (
+                    renderInline(itemText)
+                  )}
+                </span>
               </li>
             );
           })}
@@ -130,23 +134,48 @@ function renderInline(text: string): ReactNode {
   let key = 0;
 
   while (remaining.length > 0) {
+    // Match either **bold** or [link text](url)
     const boldMatch = remaining.match(/\*\*(.+?)\*\*/);
-    if (!boldMatch || boldMatch.index === undefined) {
+    const linkMatch = remaining.match(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/);
+
+    // Pick whichever comes first
+    const boldIdx = boldMatch?.index ?? Infinity;
+    const linkIdx = linkMatch?.index ?? Infinity;
+
+    if (boldIdx === Infinity && linkIdx === Infinity) {
       parts.push(remaining);
       break;
     }
 
-    if (boldMatch.index > 0) {
-      parts.push(remaining.slice(0, boldMatch.index));
+    if (linkIdx < boldIdx && linkMatch && linkMatch.index !== undefined) {
+      // Link comes first
+      if (linkMatch.index > 0) {
+        parts.push(remaining.slice(0, linkMatch.index));
+      }
+      parts.push(
+        <a
+          key={key++}
+          href={linkMatch[2]}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-semibold text-[color:var(--brand)] underline decoration-1 underline-offset-2 transition hover:text-[color:var(--brand-deep)]"
+        >
+          {linkMatch[1]}
+        </a>,
+      );
+      remaining = remaining.slice(linkMatch.index + linkMatch[0].length);
+    } else if (boldMatch && boldMatch.index !== undefined) {
+      // Bold comes first
+      if (boldMatch.index > 0) {
+        parts.push(remaining.slice(0, boldMatch.index));
+      }
+      parts.push(
+        <strong key={key++} className="font-semibold">
+          {boldMatch[1]}
+        </strong>,
+      );
+      remaining = remaining.slice(boldMatch.index + boldMatch[0].length);
     }
-
-    parts.push(
-      <strong key={key++} className="font-semibold">
-        {boldMatch[1]}
-      </strong>,
-    );
-
-    remaining = remaining.slice(boldMatch.index + boldMatch[0].length);
   }
 
   return parts.length === 1 ? parts[0] : <>{parts}</>;

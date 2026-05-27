@@ -117,13 +117,19 @@ export default async function PricingPage() {
             </div>
           </div>
           <div className="hidden lg:flex lg:justify-end">
-            <div className="grid grid-cols-2 gap-4">
-              {HERO_TRUST.map((item) => (
-                <div key={item.label} className="rounded-2xl border border-[color:var(--brand-soft)] bg-white px-8 py-7 shadow-[0_8px_24px_rgba(57,28,45,0.06)]">
-                  <p className="font-display text-4xl text-[color:var(--brand-deep)]">{item.value}</p>
-                  <p className="mt-1 text-sm font-semibold uppercase tracking-[0.18em] text-[color:var(--text-soft)]">{item.label}</p>
-                </div>
-              ))}
+            <div className="flex flex-col gap-4">
+              <div className="grid grid-cols-2 gap-4">
+                {HERO_TRUST.map((item) => (
+                  <div key={item.label} className="rounded-2xl border border-[color:var(--brand-soft)] bg-white px-8 py-7 shadow-[0_8px_24px_rgba(57,28,45,0.06)]">
+                    <p className="font-display text-4xl text-[color:var(--brand-deep)]">{item.value}</p>
+                    <p className="mt-1 text-sm font-semibold uppercase tracking-[0.18em] text-[color:var(--text-soft)]">{item.label}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="rounded-2xl border border-[color:var(--brand-soft)] bg-white px-8 py-5 shadow-[0_8px_24px_rgba(57,28,45,0.06)]">
+                <p className="font-display text-xl text-[color:var(--brand-deep)]">{t("consultationHeading")}</p>
+                <p className="mt-1 text-xs leading-relaxed text-[color:var(--text-soft)]">{t("hero.consultationNote")}</p>
+              </div>
             </div>
           </div>
         </div>
