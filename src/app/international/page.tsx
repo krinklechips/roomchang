@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { SiteShell } from "@/components/site/site-shell";
 import { getInternationalSteps, getInternationalWhyItems, getInternationalPopularTreatments } from "@/lib/data";
 import type { Metadata } from "next";
@@ -12,11 +13,27 @@ export const metadata: Metadata = {
 };
 
 const HERO_TRUST = [
-  { value: "20+",    label: "Countries" },
   { value: "40–70%", label: "Savings" },
-  { value: "6",      label: "Languages" },
   { value: "30 yrs", label: "Experience" },
 ];
+
+function renderDescription(text: string) {
+  const keyword = "our testimonials";
+  const idx = text.indexOf(keyword);
+  if (idx === -1) return text;
+  return (
+    <>
+      {text.slice(0, idx)}
+      <Link
+        href="/about/testimonials"
+        className="font-semibold text-[color:var(--brand-deep)] underline underline-offset-2 transition hover:text-[color:var(--brand)]"
+      >
+        {keyword}
+      </Link>
+      {text.slice(idx + keyword.length)}
+    </>
+  );
+}
 
 export default async function InternationalPage() {
   const [steps, whyItems, popularTreatments] = await Promise.all([
@@ -64,6 +81,20 @@ export default async function InternationalPage() {
         </div>
       </div>
 
+      {/* Hero image */}
+      <div className="border-b border-[color:var(--border-strong)]">
+        <div className="relative aspect-[900/370] overflow-hidden sm:aspect-[21/8]">
+          <Image
+            src="/international/Customer-Service-with-A-Smile-900x370.jpg"
+            alt="Roomchang dental team welcoming an international patient"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+          />
+        </div>
+      </div>
+
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8 space-y-20">
 
         {/* Why Roomchang */}
@@ -80,7 +111,7 @@ export default async function InternationalPage() {
                 className="rounded-2xl border border-[color:var(--border-strong)] bg-white p-6 shadow-[0_12px_40px_rgba(57,28,45,0.05)]"
               >
                 <h3 className="font-display text-xl text-[color:var(--brand-deep)]">{item.title}</h3>
-                <p className="mt-3 text-sm leading-6 text-[color:var(--text-soft)]">{item.description}</p>
+                <p className="mt-3 text-sm leading-6 text-[color:var(--text-soft)]">{renderDescription(item.description)}</p>
               </div>
             ))}
           </div>
