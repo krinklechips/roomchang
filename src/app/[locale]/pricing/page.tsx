@@ -196,11 +196,6 @@ export default async function PricingPage() {
                       <li key={i} className="flex items-start justify-between gap-4 px-5 py-3.5 sm:px-6 sm:pl-20">
                         <div className="min-w-0">
                           <span className="block text-sm text-[color:var(--text-main)]">{item.name}</span>
-                          {item.aus && (
-                            <span className="mt-0.5 block text-[0.68rem] text-[color:var(--text-soft)]/60">
-                              {t("ausAvg")} ${item.aus}
-                            </span>
-                          )}
                         </div>
                         <span className="shrink-0 text-sm font-bold text-[color:var(--brand-deep)]">
                           {item.price.toLowerCase() === "free" ? t("free") : `$${item.price}`}
@@ -212,13 +207,21 @@ export default async function PricingPage() {
               );
             })}
           </div>
-          <div className="mt-6 rounded-2xl border border-[color:var(--brand-soft)] bg-[color:var(--surface)] px-6 py-4 space-y-2">
-            <p className="text-sm font-semibold text-[color:var(--text-main)]">
-              {t("consultationHeading")}
-            </p>
-            <p className="text-xs leading-relaxed text-[color:var(--text-soft)]">
-              {t("consultationDisclaimer")}
-            </p>
+          <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between rounded-2xl border border-[color:var(--brand-soft)] bg-[color:var(--surface)] px-6 py-4">
+            <div className="space-y-1">
+              <p className="text-sm font-semibold text-[color:var(--text-main)]">
+                {t("consultationHeading")}
+              </p>
+              <p className="text-xs leading-relaxed text-[color:var(--text-soft)]">
+                {t("consultationDisclaimer")}
+              </p>
+            </div>
+            <Link
+              href="/pricing/price-comparison"
+              className="shrink-0 text-sm font-semibold text-[color:var(--brand)] transition hover:text-[color:var(--brand-deep)]"
+            >
+              {t("compareLink")} →
+            </Link>
           </div>
         </section>
 
