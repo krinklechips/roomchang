@@ -471,7 +471,8 @@
       "branch": "首选分院",
       "doctor": "首选医生",
       "date": "首选就诊日期",
-      "message": "留言"
+      "message": "留言",
+      "wechat": "微信号"
     },
     "placeholder": {
       "name": "您的姓名",
@@ -480,7 +481,8 @@
       "treatment": "选择治疗项目（可选）",
       "branch": "任何分院（可选）",
       "doctor": "任何医生（可选）",
-      "message": "请告诉我们您的牙齿问题或期望达到的效果..."
+      "message": "请告诉我们您的牙齿问题或期望达到的效果...",
+      "wechat": "您的微信号（可选）"
     },
     "button": {
       "sending": "发送中…",

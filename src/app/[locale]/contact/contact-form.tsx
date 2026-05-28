@@ -44,6 +44,7 @@ export function ContactForm({ branches }: { branches: Branch[] }) {
       email:     (form.elements.namedItem("email")   as HTMLInputElement).value,
       phone:     (form.elements.namedItem("phone")   as HTMLInputElement).value,
       country:   (form.elements.namedItem("country") as HTMLInputElement).value,
+      wechat:    (form.elements.namedItem("wechat")  as HTMLInputElement).value,
       treatment: (form.elements.namedItem("service") as HTMLSelectElement).value,
       branch:    (form.elements.namedItem("branch")  as HTMLSelectElement).value,
       doctor:    (form.elements.namedItem("doctor")  as HTMLInputElement).value,
@@ -124,12 +125,13 @@ export function ContactForm({ branches }: { branches: Branch[] }) {
               <div className="grid gap-6 sm:grid-cols-2">
                 <div className="space-y-2">
                   <label htmlFor="phone" className="block text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
-                    {t("label.phone")}
+                    {t("label.phone")} <span className="text-[color:var(--brand)]">*</span>
                   </label>
                   <input
                     id="phone"
                     name="phone"
                     type="tel"
+                    required
                     autoComplete="tel"
                     className="w-full rounded-xl border border-[color:var(--border-strong)] bg-white px-4 py-3 text-sm text-[color:var(--text-main)] placeholder-[color:var(--text-soft)]/50 outline-none transition focus:border-[color:var(--brand)] focus:ring-2 focus:ring-[color:var(--brand)]/20"
                     placeholder="+855 ..."
@@ -148,6 +150,19 @@ export function ContactForm({ branches }: { branches: Branch[] }) {
                     placeholder={t("placeholder.country")}
                   />
                 </div>
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="wechat" className="block text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
+                  {t("label.wechat")}
+                </label>
+                <input
+                  id="wechat"
+                  name="wechat"
+                  type="text"
+                  className="w-full rounded-xl border border-[color:var(--border-strong)] bg-white px-4 py-3 text-sm text-[color:var(--text-main)] placeholder-[color:var(--text-soft)]/50 outline-none transition focus:border-[color:var(--brand)] focus:ring-2 focus:ring-[color:var(--brand)]/20"
+                  placeholder={t("placeholder.wechat")}
+                />
               </div>
 
               <div className="grid gap-6 sm:grid-cols-2">

@@ -471,7 +471,8 @@
       "branch": "Preferred Branch",
       "doctor": "Preferred Doctor",
       "date": "Preferred Appointment Date",
-      "message": "Message"
+      "message": "Message",
+      "wechat": "WeChat ID"
     },
     "placeholder": {
       "name": "Your name",
@@ -480,7 +481,8 @@
       "treatment": "Select a treatment (optional)",
       "branch": "Any branch (optional)",
       "doctor": "Any doctor (optional)",
-      "message": "Tell us about your dental concerns or what you're hoping to achieve..."
+      "message": "Tell us about your dental concerns or what you're hoping to achieve...",
+      "wechat": "Your WeChat ID (optional)"
     },
     "button": {
       "sending": "Sending…",
