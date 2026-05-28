@@ -749,6 +749,9 @@ function SuggestionBar({
 
 // ─── Main chatbot ────────────────────────────────────────────────────────────
 
+const STORAGE_KEY = "rc-chatbot-session";
+const SESSION_TTL_MS = 30 * 60 * 1000; // 30 minutes
+
 const GREETING: Message = {
   id: "greeting",
   role: "assistant",
@@ -756,9 +759,36 @@ const GREETING: Message = {
     "Hi! I'm Roomchang's virtual assistant. I can help you with treatment information, pricing, or booking an appointment. How can I help you today?",
 };
 
+/** Save messages to localStorage with a timestamp */
+function persistMessages(msgs: Message[]) {
+  try {
+    const payload = JSON.stringify({ ts: Date.now(), messages: msgs });
+    localStorage.setItem(STORAGE_KEY, payload);
+  } catch { /* quota exceeded — degrade silently */ }
+}
+
+/** Load messages from localStorage if the session is still fresh */
+function loadPersistedMessages(): Message[] | null {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const { ts, messages } = JSON.parse(raw) as { ts: number; messages: Message[] };
+    if (Date.now() - ts > SESSION_TTL_MS) {
+      localStorage.removeItem(STORAGE_KEY);
+      return null;
+    }
+    return messages;
+  } catch {
+    return null;
+  }
+}
+
 export function Chatbot() {
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([GREETING]);
+  const [messages, setMessages] = useState<Message[]>(() => {
+    // Will be re-hydrated in useEffect to avoid SSR mismatch
+    return [GREETING];
+  });
   const [input, setInput] = useState("");
   const [isStreaming, setIsStreaming] = useState(false);
   const [pendingBooking, setPendingBooking] = useState<BookingData | null>(
@@ -771,9 +801,43 @@ export function Chatbot() {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [hydrated, setHydrated] = useState(false);
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // ─── Session persistence ──────────────────────────────────────────────────
+
+  // Hydrate from localStorage on mount (client-only)
+  useEffect(() => {
+    const saved = loadPersistedMessages();
+    if (saved && saved.length > 0) {
+      setMessages(saved);
+    }
+    setHydrated(true);
+  }, []);
+
+  // Persist messages on every change (after hydration)
+  useEffect(() => {
+    if (hydrated) {
+      persistMessages(messages);
+    }
+  }, [messages, hydrated]);
+
+  // Sync across tabs via storage event
+  useEffect(() => {
+    function onStorage(e: StorageEvent) {
+      if (e.key !== STORAGE_KEY || !e.newValue) return;
+      try {
+        const { messages: synced } = JSON.parse(e.newValue) as { ts: number; messages: Message[] };
+        if (synced && synced.length > 0) {
+          setMessages(synced);
+        }
+      } catch { /* ignore parse errors */ }
+    }
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, []);
 
   // Auto-scroll to bottom
   const scrollToBottom = useCallback(() => {
@@ -989,7 +1053,7 @@ export function Chatbot() {
     <>
       {/* Chat panel */}
       {open && (
-        <div className="fixed inset-x-2 bottom-20 top-20 z-[60] flex flex-col overflow-hidden rounded-3xl border border-[color:var(--border-strong)] bg-white shadow-[0_20px_60px_rgba(36,20,31,0.18)] sm:inset-auto sm:bottom-24 sm:right-[5.5rem] sm:h-[560px] sm:w-[400px] animate-[fadeSlideUp_0.2s_ease-out]">
+        <div className="fixed inset-x-0 bottom-0 top-[30vh] z-[60] flex flex-col overflow-hidden rounded-t-3xl border-t border-x border-[color:var(--border-strong)] bg-white shadow-[0_-10px_40px_rgba(36,20,31,0.18)] sm:inset-auto sm:bottom-24 sm:right-[5.5rem] sm:h-[560px] sm:w-[400px] sm:rounded-3xl sm:border sm:shadow-[0_20px_60px_rgba(36,20,31,0.18)] animate-[fadeSlideUp_0.2s_ease-out]">
           {/* Header */}
           <div className="flex shrink-0 items-center justify-between bg-[color:var(--brand)] px-5 py-4">
             <div>
