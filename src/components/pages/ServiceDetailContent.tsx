@@ -94,7 +94,7 @@ function Callout({ s }: { s: Extract<ServiceSection, { type: "callout" }> }) {
 function TextBlock({ s }: { s: Extract<ServiceSection, { type: "text" }> }) {
   const inner = (
     <>
-      <h2 className="font-display text-2xl text-[color:var(--text-main)]">{s.heading}</h2>
+      <h2 className="font-display text-3xl text-[color:var(--text-main)]">{s.heading}</h2>
       <div className="mt-3 text-sm leading-7 text-[color:var(--text-soft)] space-y-3">
         {String(s.body).split("\n\n").map((para, i) => (
           <p key={i}>{para}</p>
@@ -187,36 +187,25 @@ function Steps({ s }: { s: Extract<ServiceSection, { type: "steps" }> }) {
   );
 }
 
-function PricingTable({
+function PricingCTA({
   s,
-  treatmentLabel,
-  priceLabel,
+  ctaLabel,
+  ctaNote,
 }: {
   s: Extract<ServiceSection, { type: "pricing" }>;
-  treatmentLabel: string;
-  priceLabel: string;
+  ctaLabel: string;
+  ctaNote: string;
 }) {
   return (
-    <div>
-      {s.heading && <h2 className="font-display text-3xl text-[color:var(--text-main)]">{s.heading}</h2>}
-      {s.subheading && <p className="mt-3 text-sm text-[color:var(--text-soft)] mb-8">{s.subheading}</p>}
-      <div className="overflow-hidden rounded-2xl border border-[color:var(--border-strong)]">
-        <table className="w-full text-sm">
-          <thead className="bg-[color:var(--surface)]">
-            <tr>
-              <th className="px-6 py-4 text-left font-semibold text-[color:var(--text-main)]">{treatmentLabel}</th>
-              <th className="px-6 py-4 text-right font-semibold text-[color:var(--text-main)]">{priceLabel}</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-[--border-strong] bg-white">
-            {s.rows.map((row) => (
-              <tr key={row.treatment}>
-                <td className="px-6 py-4 text-[color:var(--text-soft)]">{row.treatment}</td>
-                <td className="px-6 py-4 text-right font-semibold text-[color:var(--text-main)]">{row.price}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+    <div className="rounded-3xl bg-[color:var(--brand-soft)] px-8 py-10 sm:px-10 sm:py-12 text-center">
+      {s.heading && (
+        <h2 className="font-display text-3xl text-[color:var(--text-main)]">{s.heading}</h2>
+      )}
+      <p className="mt-3 text-sm leading-7 text-[color:var(--text-soft)] max-w-lg mx-auto">
+        {ctaNote}
+      </p>
+      <div className="mt-6">
+        <Link href="/pricing" className="btn-primary">{ctaLabel}</Link>
       </div>
     </div>
   );
@@ -224,24 +213,24 @@ function PricingTable({
 
 function RenderSection({
   s,
-  treatmentLabel,
-  priceLabel,
+  pricingCtaLabel,
+  pricingCtaNote,
 }: {
   s: ServiceSection;
-  treatmentLabel: string;
-  priceLabel: string;
+  pricingCtaLabel: string;
+  pricingCtaNote: string;
 }) {
   if (s.type === "callout") return <Callout s={s} />;
   if (s.type === "text") return <TextBlock s={s} />;
   if (s.type === "list") return <BulletList s={s} />;
   if (s.type === "cards") return <Cards s={s} />;
   if (s.type === "steps") return <Steps s={s} />;
-  if (s.type === "pricing") return <PricingTable s={s} treatmentLabel={treatmentLabel} priceLabel={priceLabel} />;
+  if (s.type === "pricing") return <PricingCTA s={s} ctaLabel={pricingCtaLabel} ctaNote={pricingCtaNote} />;
   if (s.type === "twocol") {
     return (
       <div className="grid gap-8 lg:grid-cols-2">
-        <RenderSection s={s.left} treatmentLabel={treatmentLabel} priceLabel={priceLabel} />
-        <RenderSection s={s.right} treatmentLabel={treatmentLabel} priceLabel={priceLabel} />
+        <RenderSection s={s.left} pricingCtaLabel={pricingCtaLabel} pricingCtaNote={pricingCtaNote} />
+        <RenderSection s={s.right} pricingCtaLabel={pricingCtaLabel} pricingCtaNote={pricingCtaNote} />
       </div>
     );
   }
@@ -254,8 +243,8 @@ export async function ServiceDetailContent({ service }: { service: Service }) {
   const t = await getTranslations("services.detail");
   const sections = service.content?.sections ?? [];
   const heroImage = resolveServiceImage(service.imageSrc);
-  const treatmentLabel = t("pricingTreatment");
-  const priceLabel = t("pricingPrice");
+  const pricingCtaLabel = t("pricingCtaLabel");
+  const pricingCtaNote = t("pricingCtaNote");
 
   return (
     <SiteShell>
@@ -298,7 +287,7 @@ export async function ServiceDetailContent({ service }: { service: Service }) {
       {sections.length > 0 && (
         <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8 space-y-16">
           {sections.map((s, i) => (
-            <RenderSection key={i} s={s} treatmentLabel={treatmentLabel} priceLabel={priceLabel} />
+            <RenderSection key={i} s={s} pricingCtaLabel={pricingCtaLabel} pricingCtaNote={pricingCtaNote} />
           ))}
         </div>
       )}

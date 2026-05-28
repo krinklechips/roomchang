@@ -370,8 +370,8 @@
       "bookConsultation": "Book a Consultation",
       "allServices": "All Services",
       "imageAlt": "{name} at Roomchang Dental Hospital",
-      "pricingTreatment": "Treatment",
-      "pricingPrice": "Price (USD)",
+      "pricingCtaLabel": "View Full Pricing",
+      "pricingCtaNote": "All prices in USD and confirmed after consultation. View our complete, transparent price list.",
       "ctaHeading": "Ready to restore your smile?",
       "ctaBody": "Call us on {phone} or send an enquiry and we'll get back to you within one business day.",
       "ctaButton": "Book a Consultation"

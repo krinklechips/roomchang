@@ -370,8 +370,8 @@
       "bookConsultation": "预约咨询",
       "allServices": "所有服务",
       "imageAlt": "Roomchang牙科医院{name}",
-      "pricingTreatment": "诊疗项目",
-      "pricingPrice": "价格（美元）",
+      "pricingCtaLabel": "查看完整价格",
+      "pricingCtaNote": "所有价格均以美元计，经咨询后确认。查看我们完整透明的价格表。",
       "ctaHeading": "准备恢复您的微笑？",
       "ctaBody": "拨打 {phone} 或发送咨询，我们将在一个工作日内回复您。",
       "ctaButton": "预约咨询"
