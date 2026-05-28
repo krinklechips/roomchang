@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { DatePicker } from "@/components/ui/date-picker";
 import { CheckCircle2 } from "lucide-react";
-import type { Branch } from "@/lib/data";
+import type { Branch, Doctor } from "@/lib/data";
 
 const SERVICE_KEYS = [
   "implants",
@@ -22,17 +22,51 @@ const SERVICE_KEYS = [
   "other",
 ] as const;
 
-export function ContactForm({ branches }: { branches: Branch[] }) {
+export function ContactForm({ branches, doctors }: { branches: Branch[]; doctors: Doctor[] }) {
   const t = useTranslations("contactForm");
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const searchParams = useSearchParams();
   const [preferredDoctor, setPreferredDoctor] = useState("");
+  const [doctorQuery, setDoctorQuery] = useState("");
+  const [doctorDropdownOpen, setDoctorDropdownOpen] = useState(false);
+  const doctorInputRef = useRef<HTMLInputElement>(null);
+  const doctorDropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const doc = searchParams.get("doctor");
-    if (doc) setPreferredDoctor(doc);
+    if (doc) {
+      setPreferredDoctor(doc);
+      setDoctorQuery(doc);
+    }
   }, [searchParams]);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (
+        doctorDropdownRef.current &&
+        !doctorDropdownRef.current.contains(e.target as Node) &&
+        doctorInputRef.current &&
+        !doctorInputRef.current.contains(e.target as Node)
+      ) {
+        setDoctorDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const filteredDoctors = useMemo(() => {
+    if (!doctorQuery.trim()) return doctors;
+    const q = doctorQuery.toLowerCase();
+    return doctors.filter(
+      (d) =>
+        d.name.toLowerCase().includes(q) ||
+        d.specialty.some((s) => s.toLowerCase().includes(q)) ||
+        d.department.toLowerCase().includes(q)
+    );
+  }, [doctorQuery, doctors]);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -202,19 +236,64 @@ export function ContactForm({ branches }: { branches: Branch[] }) {
                 </div>
               </div>
 
-              <div className="space-y-2">
+              <div className="relative space-y-2">
                 <label htmlFor="doctor" className="block text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
                   {t("label.doctor")}
                 </label>
+                <input type="hidden" name="doctor" value={preferredDoctor} />
                 <input
+                  ref={doctorInputRef}
                   id="doctor"
-                  name="doctor"
                   type="text"
-                  value={preferredDoctor}
-                  onChange={(e) => setPreferredDoctor(e.target.value)}
+                  autoComplete="off"
+                  value={doctorQuery}
+                  onChange={(e) => {
+                    setDoctorQuery(e.target.value);
+                    setPreferredDoctor(e.target.value);
+                    setDoctorDropdownOpen(true);
+                  }}
+                  onFocus={() => setDoctorDropdownOpen(true)}
                   className="w-full rounded-xl border border-[color:var(--border-strong)] bg-white px-4 py-3 text-sm text-[color:var(--text-main)] placeholder-[color:var(--text-soft)]/50 outline-none transition focus:border-[color:var(--brand)] focus:ring-2 focus:ring-[color:var(--brand)]/20"
                   placeholder={t("placeholder.doctor")}
                 />
+                {doctorDropdownOpen && filteredDoctors.length > 0 && (
+                  <div
+                    ref={doctorDropdownRef}
+                    className="absolute left-0 right-0 top-full z-30 mt-1 max-h-56 overflow-y-auto rounded-2xl border border-[color:var(--border-strong)] bg-white p-1.5 shadow-[0_20px_50px_rgba(61,24,47,0.14)]"
+                  >
+                    {filteredDoctors.map((doc) => (
+                      <button
+                        key={doc.id}
+                        type="button"
+                        onClick={() => {
+                          setPreferredDoctor(doc.name);
+                          setDoctorQuery(doc.name);
+                          setDoctorDropdownOpen(false);
+                        }}
+                        className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm transition-colors hover:bg-[color:var(--brand-soft)]"
+                      >
+                        {doc.photoUrl ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={doc.photoUrl}
+                            alt=""
+                            className="h-8 w-8 shrink-0 rounded-full object-cover"
+                          />
+                        ) : (
+                          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[color:var(--brand-soft)] text-xs font-semibold text-[color:var(--brand-deep)]">
+                            {doc.initials}
+                          </span>
+                        )}
+                        <div className="min-w-0">
+                          <p className="font-medium text-[color:var(--text-main)]">{doc.name}</p>
+                          <p className="truncate text-xs text-[color:var(--text-soft)]">
+                            {doc.specialty.length > 0 ? doc.specialty.join(", ") : doc.department}
+                          </p>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <div className="space-y-2">

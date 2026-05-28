@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { SiteShell } from "@/components/site/site-shell";
-import { getBranches } from "@/lib/data";
+import { getBranches, getDoctors } from "@/lib/data";
 import { ContactForm } from "./contact-form";
 import { Phone, Smartphone, Mail } from "lucide-react";
 import { getTranslations } from "next-intl/server";
@@ -15,8 +15,9 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function ContactPage() {
-  const [branches, t] = await Promise.all([
+  const [branches, doctors, t] = await Promise.all([
     getBranches(),
+    getDoctors(),
     getTranslations("contact"),
   ]);
 
@@ -58,7 +59,7 @@ export default async function ContactPage() {
       </div>
 
       <Suspense fallback={<div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 animate-pulse h-96" />}>
-        <ContactForm branches={branches} />
+        <ContactForm branches={branches} doctors={doctors} />
       </Suspense>
     </SiteShell>
   );
