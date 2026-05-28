@@ -203,15 +203,27 @@ function PricingCTA({
   ctaNote: string;
 }) {
   return (
-    <div className="rounded-3xl bg-[color:var(--brand-soft)] px-8 py-10 sm:px-10 sm:py-12 text-center">
-      {s.heading && (
-        <h2 className="font-display text-3xl text-[color:var(--text-main)]">{s.heading}</h2>
-      )}
-      <p className="mt-3 text-sm leading-7 text-[color:var(--text-soft)] max-w-lg mx-auto">
-        {ctaNote}
-      </p>
-      <div className="mt-6">
-        <Link href="/pricing" className="btn-primary">{ctaLabel}</Link>
+    <div className="rounded-3xl border border-[color:var(--border-strong)] bg-white p-8 shadow-[0_8px_32px_rgba(57,28,45,0.06)] sm:p-10">
+      <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start sm:gap-8">
+        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[color:var(--brand)] text-white shadow-[0_4px_16px_rgba(204,55,113,0.3)]">
+          <CurrencyDollar size={28} weight="duotone" />
+        </div>
+        <div className="flex-1 text-center sm:text-left">
+          {s.heading && (
+            <h2 className="font-display text-2xl text-[color:var(--text-main)]">{s.heading}</h2>
+          )}
+          <p className="mt-2 text-sm leading-7 text-[color:var(--text-soft)]">
+            {ctaNote}
+          </p>
+          <div className="mt-5">
+            <Link
+              href="/pricing"
+              className="inline-flex items-center gap-2 rounded-full bg-[color:var(--brand)] px-6 py-3 text-sm font-bold text-white shadow-[0_4px_16px_rgba(204,55,113,0.3)] transition hover:bg-[color:var(--brand-deep)] hover:shadow-[0_4px_20px_rgba(204,55,113,0.4)]"
+            >
+              {ctaLabel} →
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -802,6 +802,7 @@ export function Chatbot() {
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [hydrated, setHydrated] = useState(false);
+  const [showBubble, setShowBubble] = useState(false);
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -865,6 +866,36 @@ export function Chatbot() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
+
+  // ─── Speech bubble prompt ────────────────────────────────────────────────
+
+  // Show speech bubble after a short delay on first visit
+  useEffect(() => {
+    if (open) return;
+    try {
+      if (sessionStorage.getItem("rc-bubble-seen")) return;
+    } catch { /* SSR / privacy mode */ }
+    const timer = setTimeout(() => {
+      if (!open) setShowBubble(true);
+    }, 4000);
+    return () => clearTimeout(timer);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Auto-dismiss after 10 seconds
+  useEffect(() => {
+    if (!showBubble) return;
+    const timer = setTimeout(() => setShowBubble(false), 10_000);
+    return () => clearTimeout(timer);
+  }, [showBubble]);
+
+  // Hide bubble when chat opens
+  useEffect(() => {
+    if (open && showBubble) {
+      setShowBubble(false);
+      try { sessionStorage.setItem("rc-bubble-seen", "1"); } catch {}
+    }
+  }, [open, showBubble]);
 
   // ─── Send message ─────────────────────────────────────────────────────────
 
@@ -1176,6 +1207,44 @@ export function Chatbot() {
               )}
             </button>
           </form>
+        </div>
+      )}
+
+      {/* Speech bubble prompt */}
+      {showBubble && !open && (
+        <div className="fixed bottom-[5rem] right-[3.5rem] z-[61] animate-fadeSlideUp sm:bottom-[6rem] sm:right-[4.75rem]">
+          <div className="relative max-w-[200px] rounded-2xl bg-white px-4 py-3 shadow-[0_8px_28px_rgba(0,0,0,0.12)] border border-[color:var(--border-strong)]">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowBubble(false);
+                try { sessionStorage.setItem("rc-bubble-seen", "1"); } catch {}
+              }}
+              className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-white border border-gray-200 text-gray-400 hover:text-gray-600 shadow-sm"
+              aria-label="Dismiss"
+            >
+              <X size={10} weight="bold" />
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setShowBubble(false);
+                try { sessionStorage.setItem("rc-bubble-seen", "1"); } catch {}
+                setOpen(true);
+              }}
+              className="text-left"
+            >
+              <p className="text-sm font-medium text-[color:var(--text-main)]">
+                Need help with dental care? 😊
+              </p>
+              <p className="mt-0.5 text-xs text-[color:var(--brand)]">
+                Chat with us →
+              </p>
+            </button>
+            {/* Arrow pointing down to chat button */}
+            <div className="absolute -bottom-[7px] right-5 h-0 w-0 border-l-[7px] border-r-[7px] border-t-[7px] border-l-transparent border-r-transparent border-t-white" />
+          </div>
         </div>
       )}
 
