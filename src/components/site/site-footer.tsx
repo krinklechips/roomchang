@@ -39,7 +39,7 @@ const FOOTER_STRUCTURE: FooterColumn[] = [
       { tKey: "comingToCambodia", href: "/international" },
       { tKey: "howItWorks", href: "/international#how-it-works" },
       { tKey: "treatmentCosts", href: "/pricing" },
-      { tKey: "priceComparison", href: "/pricing/price-comparison" },
+      { tKey: "implantsComparison", href: "/pricing/implants-comparison" },
       { tKey: "clinicalResults", href: "/clinical-results" },
     ],
   },

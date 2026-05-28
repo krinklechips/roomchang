@@ -599,6 +599,17 @@
       "heading": "获取您的精确报价",
       "body": "发送您的X光片或照片，我们将在两个工作日内提供详细的治疗方案和精确报价——完全免费。",
       "button": "申请免费报价"
+    },
+    "comparison": {
+      "heading": "Roomchang vs. 澳大利亚",
+      "subheading": "以下所有治疗均按照澳大利亚牙科协会 (ADA) 标准。相同的国际品质材料和方案，费用仅为一小部分。",
+      "exchangeRateLabel": "使用汇率：",
+      "colAda": "ADA",
+      "colTreatment": "治疗项目",
+      "colRoomchang": "Roomchang（美元）",
+      "colAustralia": "澳大利亚（澳元）",
+      "seeImplants": "查看种植牙价格对比",
+      "sourcePrefix": "* "
     }
   },
   "clinicalResults": {
