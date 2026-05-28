@@ -153,7 +153,13 @@ function Cards({ s }: { s: Extract<ServiceSection, { type: "cards" }> }) {
                 {item.badge}
               </span>
             )}
-            <h3 className="font-display text-xl text-[color:var(--text-main)]">{item.title}</h3>
+            <h3 className="font-display text-xl text-[color:var(--text-main)]">
+              {item.link ? (
+                <Link href={item.link} className="underline decoration-[color:var(--brand-soft)] underline-offset-2 hover:decoration-[color:var(--brand)] transition-colors">
+                  {item.title}
+                </Link>
+              ) : item.title}
+            </h3>
             {item.spec && (
               <p className="mt-1 text-xs font-semibold text-[color:var(--brand)]">{item.spec}</p>
             )}

@@ -54,7 +54,7 @@ export type ServiceSection =
   | { type: "callout"; icon?: string; title: string; body: string; stats?: { value: string; label: string }[] }
   | { type: "text"; heading: string; body: string; card?: boolean }
   | { type: "list"; heading?: string; items: string[] }
-  | { type: "cards"; heading: string; subheading?: string; numbered?: boolean; columns?: number; items: { title: string; body: string; tag?: string; icon?: string; badge?: string; spec?: string }[] }
+  | { type: "cards"; heading: string; subheading?: string; numbered?: boolean; columns?: number; items: { title: string; body: string; tag?: string; icon?: string; badge?: string; spec?: string; link?: string }[] }
   | { type: "steps"; heading: string; subheading?: string; items: { step: string; detail: string }[] }
   | { type: "pricing"; heading?: string; subheading?: string; rows: { treatment: string; price: string }[] }
   | { type: "twocol"; left: ServiceSection; right: ServiceSection };
