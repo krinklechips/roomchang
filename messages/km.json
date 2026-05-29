@@ -640,6 +640,10 @@
       "orthodontics": "តម្រង់ធ្មេញ",
       "cosmeticEmax": "សម្រស់ និង E-Max"
     },
+    "tag": {
+      "beforeAfter": "មុន និងក្រោយ",
+      "cosmetic": "សម្រស់"
+    },
     "altPattern": "មុន និងក្រោយ — {title}",
     "duration": "រយៈពេល:",
     "viewCase": "មើលករណី",

@@ -640,6 +640,10 @@
       "orthodontics": "Orthodontics",
       "cosmeticEmax": "Cosmetic & E-Max"
     },
+    "tag": {
+      "beforeAfter": "Before & After",
+      "cosmetic": "Cosmetic"
+    },
     "altPattern": "Before and after — {title}",
     "duration": "Duration:",
     "viewCase": "View case",

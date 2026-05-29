@@ -640,6 +640,10 @@
       "orthodontics": "正畸",
       "cosmeticEmax": "美容与E-Max全瓷"
     },
+    "tag": {
+      "beforeAfter": "治疗前后",
+      "cosmetic": "美容修复"
+    },
     "altPattern": "治疗前后对比——{title}",
     "duration": "疗程：",
     "viewCase": "查看案例",

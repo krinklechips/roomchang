@@ -23,6 +23,20 @@ const HASH_TO_CATEGORY: Record<string, string> = {
   cosmetic:     "Cosmetic & E-Max",
 };
 
+/** Map DB category/tag values → i18n keys */
+const CAT_I18N: Record<string, string> = {
+  "Full Mouth":       "cat.fullMouth",
+  "Implants & Crowns":"cat.implantsCrowns",
+  "Implant Bridges":  "cat.implantBridges",
+  "Orthodontics":     "cat.orthodontics",
+  "Cosmetic & E-Max": "cat.cosmeticEmax",
+};
+
+const TAG_I18N: Record<string, string> = {
+  "Before & After": "tag.beforeAfter",
+  "Cosmetic":       "tag.cosmetic",
+};
+
 export function ClinicalResultsGrid({ cases }: { cases: ClinicalCase[] }) {
   const t = useTranslations("clinicalResultsGrid");
   const rawCategories = Array.from(new Set(cases.map((c) => c.category)));
@@ -63,7 +77,7 @@ export function ClinicalResultsGrid({ cases }: { cases: ClinicalCase[] }) {
                   : "border-[color:var(--border-strong)] bg-white text-[color:var(--text-soft)] hover:border-[color:var(--brand)] hover:text-[color:var(--brand-deep)]"
               }`}
             >
-              {cat === "All" ? t("filterAll") : cat}
+              {cat === "All" ? t("filterAll") : CAT_I18N[cat] ? t(CAT_I18N[cat]) : cat}
             </button>
           );
         })}
@@ -88,7 +102,7 @@ export function ClinicalResultsGrid({ cases }: { cases: ClinicalCase[] }) {
                 />
               )}
               <span className="absolute right-3 top-3 z-10 rounded-full bg-[color:var(--brand-soft)] px-2.5 py-1 text-[0.65rem] font-bold uppercase tracking-[0.18em] text-[color:var(--brand-deep)]">
-                {c.tag}
+                {TAG_I18N[c.tag] ? t(TAG_I18N[c.tag]) : c.tag}
               </span>
             </div>
 
