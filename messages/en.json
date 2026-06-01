@@ -80,9 +80,11 @@
       "howItWorks": "How It Works",
       "treatmentCosts": "Treatment Costs",
       "bookAppointment": "Book Appointment",
-      "branches": "Branches"
+      "branches": "Branches",
+      "implantsComparison": "Implants Price Comparison"
     },
     "social": {
+      "whatsapp": "WhatsApp",
       "facebook": "Facebook",
       "youtube": "YouTube",
       "instagram": "Instagram",

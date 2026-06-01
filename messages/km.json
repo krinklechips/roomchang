@@ -80,9 +80,11 @@
       "howItWorks": "របៀបដំណើរការ",
       "treatmentCosts": "ថ្លៃព្យាបាល",
       "bookAppointment": "កក់ការណាត់ជួប",
-      "branches": "សាខា"
+      "branches": "សាខា",
+      "implantsComparison": "ប្រៀបធៀបតម្លៃបង្គោលធ្មេញ"
     },
     "social": {
+      "whatsapp": "WhatsApp",
       "facebook": "Facebook",
       "youtube": "YouTube",
       "instagram": "Instagram",

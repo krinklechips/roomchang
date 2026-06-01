@@ -80,9 +80,11 @@
       "howItWorks": "就诊流程",
       "treatmentCosts": "治疗费用",
       "bookAppointment": "预约挂号",
-      "branches": "分院地址"
+      "branches": "分院地址",
+      "implantsComparison": "种植牙价格对比"
     },
     "social": {
+      "whatsapp": "WhatsApp",
       "facebook": "Facebook",
       "youtube": "YouTube",
       "instagram": "Instagram",
