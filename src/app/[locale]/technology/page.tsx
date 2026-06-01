@@ -32,7 +32,6 @@ export default async function TechnologyPage() {
     { value: "CAD/CAM", label: t("stat.inhouseLab") },
     { value: "3D",      label: t("stat.cbctImaging") },
     { value: "In-House", label: t("stat.clearAligners") },
-    { value: "Class B", label: t("stat.sterilisation") },
   ];
 
   return (
