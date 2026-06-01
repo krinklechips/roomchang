@@ -49,7 +49,7 @@ const FOOTER_STRUCTURE: FooterColumn[] = [
       { tKey: "bookAppointment", href: "/contact" },
       { tKey: "branches", href: "/contact#branches" },
       { tKey: "whatsapp", href: "https://wa.me/85569811338", external: true },
-      { tKey: "wechat", href: "https://www.wechat.com", external: true },
+      { tKey: "wechat", href: "weixin://dl/chat?viliyanpink", external: true },
       { tKey: "telegram", href: "https://t.me/roomchang", external: true },
       { tKey: "facebook", href: "https://www.facebook.com/roomchangdental", external: true },
     ],
