@@ -1,13 +1,22 @@
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { CircleDot, Crown, AlignCenter, Sparkles, Sun, Scissors, ArrowRight, type LucideIcon } from "lucide-react";
+import {
+  Tooth,
+  CrownSimple,
+  Crosshair,
+  Sparkle,
+  Lightning,
+  Scissors,
+  ArrowRight,
+} from "@phosphor-icons/react/dist/ssr";
+import type { Icon as PhosphorIcon } from "@phosphor-icons/react/dist/lib/types";
 
-const SERVICES: { id: string; tKey: string; href: string; Icon: LucideIcon }[] = [
-  { id: "implants", tKey: "implants", href: "/services/dental-implants", Icon: CircleDot },
-  { id: "crowns", tKey: "crowns", href: "/services/dental-crowns", Icon: Crown },
-  { id: "aligners", tKey: "aligners", href: "/services/orthodontics", Icon: AlignCenter },
-  { id: "cosmetic", tKey: "cosmetic", href: "/services/cosmetic-dentistry", Icon: Sparkles },
-  { id: "whitening", tKey: "whitening", href: "/services/teeth-whitening", Icon: Sun },
+const SERVICES: { id: string; tKey: string; href: string; Icon: PhosphorIcon }[] = [
+  { id: "implants", tKey: "implants", href: "/services/dental-implants", Icon: Tooth },
+  { id: "crowns", tKey: "crowns", href: "/services/dental-crowns", Icon: CrownSimple },
+  { id: "aligners", tKey: "aligners", href: "/services/orthodontics", Icon: Crosshair },
+  { id: "cosmetic", tKey: "cosmetic", href: "/services/cosmetic-dentistry", Icon: Sparkle },
+  { id: "whitening", tKey: "whitening", href: "/services/teeth-whitening", Icon: Lightning },
   { id: "surgery", tKey: "surgery", href: "/services/oral-surgery", Icon: Scissors },
 ];
 
@@ -29,7 +38,7 @@ export async function HomeServices() {
           href="/services"
           className="inline-flex items-center gap-2 text-sm font-semibold text-[color:var(--brand-deep)] transition hover:text-[color:var(--brand)]"
         >
-          {t("seeAll")} <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
+          {t("seeAll")} <ArrowRight size={14} weight="bold" aria-hidden="true" />
         </Link>
       </div>
 
@@ -41,7 +50,7 @@ export async function HomeServices() {
             className="group flex flex-col items-center gap-2 rounded-2xl border border-[color:var(--border-strong)] bg-white px-3 py-4 text-center shadow-[0_8px_30px_rgba(57,28,45,0.05)] transition hover:-translate-y-0.5 hover:border-[color:var(--brand-light)] hover:shadow-[0_14px_40px_rgba(57,28,45,0.1)] sm:gap-3 sm:px-4 sm:py-6"
           >
             <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[color:var(--surface-strong)] text-[color:var(--brand-deep)] transition group-hover:bg-[color:var(--brand-soft)] sm:h-14 sm:w-14 sm:rounded-2xl">
-              <service.Icon size={22} strokeWidth={1.75} aria-hidden="true" className="sm:!h-7 sm:!w-7" />
+              <service.Icon size={24} weight="duotone" aria-hidden="true" className="sm:!h-7 sm:!w-7" />
             </div>
             <p className="text-[0.7rem] font-semibold leading-snug text-[color:var(--text-main)] sm:text-[0.82rem]">
               {t(service.tKey)}
