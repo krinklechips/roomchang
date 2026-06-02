@@ -98,17 +98,17 @@ export function HomeHighlights() {
             key={card.id}
             className="overflow-hidden rounded-3xl border border-[color:var(--border-strong)] bg-white shadow-[0_20px_60px_rgba(57,28,45,0.08)]"
           >
-            <div
-              role="img"
-              aria-label={card.imageAlt}
-              className="h-60 bg-[color:var(--brand-soft)]"
-              style={{
-                backgroundImage: `url(${card.imageSrc})`,
-                backgroundSize: card.bgSize,
-                backgroundPosition: card.bgPosition,
-                backgroundRepeat: "no-repeat",
-              }}
-            />
+            <div className="relative h-60 bg-[color:var(--brand-soft)] overflow-hidden">
+              <img
+                src={card.imageSrc}
+                alt={card.imageAlt}
+                className="absolute inset-0 h-full w-full"
+                style={{
+                  objectFit: card.bgSize as "cover" | "contain",
+                  objectPosition: card.bgPosition,
+                }}
+              />
+            </div>
             <div className="space-y-4 p-6">
               <h2 className="font-display text-[2rem] leading-none text-[color:var(--text-main)]">{card.title}</h2>
               <p className="text-sm leading-7 text-[color:var(--text-soft)]">{card.description}</p>
