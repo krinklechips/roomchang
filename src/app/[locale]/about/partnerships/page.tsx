@@ -120,7 +120,7 @@ function PartnerLogo({ partner }: { partner: Partner }) {
         <img
           src={partner.logo}
           alt={partner.name}
-          className="max-h-full max-w-[85%] w-auto object-contain mx-auto"
+          className="h-auto w-auto max-h-16 max-w-[80%] object-contain mx-auto"
           loading="lazy"
         />
       ) : (
