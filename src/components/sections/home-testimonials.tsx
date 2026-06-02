@@ -21,6 +21,13 @@ function getInitials(name: string): string {
     .slice(0, 2);
 }
 
+/** "Sarah Mitchell" → "Sarah M." */
+function abbreviateName(name: string): string {
+  const parts = name.trim().split(/\s+/);
+  if (parts.length < 2) return name;
+  return `${parts[0]} ${parts[parts.length - 1][0]}.`;
+}
+
 function parseOriginAndTreatment(authorTitle: string | null): {
   origin: string;
   treatment: string;
@@ -90,7 +97,7 @@ export function HomeTestimonials({
 
         {/* Attribution */}
         <div className="mt-8 flex flex-col items-center gap-1">
-          <p className="font-semibold text-[color:var(--text-main)]">{current.authorName}</p>
+          <p className="font-semibold text-[color:var(--text-main)]">{abbreviateName(current.authorName)}</p>
           {origin && <p className="text-sm text-[color:var(--text-soft)]">{origin}</p>}
           {treatment && (
             <span className="mt-1 rounded-full bg-[color:var(--brand-soft)] px-3 py-0.5 text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-[color:var(--brand-deep)]">
