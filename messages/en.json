@@ -533,7 +533,8 @@
     "cost": {
       "heading": "Cost Comparison",
       "body": "Indicative savings vs. equivalent treatments in Australia, Singapore & the UK.",
-      "disclaimer": "* Savings are estimates compared to typical prices in Australia, Singapore & the UK. Exact quotes depend on your specific treatment needs. Contact us for a personalised plan."
+      "disclaimer": "* Savings are estimates compared to typical prices in Australia, Singapore & the UK. Exact quotes depend on your specific treatment needs. Contact us for a personalised plan.",
+      "viewPricing": "View full pricing"
     },
     "howItWorks": {
       "heading": "How It Works",

@@ -140,10 +140,16 @@ export default async function InternationalPage() {
               </div>
             ))}
           </div>
-          <div className="px-8 py-5 bg-[color:var(--brand-soft)]">
+          <div className="px-8 py-5 bg-[color:var(--brand-soft)] flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-xs text-[color:var(--text-soft)]">
               {t("cost.disclaimer")}
             </p>
+            <Link
+              href="/pricing"
+              className="inline-flex items-center gap-1.5 shrink-0 text-sm font-semibold text-[color:var(--brand-deep)] hover:text-[color:var(--brand)] transition"
+            >
+              {t("cost.viewPricing")} <ArrowRight size={14} weight="bold" aria-hidden="true" />
+            </Link>
           </div>
         </section>
 
