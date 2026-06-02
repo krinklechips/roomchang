@@ -111,27 +111,23 @@ const PARTNER_CATEGORIES: PartnerCategory[] = [
 
 function PartnerLogo({ partner }: { partner: Partner }) {
   return (
-    <div className="group flex flex-col items-center justify-center gap-2 rounded-2xl border border-[color:var(--border-strong)] bg-white p-4 shadow-[0_4px_16px_rgba(57,28,45,0.04)] transition hover:shadow-[0_8px_24px_rgba(57,28,45,0.08)]">
-      <div className="flex h-16 w-full items-center justify-center">
-        {partner.logo ? (
-          // Use plain img — partner logos come from local /public/partners/ paths
-          // (which may contain spaces) and external URLs; both need no Next.js optimisation.
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={partner.logo}
-            alt={partner.name}
-            className="max-h-16 max-w-full w-auto object-contain"
-            loading="lazy"
-          />
-        ) : (
-          <span className="text-center text-sm font-semibold leading-tight text-[color:var(--text-main)]">
-            {partner.name}
-          </span>
-        )}
-      </div>
-      <span className="text-center text-[10px] font-semibold uppercase tracking-[0.15em] text-[color:var(--text-soft)]">
-        {partner.name}
-      </span>
+    <div
+      title={partner.name}
+      className="flex items-center justify-center rounded-2xl border border-[color:var(--border-strong)] bg-white p-4 shadow-[0_4px_16px_rgba(57,28,45,0.04)] transition hover:shadow-[0_8px_24px_rgba(57,28,45,0.08)] aspect-[4/3]"
+    >
+      {partner.logo ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={partner.logo}
+          alt={partner.name}
+          className="max-h-full max-w-[85%] w-auto object-contain mx-auto"
+          loading="lazy"
+        />
+      ) : (
+        <span className="text-center text-sm font-semibold leading-tight text-[color:var(--text-main)] px-2">
+          {partner.name}
+        </span>
+      )}
     </div>
   );
 }
@@ -204,7 +200,7 @@ export default async function PartnershipsPage() {
                 {category.partners.length} partners
               </span>
             </div>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+            <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-5">
               {category.partners.map((partner) => (
                 <PartnerLogo key={partner.name} partner={partner} />
               ))}
