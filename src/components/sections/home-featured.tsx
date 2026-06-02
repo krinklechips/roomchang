@@ -23,7 +23,7 @@ export async function HomeFeatured() {
       id: "international",
       title: t("international.title"),
       description: t("international.description"),
-      imageSrc: "/hero/roomchang-patient-care.jpg",
+      imageSrc: "/hero/hero-customer-service.jpg",
       imageAlt: t("international.alt"),
       href: "/international",
       cta: t("international.cta"),
