@@ -32,7 +32,7 @@ const featuredCards = [
     title: "International Patients",
     description:
       "Thousands of patients from Australia, Japan, Singapore, and beyond visit Roomchang each year. We make the journey simple.",
-    imageSrc: "/hero/roomchang-patient-care.jpg",
+    imageSrc: "/hero/hero-customer-service.jpg",
     imageAlt: "Roomchang patient care team",
     href: "/international",
     bgSize: "cover",
