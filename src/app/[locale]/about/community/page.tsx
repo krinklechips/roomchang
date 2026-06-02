@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { SiteShell } from "@/components/site/site-shell";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -20,6 +20,7 @@ const ARTICLES = [
       "29 Roomchang staff volunteers participated in a blood donation drive at the National Blood Center, supporting Kantha Bopha Children's Hospital and the national blood supply.",
     image: "https://roomchang.com/wp-content/uploads/2024/12/470221513_1143548607331480_5822147168748663462_n-1024x684.jpg",
     imageAlt: "Roomchang 29th Anniversary Blood Donation Drive at the National Blood Center",
+    url: "https://roomchang.com/charity-missions/roomchang-in-the-community/roomchang-dental-hospital-celebrates-29th-anniversary-with-blood-donation-drive/",
   },
   {
     date: "December 2023",
@@ -28,6 +29,7 @@ const ARTICLES = [
       "Staff volunteers returned to the National Blood Center for Roomchang's 28th anniversary blood donation campaign, continuing our annual tradition of giving back to the community.",
     image: "https://roomchang.com/wp-content/uploads/2023/12/WhatsApp-Image-2023-12-14-at-08.00.33.jpeg",
     imageAlt: "Roomchang 28th Anniversary Blood Donation 2023",
+    url: "https://roomchang.com/charity-missions/roomchang-in-the-community/roomchang-dental-hospital-staff-celebrate-28th-anniversary-with-blood/",
   },
   {
     date: "December 2022",
@@ -36,6 +38,7 @@ const ARTICLES = [
       "Roomchang staff rallied together for the 27th anniversary blood donation initiative, strengthening our commitment to community health and the national blood supply.",
     image: "https://roomchang.com/wp-content/uploads/2023/12/photo_2022-12-12_16-53-12__2_.jpg",
     imageAlt: "Roomchang 27th Anniversary Blood Donation 2022",
+    url: null,
   },
   {
     date: "April 2020",
@@ -44,6 +47,7 @@ const ARTICLES = [
       "During the pandemic, Roomchang dentists and staff donated protective equipment and financial contributions to support Cambodia's healthcare workers on the front line of the national COVID-19 response.",
     image: "https://roomchang.com/wp-content/uploads/2025/07/IMG_2809-1-1-1024x768.jpg",
     imageAlt: "Roomchang COVID-19 donations to healthcare workers",
+    url: null,
   },
   {
     date: "October 2019",
@@ -52,6 +56,7 @@ const ARTICLES = [
       "Roomchang clinical fellows and dental assistants visited Footprints International School to teach preschool students proper toothbrushing technique, dietary advice, and healthy oral habits — providing free toothbrushes and dental supplies to every child.",
     image: "https://roomchang.com/wp-content/uploads/2019/10/IMG_20191003_093022.jpg",
     imageAlt: "Roomchang oral health education visit to Footprints International School",
+    url: "https://roomchang.com/charity-missions/oral-health-education-program-at-footprints-international-school/",
   },
   {
     date: "December 2017",
@@ -60,22 +65,34 @@ const ARTICLES = [
       "In partnership with RHB Indochina Bank, Roomchang ran an early childhood dental health program — combining oral health education with free check-ups for children in underserved communities across Phnom Penh.",
     image: "https://roomchang.com/wp-content/uploads/2014/11/Early-childhood-development-school-program_RHB-Indochina-bank-Roomchang-Dental.jpg",
     imageAlt: "Roomchang early childhood development dental program with RHB Indochina Bank",
+    url: "https://roomchang.com/charity-missions/roomchang-in-the-community/",
   },
   {
-    date: "Multiple Years",
-    title: "Kantha Bopha Children's Hospital Blood Drives",
+    date: "December 2017",
+    title: "Blood Donation to Kantha Bopha Hospital",
     description:
-      "Each year, Roomchang organises staff blood donations for Kantha Bopha Children's Hospital — Cambodia's most important free children's hospital, where all medical services are provided at no charge to families who cannot afford care. In 2017, 22 staff donated; in 2016, 21 staff participated.",
+      "22 doctors and staff donated blood to Kantha Bopha Children's Hospital — Cambodia's most important free children's hospital, where all medical services are provided at no charge to families who cannot afford care.",
     image: "https://roomchang.com/wp-content/uploads/2013/08/Blood-donate-to-Kuntha-Bopha_Roomchang-in-the-community.jpg",
     imageAlt: "Roomchang staff blood donation for Kantha Bopha Children's Hospital",
+    url: "https://roomchang.com/charity-missions/blood-donation-to-kantha-bopha-hospital/",
+  },
+  {
+    date: "March 2016",
+    title: "Blood Donation to Kantha Bopha Hospital",
+    description:
+      "21 staff members donated blood to support Dr. Beat Richner's hospitals providing free medical services to low-income Cambodian families.",
+    image: "https://roomchang.com/wp-content/uploads/2013/08/Blood-donate-to-Kuntha-Bopha_Roomchang-in-the-community.jpg",
+    imageAlt: "Roomchang staff blood donation for Kantha Bopha Children's Hospital 2016",
+    url: "https://roomchang.com/charity-missions/blood-donation-to-kantha-bopha-hospital-2/",
   },
   {
     date: "March 2015",
-    title: "Battambang Mobile Dental Clinic",
+    title: "Giving Back with a Smile — Battambang",
     description:
-      "A team of 16 dentists, dental nurses, assistants, and an anaesthetist set up camp in a mobile dental clinic in Battambang province, treating over 160 children in a single visit — providing free dental care to communities with no access to dental services.",
+      "A team of 16 dentists, dental nurses, assistants, and an anaesthetist set up a mobile dental clinic in Battambang province, treating over 160 children in a single visit — providing free dental care to communities with no access to dental services.",
     image: "https://roomchang.com/wp-content/uploads/2014/11/Giving-back-with-a-smile.jpg",
     imageAlt: "Roomchang mobile dental clinic in Battambang — treating children for free",
+    url: "https://roomchang.com/charity-missions/giving-back-with-a-smile-2/",
   },
   {
     date: "Ongoing",
@@ -84,6 +101,7 @@ const ARTICLES = [
       "Roomchang's mobile dental clinic makes regular visits to rural Cambodia, bringing fully equipped dental care directly to residents who would otherwise have no access to treatment. All services are provided free of charge.",
     image: "https://roomchang.com/wp-content/uploads/2013/08/Roomchang-in-the-community_The-mobile-community-clinic.jpg",
     imageAlt: "Roomchang mobile community dental clinic in rural Cambodia",
+    url: "https://roomchang.com/charity-missions/the-mobile-community-clinic/",
   },
 ];
 
@@ -139,6 +157,16 @@ export default function CommunityPage() {
                 <p className="mt-3 flex-1 text-sm leading-7 text-[color:var(--text-soft)]">
                   {article.description}
                 </p>
+                {article.url && (
+                  <a
+                    href={article.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[color:var(--brand-deep)] transition hover:text-[color:var(--brand)]"
+                  >
+                    Read More <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
+                  </a>
+                )}
               </div>
             </article>
           ))}

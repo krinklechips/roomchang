@@ -243,7 +243,7 @@ export default async function FacilitiesPage() {
                   </div>
                   <div className="mt-auto pt-5">
                     <Link
-                      href={`/contact#${branch.slug}`}
+                      href={`/about/branches/${branch.slug}`}
                       className="inline-flex items-center gap-1.5 text-sm font-semibold text-[color:var(--brand-deep)] transition hover:text-[color:var(--brand)]"
                     >
                       Discover This Location <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
