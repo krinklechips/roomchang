@@ -32,8 +32,8 @@ const featuredCards = [
     title: "International Patients",
     description:
       "Thousands of patients from Australia, Japan, Singapore, and beyond visit Roomchang each year. We make the journey simple.",
-    imageSrc: "/hero/hero-customer-service.jpg",
-    imageAlt: "Roomchang patient care team",
+    imageSrc: "/hero/hero-customer-service.jpg?v=2",
+    imageAlt: "International patient at Roomchang Dental Hospital",
     href: "/international",
     bgSize: "cover",
     bgPosition: "center",
