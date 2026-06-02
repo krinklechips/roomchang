@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft } from "lucide-react";
@@ -111,32 +110,28 @@ const PARTNER_CATEGORIES: PartnerCategory[] = [
 ];
 
 function PartnerLogo({ partner }: { partner: Partner }) {
-  if (partner.logo) {
-    return (
-      <div className="group flex flex-col items-center justify-center gap-2 rounded-2xl border border-[color:var(--border-strong)] bg-white p-4 shadow-[0_4px_16px_rgba(57,28,45,0.04)] transition hover:shadow-[0_8px_24px_rgba(57,28,45,0.08)]">
-        <div className="relative flex h-16 w-full items-center justify-center">
-          <Image
+  return (
+    <div className="group flex flex-col items-center justify-center gap-2 rounded-2xl border border-[color:var(--border-strong)] bg-white p-4 shadow-[0_4px_16px_rgba(57,28,45,0.04)] transition hover:shadow-[0_8px_24px_rgba(57,28,45,0.08)]">
+      <div className="flex h-16 w-full items-center justify-center">
+        {partner.logo ? (
+          // Use plain img — partner logos come from local /public/partners/ paths
+          // (which may contain spaces) and external URLs; both need no Next.js optimisation.
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
             src={partner.logo}
             alt={partner.name}
-            width={180}
-            height={64}
-            className="max-h-16 w-auto object-contain"
-            unoptimized={partner.logo.endsWith(".svg")}
+            className="max-h-16 max-w-full w-auto object-contain"
+            loading="lazy"
           />
-        </div>
-        <span className="text-center text-[10px] font-semibold uppercase tracking-[0.15em] text-[color:var(--text-soft)]">
-          {partner.name}
-        </span>
+        ) : (
+          <span className="text-center text-sm font-semibold leading-tight text-[color:var(--text-main)]">
+            {partner.name}
+          </span>
+        )}
       </div>
-    );
-  }
-
-  // Text fallback — matches logo card height/structure
-  return (
-    <div className="group flex flex-col items-center justify-center rounded-2xl border border-[color:var(--border-strong)] bg-white p-4 shadow-[0_4px_16px_rgba(57,28,45,0.04)] transition hover:shadow-[0_8px_24px_rgba(57,28,45,0.08)]">
-      <div className="flex h-16 w-full items-center justify-center">
-        <span className="text-center text-sm font-semibold leading-tight text-[color:var(--text-main)]">{partner.name}</span>
-      </div>
+      <span className="text-center text-[10px] font-semibold uppercase tracking-[0.15em] text-[color:var(--text-soft)]">
+        {partner.name}
+      </span>
     </div>
   );
 }
