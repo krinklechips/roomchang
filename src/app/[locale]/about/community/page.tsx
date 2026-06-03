@@ -1,7 +1,8 @@
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { SiteShell } from "@/components/site/site-shell";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "@phosphor-icons/react/dist/ssr";
+import { supabaseServer } from "@/lib/supabase-server";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -12,100 +13,54 @@ export const metadata: Metadata = {
     "Roomchang's charity missions bring free dental care to underserved communities across Cambodia — mobile clinics, blood drives, and oral health education.",
 };
 
-const ARTICLES = [
+type Article = {
+  id: string;
+  slug: string;
+  title: string;
+  date: string;
+  description: string;
+  image: string;
+  imageAlt: string;
+};
+
+// Fallback in case DB is unavailable
+const FALLBACK_ARTICLES: Article[] = [
   {
-    date: "December 2024",
+    id: "1", slug: "29th-anniversary-blood-donation", date: "December 2024",
     title: "29th Anniversary Blood Donation Drive",
-    description:
-      "29 Roomchang staff volunteers participated in a blood donation drive at the National Blood Center, supporting Kantha Bopha Children's Hospital and the national blood supply.",
+    description: "29 Roomchang staff volunteers participated in a blood donation drive at the National Blood Center, supporting Kantha Bopha Children's Hospital and the national blood supply.",
     image: "https://roomchang.com/wp-content/uploads/2024/12/470221513_1143548607331480_5822147168748663462_n-1024x684.jpg",
-    imageAlt: "Roomchang 29th Anniversary Blood Donation Drive at the National Blood Center",
-    url: "https://roomchang.com/charity-missions/roomchang-in-the-community/roomchang-dental-hospital-celebrates-29th-anniversary-with-blood-donation-drive/",
+    imageAlt: "Roomchang 29th Anniversary Blood Donation Drive",
   },
   {
-    date: "December 2023",
+    id: "2", slug: "28th-anniversary-blood-donation", date: "December 2023",
     title: "28th Anniversary Blood Donation",
-    description:
-      "Staff volunteers returned to the National Blood Center for Roomchang's 28th anniversary blood donation campaign, continuing our annual tradition of giving back to the community.",
+    description: "Staff volunteers returned to the National Blood Center for Roomchang's 28th anniversary blood donation campaign, continuing our annual tradition of giving back.",
     image: "https://roomchang.com/wp-content/uploads/2023/12/WhatsApp-Image-2023-12-14-at-08.00.33.jpeg",
     imageAlt: "Roomchang 28th Anniversary Blood Donation 2023",
-    url: "https://roomchang.com/charity-missions/roomchang-in-the-community/roomchang-dental-hospital-staff-celebrate-28th-anniversary-with-blood/",
   },
   {
-    date: "December 2022",
+    id: "3", slug: "27th-anniversary-blood-donation", date: "December 2022",
     title: "27th Anniversary Blood Donation",
-    description:
-      "Roomchang staff rallied together for the 27th anniversary blood donation initiative, strengthening our commitment to community health and the national blood supply.",
+    description: "Roomchang staff rallied together for the 27th anniversary blood donation initiative, strengthening our commitment to community health.",
     image: "https://roomchang.com/wp-content/uploads/2023/12/photo_2022-12-12_16-53-12__2_.jpg",
     imageAlt: "Roomchang 27th Anniversary Blood Donation 2022",
-    url: null,
-  },
-  {
-    date: "April 2020",
-    title: "COVID-19 Community Support",
-    description:
-      "During the pandemic, Roomchang dentists and staff donated protective equipment and financial contributions to support Cambodia's healthcare workers on the front line of the national COVID-19 response.",
-    image: "https://roomchang.com/wp-content/uploads/2025/07/IMG_2809-1-1-1024x768.jpg",
-    imageAlt: "Roomchang COVID-19 donations to healthcare workers",
-    url: null,
-  },
-  {
-    date: "October 2019",
-    title: "Oral Health Education — Footprints International School",
-    description:
-      "Roomchang clinical fellows and dental assistants visited Footprints International School to teach preschool students proper toothbrushing technique, dietary advice, and healthy oral habits — providing free toothbrushes and dental supplies to every child.",
-    image: "https://roomchang.com/wp-content/uploads/2019/10/IMG_20191003_093022.jpg",
-    imageAlt: "Roomchang oral health education visit to Footprints International School",
-    url: "https://roomchang.com/charity-missions/oral-health-education-program-at-footprints-international-school/",
-  },
-  {
-    date: "December 2017",
-    title: "Early Childhood Development Program",
-    description:
-      "In partnership with RHB Indochina Bank, Roomchang ran an early childhood dental health program — combining oral health education with free check-ups for children in underserved communities across Phnom Penh.",
-    image: "https://roomchang.com/wp-content/uploads/2014/11/Early-childhood-development-school-program_RHB-Indochina-bank-Roomchang-Dental.jpg",
-    imageAlt: "Roomchang early childhood development dental program with RHB Indochina Bank",
-    url: "https://roomchang.com/charity-missions/roomchang-in-the-community/",
-  },
-  {
-    date: "December 2017",
-    title: "Blood Donation to Kantha Bopha Hospital",
-    description:
-      "22 doctors and staff donated blood to Kantha Bopha Children's Hospital — Cambodia's most important free children's hospital, where all medical services are provided at no charge to families who cannot afford care.",
-    image: "https://roomchang.com/wp-content/uploads/2013/08/Blood-donate-to-Kuntha-Bopha_Roomchang-in-the-community.jpg",
-    imageAlt: "Roomchang staff blood donation for Kantha Bopha Children's Hospital",
-    url: "https://roomchang.com/charity-missions/blood-donation-to-kantha-bopha-hospital/",
-  },
-  {
-    date: "March 2016",
-    title: "Blood Donation to Kantha Bopha Hospital",
-    description:
-      "21 staff members donated blood to support Dr. Beat Richner's hospitals providing free medical services to low-income Cambodian families.",
-    image: "https://roomchang.com/wp-content/uploads/2013/08/Blood-donate-to-Kuntha-Bopha_Roomchang-in-the-community.jpg",
-    imageAlt: "Roomchang staff blood donation for Kantha Bopha Children's Hospital 2016",
-    url: "https://roomchang.com/charity-missions/blood-donation-to-kantha-bopha-hospital-2/",
-  },
-  {
-    date: "March 2015",
-    title: "Giving Back with a Smile — Battambang",
-    description:
-      "A team of 16 dentists, dental nurses, assistants, and an anaesthetist set up a mobile dental clinic in Battambang province, treating over 160 children in a single visit — providing free dental care to communities with no access to dental services.",
-    image: "https://roomchang.com/wp-content/uploads/2014/11/Giving-back-with-a-smile.jpg",
-    imageAlt: "Roomchang mobile dental clinic in Battambang — treating children for free",
-    url: "https://roomchang.com/charity-missions/giving-back-with-a-smile-2/",
-  },
-  {
-    date: "Ongoing",
-    title: "Mobile Community Clinic",
-    description:
-      "Roomchang's mobile dental clinic makes regular visits to rural Cambodia, bringing fully equipped dental care directly to residents who would otherwise have no access to treatment. All services are provided free of charge.",
-    image: "https://roomchang.com/wp-content/uploads/2013/08/Roomchang-in-the-community_The-mobile-community-clinic.jpg",
-    imageAlt: "Roomchang mobile community dental clinic in rural Cambodia",
-    url: "https://roomchang.com/charity-missions/the-mobile-community-clinic/",
   },
 ];
 
-export default function CommunityPage() {
+export default async function CommunityPage() {
+  const { data, error } = await supabaseServer
+    .from("community_articles")
+    .select("id, slug, title, date, description, image, imageAlt")
+    .eq("published", true)
+    .order("order", { ascending: false });
+
+  if (error) {
+    console.error("[CommunityPage] fetch failed:", error.message);
+  }
+
+  const articles: Article[] = (data as Article[] | null)?.filter(a => a.slug) ?? FALLBACK_ARTICLES;
+
   return (
     <SiteShell>
       {/* Header */}
@@ -115,7 +70,7 @@ export default function CommunityPage() {
             href="/about"
             className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--brand)] transition hover:text-[color:var(--brand-deep)]"
           >
-            <ArrowLeft size={13} strokeWidth={2.5} aria-hidden="true" /> About
+            <ArrowLeft size={13} weight="bold" aria-hidden="true" /> About
           </Link>
           <h1 className="mt-4 font-display text-5xl leading-none text-[color:var(--text-main)] sm:text-6xl">
             Community & Charity
@@ -132,17 +87,18 @@ export default function CommunityPage() {
 
         {/* Article grid */}
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {ARTICLES.map((article) => (
-            <article
-              key={article.title}
-              className="flex flex-col overflow-hidden rounded-3xl border border-[color:var(--border-strong)] bg-white shadow-[0_12px_40px_rgba(57,28,45,0.05)]"
+          {articles.map((article) => (
+            <Link
+              key={article.id}
+              href={`/about/community/${article.slug}`}
+              className="group flex flex-col overflow-hidden rounded-3xl border border-[color:var(--border-strong)] bg-white shadow-[0_12px_40px_rgba(57,28,45,0.05)] transition hover:-translate-y-0.5 hover:shadow-[0_20px_60px_rgba(57,28,45,0.10)]"
             >
               <div className="relative aspect-[4/3] overflow-hidden bg-[color:var(--surface)]">
                 <Image
                   src={article.image}
-                  alt={article.imageAlt}
+                  alt={article.imageAlt || article.title}
                   fill
-                  className="object-cover object-center"
+                  className="object-cover object-center transition duration-500 group-hover:scale-[1.03]"
                   sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                   unoptimized
                 />
@@ -151,24 +107,17 @@ export default function CommunityPage() {
                 <p className="text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-[color:var(--brand)]">
                   {article.date}
                 </p>
-                <h2 className="mt-2 font-display text-xl leading-snug text-[color:var(--text-main)]">
+                <h2 className="mt-2 font-display text-xl leading-snug text-[color:var(--text-main)] transition group-hover:text-[color:var(--brand-deep)]">
                   {article.title}
                 </h2>
                 <p className="mt-3 flex-1 text-sm leading-7 text-[color:var(--text-soft)]">
                   {article.description}
                 </p>
-                {article.url && (
-                  <a
-                    href={article.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[color:var(--brand-deep)] transition hover:text-[color:var(--brand)]"
-                  >
-                    Read More <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
-                  </a>
-                )}
+                <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[color:var(--brand-deep)] transition group-hover:text-[color:var(--brand)]">
+                  Read More <ArrowRight size={14} weight="bold" aria-hidden="true" />
+                </span>
               </div>
-            </article>
+            </Link>
           ))}
         </div>
 
