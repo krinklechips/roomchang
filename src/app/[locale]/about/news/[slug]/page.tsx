@@ -2,8 +2,8 @@ import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { notFound } from "next/navigation";
 import { SiteShell } from "@/components/site/site-shell";
-import { ArrowLeft } from "lucide-react";
-import { NEWS_ARTICLES, getArticleBySlug } from "@/lib/news";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import { NEWS_ARTICLES, NEWS_ARTICLES_SORTED, getArticleBySlug } from "@/lib/news";
 import type { Metadata } from "next";
 
 interface Props {
@@ -40,6 +40,12 @@ export default async function NewsArticlePage({ params }: Props) {
   if (!article) {
     notFound();
   }
+
+  // Prev/next within the newest-first sorted order.
+  // Left arrow = newer (previous in list), right arrow = older (next in list).
+  const idx = NEWS_ARTICLES_SORTED.findIndex((a) => a.slug === slug);
+  const newer = idx > 0 ? NEWS_ARTICLES_SORTED[idx - 1] : null;
+  const older = idx < NEWS_ARTICLES_SORTED.length - 1 ? NEWS_ARTICLES_SORTED[idx + 1] : null;
 
   return (
     <SiteShell>
@@ -90,8 +96,32 @@ export default async function NewsArticlePage({ params }: Props) {
           ))}
         </div>
 
+        {/* Prev / Next navigation */}
+        <div className="mt-12 border-t border-[color:var(--border-strong)] pt-8 flex flex-col gap-4 sm:flex-row sm:justify-between">
+          {newer ? (
+            <Link
+              href={`/about/news/${newer.slug}`}
+              className="group flex items-center gap-3 text-sm font-semibold text-[color:var(--text-soft)] hover:text-[color:var(--brand-deep)] transition sm:max-w-[45%]"
+            >
+              <ArrowLeft size={16} strokeWidth={2} className="shrink-0" aria-hidden="true" />
+              <span className="line-clamp-2">{newer.title}</span>
+            </Link>
+          ) : (
+            <span />
+          )}
+          {older && (
+            <Link
+              href={`/about/news/${older.slug}`}
+              className="group flex items-center gap-3 text-right text-sm font-semibold text-[color:var(--text-soft)] hover:text-[color:var(--brand-deep)] transition sm:max-w-[45%] sm:justify-end sm:ml-auto"
+            >
+              <span className="line-clamp-2">{older.title}</span>
+              <ArrowRight size={16} strokeWidth={2} className="shrink-0" aria-hidden="true" />
+            </Link>
+          )}
+        </div>
+
         {/* Back link */}
-        <div className="mt-12 border-t border-[color:var(--border-strong)] pt-8">
+        <div className="mt-8 text-center">
           <Link
             href="/about/news"
             className="inline-flex items-center gap-1.5 text-sm font-semibold text-[color:var(--brand-deep)] transition hover:text-[color:var(--brand)]"

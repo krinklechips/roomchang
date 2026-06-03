@@ -2,7 +2,7 @@ import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { NEWS_ARTICLES } from "@/lib/news";
+import { NEWS_ARTICLES_SORTED } from "@/lib/news";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -36,7 +36,7 @@ export default function NewsPage() {
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
         {/* Article grid */}
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {NEWS_ARTICLES.map((article) => (
+          {NEWS_ARTICLES_SORTED.map((article) => (
             <Link
               key={article.slug}
               href={`/about/news/${article.slug}`}
