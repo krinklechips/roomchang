@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { CaretLeft, CaretRight, X } from "@phosphor-icons/react";
 
 export function CommunityGallery({
@@ -12,6 +12,7 @@ export function CommunityGallery({
 }) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const isOpen = openIndex !== null;
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
 
   const close = useCallback(() => setOpenIndex(null), []);
   const prev = useCallback(
@@ -32,13 +33,22 @@ export function CommunityGallery({
       else if (e.key === "ArrowRight") next();
     }
     window.addEventListener("keydown", onKey);
-    // Lock body scroll while the lightbox is open
+    // Lock body scroll while the lightbox is open, restoring the prior value on close
+    const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
       window.removeEventListener("keydown", onKey);
-      document.body.style.overflow = "";
+      document.body.style.overflow = previousOverflow;
     };
   }, [isOpen, close, prev, next]);
+
+  // Restore focus to the triggering thumbnail when the lightbox closes
+  useEffect(() => {
+    if (!isOpen && triggerRef.current) {
+      triggerRef.current.focus();
+      triggerRef.current = null;
+    }
+  }, [isOpen]);
 
   return (
     <>
@@ -46,9 +56,12 @@ export function CommunityGallery({
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
         {images.map((src, i) => (
           <button
-            key={src}
+            key={`${src}-${i}`}
             type="button"
-            onClick={() => setOpenIndex(i)}
+            onClick={(e) => {
+              triggerRef.current = e.currentTarget;
+              setOpenIndex(i);
+            }}
             className="group relative aspect-[4/3] cursor-zoom-in overflow-hidden rounded-2xl bg-[color:var(--surface)] shadow-[0_8px_24px_rgba(57,28,45,0.06)]"
             aria-label={`View photo ${i + 1} of ${images.length}`}
           >
