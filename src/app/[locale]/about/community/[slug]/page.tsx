@@ -42,9 +42,10 @@ async function getAdjacentArticles(currentSlug: string) {
   if (!data) return { prev: null, next: null };
   const idx = data.findIndex((a) => a.slug === currentSlug);
   return {
-    // prev = older article (next in list), next = newer article (previous in list)
-    prev: idx < data.length - 1 ? data[idx + 1] : null,
-    next: idx > 0 ? data[idx - 1] : null,
+    // Left arrow (prev) = newer article, right arrow (next) = older article.
+    // List is sorted newest-first, so the newer item is at idx-1.
+    prev: idx > 0 ? data[idx - 1] : null,
+    next: idx < data.length - 1 ? data[idx + 1] : null,
   };
 }
 
