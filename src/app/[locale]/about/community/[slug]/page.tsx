@@ -3,6 +3,7 @@ import { Link } from "@/i18n/navigation";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import { supabaseServer } from "@/lib/supabase-server";
+import { CommunityGallery } from "@/components/sections/community-gallery";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
@@ -129,23 +130,7 @@ export default async function CommunityArticlePage({
 
         {/* Image gallery */}
         {article.images && article.images.length > 0 && (
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
-            {article.images.map((src, i) => (
-              <div
-                key={src}
-                className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-[color:var(--surface)] shadow-[0_8px_24px_rgba(57,28,45,0.06)]"
-              >
-                <Image
-                  src={src}
-                  alt={`${article.title} — photo ${i + 1}`}
-                  fill
-                  className="object-cover"
-                  sizes="(min-width: 640px) 33vw, 50vw"
-                  unoptimized
-                />
-              </div>
-            ))}
-          </div>
+          <CommunityGallery images={article.images} title={article.title} />
         )}
 
         {/* Prev / Next navigation */}

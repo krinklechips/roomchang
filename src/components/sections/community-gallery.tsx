@@ -1,0 +1,135 @@
+"use client";
+
+import { useState, useEffect, useCallback } from "react";
+import { CaretLeft, CaretRight, X } from "@phosphor-icons/react";
+
+export function CommunityGallery({
+  images,
+  title,
+}: {
+  images: string[];
+  title: string;
+}) {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const isOpen = openIndex !== null;
+
+  const close = useCallback(() => setOpenIndex(null), []);
+  const prev = useCallback(
+    () => setOpenIndex((i) => (i === null ? i : (i - 1 + images.length) % images.length)),
+    [images.length],
+  );
+  const next = useCallback(
+    () => setOpenIndex((i) => (i === null ? i : (i + 1) % images.length)),
+    [images.length],
+  );
+
+  // Keyboard navigation
+  useEffect(() => {
+    if (!isOpen) return;
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") close();
+      else if (e.key === "ArrowLeft") prev();
+      else if (e.key === "ArrowRight") next();
+    }
+    window.addEventListener("keydown", onKey);
+    // Lock body scroll while the lightbox is open
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [isOpen, close, prev, next]);
+
+  return (
+    <>
+      {/* Thumbnail grid */}
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
+        {images.map((src, i) => (
+          <button
+            key={src}
+            type="button"
+            onClick={() => setOpenIndex(i)}
+            className="group relative aspect-[4/3] cursor-zoom-in overflow-hidden rounded-2xl bg-[color:var(--surface)] shadow-[0_8px_24px_rgba(57,28,45,0.06)]"
+            aria-label={`View photo ${i + 1} of ${images.length}`}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={src}
+              alt={`${title} — photo ${i + 1}`}
+              loading="lazy"
+              className="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-[1.04]"
+            />
+            <span className="absolute inset-0 bg-black/0 transition group-hover:bg-black/10" />
+          </button>
+        ))}
+      </div>
+
+      {/* Lightbox */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 p-4 backdrop-blur-sm"
+          onClick={close}
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${title} — photo viewer`}
+        >
+          {/* Close */}
+          <button
+            type="button"
+            onClick={close}
+            className="absolute right-4 top-4 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/20"
+            aria-label="Close"
+          >
+            <X size={22} weight="bold" />
+          </button>
+
+          {/* Prev */}
+          {images.length > 1 && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                prev();
+              }}
+              className="absolute left-2 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/20 sm:left-6"
+              aria-label="Previous photo"
+            >
+              <CaretLeft size={26} weight="bold" />
+            </button>
+          )}
+
+          {/* Image */}
+          <div
+            className="relative flex max-h-[88vh] max-w-[92vw] flex-col items-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={images[openIndex]}
+              alt={`${title} — photo ${openIndex + 1}`}
+              className="max-h-[82vh] max-w-full rounded-lg object-contain shadow-2xl"
+            />
+            <p className="mt-3 text-sm font-medium text-white/70">
+              {openIndex + 1} / {images.length}
+            </p>
+          </div>
+
+          {/* Next */}
+          {images.length > 1 && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                next();
+              }}
+              className="absolute right-2 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/20 sm:right-6"
+              aria-label="Next photo"
+            >
+              <CaretRight size={26} weight="bold" />
+            </button>
+          )}
+        </div>
+      )}
+    </>
+  );
+}
