@@ -53,7 +53,7 @@ export default async function CommunityPage() {
     .from("community_articles")
     .select("id, slug, title, date, description, image, imageAlt")
     .eq("published", true)
-    .order("order", { ascending: false });
+    .order("order", { ascending: true });
 
   if (error) {
     console.error("[CommunityPage] fetch failed:", error.message);
