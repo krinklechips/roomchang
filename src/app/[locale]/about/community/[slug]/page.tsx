@@ -17,6 +17,7 @@ type Article = {
   image: string;
   imageAlt: string;
   body: string[];
+  images: string[];
 };
 
 async function getArticle(slug: string): Promise<Article | null> {
@@ -116,11 +117,32 @@ export default async function CommunityArticlePage({
 
         {/* Body */}
         {article.body && article.body.length > 0 && (
-          <div className="prose prose-lg max-w-none">
+          <div className="space-y-5">
             {article.body.map((paragraph, i) => (
               <p key={i} className="text-base leading-8 text-[color:var(--text-soft)]">
                 {paragraph}
               </p>
+            ))}
+          </div>
+        )}
+
+        {/* Image gallery */}
+        {article.images && article.images.length > 0 && (
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
+            {article.images.map((src, i) => (
+              <div
+                key={src}
+                className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-[color:var(--surface)] shadow-[0_8px_24px_rgba(57,28,45,0.06)]"
+              >
+                <Image
+                  src={src}
+                  alt={`${article.title} — photo ${i + 1}`}
+                  fill
+                  className="object-cover"
+                  sizes="(min-width: 640px) 33vw, 50vw"
+                  unoptimized
+                />
+              </div>
             ))}
           </div>
         )}
