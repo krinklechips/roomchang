@@ -10,6 +10,8 @@ export type Branch = {
   description: string;
   imageSrc: string;
   imageAlt: string;
+  /** Exact "lat,lng" of this specific branch — used for the map embed pin and directions */
+  coords: string;
   /** Google Maps search query for the embed iframe */
   mapQuery: string;
   /** Lat,Lng for the directions link */
@@ -30,6 +32,7 @@ export const BRANCHES: Branch[] = [
       "Our flagship 10-storey hospital with 46 dental chairs, 4 operation rooms, an in-house CAD/CAM digital laboratory, and the full specialist team.",
     imageSrc: "/facilities/DJI_0387.jpg",
     imageAlt: "Roomchang Dental Hospital main building — Sisowath High School",
+    coords: "11.5631748,104.9255864",
     mapQuery: "Roomchang Dental Hospital, Street 184, Phnom Penh",
     mapDirectionsQuery: "Roomchang+Dental+Hospital+Street+184+Phnom+Penh+Cambodia",
   },
@@ -46,6 +49,7 @@ export const BRANCHES: Branch[] = [
       "Serving the Bassac and BKK residential communities, this branch offers specialist consultations and treatments in a quiet, accessible setting.",
     imageSrc: "/facilities/2014.jpg",
     imageAlt: "Roomchang Dental — Rose Condo Bassac branch",
+    coords: "11.5442748,104.931863",
     mapQuery: "Roomchang Dental Hospital, Bassac Garden City, Phnom Penh",
     mapDirectionsQuery: "Roomchang+Dental+Bassac+Garden+City+Chamkarmorn+Phnom+Penh+Cambodia",
   },
@@ -62,6 +66,7 @@ export const BRANCHES: Branch[] = [
       "Conveniently located on the 1st floor of AEON Mall Sen Sok — offering the full range of Roomchang dental services, 7 days a week.",
     imageSrc: "/facilities/Aeon-Mall-2018.jpg",
     imageAlt: "Roomchang Dental — AEON Mall Sen Sok branch",
+    coords: "11.6002724,104.8855684",
     mapQuery: "Roomchang Dental, AEON Mall Sen Sok, Phnom Penh",
     mapDirectionsQuery: "Roomchang+Dental+AEON+Mall+Sen+Sok+Phnom+Penh+Cambodia",
   },
@@ -78,6 +83,7 @@ export const BRANCHES: Branch[] = [
       "Located within the Euro Park development in Borey Peng Huoth — serving residents on the eastern side of Phnom Penh along National Road 1.",
     imageSrc: "/facilities/T-PH-1-2022.jpg",
     imageAlt: "Roomchang Dental — PH Euro Park branch",
+    coords: "11.5157673,104.9563122",
     mapQuery: "Roomchang Dental Hospital Borey Peng Huoth Phnom Penh",
     mapDirectionsQuery: "Roomchang+Dental+Hospital+Borey+Peng+Huoth+National+Road+1+Phnom+Penh+Cambodia",
   },
@@ -94,6 +100,7 @@ export const BRANCHES: Branch[] = [
       "Inside Fun Mall on TK Avenue in Toul Kork — our most recently opened branch, serving one of Phnom Penh's fastest-growing residential and commercial areas.",
     imageSrc: "/facilities/RCD_9243Fun Mall.jpg",
     imageAlt: "Roomchang Dental — Fun Mall TK Avenue branch",
+    coords: "11.5781534,104.8939555",
     mapQuery: "Roomchang Dental, Fun Mall, Street 315, Toul Kork, Phnom Penh",
     mapDirectionsQuery: "Roomchang+Dental+Fun+Mall+Street+315+Toul+Kork+Phnom+Penh+Cambodia",
   },

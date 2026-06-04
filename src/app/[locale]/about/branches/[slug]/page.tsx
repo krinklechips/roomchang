@@ -33,11 +33,12 @@ export default async function BranchPage({
   const branch = getBranchBySlug(slug);
   if (!branch) notFound();
 
-  // Google Maps embed URL (no API key needed for search-based embed)
-  const mapEmbedUrl = `https://maps.google.com/maps?q=${encodeURIComponent(branch.mapQuery)}&output=embed&hl=en`;
+  // Google Maps embed centered on this branch's exact coordinates (single pin,
+  // no API key needed). Using coords avoids the generic-name search showing every branch.
+  const mapEmbedUrl = `https://maps.google.com/maps?q=${encodeURIComponent(branch.coords)}&z=16&output=embed&hl=en`;
 
-  // Directions URL
-  const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${branch.mapDirectionsQuery}`;
+  // Directions URL — destination is the exact coordinate
+  const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(branch.coords)}`;
 
   // Other branches for "Also nearby" section
   const otherBranches = BRANCHES.filter((b) => b.slug !== slug);
