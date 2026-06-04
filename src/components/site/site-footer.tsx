@@ -134,7 +134,7 @@ export async function SiteFooter() {
           {/* Link columns */}
           {FOOTER_STRUCTURE.map((col) => (
             <div key={col.headingKey}>
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[color:var(--text-soft)]">
+              <p className="flex min-h-[2.5em] items-start text-xs font-semibold uppercase leading-snug tracking-[0.22em] text-[color:var(--text-soft)]">
                 {tFooter(`heading.${col.headingKey}`)}
               </p>
               <ul className="mt-4 space-y-2.5">
