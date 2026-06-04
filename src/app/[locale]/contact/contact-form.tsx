@@ -172,30 +172,30 @@ export function ContactForm({ branches, doctors }: { branches: Branch[]; doctors
                   />
                 </div>
                 <div className="space-y-2">
-                  <label htmlFor="country" className="block text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
-                    {t("label.country")}
+                  <label htmlFor="wechat" className="block text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
+                    {t("label.wechat")}
                   </label>
                   <input
-                    id="country"
-                    name="country"
+                    id="wechat"
+                    name="wechat"
                     type="text"
-                    autoComplete="country-name"
                     className="w-full rounded-xl border border-[color:var(--border-strong)] bg-white px-4 py-3 text-sm text-[color:var(--text-main)] placeholder-[color:var(--text-soft)]/50 outline-none transition focus:border-[color:var(--brand)] focus:ring-2 focus:ring-[color:var(--brand)]/20"
-                    placeholder={t("placeholder.country")}
+                    placeholder={t("placeholder.wechat")}
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="wechat" className="block text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
-                  {t("label.wechat")}
+                <label htmlFor="country" className="block text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
+                  {t("label.country")}
                 </label>
                 <input
-                  id="wechat"
-                  name="wechat"
+                  id="country"
+                  name="country"
                   type="text"
+                  autoComplete="country-name"
                   className="w-full rounded-xl border border-[color:var(--border-strong)] bg-white px-4 py-3 text-sm text-[color:var(--text-main)] placeholder-[color:var(--text-soft)]/50 outline-none transition focus:border-[color:var(--brand)] focus:ring-2 focus:ring-[color:var(--brand)]/20"
-                  placeholder={t("placeholder.wechat")}
+                  placeholder={t("placeholder.country")}
                 />
               </div>
 
