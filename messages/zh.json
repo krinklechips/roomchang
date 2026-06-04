@@ -602,12 +602,15 @@
     "consultationHeading": "免费初诊咨询*",
     "consultationDisclaimer": "*视病例复杂程度而定。部分病例可能收取咨询费。所有价格以美元计。最终价格在临床评估后确认。价格可能变动——请联系我们获取最新报价。",
     "compareLink": "与澳洲价格对比",
+    "internationalCompareNote": "从海外前来？查看我们的价格与澳大利亚在完整 ADA 治疗项目上的对比。",
+    "internationalCompareLink": "Roomchang vs. 澳大利亚",
     "cta": {
       "heading": "获取您的精确报价",
       "body": "发送您的X光片或照片，我们将在两个工作日内提供详细的治疗方案和精确报价——完全免费。",
       "button": "申请免费报价"
     },
     "comparison": {
+      "eyebrow": "致国际患者",
       "heading": "Roomchang vs. 澳大利亚",
       "subheading": "以下所有治疗均按照澳大利亚牙科协会 (ADA) 标准。相同的国际品质材料和方案，费用仅为一小部分。",
       "exchangeRateLabel": "使用汇率：",
@@ -616,7 +619,11 @@
       "colRoomchang": "Roomchang（美元）",
       "colAustralia": "澳大利亚（澳元）",
       "seeImplants": "查看种植牙价格对比",
-      "sourcePrefix": "* "
+      "sourcePrefix": "* ",
+      "ctaPrimary": "获取个性化报价",
+      "ctaHeading": "值得一趟吗？",
+      "ctaBody": "发送您的X光片或照片，我们将在两个工作日内为您准备详细的治疗计划和准确报价——完全免费。",
+      "ctaButton": "申请免费报价"
     }
   },
   "clinicalResults": {

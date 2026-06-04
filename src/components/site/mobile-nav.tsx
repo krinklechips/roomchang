@@ -63,6 +63,7 @@ const NAV_ITEMS: NavItem[] = [
     href: "/pricing",
     children: [
       { tKey: "dentalTreatmentCosts", href: "/pricing" },
+      { tKey: "priceComparison", href: "/international/price-comparison" },
       { tKey: "implantsComparison", href: "/pricing/implants-comparison" },
     ],
   },

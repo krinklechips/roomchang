@@ -602,12 +602,15 @@
     "consultationHeading": "Free initial consultation*",
     "consultationDisclaimer": "*Subject to case complexity. Some cases may incur a consultation fee. All prices in USD. Final pricing confirmed after clinical assessment. Prices subject to change — please contact us for the latest quote.",
     "compareLink": "Compare with Australian prices",
+    "internationalCompareNote": "Travelling from abroad? See how our prices compare to Australia across the full ADA treatment schedule.",
+    "internationalCompareLink": "Roomchang vs. Australia",
     "cta": {
       "heading": "Get your exact quote",
       "body": "Send us your X-rays or photos and we'll provide a detailed treatment plan with exact pricing within two business days — at no charge.",
       "button": "Request a Free Quote"
     },
     "comparison": {
+      "eyebrow": "For International Patients",
       "heading": "Roomchang vs. Australia",
       "subheading": "Every treatment below follows the Australian Dental Association (ADA) schedule. Same international-quality materials and protocols at a fraction of the cost.",
       "exchangeRateLabel": "Exchange rate used:",
@@ -616,7 +619,11 @@
       "colRoomchang": "Roomchang (USD)",
       "colAustralia": "Australia (AUD)",
       "seeImplants": "See dental implants comparison",
-      "sourcePrefix": "* "
+      "sourcePrefix": "* ",
+      "ctaPrimary": "Get a Personalised Quote",
+      "ctaHeading": "Worth the trip?",
+      "ctaBody": "Send us your X-rays or photos and we'll prepare a detailed treatment plan with exact pricing within two business days — at no charge.",
+      "ctaButton": "Request a Free Quote"
     }
   },
   "clinicalResults": {
