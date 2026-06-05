@@ -6,10 +6,17 @@ import { CaretLeft, CaretRight, X } from "@phosphor-icons/react";
 export function CommunityGallery({
   images,
   title,
+  columns = 3,
 }: {
   images: string[];
   title: string;
+  /** Max thumbnails per row on desktop (default 3). Use more for smaller thumbnails. */
+  columns?: 3 | 4 | 5;
 }) {
+  const gridCols =
+    columns === 5 ? "sm:grid-cols-4 lg:grid-cols-5" :
+    columns === 4 ? "sm:grid-cols-3 lg:grid-cols-4" :
+    "sm:grid-cols-3";
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const isOpen = openIndex !== null;
   const triggerRef = useRef<HTMLButtonElement | null>(null);
@@ -53,7 +60,7 @@ export function CommunityGallery({
   return (
     <>
       {/* Thumbnail grid */}
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
+      <div className={`grid grid-cols-2 gap-3 sm:gap-4 ${gridCols}`}>
         {images.map((src, i) => (
           <button
             key={`${src}-${i}`}

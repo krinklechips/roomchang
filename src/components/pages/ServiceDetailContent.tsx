@@ -236,7 +236,37 @@ function Gallery({ s }: { s: Extract<ServiceSection, { type: "gallery" }> }) {
       {s.heading && <h2 className="font-display text-3xl text-[color:var(--text-main)]">{s.heading}</h2>}
       {s.subheading && <p className="mt-3 max-w-2xl text-sm leading-7 text-[color:var(--text-soft)]">{s.subheading}</p>}
       <div className={s.heading || s.subheading ? "mt-8" : ""}>
-        <CommunityGallery images={s.images} title={s.heading ?? "Gallery"} />
+        {/* 4-up grid keeps thumbnails small (these diagrams are low-res) */}
+        <CommunityGallery images={s.images} title={s.heading ?? "Gallery"} columns={4} />
+      </div>
+    </div>
+  );
+}
+
+function PriceTable({ s }: { s: Extract<ServiceSection, { type: "pricetable" }> }) {
+  return (
+    <div>
+      {s.heading && <h2 className="font-display text-3xl text-[color:var(--text-main)]">{s.heading}</h2>}
+      {s.subheading && <p className="mt-3 max-w-2xl text-sm leading-7 text-[color:var(--text-soft)]">{s.subheading}</p>}
+      <div className="mt-8 overflow-hidden rounded-3xl border border-[color:var(--brand-soft)] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)]">
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[480px] text-sm">
+            <thead>
+              <tr className="border-b border-[color:var(--brand-soft)] bg-[color:var(--surface)]">
+                <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">Treatment</th>
+                <th className="px-6 py-4 text-right text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--brand-deep)]">Price (USD)</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-[color:var(--brand-soft)]">
+              {s.rows.map((row) => (
+                <tr key={row.treatment} className="transition hover:bg-[color:var(--surface)]">
+                  <td className="px-6 py-4 font-medium text-[color:var(--text-main)]">{row.treatment}</td>
+                  <td className="px-6 py-4 text-right font-bold text-[color:var(--brand-deep)]">{row.price}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
@@ -257,6 +287,7 @@ function RenderSection({
   if (s.type === "cards") return <Cards s={s} />;
   if (s.type === "steps") return <Steps s={s} />;
   if (s.type === "gallery") return <Gallery s={s} />;
+  if (s.type === "pricetable") return <PriceTable s={s} />;
   if (s.type === "pricing") return <PricingCTA s={s} ctaLabel={pricingCtaLabel} ctaNote={pricingCtaNote} />;
   if (s.type === "twocol") {
     return (
