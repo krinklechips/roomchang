@@ -57,6 +57,7 @@ export type ServiceSection =
   | { type: "cards"; heading: string; subheading?: string; numbered?: boolean; columns?: number; items: { title: string; body: string; tag?: string; icon?: string; badge?: string; spec?: string; link?: string }[] }
   | { type: "steps"; heading: string; subheading?: string; items: { step: string; detail: string }[] }
   | { type: "pricing"; heading?: string; subheading?: string; rows: { treatment: string; price: string }[] }
+  | { type: "gallery"; heading?: string; subheading?: string; images: string[] }
   | { type: "twocol"; left: ServiceSection; right: ServiceSection };
 
 export type Service = {

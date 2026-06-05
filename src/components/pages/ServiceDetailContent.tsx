@@ -26,6 +26,7 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import type { Icon as PhosphorIcon } from "@phosphor-icons/react/dist/lib/types";
 import { SiteShell } from "@/components/site/site-shell";
+import { CommunityGallery } from "@/components/sections/community-gallery";
 import type { Service, ServiceSection } from "@/lib/data";
 import { cdnUrl } from "@/lib/supabase";
 import { getTranslations } from "next-intl/server";
@@ -229,6 +230,18 @@ function PricingCTA({
   );
 }
 
+function Gallery({ s }: { s: Extract<ServiceSection, { type: "gallery" }> }) {
+  return (
+    <div>
+      {s.heading && <h2 className="font-display text-3xl text-[color:var(--text-main)]">{s.heading}</h2>}
+      {s.subheading && <p className="mt-3 max-w-2xl text-sm leading-7 text-[color:var(--text-soft)]">{s.subheading}</p>}
+      <div className={s.heading || s.subheading ? "mt-8" : ""}>
+        <CommunityGallery images={s.images} title={s.heading ?? "Gallery"} />
+      </div>
+    </div>
+  );
+}
+
 function RenderSection({
   s,
   pricingCtaLabel,
@@ -243,6 +256,7 @@ function RenderSection({
   if (s.type === "list") return <BulletList s={s} />;
   if (s.type === "cards") return <Cards s={s} />;
   if (s.type === "steps") return <Steps s={s} />;
+  if (s.type === "gallery") return <Gallery s={s} />;
   if (s.type === "pricing") return <PricingCTA s={s} ctaLabel={pricingCtaLabel} ctaNote={pricingCtaNote} />;
   if (s.type === "twocol") {
     return (
