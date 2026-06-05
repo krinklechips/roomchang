@@ -863,10 +863,18 @@ export function Chatbot() {
     scrollToBottom();
   }, [messages, isStreaming, showDatePicker, showTimePicker, scrollToBottom]);
 
-  // Focus input when opened
+  // On open: jump to the latest message (don't auto-focus the input — that
+  // pops the mobile keyboard and shoves the conversation up).
   useEffect(() => {
-    if (open) inputRef.current?.focus();
-  }, [open]);
+    if (!open) return;
+    // wait for the panel's open animation to settle, then pin to the bottom
+    const t1 = setTimeout(scrollToBottom, 60);
+    const t2 = setTimeout(scrollToBottom, 260);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
+  }, [open, scrollToBottom]);
 
   // Close on Escape
   useEffect(() => {
@@ -1322,62 +1330,83 @@ export function Chatbot() {
             disabled={isStreaming}
           />
 
-          {/* Input */}
-          <form
-            onSubmit={handleSend}
-            autoComplete="off"
-            data-form-type="other"
-            className="flex shrink-0 items-center gap-2 border-t border-[color:var(--border-strong)] px-4 py-3"
-          >
-            <input
-              ref={inputRef}
-              type="text"
-              name="chatbot-msg"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Type your message..."
-              disabled={isStreaming}
-              autoComplete="off"
-              autoCorrect="on"
-              autoCapitalize="sentences"
-              spellCheck
-              enterKeyHint="send"
-              inputMode="text"
-              data-form-type="other"
-              data-lpignore="true"
-              data-1p-ignore
-              className="min-w-0 flex-1 rounded-xl border border-[color:var(--border-strong)] bg-[color:var(--surface)] px-4 py-2.5 text-sm text-[color:var(--text-main)] placeholder:text-[color:var(--text-soft)]/50 outline-none transition focus:border-[color:var(--brand-light)] focus:ring-2 focus:ring-[color:var(--brand-soft)] disabled:opacity-50"
-            />
-            {voiceSupported && (
+          {/* Input — voice control bar while in a voice conversation, else text input */}
+          {voiceMode ? (
+            <div className="flex shrink-0 items-center gap-3 border-t border-[color:var(--border-strong)] px-4 py-3">
+              <div className="flex flex-1 items-center gap-3 rounded-xl bg-[color:var(--brand-soft)] px-4 py-2.5">
+                <span className="relative flex h-3 w-3 shrink-0">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[color:var(--brand)] opacity-60" />
+                  <span className="relative inline-flex h-3 w-3 rounded-full bg-[color:var(--brand)]" />
+                </span>
+                <span className="text-sm font-medium text-[color:var(--brand-deep)]">
+                  {voiceState === "thinking"
+                    ? "Thinking…"
+                    : voiceState === "speaking"
+                      ? "Speaking…"
+                      : "Listening…"}
+                </span>
+              </div>
               <button
                 type="button"
                 onClick={toggleVoiceMode}
-                disabled={isStreaming && !voiceMode}
-                aria-label={voiceMode ? "Stop voice conversation" : "Start voice conversation"}
-                aria-pressed={voiceMode}
-                title={voiceMode ? "Tap to stop" : "Talk to us"}
-                className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition disabled:opacity-40 ${
-                  voiceMode
-                    ? "animate-pulse border-[color:var(--brand)] bg-[color:var(--brand)] text-white"
-                    : "border-[color:var(--border-strong)] bg-[color:var(--surface)] text-[color:var(--brand-deep)] hover:border-[color:var(--brand-light)]"
-                }`}
+                aria-label="Stop voice conversation"
+                className="flex h-10 shrink-0 items-center gap-1.5 rounded-full bg-[color:var(--brand)] px-4 text-sm font-bold text-white transition hover:bg-[color:var(--brand-deep)]"
               >
-                {voiceMode ? <X size={18} weight="bold" /> : <Microphone size={18} />}
+                <X size={16} weight="bold" /> Stop
               </button>
-            )}
-            <button
-              type="submit"
-              disabled={isStreaming || !input.trim()}
-              aria-label="Send message"
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[color:var(--brand)] text-white transition hover:bg-[color:var(--brand-deep)] disabled:opacity-40"
+            </div>
+          ) : (
+            <form
+              onSubmit={handleSend}
+              autoComplete="off"
+              data-form-type="other"
+              className="flex shrink-0 items-center gap-2 border-t border-[color:var(--border-strong)] px-4 py-3"
             >
-              {isStreaming ? (
-                <SpinnerGap size={18} className="animate-spin" />
-              ) : (
-                <PaperPlaneTilt size={18} weight="fill" />
+              <input
+                ref={inputRef}
+                type="text"
+                name="chatbot-msg"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Type your message..."
+                disabled={isStreaming}
+                autoComplete="off"
+                autoCorrect="on"
+                autoCapitalize="sentences"
+                spellCheck
+                enterKeyHint="send"
+                inputMode="text"
+                data-form-type="other"
+                data-lpignore="true"
+                data-1p-ignore
+                className="min-w-0 flex-1 rounded-xl border border-[color:var(--border-strong)] bg-[color:var(--surface)] px-4 py-2.5 text-sm text-[color:var(--text-main)] placeholder:text-[color:var(--text-soft)]/50 outline-none transition focus:border-[color:var(--brand-light)] focus:ring-2 focus:ring-[color:var(--brand-soft)] disabled:opacity-50"
+              />
+              {voiceSupported && !input.trim() && (
+                <button
+                  type="button"
+                  onClick={toggleVoiceMode}
+                  disabled={isStreaming}
+                  aria-label="Start voice conversation"
+                  title="Talk to us"
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[color:var(--border-strong)] bg-[color:var(--surface)] text-[color:var(--brand-deep)] transition hover:border-[color:var(--brand-light)] disabled:opacity-40"
+                >
+                  <Microphone size={18} />
+                </button>
               )}
-            </button>
-          </form>
+              <button
+                type="submit"
+                disabled={isStreaming || !input.trim()}
+                aria-label="Send message"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[color:var(--brand)] text-white transition hover:bg-[color:var(--brand-deep)] disabled:opacity-40"
+              >
+                {isStreaming ? (
+                  <SpinnerGap size={18} className="animate-spin" />
+                ) : (
+                  <PaperPlaneTilt size={18} weight="fill" />
+                )}
+              </button>
+            </form>
+          )}
         </div>
       )}
 
