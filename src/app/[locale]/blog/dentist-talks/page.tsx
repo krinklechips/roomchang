@@ -14,102 +14,102 @@ const YOUTUBE_PLAYLIST_ID = "PL2Dq5LzBKy4wi9hCaXPEoFhY1xY-LoN46";
 export const DENTIST_TALKS = [
   {
     id: "Sj212poMjQQ",
-    title: 'ប្រធានបទ  " ដំណោះស្រាយចំពោះបញ្ហាក្លិនមាត់ "',
+    title: "Solutions for Bad Breath",
     topic: "Oral Hygiene",
   },
   {
     id: "zajv8AuutfE",
-    title: 'ប្រធានបទ  " ការធ្វើធ្មេញឲ្យសស្អាត "',
+    title: "How to Get Whiter, Brighter Teeth",
     topic: "Cosmetic Dentistry",
   },
   {
     id: "cilwCM3Iguc",
-    title: "ប្រធាន “ ភាពខុសគ្នារវាងការសម្អាតធ្មេញ និង ការធ្វើអោយធ្មេញស ”",
+    title: "Teeth Cleaning vs. Teeth Whitening: What's the Difference?",
     topic: "Cosmetic Dentistry",
   },
   {
     id: "H-57t06LuqE",
-    title: 'ប្រធានបទ " ជំងឺរលាកអញ្ចាញធ្មេញ "',
+    title: "Understanding Gum Disease",
     topic: "Periodontal Dentistry",
   },
   {
     id: "xQrmC7xfpis",
-    title: "ប្រធានបទៈ វិធីថែទាំ និងការព្យាបាលធ្មេញកុមារ",
+    title: "Caring For and Treating Children's Teeth",
     topic: "Pediatric Dentistry",
   },
   {
     id: "p7Elqx5UUo4",
-    title: "តើលោកអ្នកគួរតែទៅជួបពេទ្យធ្មេញដែរឬទេ  ប្រសិនបើអ្នកមិនឈឺធ្មេញ?",
+    title: "Should You See a Dentist If Your Teeth Don't Hurt?",
     topic: "Preventive Dentistry",
   },
   {
     id: "aseJoChyLM8",
-    title: "ការបិតការពារ ចង្អូរធ្មេញកុមារ Fissure Sealant",
+    title: "Fissure Sealants for Children's Teeth",
     topic: "Pediatric Dentistry",
   },
   {
     id: "X8GvbpfjMAU",
-    title: "ប្រធានបទ​ ៖ ការការពារធ្មេញសឹក ពីការសង្កៀតធ្មេញ",
+    title: "Protecting Teeth from Grinding and Wear",
     topic: "Preventive Dentistry",
   },
   {
     id: "vTLQyPsjEvo",
-    title: 'លោកទន្តបណ្ឌិត "ស៊ឺន រតនៈ" បកស្រាយលើប្រធានបទ "ស្រៀវធ្មេញ"',
+    title: "Tooth Sensitivity, Explained by Dr. Seun Rathanak",
     topic: "General Dentistry",
   },
   {
     id: "8I06e8cQzAo",
-    title: "តើពេលណាជាពេលវេលាល្អ សម្រាប់កុមារក្នុងការពិភាក្សាពត់ធ្មេញលើកដំបូង?",
+    title: "When Should a Child Have Their First Orthodontic Visit?",
     topic: "Orthodontics",
   },
   {
     id: "TjCpgw7GDYQ",
-    title: "ជំងឺរលាកជាលិកាជុំវិញធ្មេញ ឬជំងឺរាក់សុីធ្មេញ  បកស្រាយដោយ ទន្តបណ្ឌិត ម៉េង ហាំង",
+    title: "Periodontal Disease, Explained by Dr. Meng Hang",
     topic: "Periodontal Dentistry",
   },
   {
     id: "WsaRFqhtULQ",
-    title: 'ទន្តបណ្ឌិត "សំ ចាន់ផល្លីកា" | "តើស្ត្រីមានផ្ទៃពោះគួរទៅពិនិត្យសុខភាពមាត់ធ្មេញដែរឬទេ? "',
+    title: "Should Pregnant Women See a Dentist? — Dr. Sam Chanphallyka",
     topic: "Preventive Dentistry",
   },
   {
     id: "3IeYTNI9hR8",
-    title: "ជំងឺមាត់ធ្មេញលេីកុមារតូចៗ​  Early Childhood Carries",
+    title: "Early Childhood Caries (Tooth Decay in Young Children)",
     topic: "Pediatric Dentistry",
   },
   {
     id: "7GFKeh5GlSA",
-    title: 'ការថែទាំសុខភាពមាត់ធ្មេញឲ្យបានត្រឹមត្រូវ (បកស្រាយដោយ "ទន្តបណ្ឌិត ឡៅ ច័ន្ទវត្តី )',
+    title: "How to Care for Your Teeth Properly — Dr. Lao Chanvattey",
     topic: "Preventive Dentistry",
   },
   {
     id: "FDTUTfFDESI",
-    title: 'ប្រធានបទ "ផលប៉ះពាល់នៃការគេងស្រមុក និងស្ទះដង្ហើមពេលគេង"',
+    title: "The Effects of Snoring and Sleep Apnea",
     topic: "Sleep Apnea",
   },
   {
     id: "ZpQZqMHN4us",
-    title: "សុខភាពមាត់ធ្មេញទារក និងកុមារ",
+    title: "Oral Health for Babies and Children",
     topic: "Pediatric Dentistry",
   },
   {
     id: "sUghKx1CrnA",
-    title: "Interview Dr_ Kyhak Topic Implantology",
+    title: "Interview with Dr. Heng Kyhak: Implantology",
     topic: "Implantology",
   },
   {
     id: "0dxBq4qkGDY",
-    title: "Roomchang Dental Hospital with Dr. Tith Hong Yoeu _ Dentistry Uncensored with Howard Farran",
+    title: "Roomchang Dental Hospital with Dr. Tith Hong Yoeu — Dentistry Uncensored with Howard Farran",
     topic: "Interview",
   },
   {
     id: "cWWiy-CxvJI",
-    title: "Roomchang in the news [Implant, crown, teeth, dentistry]",
+    title: "Roomchang in the News — Implants, Crowns & Dentistry",
     topic: "News",
   },
   {
     id: "lOlr2xdYjlM",
-    title: "Roomchang TVC En",
+    title: "Roomchang TVC (English)",
     topic: "Roomchang",
   },
   {
@@ -129,7 +129,7 @@ export const DENTIST_TALKS = [
   },
   {
     id: "98xjrKSG2Tg",
-    title: '​"ធ្មេញថ្គាមទាល់" បកស្រាយដោយទន្តបណ្ឌិត​  តារា ណារិទ្ធ',
+    title: "Impacted Wisdom Teeth, Explained by Dr. Dara Narith",
     topic: "Oral Surgery",
   },
 ];
