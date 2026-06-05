@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useState, useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { LanguageSwitcher } from "./language-switcher";
@@ -100,6 +101,23 @@ export function SiteHeader() {
   const t = useTranslations("nav");
   const tHeader = useTranslations("header");
 
+  // Which dropdown is open via tap (touch devices have no hover, so CSS
+  // group-hover alone never opens the menus on iPad/tablets).
+  const [openKey, setOpenKey] = useState<string | null>(null);
+  const navRef = useRef<HTMLElement>(null);
+
+  // Close the tapped-open menu when tapping/clicking outside the nav.
+  useEffect(() => {
+    if (!openKey) return;
+    function onPointerDown(e: PointerEvent) {
+      if (navRef.current && !navRef.current.contains(e.target as Node)) {
+        setOpenKey(null);
+      }
+    }
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, [openKey]);
+
   return (
     <header
       aria-label={tHeader("ariaLabel")}
@@ -121,12 +139,25 @@ export function SiteHeader() {
 
         {/* Desktop nav */}
         <div className="hidden items-center gap-3 xl:gap-4 2xl:gap-6 lg:flex">
-          <nav aria-label="Primary" className="flex items-center gap-px xl:gap-0.5 2xl:gap-1">
+          <nav ref={navRef} aria-label="Primary" className="flex items-center gap-px xl:gap-0.5 2xl:gap-1">
             {NAV_ITEMS.map((item) =>
               item.children ? (
                 <div key={item.tKey} className="group relative">
                   <Link
                     href={item.href}
+                    aria-expanded={openKey === item.tKey}
+                    onClick={(e) => {
+                      // On touch devices (no hover) the first tap opens the
+                      // menu instead of navigating; a second tap follows the link.
+                      if (
+                        openKey !== item.tKey &&
+                        typeof window !== "undefined" &&
+                        window.matchMedia("(hover: none)").matches
+                      ) {
+                        e.preventDefault();
+                        setOpenKey(item.tKey);
+                      }
+                    }}
                     className="flex items-center gap-0.5 rounded-lg px-1.5 py-2 text-[11px] font-semibold text-[color:var(--text-soft)] transition-colors hover:bg-[color:var(--brand-soft)] hover:text-[color:var(--brand-deep)] xl:gap-1 xl:px-2 xl:text-[13px] 2xl:px-3 2xl:text-sm"
                   >
                     {t(item.tKey)}
@@ -136,19 +167,24 @@ export function SiteHeader() {
                       viewBox="0 0 12 12"
                       fill="none"
                       aria-hidden="true"
-                      className="mt-px size-2.5 transition-transform duration-200 group-hover:rotate-180 2xl:size-3"
+                      className={`mt-px size-2.5 transition-transform duration-200 group-hover:rotate-180 2xl:size-3 ${openKey === item.tKey ? "rotate-180" : ""}`}
                     >
                       <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   </Link>
 
-                  {/* Dropdown */}
-                  <div className="invisible absolute left-0 top-[calc(100%+0.25rem)] z-50 min-w-52 opacity-0 transition-all duration-150 group-hover:visible group-hover:opacity-100">
+                  {/* Dropdown — opens on hover (mouse) or tap (touch) */}
+                  <div
+                    className={`absolute left-0 top-[calc(100%+0.25rem)] z-50 min-w-52 transition-all duration-150 group-hover:visible group-hover:opacity-100 ${
+                      openKey === item.tKey ? "visible opacity-100" : "invisible opacity-0"
+                    }`}
+                  >
                     <div className="rounded-2xl border border-[color:var(--border-strong)] bg-white/98 p-1.5 shadow-[0_20px_50px_rgba(61,24,47,0.14)] backdrop-blur">
                       {item.children.map((child) => (
                         <Link
                           key={child.tKey}
                           href={child.href}
+                          onClick={() => setOpenKey(null)}
                           className="flex items-center rounded-xl px-3 py-2.5 text-sm font-medium text-[color:var(--text-main)] transition-colors hover:bg-[color:var(--brand-soft)] hover:text-[color:var(--brand-deep)]"
                         >
                           {t(child.tKey)}
