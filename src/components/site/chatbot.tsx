@@ -11,10 +11,8 @@ import {
   CaretLeft,
   CaretRight,
   Microphone,
-  SpeakerHigh,
-  SpeakerSlash,
 } from "@phosphor-icons/react";
-import { useSpeech } from "@/lib/use-speech";
+import { useVoiceRecorder } from "@/lib/use-voice-recorder";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -807,14 +805,17 @@ export function Chatbot() {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [hydrated, setHydrated] = useState(false);
   const [showBubble, setShowBubble] = useState(false);
-  const [voiceOutput, setVoiceOutput] = useState(false);
+  const [voiceMode, setVoiceMode] = useState(false);
+  const [voiceSupported, setVoiceSupported] = useState(false);
 
-  // Voice (Web Speech API — English only for now)
-  const { sttSupported, ttsSupported, listening, startListening, stopListening, speak, cancelSpeak } = useSpeech();
+  // Voice conversation (OpenAI Whisper STT + OpenAI TTS). English only for now.
+  const { state: voiceState, setState: setVoiceState, listenOnce, cancel: cancelVoice, release: releaseVoice } = useVoiceRecorder();
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const lastSpokenIdRef = useRef<string | null>(null);
+  const voiceModeRef = useRef(false);
+  const ttsAudioRef = useRef<HTMLAudioElement | null>(null);
 
   // ─── Session persistence ──────────────────────────────────────────────────
 
@@ -937,29 +938,125 @@ export function Chatbot() {
     sendMessage(text);
   }
 
-  // Voice input — dictate into the message field
-  function toggleMic() {
-    if (listening) {
-      stopListening();
+  // ─── Voice conversation (Whisper STT + OpenAI TTS) ─────────────────────────
+
+  const stopTtsAudio = useCallback(() => {
+    const a = ttsAudioRef.current;
+    if (a) {
+      a.pause();
+      a.src = "";
+      ttsAudioRef.current = null;
+    }
+  }, []);
+
+  const exitVoiceMode = useCallback(() => {
+    voiceModeRef.current = false;
+    setVoiceMode(false);
+    cancelVoice();
+    releaseVoice();
+    stopTtsAudio();
+  }, [cancelVoice, releaseVoice, stopTtsAudio]);
+
+  // Listen for one spoken turn → transcribe → send. The reply + read-aloud +
+  // next turn are driven by the effect below.
+  const runVoiceTurn = useCallback(async () => {
+    if (!voiceModeRef.current) return;
+    const blob = await listenOnce();
+    if (!voiceModeRef.current) return;
+    if (!blob) {
+      // 10s of silence (or cancelled) → leave voice mode
+      exitVoiceMode();
       return;
     }
-    startListening((transcript) => setInput(transcript));
+    setVoiceState("thinking");
+    try {
+      const fd = new FormData();
+      fd.append("audio", blob, "speech.webm");
+      const res = await fetch("/api/transcribe", { method: "POST", body: fd });
+      const data = await res.json();
+      if (!voiceModeRef.current) return;
+      const text = (data?.text ?? "").trim();
+      if (!text) {
+        runVoiceTurn(); // nothing heard — listen again
+        return;
+      }
+      sendMessage(text);
+    } catch {
+      if (voiceModeRef.current) runVoiceTurn();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [listenOnce, exitVoiceMode, setVoiceState]);
+
+  function toggleVoiceMode() {
+    if (voiceModeRef.current) {
+      exitVoiceMode();
+      return;
+    }
+    if (isStreaming) return;
+    voiceModeRef.current = true;
+    setVoiceMode(true);
+    runVoiceTurn();
   }
 
-  // Voice output — read the latest assistant reply aloud (once streaming finishes)
+  // When a reply finishes streaming in voice mode: speak it (OpenAI TTS), then
+  // listen for the next turn once playback ends.
   useEffect(() => {
-    if (!voiceOutput || isStreaming) return;
+    if (!voiceMode || isStreaming) return;
     const last = messages[messages.length - 1];
-    if (last && last.role === "assistant" && last.id !== lastSpokenIdRef.current) {
-      lastSpokenIdRef.current = last.id;
-      speak(stripBookingBlock(last.content));
-    }
-  }, [messages, isStreaming, voiceOutput, speak]);
+    if (!last || last.role !== "assistant" || last.id === lastSpokenIdRef.current) return;
+    lastSpokenIdRef.current = last.id;
 
-  // Stop any speech when read-aloud is switched off
+    const text = stripBookingBlock(last.content);
+    if (!text) {
+      if (voiceModeRef.current) runVoiceTurn();
+      return;
+    }
+
+    let cancelled = false;
+    setVoiceState("speaking");
+    (async () => {
+      try {
+        const res = await fetch("/api/tts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text }),
+        });
+        if (!res.ok) throw new Error("tts failed");
+        const buf = await res.arrayBuffer();
+        if (cancelled || !voiceModeRef.current) return;
+        const url = URL.createObjectURL(new Blob([buf], { type: "audio/mpeg" }));
+        const audio = new Audio(url);
+        ttsAudioRef.current = audio;
+        const next = () => {
+          URL.revokeObjectURL(url);
+          if (voiceModeRef.current) runVoiceTurn();
+        };
+        audio.onended = next;
+        audio.onerror = next;
+        await audio.play();
+      } catch {
+        if (voiceModeRef.current) runVoiceTurn(); // skip speaking, keep the conversation going
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [messages, isStreaming, voiceMode, runVoiceTurn, setVoiceState]);
+
+  // Clean up the mic/audio if the panel closes
   useEffect(() => {
-    if (!voiceOutput) cancelSpeak();
-  }, [voiceOutput, cancelSpeak]);
+    if (!open && voiceModeRef.current) exitVoiceMode();
+  }, [open, exitVoiceMode]);
+
+  // Voice needs mic recording — supported on iOS Safari, Android, and desktop over HTTPS
+  useEffect(() => {
+    setVoiceSupported(
+      typeof navigator !== "undefined" &&
+        !!navigator.mediaDevices?.getUserMedia &&
+        typeof window !== "undefined" &&
+        typeof window.MediaRecorder !== "undefined",
+    );
+  }, []);
 
   async function sendMessage(text: string) {
     if (!text || isStreaming) return;
@@ -1122,20 +1219,24 @@ export function Chatbot() {
           <div className="flex shrink-0 items-center justify-between bg-[color:var(--brand)] px-5 py-4">
             <div>
               <p className="font-display text-lg text-white">Roomchang</p>
-              <p className="text-[11px] text-white/70">Virtual Assistant</p>
+              <p className="text-[11px] text-white/70">
+                {voiceMode
+                  ? voiceState === "recording"
+                    ? "Listening…"
+                    : voiceState === "thinking"
+                      ? "Thinking…"
+                      : voiceState === "speaking"
+                        ? "Speaking…"
+                        : "Listening…"
+                  : "Virtual Assistant"}
+              </p>
             </div>
             <div className="flex items-center gap-1">
-              {ttsSupported && (
-                <button
-                  type="button"
-                  onClick={() => setVoiceOutput((v) => !v)}
-                  aria-label={voiceOutput ? "Turn off read-aloud" : "Read replies aloud"}
-                  aria-pressed={voiceOutput}
-                  title={voiceOutput ? "Read-aloud is on" : "Read replies aloud"}
-                  className="flex h-8 w-8 items-center justify-center rounded-full text-white/70 transition hover:bg-white/20 hover:text-white"
-                >
-                  {voiceOutput ? <SpeakerHigh size={17} weight="fill" /> : <SpeakerSlash size={17} />}
-                </button>
+              {voiceMode && (
+                <span className="mr-1 flex items-center gap-1.5 rounded-full bg-white/15 px-2.5 py-1 text-[11px] font-medium text-white">
+                  <Microphone size={13} weight="fill" className="animate-pulse" />
+                  Voice
+                </span>
               )}
               <button
                 type="button"
@@ -1247,21 +1348,21 @@ export function Chatbot() {
               data-1p-ignore
               className="min-w-0 flex-1 rounded-xl border border-[color:var(--border-strong)] bg-[color:var(--surface)] px-4 py-2.5 text-sm text-[color:var(--text-main)] placeholder:text-[color:var(--text-soft)]/50 outline-none transition focus:border-[color:var(--brand-light)] focus:ring-2 focus:ring-[color:var(--brand-soft)] disabled:opacity-50"
             />
-            {sttSupported && (
+            {voiceSupported && (
               <button
                 type="button"
-                onClick={toggleMic}
-                disabled={isStreaming}
-                aria-label={listening ? "Stop voice input" : "Start voice input"}
-                aria-pressed={listening}
-                title={listening ? "Listening… click to stop" : "Speak your message"}
+                onClick={toggleVoiceMode}
+                disabled={isStreaming && !voiceMode}
+                aria-label={voiceMode ? "Stop voice conversation" : "Start voice conversation"}
+                aria-pressed={voiceMode}
+                title={voiceMode ? "Tap to stop" : "Talk to us"}
                 className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition disabled:opacity-40 ${
-                  listening
+                  voiceMode
                     ? "animate-pulse border-[color:var(--brand)] bg-[color:var(--brand)] text-white"
                     : "border-[color:var(--border-strong)] bg-[color:var(--surface)] text-[color:var(--brand-deep)] hover:border-[color:var(--brand-light)]"
                 }`}
               >
-                <Microphone size={18} weight={listening ? "fill" : "regular"} />
+                {voiceMode ? <X size={18} weight="bold" /> : <Microphone size={18} />}
               </button>
             )}
             <button
