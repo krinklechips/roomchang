@@ -66,12 +66,12 @@ const FACILITY_SECTIONS = [
 ];
 
 const GALLERY_INTERIOR = [
-  { src: "/facilities/facility-treatment-abroad.jpg",      alt: "Roomchang treatment room — international patient care" },
-  { src: "/facilities/facility-room-a.jpg",                alt: "Roomchang dental chair and treatment suite" },
-  { src: "/facilities/facility-room-b.jpg",                alt: "Modern dental treatment room at Roomchang" },
-  { src: "/facilities/facility-room-c.jpg",                alt: "Specialist dental suite with advanced equipment" },
-  { src: "/facilities/treatment-room-1.jpg",               alt: "Treatment room at Roomchang Dental Hospital" },
-  { src: "/facilities/international-patient-consultation.jpg", alt: "International patient consultation at Roomchang" },
+  { src: "/about/facilities/facility-treatment-abroad.jpg",      alt: "Roomchang treatment room — international patient care" },
+  { src: "/about/facilities/facility-room-a.jpg",                alt: "Roomchang dental chair and treatment suite" },
+  { src: "/about/facilities/facility-room-b.jpg",                alt: "Modern dental treatment room at Roomchang" },
+  { src: "/about/facilities/facility-room-c.jpg",                alt: "Specialist dental suite with advanced equipment" },
+  { src: "/about/facilities/treatment-room-1.jpg",               alt: "Treatment room at Roomchang Dental Hospital" },
+  { src: "/about/facilities/international-patient-consultation.jpg", alt: "International patient consultation at Roomchang" },
 ];
 
 export default async function FacilitiesPage() {
@@ -136,7 +136,7 @@ export default async function FacilitiesPage() {
             {/* Tall building portrait */}
             <div className="relative overflow-hidden rounded-3xl shadow-[0_20px_60px_rgba(57,28,45,0.12)]">
               <Image
-                src="/facilities/EDJI_0381.jpg"
+                src="/about/facilities/EDJI_0381.jpg"
                 alt="Roomchang Dental Hospital — 10-storey building, Sisowath High School, Phnom Penh"
                 width={769}
                 height={1280}

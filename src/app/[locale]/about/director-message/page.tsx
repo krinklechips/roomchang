@@ -38,7 +38,7 @@ export default function DirectorMessagePage() {
             <div className="lg:sticky lg:top-28">
               <div className="relative aspect-[3/4] w-full max-w-xs overflow-hidden rounded-3xl shadow-[0_24px_64px_rgba(57,28,45,0.12)] mx-auto lg:mx-0">
                 <Image
-                  src="/team/dr-tith-hong-yoeu.jpg"
+                  src="/doctors/dr-tith-hong-yoeu.jpg"
                   alt="Dr. Tith Hong Yoeu — Founder & Director, Roomchang Dental Hospital"
                   fill
                   className="object-cover object-top"

@@ -9,12 +9,12 @@ const ERA_DEFS = [
   { key: "1996",  year: "1996",     src: "/about/history-clinic-1996.jpg",     objectPos: "object-center" },
   { key: "2002",  year: "2002",     src: "/about/history-clinic-2002.jpg",     objectPos: "object-center" },
   { key: "2008",  year: "2008",     src: "/about/certification-iso.jpg",       objectPos: "object-top" },
-  { key: "2011",  year: "2011",     src: "/facilities/DJI_0387.jpg",           objectPos: "object-center" },
-  { key: "2014",  year: "2014",     src: "/facilities/2014.jpg",               objectPos: "object-center" },
-  { key: "2018",  year: "2018",     src: "/facilities/Aeon-Mall-2018.jpg",     objectPos: "object-center" },
-  { key: "2022a", year: "May 2022", src: "/facilities/T-PH-1-2022.jpg",       objectPos: "object-center" },
-  { key: "2022b", year: "Oct 2022", src: "/facilities/RCD_9243Fun Mall.jpg",   objectPos: "object-center" },
-  { key: "now",   year: "Now",      src: "/facilities/EDJI_0381.jpg",          objectPos: "object-left" },
+  { key: "2011",  year: "2011",     src: "/about/facilities/DJI_0387.jpg",           objectPos: "object-center" },
+  { key: "2014",  year: "2014",     src: "/about/facilities/2014.jpg",               objectPos: "object-center" },
+  { key: "2018",  year: "2018",     src: "/about/facilities/Aeon-Mall-2018.jpg",     objectPos: "object-center" },
+  { key: "2022a", year: "May 2022", src: "/about/facilities/T-PH-1-2022.jpg",       objectPos: "object-center" },
+  { key: "2022b", year: "Oct 2022", src: "/about/facilities/RCD_9243Fun Mall.jpg",   objectPos: "object-center" },
+  { key: "now",   year: "Now",      src: "/about/facilities/EDJI_0381.jpg",          objectPos: "object-left" },
 ] as const;
 
 export function AboutTimeline() {
