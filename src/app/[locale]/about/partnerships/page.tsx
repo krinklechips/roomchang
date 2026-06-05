@@ -113,14 +113,14 @@ function PartnerLogo({ partner }: { partner: Partner }) {
   return (
     <div
       title={partner.name}
-      className="flex items-center justify-center rounded-2xl bg-white p-4 shadow-[0_4px_16px_rgba(57,28,45,0.06)] transition hover:shadow-[0_8px_24px_rgba(57,28,45,0.10)] aspect-[4/3]"
+      className="flex items-center justify-center rounded-2xl bg-white p-3 shadow-[0_4px_16px_rgba(57,28,45,0.06)] transition hover:shadow-[0_8px_24px_rgba(57,28,45,0.10)] aspect-[4/3]"
     >
       {partner.logo ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={partner.logo}
           alt={partner.name}
-          className="h-auto w-auto max-h-16 max-w-[80%] object-contain mx-auto"
+          className="h-auto w-auto max-h-24 max-w-[88%] object-contain mx-auto"
           loading="lazy"
         />
       ) : (
