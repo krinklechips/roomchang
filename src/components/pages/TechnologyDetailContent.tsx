@@ -6,9 +6,9 @@ import {
   Heart, Bone, Crosshair, ArrowCounterClockwise,
 } from "@phosphor-icons/react/dist/ssr";
 import type { Icon as PhosphorIcon } from "@phosphor-icons/react/dist/lib/types";
+import { InteractiveSteps } from "@/components/sections/interactive-steps";
 import { SiteShell } from "@/components/site/site-shell";
 import type { TechnologyItem, TechSection } from "@/lib/data";
-import { getStepGridClass } from "./technology-step-grid";
 
 // ─── Icon map ────────────────────────────────────────────────────────────────
 
@@ -91,17 +91,13 @@ function Steps({ s }: { s: Extract<TechSection, { type: "steps" }> }) {
     <div>
       <h2 className="font-display text-3xl text-[color:var(--text-main)]">{s.heading}</h2>
       {s.subheading && <p className="mt-3 text-sm text-[color:var(--text-soft)]">{s.subheading}</p>}
-      <div className={`mt-8 grid gap-4 ${getStepGridClass(s.items.length)}`}>
-        {s.items.map((item, i) => (
-          <div key={item.step} className="rounded-2xl border border-[color:var(--border-strong)] bg-white p-6">
-            <div className="mb-3 flex h-8 w-8 items-center justify-center rounded-full bg-[color:var(--brand)] text-white text-sm font-bold">
-              {i + 1}
-            </div>
-            <p className="text-xs font-semibold uppercase tracking-widest text-[color:var(--brand)]">{item.step}</p>
-            <p className="mt-2 text-sm leading-7 text-[color:var(--text-soft)]">{item.detail}</p>
-          </div>
-        ))}
-      </div>
+      <InteractiveSteps
+        steps={s.items.map((item, index) => ({
+          step_label: String(index + 1).padStart(2, "0"),
+          title: item.step,
+          description: item.detail,
+        }))}
+      />
     </div>
   );
 }
