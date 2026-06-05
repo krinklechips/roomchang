@@ -11,7 +11,7 @@ export const revalidate = 60;
 export const metadata: Metadata = {
   title: "Our Facilities | Roomchang Dental Hospital",
   description:
-    "Explore Roomchang's 10-storey hospital with 46 dental chairs, 4 operation rooms, in-house CAD/CAM lab, and hospital-grade sterilisation.",
+    "Explore Roomchang's 10-storey hospital with 46 dental chairs, 9 operation rooms, in-house CAD/CAM lab, and hospital-grade sterilisation.",
 };
 
 type DisplayStat = { display_value: string; label: string };
@@ -19,7 +19,7 @@ type DisplayStat = { display_value: string; label: string };
 const FALLBACK_STATS: Record<string, DisplayStat> = {
   building_storeys: { display_value: "10", label: "Storey Building" },
   dental_chairs: { display_value: "46", label: "Dental Chairs" },
-  surgical_theatres: { display_value: "4", label: "Operation Rooms" },
+  surgical_theatres: { display_value: "9", label: "Operation Rooms" },
   specialist_dentists: { display_value: "37", label: "Specialist Dentists" },
 };
 
