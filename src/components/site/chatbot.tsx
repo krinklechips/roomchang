@@ -1520,8 +1520,8 @@ export function Chatbot() {
         type="button"
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? "Close chat" : "Chat with Roomy"}
-        className={`fixed bottom-4 right-[4.5rem] z-[60] flex h-12 w-12 items-center justify-center overflow-hidden rounded-full shadow-[0_8px_28px_rgba(204,55,113,0.45)] transition hover:scale-105 active:scale-95 sm:bottom-6 sm:right-[5.75rem] sm:h-14 sm:w-14 ${
-          open ? "bg-[color:var(--brand-deep)]" : "bg-white"
+        className={`fixed bottom-4 right-[4.5rem] z-[60] h-12 w-12 items-center justify-center overflow-hidden rounded-full shadow-[0_8px_28px_rgba(204,55,113,0.45)] transition hover:scale-105 active:scale-95 sm:bottom-6 sm:right-[5.75rem] sm:h-14 sm:w-14 ${
+          open ? "hidden bg-[color:var(--brand-deep)] sm:flex" : "flex bg-white"
         }`}
       >
         {open ? (
