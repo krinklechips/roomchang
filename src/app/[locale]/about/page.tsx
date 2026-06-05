@@ -127,8 +127,18 @@ export default async function AboutPage() {
       <AboutTimeline />
 
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
+        {/* Discover facilities CTA — sits between the timeline and the section cards */}
+        <div className="flex justify-center">
+          <Link
+            href="/about/facilities"
+            className="btn-primary inline-flex items-center gap-2"
+          >
+            {t("facilitiesCta")} <ArrowRight size={16} strokeWidth={2} aria-hidden="true" />
+          </Link>
+        </div>
+
         {/* Section cards grid */}
-        <div className="mt-20 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {SECTION_DEFS.map((section) => (
             <Link
               key={section.href}

@@ -4,6 +4,7 @@ import { startTransition, useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { ArrowRight } from "lucide-react";
+import { abbreviateName } from "@/lib/format-name";
 
 interface TestimonialData {
   id: string;
@@ -19,13 +20,6 @@ function getInitials(name: string): string {
     .join("")
     .toUpperCase()
     .slice(0, 2);
-}
-
-/** "Sarah Mitchell" → "Sarah M." */
-function abbreviateName(name: string): string {
-  const parts = name.trim().split(/\s+/);
-  if (parts.length < 2) return name;
-  return `${parts[0]} ${parts[parts.length - 1][0]}.`;
 }
 
 function parseOriginAndTreatment(authorTitle: string | null): {

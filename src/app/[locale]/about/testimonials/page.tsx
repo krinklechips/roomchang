@@ -2,6 +2,7 @@ import { Link } from "@/i18n/navigation";
 import { ArrowLeft } from "lucide-react";
 import { SiteShell } from "@/components/site/site-shell";
 import { getTestimonials } from "@/lib/data";
+import { abbreviateName } from "@/lib/format-name";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -174,7 +175,7 @@ export default async function TestimonialsPage() {
                         </div>
                       )}
                       <div className="min-w-0">
-                        <p className="text-sm font-semibold text-[color:var(--text-main)]">{t.authorName}</p>
+                        <p className="text-sm font-semibold text-[color:var(--text-main)]">{abbreviateName(t.authorName)}</p>
                         {origin && <p className="text-xs text-[color:var(--text-soft)]">{origin}</p>}
                         {treatment && (
                           <span className="mt-0.5 inline-block rounded-full bg-[color:var(--brand-soft)] px-2.5 py-0.5 text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-[color:var(--brand-deep)]">

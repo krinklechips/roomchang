@@ -1,4 +1,5 @@
 import { getTestimonials } from "@/lib/data";
+import { abbreviateName } from "@/lib/format-name";
 
 export async function TestimonialsBlock({
   title,
@@ -44,7 +45,7 @@ export async function TestimonialsBlock({
                 </p>
                 <div className="mt-auto">
                   <p className="text-sm font-semibold text-[color:var(--text-main)]">
-                    {t.authorName}
+                    {abbreviateName(t.authorName)}
                   </p>
                   {t.authorTitle && (
                     <p className="text-xs text-[color:var(--text-soft)]">
