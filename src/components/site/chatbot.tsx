@@ -10,7 +10,11 @@ import {
   SpinnerGap,
   CaretLeft,
   CaretRight,
+  Microphone,
+  SpeakerHigh,
+  SpeakerSlash,
 } from "@phosphor-icons/react";
+import { useSpeech } from "@/lib/use-speech";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -803,9 +807,14 @@ export function Chatbot() {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [hydrated, setHydrated] = useState(false);
   const [showBubble, setShowBubble] = useState(false);
+  const [voiceOutput, setVoiceOutput] = useState(false);
+
+  // Voice (Web Speech API — English only for now)
+  const { sttSupported, ttsSupported, listening, startListening, stopListening, speak, cancelSpeak } = useSpeech();
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const lastSpokenIdRef = useRef<string | null>(null);
 
   // ─── Session persistence ──────────────────────────────────────────────────
 
@@ -927,6 +936,30 @@ export function Chatbot() {
     if (!text || isStreaming) return;
     sendMessage(text);
   }
+
+  // Voice input — dictate into the message field
+  function toggleMic() {
+    if (listening) {
+      stopListening();
+      return;
+    }
+    startListening((transcript) => setInput(transcript));
+  }
+
+  // Voice output — read the latest assistant reply aloud (once streaming finishes)
+  useEffect(() => {
+    if (!voiceOutput || isStreaming) return;
+    const last = messages[messages.length - 1];
+    if (last && last.role === "assistant" && last.id !== lastSpokenIdRef.current) {
+      lastSpokenIdRef.current = last.id;
+      speak(stripBookingBlock(last.content));
+    }
+  }, [messages, isStreaming, voiceOutput, speak]);
+
+  // Stop any speech when read-aloud is switched off
+  useEffect(() => {
+    if (!voiceOutput) cancelSpeak();
+  }, [voiceOutput, cancelSpeak]);
 
   async function sendMessage(text: string) {
     if (!text || isStreaming) return;
@@ -1091,14 +1124,28 @@ export function Chatbot() {
               <p className="font-display text-lg text-white">Roomchang</p>
               <p className="text-[11px] text-white/70">Virtual Assistant</p>
             </div>
-            <button
-              type="button"
-              onClick={() => setOpen(false)}
-              aria-label="Close chat"
-              className="flex h-8 w-8 items-center justify-center rounded-full text-white/70 transition hover:bg-white/20 hover:text-white"
-            >
-              <X size={18} weight="bold" />
-            </button>
+            <div className="flex items-center gap-1">
+              {ttsSupported && (
+                <button
+                  type="button"
+                  onClick={() => setVoiceOutput((v) => !v)}
+                  aria-label={voiceOutput ? "Turn off read-aloud" : "Read replies aloud"}
+                  aria-pressed={voiceOutput}
+                  title={voiceOutput ? "Read-aloud is on" : "Read replies aloud"}
+                  className="flex h-8 w-8 items-center justify-center rounded-full text-white/70 transition hover:bg-white/20 hover:text-white"
+                >
+                  {voiceOutput ? <SpeakerHigh size={17} weight="fill" /> : <SpeakerSlash size={17} />}
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                aria-label="Close chat"
+                className="flex h-8 w-8 items-center justify-center rounded-full text-white/70 transition hover:bg-white/20 hover:text-white"
+              >
+                <X size={18} weight="bold" />
+              </button>
+            </div>
           </div>
 
           {/* Messages */}
@@ -1194,6 +1241,23 @@ export function Chatbot() {
               data-1p-ignore
               className="flex-1 rounded-xl border border-[color:var(--border-strong)] bg-[color:var(--surface)] px-4 py-2.5 text-sm text-[color:var(--text-main)] placeholder:text-[color:var(--text-soft)]/50 outline-none transition focus:border-[color:var(--brand-light)] focus:ring-2 focus:ring-[color:var(--brand-soft)] disabled:opacity-50"
             />
+            {sttSupported && (
+              <button
+                type="button"
+                onClick={toggleMic}
+                disabled={isStreaming}
+                aria-label={listening ? "Stop voice input" : "Start voice input"}
+                aria-pressed={listening}
+                title={listening ? "Listening… click to stop" : "Speak your message"}
+                className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition disabled:opacity-40 ${
+                  listening
+                    ? "animate-pulse border-[color:var(--brand)] bg-[color:var(--brand)] text-white"
+                    : "border-[color:var(--border-strong)] bg-[color:var(--surface)] text-[color:var(--brand-deep)] hover:border-[color:var(--brand-light)]"
+                }`}
+              >
+                <Microphone size={18} weight={listening ? "fill" : "regular"} />
+              </button>
+            )}
             <button
               type="submit"
               disabled={isStreaming || !input.trim()}
