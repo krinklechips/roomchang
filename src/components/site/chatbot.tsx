@@ -12,6 +12,8 @@ import {
   CaretLeft,
   CaretRight,
   Microphone,
+  WhatsappLogo,
+  TelegramLogo,
 } from "@phosphor-icons/react";
 import { useVoiceRecorder } from "@/lib/use-voice-recorder";
 
@@ -251,71 +253,86 @@ function TypingDots() {
 
 // ─── Booking confirmation ────────────────────────────────────────────────────
 
+// Clinic channels patients send their booking summary to (staff monitor these).
+const CLINIC_WHATSAPP_PHONE = "85569811338";
+const CLINIC_TELEGRAM_URL = "https://telegram.me/roomchang";
+
+/** Human-readable summary the patient sends to the clinic to confirm. */
+function buildBookingSummary(d: BookingData): string {
+  const lines = [
+    "Hi Roomchang! I'd like to book an appointment:",
+    d.name && `• Name: ${d.name}`,
+    d.phone && `• Phone: ${d.phone}`,
+    d.email && `• Email: ${d.email}`,
+    d.treatment && `• Treatment: ${d.treatment}`,
+    d.date && `• Preferred date: ${d.date}`,
+    d.time && `• Preferred time: ${d.time}`,
+    d.branch && `• Branch: ${d.branch}`,
+    d.doctor && `• Doctor: ${d.doctor}`,
+    d.telegram && `• My Telegram: ${d.telegram}`,
+    d.notes && `• Notes: ${d.notes}`,
+  ].filter(Boolean);
+  return lines.join("\n");
+}
+
 function BookingCard({
   data,
-  onConfirm,
-  onCancel,
-  submitting,
+  onSend,
+  onEdit,
 }: {
   data: BookingData;
-  onConfirm: () => void;
-  onCancel: () => void;
-  submitting: boolean;
+  onSend: (channel: "whatsapp" | "telegram") => void;
+  onEdit: () => void;
 }) {
+  const rows: [string, string][] = [
+    ["Name", data.name],
+    ["Phone", data.phone],
+    ["Email", data.email],
+    ["Treatment", data.treatment],
+    ["Date", data.date],
+    ["Time", data.time],
+    ["Branch", data.branch],
+    ["Doctor", data.doctor],
+  ].filter(([, v]) => v) as [string, string][];
+
   return (
     <div className="mx-3 mb-3 rounded-xl border border-[color:var(--brand-soft)] bg-[color:var(--brand-soft)] p-4">
       <p className="text-xs font-bold uppercase tracking-widest text-[color:var(--brand)]">
-        Confirm Booking
+        Send to confirm
       </p>
       <div className="mt-2 space-y-1 text-sm text-[color:var(--text-main)]">
-        {data.name && (
-          <p>
-            <span className="font-semibold">Name:</span> {data.name}
+        {rows.map(([label, value]) => (
+          <p key={label}>
+            <span className="font-semibold">{label}:</span> {value}
           </p>
-        )}
-        {(data.email || data.phone) && (
-          <p>
-            <span className="font-semibold">Contact:</span>{" "}
-            {data.email || data.phone}
-          </p>
-        )}
-        {data.treatment && (
-          <p>
-            <span className="font-semibold">Treatment:</span> {data.treatment}
-          </p>
-        )}
-        {data.date && (
-          <p>
-            <span className="font-semibold">Date:</span> {data.date}
-          </p>
-        )}
-        {data.time && (
-          <p>
-            <span className="font-semibold">Time:</span> {data.time}
-          </p>
-        )}
-        {data.telegram && (
-          <p>
-            <span className="font-semibold">Telegram:</span> {data.telegram}
-          </p>
-        )}
+        ))}
       </div>
-      <div className="mt-3 flex gap-2">
+      <p className="mt-2 text-[11px] leading-snug text-[color:var(--text-soft)]">
+        Send this summary to our team and a staff member will confirm your appointment.
+      </p>
+      <div className="mt-3 flex flex-col gap-2">
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={() => onSend("whatsapp")}
+            className="flex flex-1 items-center justify-center gap-1.5 rounded-full bg-[#25D366] px-4 py-2.5 text-xs font-bold text-white transition hover:brightness-95"
+          >
+            <WhatsappLogo size={16} weight="fill" /> WhatsApp
+          </button>
+          <button
+            type="button"
+            onClick={() => onSend("telegram")}
+            className="flex flex-1 items-center justify-center gap-1.5 rounded-full bg-[#229ED9] px-4 py-2.5 text-xs font-bold text-white transition hover:brightness-95"
+          >
+            <TelegramLogo size={16} weight="fill" /> Telegram
+          </button>
+        </div>
         <button
           type="button"
-          onClick={onConfirm}
-          disabled={submitting}
-          className="btn-primary btn-primary-sm flex-1 justify-center text-xs disabled:opacity-60"
-        >
-          {submitting ? "Submitting..." : "Confirm Booking"}
-        </button>
-        <button
-          type="button"
-          onClick={onCancel}
-          disabled={submitting}
+          onClick={onEdit}
           className="rounded-full border border-[color:var(--border-strong)] bg-white px-4 py-2 text-xs font-bold text-[color:var(--text-soft)] transition hover:bg-[color:var(--surface-strong)]"
         >
-          Edit
+          Edit details
         </button>
       </div>
     </div>
@@ -814,10 +831,6 @@ export function Chatbot() {
   const [pendingBooking, setPendingBooking] = useState<BookingData | null>(
     null,
   );
-  const [bookingSubmitting, setBookingSubmitting] = useState(false);
-  const [bookingResult, setBookingResult] = useState<
-    "success" | "error" | null
-  >(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
@@ -1143,6 +1156,10 @@ export function Chatbot() {
       const decoder = new TextDecoder();
       let fullContent = "";
       let buffer = "";
+      // Reveal the date/time picker the instant its marker streams in, rather
+      // than waiting for the whole reply to finish — removes the calendar lag.
+      let dateShown = false;
+      let timeShown = false;
 
       while (true) {
         const { done, value } = await reader.read();
@@ -1168,6 +1185,17 @@ export function Chatbot() {
                     : m,
                 ),
               );
+
+              if (!dateShown && hasDatePickerMarker(fullContent)) {
+                dateShown = true;
+                setShowDatePicker(true);
+              }
+              if (!timeShown && hasTimePickerMarker(fullContent)) {
+                timeShown = true;
+                const d = extractIsoDate(fullContent);
+                if (d) setSelectedDate(d);
+                setShowTimePicker(true);
+              }
             }
           } catch {
             // skip malformed SSE line
@@ -1179,19 +1207,6 @@ export function Chatbot() {
       const booking = extractBooking(fullContent);
       if (booking) {
         setPendingBooking(booking);
-      }
-
-      // Check for date picker trigger
-      if (hasDatePickerMarker(fullContent)) {
-        setShowDatePicker(true);
-      }
-
-      if (hasTimePickerMarker(fullContent)) {
-        const assistantDate = extractIsoDate(fullContent);
-        if (assistantDate) {
-          setSelectedDate(assistantDate);
-        }
-        setShowTimePicker(true);
       }
     } catch (err) {
       console.error("[chatbot] Error:", err);
@@ -1213,46 +1228,37 @@ export function Chatbot() {
 
   // ─── Submit booking ────────────────────────────────────────────────────────
 
-  async function handleBookingConfirm() {
+  // Patient sends their booking summary to the clinic's Telegram/WhatsApp; a
+  // staff member then confirms the appointment. WhatsApp pre-fills the message;
+  // Telegram can't pre-fill a username chat, so we copy it for pasting.
+  function handleBookingSend(channel: "whatsapp" | "telegram") {
     if (!pendingBooking) return;
-    setBookingSubmitting(true);
+    const summary = buildBookingSummary(pendingBooking);
 
-    try {
-      const res = await fetch("/api/book", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: pendingBooking.name,
-          email: pendingBooking.email || "",
-          phone: pendingBooking.phone || "",
-          telegram: pendingBooking.telegram || "",
-          treatment: pendingBooking.treatment || "",
-          date: pendingBooking.date || "",
-          time: pendingBooking.time || "",
-          branch: pendingBooking.branch || "",
-          doctor: pendingBooking.doctor || "",
-          notes: `[AI Chatbot Booking] ${pendingBooking.notes || pendingBooking.message || ""}`,
-        }),
-      });
-
-      if (!res.ok) throw new Error();
-      setBookingResult("success");
-      setPendingBooking(null);
-
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: uid(),
-          role: "assistant",
-          content:
-            "Your appointment request has been submitted! Our team will confirm your booking via email or phone within 1-2 business days. Thank you for choosing Roomchang!",
-        },
-      ]);
-    } catch {
-      setBookingResult("error");
-    } finally {
-      setBookingSubmitting(false);
+    if (channel === "whatsapp") {
+      const url = `https://api.whatsapp.com/send/?phone=${CLINIC_WHATSAPP_PHONE}&text=${encodeURIComponent(summary)}`;
+      window.open(url, "_blank", "noopener,noreferrer");
+    } else {
+      try {
+        navigator.clipboard?.writeText(summary);
+      } catch {
+        /* clipboard blocked — patient can still type their request */
+      }
+      window.open(CLINIC_TELEGRAM_URL, "_blank", "noopener,noreferrer");
     }
+
+    setPendingBooking(null);
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: uid(),
+        role: "assistant",
+        content:
+          channel === "whatsapp"
+            ? "Opening WhatsApp with your details — just tap send and our team will confirm your appointment. 💬"
+            : "I've copied your booking summary — paste it into our Telegram chat and tap send, and our team will confirm your appointment. 💬",
+      },
+    ]);
   }
 
   // ─── Render ────────────────────────────────────────────────────────────────
@@ -1352,22 +1358,22 @@ export function Chatbot() {
             )}
           </div>
 
-          {/* Date picker — appears when AI asks for preferred date */}
-          {showDatePicker && !isStreaming && (
+          {/* Date picker — appears the moment the AI asks for a preferred date */}
+          {showDatePicker && (
             <DatePicker onSelect={handleDateSelect} />
           )}
 
-          {/* Time picker — appears when AI asks for preferred time */}
-          {showTimePicker && !isStreaming && (
+          {/* Time picker — appears the moment the AI asks for a preferred time */}
+          {showTimePicker && (
             <TimePicker date={selectedDate} onSelect={handleTimeSelect} />
           )}
 
-          {/* Booking confirmation */}
+          {/* Booking confirmation — patient sends the summary to the clinic */}
           {pendingBooking && (
             <BookingCard
               data={pendingBooking}
-              onConfirm={handleBookingConfirm}
-              onCancel={() => {
+              onSend={handleBookingSend}
+              onEdit={() => {
                 setPendingBooking(null);
                 setMessages((prev) => [
                   ...prev,
@@ -1378,14 +1384,7 @@ export function Chatbot() {
                   },
                 ]);
               }}
-              submitting={bookingSubmitting}
             />
-          )}
-
-          {bookingResult === "error" && (
-            <p className="mx-4 mb-2 text-xs text-red-600">
-              Booking failed — please try again or call +855 69 811 338.
-            </p>
           )}
 
           {/* Suggestion bar — only once the chat has started */}

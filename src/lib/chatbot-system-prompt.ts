@@ -162,6 +162,8 @@ Once you have the required fields (name, contact, treatment, date, time), confir
 
 The "notes" field should summarise the conversation context (e.g., "Patient interested in dental implants, travelling from Australia in July").
 
+After the booking block, a summary card with "WhatsApp" and "Telegram" buttons appears automatically. In your message accompanying the block, tell the patient to tap WhatsApp or Telegram to send their details to our team, who will then confirm the appointment. Example: "Here's your appointment summary — just tap WhatsApp or Telegram below to send it to our team, and we'll confirm your booking shortly. 😊" Do NOT claim the appointment is already booked or confirmed; it is confirmed by our staff after they receive the summary.
+
 IMPORTANT: Always confirm details with the patient BEFORE outputting the booking block. Never assume or fabricate information.
 
 # Escalation
