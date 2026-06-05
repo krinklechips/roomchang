@@ -1224,6 +1224,7 @@ export function Chatbot() {
           {/* Input */}
           <form
             onSubmit={handleSend}
+            autoComplete="off"
             data-form-type="other"
             className="flex shrink-0 items-center gap-2 border-t border-[color:var(--border-strong)] px-4 py-3"
           >
@@ -1235,11 +1236,16 @@ export function Chatbot() {
               onChange={(e) => setInput(e.target.value)}
               placeholder="Type your message..."
               disabled={isStreaming}
-              autoComplete="one-time-code"
+              autoComplete="off"
+              autoCorrect="on"
+              autoCapitalize="sentences"
+              spellCheck
+              enterKeyHint="send"
+              inputMode="text"
               data-form-type="other"
               data-lpignore="true"
               data-1p-ignore
-              className="flex-1 rounded-xl border border-[color:var(--border-strong)] bg-[color:var(--surface)] px-4 py-2.5 text-sm text-[color:var(--text-main)] placeholder:text-[color:var(--text-soft)]/50 outline-none transition focus:border-[color:var(--brand-light)] focus:ring-2 focus:ring-[color:var(--brand-soft)] disabled:opacity-50"
+              className="min-w-0 flex-1 rounded-xl border border-[color:var(--border-strong)] bg-[color:var(--surface)] px-4 py-2.5 text-sm text-[color:var(--text-main)] placeholder:text-[color:var(--text-soft)]/50 outline-none transition focus:border-[color:var(--brand-light)] focus:ring-2 focus:ring-[color:var(--brand-soft)] disabled:opacity-50"
             />
             {sttSupported && (
               <button
