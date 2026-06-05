@@ -28,38 +28,6 @@ export const NEWS_ARTICLES: NewsArticle[] = [
     ],
   },
   {
-    slug: "roomchang-in-the-community-2017",
-    date: "December 2017",
-    title: "Roomchang in the Community",
-    description:
-      "Dr. Sam Chanphallyka and dental assistants from Roomchang Dental Hospital provided oral health education and toothbrushes to pre-school students through the RHB Indochina Bank early childhood development program.",
-    image:
-      "https://roomchang.com/wp-content/uploads/2014/11/Early-childhood-development-school-program_RHB-Indochina-bank-Roomchang-Dental.jpg",
-    imageAlt:
-      "Roomchang oral health education — RHB Indochina Bank school program",
-    body: [
-      "In partnership with RHB Indochina Bank, Roomchang Dental Hospital organised an early childhood dental health outreach program targeting pre-school students in underserved communities across Phnom Penh.",
-      "Dr. Sam Chanphallyka, together with dental assistants from the hospital, visited schools to teach young children the fundamentals of proper toothbrushing technique, dietary advice for dental health, and the importance of establishing healthy oral habits from an early age.",
-      "Each child received free toothbrushes and dental supplies as part of the program, ensuring they could put what they learned into practice at home.",
-      "This initiative reflects Roomchang’s longstanding commitment to community outreach and preventive dental education — a core part of the hospital’s mission since its founding in 1996.",
-    ],
-  },
-  {
-    slug: "campu-brightstar-hidden-talent-contest",
-    date: "November 2016",
-    title: "Campu BrightStar Hidden Talent Contest",
-    description:
-      "Roomchang Dental Hospital participated in the Campu BrightStar Hidden Talent Contest — a community event celebrating local talent and bringing together partners across Cambodia.",
-    image:
-      "https://roomchang.com/wp-content/uploads/2023/02/Campu-Bright-Star_Web.jpg",
-    imageAlt: "Campu BrightStar Hidden Talent Contest",
-    body: [
-      "Roomchang Dental Hospital was a proud sponsor and participant in the Campu BrightStar Hidden Talent Contest, held on 27 November 2016 at the 2nd Floor World Dining Food Court, AEON Mall, Phnom Penh.",
-      "The event brought together corporate partners, community members, and local talent in a celebration of creativity and community spirit across Cambodia.",
-      "As one of the event sponsors, Roomchang demonstrated its commitment to supporting community initiatives beyond healthcare — fostering connections between businesses, organisations, and the wider Cambodian community.",
-    ],
-  },
-  {
     slug: "customer-meet-inventor-2015",
     date: "December 2015",
     title: "Customer Meet Inventor",
@@ -105,21 +73,6 @@ export const NEWS_ARTICLES: NewsArticle[] = [
       "The event covered the latest clinical techniques and procedures across various dental specialties, attracting approximately 150 attendees including practising dentists, dental students, and healthcare professionals.",
       "Presentations showcased cutting-edge sterilisation equipment, digital crown design technology, and advanced surgical instruments. Roomchang’s dental professionals shared expertise gained from overseas training programs with Cambodian colleagues.",
       "By the time of the conference, Roomchang had reached its 20th year of operations with 31 doctors across all dental specialties, 48 treatment rooms, 4 operating theatres, and 5 sterilisation rooms — establishing itself as Cambodia’s largest dental group practice.",
-    ],
-  },
-  {
-    slug: "nepal-earthquake-charitable-response",
-    date: "December 2015",
-    title: "Nepal Earthquake — Charitable Response",
-    description:
-      "Roomchang staff and dentists organised a charitable response to support relief efforts following the devastating earthquake in Nepal — reflecting our commitment to humanitarian causes beyond dental care.",
-    image:
-      "https://roomchang.com/wp-content/uploads/2023/02/Nepal-Earthquake-1.jpg",
-    imageAlt: "Roomchang charitable response — Nepal earthquake relief",
-    body: [
-      "Following the devastating earthquake that struck Nepal, Roomchang Dental Hospital staff and dentists came together to organise a charitable response in support of relief efforts.",
-      "The initiative reflected Roomchang’s commitment to humanitarian causes that extend beyond dental care — standing in solidarity with communities affected by natural disasters and contributing to international relief efforts.",
-      "This response is part of Roomchang’s broader culture of giving back, which includes annual blood drives for Kantha Bopha Children’s Hospital, free dental clinics in rural Cambodia, and oral health education programs across the country.",
     ],
   },
   {
