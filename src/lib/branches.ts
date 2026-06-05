@@ -22,8 +22,8 @@ export const BRANCHES: Branch[] = [
   {
     slug: "sisowath-high-school",
     badge: "Main Hospital",
-    name: "Sisowath High School — Main Hospital",
-    shortName: "Sisowath High School",
+    name: "Main Hospital — Sisowath High School",
+    shortName: "Main Hospital",
     address: "No. 4, Street 184, Khan Daun Penh",
     addressLine2: "Phnom Penh, Cambodia",
     hours: "Mon–Sat 08:00–17:30",
