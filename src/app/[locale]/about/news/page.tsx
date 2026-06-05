@@ -2,8 +2,11 @@ import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { supabaseServer } from "@/lib/supabase-server";
 import { NEWS_ARTICLES_SORTED } from "@/lib/news";
 import type { Metadata } from "next";
+
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "News & Events | Roomchang Dental Hospital",
@@ -11,7 +14,37 @@ export const metadata: Metadata = {
     "The latest news, events, press coverage, and announcements from Roomchang Dental Hospital — Cambodia's leading dental group since 1996.",
 };
 
-export default function NewsPage() {
+type Article = {
+  slug: string;
+  date: string;
+  title: string;
+  description: string;
+  image: string;
+  imageAlt: string;
+};
+
+export default async function NewsPage() {
+  const { data, error } = await supabaseServer
+    .from("news_articles")
+    .select("slug, date, title, description, image, imageAlt")
+    .eq("published", true)
+    .order("order", { ascending: true });
+
+  if (error) {
+    console.error("[NewsPage] news_articles fetch failed:", error.message);
+  }
+
+  const articles: Article[] =
+    (data as Article[] | null)?.filter((a) => a.slug) ??
+    NEWS_ARTICLES_SORTED.map((a) => ({
+      slug: a.slug,
+      date: a.date,
+      title: a.title,
+      description: a.description,
+      image: a.image,
+      imageAlt: a.imageAlt,
+    }));
+
   return (
     <SiteShell>
       {/* Header */}
@@ -36,7 +69,7 @@ export default function NewsPage() {
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
         {/* Article grid */}
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {NEWS_ARTICLES_SORTED.map((article) => (
+          {articles.map((article) => (
             <Link
               key={article.slug}
               href={`/about/news/${article.slug}`}

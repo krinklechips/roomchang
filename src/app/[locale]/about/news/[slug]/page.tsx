@@ -3,20 +3,62 @@ import { Link } from "@/i18n/navigation";
 import { notFound } from "next/navigation";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { NEWS_ARTICLES, NEWS_ARTICLES_SORTED, getArticleBySlug } from "@/lib/news";
+import { supabaseServer } from "@/lib/supabase-server";
+import { getArticleBySlug as getFallbackArticle } from "@/lib/news";
 import type { Metadata } from "next";
+
+export const revalidate = 60;
 
 interface Props {
   params: Promise<{ slug: string }>;
 }
 
-export function generateStaticParams() {
-  return NEWS_ARTICLES.map((article) => ({ slug: article.slug }));
+type Article = {
+  slug: string;
+  date: string;
+  title: string;
+  description: string;
+  image: string;
+  imageAlt: string;
+  body: string[];
+};
+
+async function getArticle(slug: string): Promise<Article | null> {
+  const { data, error } = await supabaseServer
+    .from("news_articles")
+    .select("*")
+    .eq("slug", slug)
+    .eq("published", true)
+    .single();
+
+  if (error || !data) {
+    // Fall back to the hardcoded array during migration
+    const fallback = getFallbackArticle(slug);
+    return fallback ?? null;
+  }
+
+  return data as Article;
+}
+
+async function getAdjacentArticles(slug: string) {
+  const { data } = await supabaseServer
+    .from("news_articles")
+    .select("slug, title")
+    .eq("published", true)
+    .order("order", { ascending: true });
+
+  const articles = (data ?? []) as { slug: string; title: string }[];
+  const idx = articles.findIndex((a) => a.slug === slug);
+
+  return {
+    newer: idx > 0 ? articles[idx - 1] : null,
+    older: idx < articles.length - 1 ? articles[idx + 1] : null,
+  };
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const article = getArticleBySlug(slug);
+  const article = await getArticle(slug);
 
   if (!article) {
     return { title: "Article Not Found — Roomchang Dental Hospital" };
@@ -35,17 +77,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function NewsArticlePage({ params }: Props) {
   const { slug } = await params;
-  const article = getArticleBySlug(slug);
+  const [article, adjacent] = await Promise.all([
+    getArticle(slug),
+    getAdjacentArticles(slug),
+  ]);
 
   if (!article) {
     notFound();
   }
 
-  // Prev/next within the newest-first sorted order.
-  // Left arrow = newer (previous in list), right arrow = older (next in list).
-  const idx = NEWS_ARTICLES_SORTED.findIndex((a) => a.slug === slug);
-  const newer = idx > 0 ? NEWS_ARTICLES_SORTED[idx - 1] : null;
-  const older = idx < NEWS_ARTICLES_SORTED.length - 1 ? NEWS_ARTICLES_SORTED[idx + 1] : null;
+  const { newer, older } = adjacent;
 
   return (
     <SiteShell>
