@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import { SiteFooter } from "./site-footer";
 import { SiteHeader } from "./site-header";
-import { FloatingContact } from "./floating-contact";
 import { Chatbot } from "./chatbot";
 
 type SiteShellProps = {
@@ -14,7 +13,6 @@ export function SiteShell({ children }: SiteShellProps) {
       <SiteHeader />
       <main className="flex-1 overflow-x-clip">{children}</main>
       <SiteFooter />
-      <FloatingContact />
       <Chatbot />
     </div>
   );

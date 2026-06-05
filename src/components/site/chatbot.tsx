@@ -1251,7 +1251,7 @@ export function Chatbot() {
     <>
       {/* Chat panel */}
       {open && (
-        <div className="fixed inset-x-0 bottom-0 top-[30vh] z-[60] flex flex-col overflow-hidden rounded-t-3xl border-t border-x border-[color:var(--border-strong)] bg-white shadow-[0_-10px_40px_rgba(36,20,31,0.18)] sm:inset-auto sm:bottom-24 sm:right-[5.5rem] sm:h-[560px] sm:w-[400px] sm:rounded-3xl sm:border sm:shadow-[0_20px_60px_rgba(36,20,31,0.18)] animate-[fadeSlideUp_0.2s_ease-out]">
+        <div className="fixed inset-x-0 bottom-0 top-[30vh] z-[60] flex flex-col overflow-hidden rounded-t-3xl border-t border-x border-[color:var(--border-strong)] bg-white shadow-[0_-10px_40px_rgba(36,20,31,0.18)] sm:inset-auto sm:bottom-24 sm:right-6 sm:h-[560px] sm:w-[400px] sm:rounded-3xl sm:border sm:shadow-[0_20px_60px_rgba(36,20,31,0.18)] animate-[fadeSlideUp_0.2s_ease-out]">
           {/* Header */}
           <div className="flex shrink-0 items-center justify-between bg-[color:var(--brand)] px-5 py-4">
             <div className="flex items-center gap-3">
@@ -1479,7 +1479,7 @@ export function Chatbot() {
 
       {/* Speech bubble prompt */}
       {showBubble && !open && (
-        <div className="fixed bottom-[5rem] right-[3.5rem] z-[61] animate-fadeSlideUp sm:bottom-[6rem] sm:right-[4.75rem]">
+        <div className="fixed bottom-[5rem] right-4 z-[61] animate-fadeSlideUp sm:bottom-[6rem] sm:right-6">
           <div className="relative max-w-[200px] rounded-2xl bg-white px-4 py-3 shadow-[0_8px_28px_rgba(0,0,0,0.12)] border border-[color:var(--border-strong)]">
             <button
               type="button"
@@ -1520,7 +1520,7 @@ export function Chatbot() {
         type="button"
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? "Close chat" : "Chat with Roomy"}
-        className={`fixed bottom-4 right-[4.5rem] z-[60] h-12 w-12 items-center justify-center overflow-hidden rounded-full shadow-[0_8px_28px_rgba(204,55,113,0.45)] transition hover:scale-105 active:scale-95 sm:bottom-6 sm:right-[5.75rem] sm:h-14 sm:w-14 ${
+        className={`fixed bottom-4 right-4 z-[60] h-12 w-12 items-center justify-center overflow-hidden rounded-full shadow-[0_8px_28px_rgba(204,55,113,0.45)] transition hover:scale-105 active:scale-95 sm:bottom-6 sm:right-6 sm:h-14 sm:w-14 ${
           open ? "hidden bg-[color:var(--brand-deep)] sm:flex" : "flex bg-white"
         }`}
       >
