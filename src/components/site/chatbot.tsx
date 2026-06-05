@@ -828,6 +828,8 @@ export function Chatbot() {
   // Gate the conversation behind a "Start Chat" tap so no API call fires on a
   // casual open. Becomes true once a real conversation exists (a user message).
   const [started, setStarted] = useState(false);
+  // Briefly show a "Roomy is typing" beat before the greeting reveals on Start.
+  const [greetingTyping, setGreetingTyping] = useState(false);
 
   // Voice conversation (OpenAI Whisper STT + OpenAI TTS). English only for now.
   const { state: voiceState, setState: setVoiceState, listenOnce, cancel: cancelVoice, release: releaseVoice } = useVoiceRecorder();
@@ -944,6 +946,14 @@ export function Chatbot() {
   }, [open, showBubble]);
 
   // ─── Send message ─────────────────────────────────────────────────────────
+
+  // Deliberate entry point: reveal the greeting after a short "typing" beat so
+  // Roomy feels like it's writing the welcome rather than snapping in instantly.
+  function handleStart() {
+    setStarted(true);
+    setGreetingTyping(true);
+    window.setTimeout(() => setGreetingTyping(false), 900);
+  }
 
   function handleSuggestionClick(text: string) {
     if (isStreaming) return;
@@ -1324,7 +1334,7 @@ export function Chatbot() {
                     <Image src={ROOMY_AVATAR} alt="Roomy" width={28} height={28} className="h-full w-full object-cover" />
                   </span>
                   <div className="max-w-[85%] rounded-2xl rounded-tl-md bg-[color:var(--surface)] px-4 py-2.5 text-sm leading-relaxed text-[color:var(--text-main)]">
-                    {msg.content ? (
+                    {msg.content && !(msg.id === "greeting" && greetingTyping) ? (
                       renderMarkdown(msg.content, handleListItemClick)
                     ) : (
                       <TypingDots />
@@ -1392,7 +1402,7 @@ export function Chatbot() {
             <div className="shrink-0 border-t border-[color:var(--border-strong)] px-4 py-3">
               <button
                 type="button"
-                onClick={() => setStarted(true)}
+                onClick={handleStart}
                 className="flex w-full items-center justify-center gap-2 rounded-full bg-[color:var(--brand)] px-6 py-3 text-sm font-bold text-white shadow-[0_4px_16px_rgba(204,55,113,0.3)] transition hover:bg-[color:var(--brand-deep)]"
               >
                 <ChatCircleDots size={18} weight="fill" /> Start Chat
