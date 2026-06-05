@@ -64,6 +64,21 @@ function stripBookingBlock(text: string): string {
     .trim();
 }
 
+/** Strip Markdown/link syntax so text-to-speech reads naturally (no spoken
+ *  asterisks, bullet dashes, headings, or raw URLs). */
+function stripMarkdownForSpeech(text: string): string {
+  return text
+    .replace(/\[([^\]]+)\]\((?:[^)]+)\)/g, "$1") // [label](url) → label
+    .replace(/`{1,3}([^`]*)`{1,3}/g, "$1")        // `code` → code
+    .replace(/(\*\*|__)(.*?)\1/g, "$2")            // **bold** / __bold__ → bold
+    .replace(/(\*|_)(.*?)\1/g, "$2")               // *italic* / _italic_ → italic
+    .replace(/^\s{0,3}#{1,6}\s+/gm, "")            // # headings
+    .replace(/^\s*[-*•]\s+/gm, "")                  // bullet markers
+    .replace(/\n{2,}/g, ". ")                        // paragraph breaks → pause
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function hasDatePickerMarker(text: string): boolean {
   return text.includes("<<<SHOW_DATE_PICKER>>>");
 }
@@ -829,9 +844,14 @@ export function Chatbot() {
   useEffect(() => {
     const saved = loadPersistedMessages();
     if (saved && saved.length > 0) {
-      setMessages(saved);
+      // Refresh the stored greeting with the current copy so a returning
+      // session doesn't keep showing an outdated welcome message.
+      const refreshed = saved.map((m) =>
+        m.id === "greeting" ? { ...m, content: GREETING.content } : m,
+      );
+      setMessages(refreshed);
       // An ongoing conversation (any user message) skips the Start gate.
-      if (saved.some((m) => m.role === "user")) setStarted(true);
+      if (refreshed.some((m) => m.role === "user")) setStarted(true);
     }
     setHydrated(true);
   }, []);
@@ -1022,7 +1042,7 @@ export function Chatbot() {
     if (!last || last.role !== "assistant" || last.id === lastSpokenIdRef.current) return;
     lastSpokenIdRef.current = last.id;
 
-    const text = stripBookingBlock(last.content);
+    const text = stripMarkdownForSpeech(stripBookingBlock(last.content));
     if (!text) {
       if (voiceModeRef.current) runVoiceTurn();
       return;

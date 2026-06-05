@@ -107,7 +107,7 @@ export function HomeTestimonials({
         </div>
 
         {/* Avatar navigation */}
-        <div className="mt-10 flex items-center justify-center gap-3">
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
           {testimonials.map((t, i) => {
             const isActive = i === active;
             return (

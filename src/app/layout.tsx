@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Manrope } from "next/font/google";
 import localFont from "next/font/local";
 import { getLocale } from "next-intl/server";
@@ -20,6 +20,11 @@ const gotham = localFont({
   ],
   variable: "--font-gotham",
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://roomchang.com"),
