@@ -37,7 +37,7 @@
     "international": "国际患者",
     "pricing": "价格",
     "dentalTreatmentCosts": "牙科治疗费用",
-    "priceComparison": "价格对比",
+    "priceComparison": "国际价格对比",
     "implantsComparison": "种植牙价格对比",
     "clinicalResults": "临床案例",
     "allCases": "全部案例",
@@ -528,7 +528,8 @@
     "why": {
       "heading": "为什么选择Roomchang？",
       "body": "在柬埔寨获得优质牙科医疗是真正的高性价比之选——不是妥协，而是做过充分调研的患者的明智选择。",
-      "testimonialsCta": "阅读患者评价"
+      "testimonialsCta": "阅读患者评价",
+      "priceComparisonCta": "查看价格对比"
     },
     "cost": {
       "heading": "费用对比",
@@ -611,13 +612,14 @@
     },
     "comparison": {
       "eyebrow": "致国际患者",
-      "heading": "Roomchang vs. 澳大利亚",
-      "subheading": "以下所有治疗均按照澳大利亚牙科协会 (ADA) 标准。相同的国际品质材料和方案，费用仅为一小部分。",
+      "heading": "Roomchang 价格对比 — 澳大利亚与新加坡",
+      "subheading": "以下所有治疗均按照澳大利亚牙科协会 (ADA) 标准，并列出澳大利亚和新加坡的参考价格。相同的国际品质材料和方案，费用仅为一小部分。",
       "exchangeRateLabel": "使用汇率：",
       "colAda": "ADA",
       "colTreatment": "治疗项目",
       "colRoomchang": "Roomchang（美元）",
       "colAustralia": "澳大利亚（澳元）",
+      "colSingapore": "新加坡（新元）",
       "seeImplants": "查看种植牙价格对比",
       "sourcePrefix": "* ",
       "ctaPrimary": "获取个性化报价",

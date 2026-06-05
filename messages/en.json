@@ -37,7 +37,7 @@
     "international": "International",
     "pricing": "Pricing",
     "dentalTreatmentCosts": "Dental Treatment Costs",
-    "priceComparison": "Price Comparison",
+    "priceComparison": "International Price Comparison",
     "implantsComparison": "Dental Implants Price Comparison",
     "clinicalResults": "Clinical Results",
     "allCases": "All Cases",
@@ -528,7 +528,8 @@
     "why": {
       "heading": "Why Choose Roomchang?",
       "body": "Quality dental care in Cambodia offers genuine value — not as a compromise, but as a deliberate choice by patients who have done their research.",
-      "testimonialsCta": "Read Patient Testimonials"
+      "testimonialsCta": "Read Patient Testimonials",
+      "priceComparisonCta": "See price comparison"
     },
     "cost": {
       "heading": "Cost Comparison",
@@ -611,13 +612,14 @@
     },
     "comparison": {
       "eyebrow": "For International Patients",
-      "heading": "Roomchang vs. Australia",
-      "subheading": "Every treatment below follows the Australian Dental Association (ADA) schedule. Same international-quality materials and protocols at a fraction of the cost.",
-      "exchangeRateLabel": "Exchange rate used:",
+      "heading": "How Roomchang Compares — Australia & Singapore",
+      "subheading": "Every treatment below follows the Australian Dental Association (ADA) schedule, with indicative prices in Australia and Singapore alongside ours. Same international-quality materials and protocols — at a fraction of the cost.",
+      "exchangeRateLabel": "Exchange rates used:",
       "colAda": "ADA",
       "colTreatment": "Treatment",
       "colRoomchang": "Roomchang (USD)",
       "colAustralia": "Australia (AUD)",
+      "colSingapore": "Singapore (SGD)",
       "seeImplants": "See dental implants comparison",
       "sourcePrefix": "* ",
       "ctaPrimary": "Get a Personalised Quote",

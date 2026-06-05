@@ -18,10 +18,16 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-function renderWhyCard(item: { title: string; description: string }, testimonialsCta: string) {
+function renderWhyCard(
+  item: { title: string; description: string },
+  testimonialsCta: string,
+  priceComparisonCta: string,
+) {
   const keyword = "Read their stories in our testimonials.";
   const hasTestimonials = item.description.includes(keyword);
   const cleanDesc = hasTestimonials ? item.description.replace(keyword, "").trim() : item.description;
+  // The cost-savings card links straight to the international price comparison.
+  const isCostSavings = /cost savings/i.test(item.title);
 
   return (
     <div
@@ -36,6 +42,14 @@ function renderWhyCard(item: { title: string; description: string }, testimonial
           className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-[color:var(--brand-soft)] px-4 py-2 text-xs font-bold text-[color:var(--brand-deep)] transition hover:bg-[color:var(--brand-light)] hover:text-white"
         >
           {testimonialsCta} <ArrowRight size={13} weight="bold" aria-hidden="true" />
+        </Link>
+      )}
+      {isCostSavings && (
+        <Link
+          href="/international/price-comparison"
+          className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-[color:var(--brand-soft)] px-4 py-2 text-xs font-bold text-[color:var(--brand-deep)] transition hover:bg-[color:var(--brand-light)] hover:text-white"
+        >
+          {priceComparisonCta} <ArrowRight size={13} weight="bold" aria-hidden="true" />
         </Link>
       )}
     </div>
@@ -115,7 +129,7 @@ export default async function InternationalPage() {
             {t("why.body")}
           </p>
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {whyItems.map((item) => renderWhyCard(item, t("why.testimonialsCta")))}
+            {whyItems.map((item) => renderWhyCard(item, t("why.testimonialsCta"), t("why.priceComparisonCta")))}
           </div>
         </section>
 
