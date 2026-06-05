@@ -1,0 +1,773 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "aboutRoomchang": "About Roomchang",
+    "ourFacilities": "Our Facilities",
+    "visionMission": "Vision, Mission & Values",
+    "directorMessage": "Message from Our Director",
+    "newsEvents": "News & Events",
+    "communityCharity": "Community & Charity",
+    "corporatePartnerships": "Corporate Partnerships",
+    "employmentOpportunities": "Employment Opportunities",
+    "services": "Services",
+    "preventiveDentistry": "Preventive Dentistry",
+    "cosmeticDentistry": "Cosmetic Dentistry",
+    "endodontics": "Endodontics",
+    "dentalCrowns": "Dental Crowns",
+    "orthodontics": "Orthodontics",
+    "pediatricDentistry": "Pediatric Dentistry",
+    "periodontalDentistry": "Periodontal Dentistry",
+    "dentures": "Dentures",
+    "dentalImplants": "Dental Implants",
+    "oralSurgery": "Oral Surgery",
+    "fullMouthReconstruction": "Full Mouth Reconstruction",
+    "teethWhitening": "Teeth Whitening",
+    "snoringApnea": "Snoring & Sleep Apnea",
+    "doctors": "Doctors",
+    "technology": "Technology",
+    "cadCam": "CAD/CAM Digital Dentistry",
+    "clearAligner": "Clear Aligner® (CA)",
+    "invisalign": "Invisalign®",
+    "orthoTain": "Ortho-Tain® System",
+    "resmedApnealink": "ResMed ApneaLink Air™",
+    "beyondWhitening": "Beyond® Teeth Whitening",
+    "iconVestibular": "ICON® Vestibular",
+    "sterilisationTech": "Sterilisation Technologies",
+    "international": "International",
+    "pricing": "Pricing",
+    "dentalTreatmentCosts": "Dental Treatment Costs",
+    "priceComparison": "Price Comparison",
+    "implantsComparison": "Dental Implants Price Comparison",
+    "clinicalResults": "Clinical Results",
+    "allCases": "All Cases",
+    "fullMouthReconstructionResults": "Full Mouth Reconstruction",
+    "implantsCrowns": "Implants & Crowns",
+    "implantBridges": "Implant Bridges",
+    "orthodonticsResults": "Orthodontics",
+    "cosmeticEmax": "Cosmetic & E-Max",
+    "patientTestimonials": "Patient Testimonials",
+    "educationBlog": "Education Blog",
+    "faq": "FAQ",
+    "dentistTalks": "Dentist Talks",
+    "publications": "Publications"
+  },
+  "header": {
+    "ariaLabel": "Roomchang Dental Hospital",
+    "homeAriaLabel": "Roomchang Dental Hospital home",
+    "logoAlt": "Roomchang Dental Hospital logo",
+    "bookAppointment": "Book Appointment"
+  },
+  "mobileNav": {
+    "closeMenu": "Close menu",
+    "openMenu": "Open menu",
+    "brandName": "Roomchang",
+    "toggleSubmenu": "Toggle {label} submenu",
+    "bookAppointment": "Book Appointment"
+  },
+  "footer": {
+    "heading": {
+      "services": "Services",
+      "about": "About",
+      "international": "International Patients",
+      "contact": "Contact"
+    },
+    "link": {
+      "allServices": "All Services",
+      "visionMission": "Vision & Mission",
+      "ourDoctors": "Our Doctors",
+      "comingToCambodia": "Coming to Cambodia?",
+      "howItWorks": "How It Works",
+      "treatmentCosts": "Treatment Costs",
+      "bookAppointment": "Book Appointment",
+      "branches": "Branches"
+    },
+    "social": {
+      "facebook": "Facebook",
+      "youtube": "YouTube",
+      "instagram": "Instagram",
+      "telegram": "Telegram",
+      "tiktok": "TikTok",
+      "linkedin": "LinkedIn"
+    },
+    "logoAlt": "Roomchang Dental Hospital",
+    "tagline": "Premium dental care for local and international patients. Multilingual, technology-first, and rooted in compassionate care since 1996.",
+    "address": {
+      "line1": "No.4, Street 184, Phsar Thmey 3",
+      "line2": "Khan Daun Penh, Phnom Penh 120203"
+    },
+    "phoneMobile247": "(Mobile 24/7)",
+    "copyright": "© {year} Roomchang Dental Hospital. Operated by Kravan Healthcare Co., Ltd."
+  },
+  "floatingContact": {
+    "messenger": "Messenger",
+    "whatsapp": "WhatsApp",
+    "telegram": "Telegram",
+    "enquiry": "Enquiry",
+    "closeAriaLabel": "Close contact options",
+    "openAriaLabel": "Open contact options",
+    "contactAlt": "Contact Roomchang"
+  },
+  "languageSwitcher": {
+    "english": "English",
+    "chinese": "中文",
+    "khmer": "ខ្មែរ",
+    "ariaLabel": "Change language",
+    "menuAriaLabel": "Language options",
+    "soon": "Soon"
+  },
+  "homeHero": {
+    "trustPill": "Trusted Since 1996",
+    "ctaPrimary": "Request An Appointment",
+    "ctaSecondary": "Explore Services",
+    "ctaTertiary": "Our Doctors",
+    "scrollAriaLabel": "Scroll to next section",
+    "slide": {
+      "team": {
+        "eyebrow": "Cambodia's leading dental group",
+        "title": "37 Specialist Dentists, One Team",
+        "description": "Implantologists, orthodontists, cosmetic specialists, and general dentists — all under one roof, across five branches in Phnom Penh.",
+        "alt": "Roomchang Dental Hospital full team photo"
+      },
+      "care": {
+        "eyebrow": "Patient-first care",
+        "title": "Dentistry That Puts You at Ease",
+        "description": "Our multilingual team speaks your language — literally. Consultations in English, Khmer, Mandarin, Japanese, German, and French.",
+        "alt": "Roomchang staff with a patient in a treatment room"
+      },
+      "allStaff": {
+        "eyebrow": "Trusted since 1996",
+        "title": "Nearly 30 Years of Exceptional Care",
+        "description": "From a single practice to Cambodia’s most trusted dental hospital — hospital-grade standards, multilingual care, and built for every patient.",
+        "alt": "Roomchang Dental Hospital all staff group photo"
+      },
+      "digital": {
+        "eyebrow": "Digital dentistry",
+        "title": "Precision Technology, Every Treatment",
+        "description": "CAD/CAM technology, 3D CBCT imaging, intraoral scanning, and Clear Aligner (CA) fabrication — made and fitted right here.",
+        "alt": "Roomchang staff working with digital dental laboratory technology"
+      }
+    }
+  },
+  "heroSlideshow": {
+    "ariaLabel": "Roomchang hero slideshow",
+    "showSlide": "Show {title}",
+    "swipeHint": "Swipe on mobile",
+    "previousAriaLabel": "Show previous slide",
+    "nextAriaLabel": "Show next slide"
+  },
+  "homeStats": {
+    "yearsOfExperience": "Years of Experience",
+    "specialistDentists": "Specialist Dentists",
+    "phnomPenhBranches": "Phnom Penh Branches",
+    "patientsTreated": "Patients Treated"
+  },
+  "homeHighlights": {
+    "shortcut": {
+      "treatmentCosts": "Treatment Costs",
+      "testimonials": "Testimonials",
+      "ourTeam": "Our Team",
+      "makeAppointment": "Make Appointment",
+      "planYourTrip": "Plan Your Trip",
+      "quickAccess": "Quick Access",
+      "seeMore": "See more"
+    },
+    "card": {
+      "international": {
+        "title": "International Patients",
+        "description": "Thousands of patients from Australia, Japan, Singapore, and beyond visit Roomchang each year. We make the journey simple.",
+        "alt": "Roomchang patient care team",
+        "cta": "Plan your trip"
+      },
+      "team": {
+        "title": "Meet Our Team",
+        "description": "37 specialist dentists across every discipline — multilingual, experienced, and committed to your comfort.",
+        "alt": "Roomchang dental hospital team",
+        "cta": "Meet the doctors"
+      },
+      "aligner": {
+        "title": "Clear Aligner (CA)",
+        "description": "Designed, fabricated, and fitted in-house for a precise, discreet result.",
+        "alt": "Roomchang clear aligner treatment",
+        "cta": "Learn more"
+      }
+    }
+  },
+  "homeServices": {
+    "eyebrow": "What We Offer",
+    "heading": "Our Treatments",
+    "seeAll": "See all services",
+    "implants": "Dental Implants",
+    "crowns": "Crowns & Bridges",
+    "aligners": "Clear Aligners",
+    "cosmetic": "Cosmetic Dentistry",
+    "whitening": "Teeth Whitening",
+    "surgery": "Oral Surgery"
+  },
+  "homeTestimonials": {
+    "readAriaLabel": "Read testimonial from {name}",
+    "seeAll": "See all patient reviews"
+  },
+  "about": {
+    "meta": {
+      "title": "About Us | Roomchang Dental Hospital",
+      "description": "Established in 1996, Roomchang Dental Hospital is Cambodia's leading dental group — multilingual, technology-first, and rooted in compassionate care."
+    },
+    "stat": {
+      "yearEstablished": "Year Established",
+      "branches": "Phnom Penh Branches",
+      "specialistDentists": "Specialist Dentists",
+      "dentalChairs": "Dental Chairs across 5 branches"
+    },
+    "section": {
+      "facilities": {
+        "title": "Our Facilities",
+        "description": "A purpose-built, 10-storey dental hospital with 46 dental chairs, 4 operation rooms, an in-house CAD/CAM lab, and hospital-grade sterilisation."
+      },
+      "visionMission": {
+        "title": "Vision, Mission & Values",
+        "description": "Enriching lives with quality dentistry — guided by professionalism, honesty, teamwork, innovation, and excellence."
+      },
+      "directorMessage": {
+        "title": "Message from Our Director",
+        "description": "A personal message from Dr. Tith Hong Yoeu, DDS, MSc. — Founder & Director — on Roomchang's commitment to quality care."
+      },
+      "doctors": {
+        "title": "Our Doctors",
+        "description": "Meet the specialist team — multilingual experts in implants, orthodontics, cosmetic dentistry, paediatrics, and more."
+      },
+      "community": {
+        "title": "Community & Charity",
+        "description": "Free dental care for underserved communities — mobile clinics, blood drives, and oral health education across Cambodia."
+      },
+      "partnerships": {
+        "title": "Corporate Partnerships",
+        "description": "Trusted by 50+ banks, schools, insurers, and organisations to deliver dental benefits for employees and members."
+      },
+      "clinicalResults": {
+        "title": "Clinical Results",
+        "description": "See real before-and-after cases — dental implants, smile makeovers, orthodontics, and full-mouth reconstructions."
+      },
+      "technology": {
+        "title": "Technology",
+        "description": "CAD/CAM technology, digital intraoral scanning, Invisalign, Beyond® whitening, and the Clear Aligner (CA) system."
+      },
+      "careers": {
+        "title": "Employment Opportunities",
+        "description": "Join Cambodia's leading dental group — clinical fellowships, dental assistant, dentist, and customer service positions available."
+      },
+      "learnMore": "Learn more"
+    },
+    "hero": {
+      "eyebrow": "Our Story",
+      "heading": "About Roomchang",
+      "body": "Founded in 1996 by a vision to bring specialist dental care to Cambodia, Roomchang has grown into the country's most trusted dental group — serving local families and international patients from across Asia, Australia, and beyond."
+    },
+    "history": {
+      "heading": "A Hospital, Not Just a Clinic",
+      "paragraph1": "Roomchang Dental Hospital was built on the belief that Cambodian patients deserved access to the same quality of care available in the most advanced dental centres in the world — without having to travel abroad to get it.",
+      "paragraph2": "Over nearly 30 years, we've grown from a single practice to a hospital-scale group with five branches across Phnom Penh, an in-house digital laboratory, and a specialist team covering every major dental discipline.",
+      "paragraph3": "Today, Roomchang treats thousands of patients every month — from routine checkups to complex full-mouth reconstructions — and serves international visitors from more than 20 countries who choose Cambodia for high-quality, cost-effective dental care delivered to the same standards as leading clinics abroad."
+    }
+  },
+  "aboutTimeline": {
+    "1996": {
+      "caption": "The beginning",
+      "heading": "Our First Home",
+      "body": "A single practice. A single belief — that Cambodians deserved world-class dental care at home. Dr. Tith Hong Yoeu opens Roomchang as Cambodia's first specialist dental clinic built to international standards.",
+      "alt": "Roomchang — the original clinic, 1996"
+    },
+    "2002": {
+      "caption": "Roots deepen",
+      "heading": "Our First Move",
+      "body": "A second location. New equipment. The same uncompromising standard — now reaching more of Phnom Penh. The foundations of a multi-branch group are quietly being laid.",
+      "alt": "Roomchang — second location, 2002"
+    },
+    "2008": {
+      "caption": "Recognition",
+      "heading": "First ISO Certification",
+      "body": "Roomchang earns its first ISO certification — the first dental facility in Cambodia to achieve international quality management standards, setting the benchmark for clinical excellence in the country.",
+      "alt": "Roomchang ISO certification"
+    },
+    "2011": {
+      "caption": "A new era",
+      "heading": "Taking the Next Step",
+      "body": "The flagship 10-storey dental hospital opens — purpose-built with 46 dental chairs, 9 operation rooms, an in-house CAD/CAM laboratory, and hospital-grade sterilisation. Cambodia's most advanced dental facility.",
+      "alt": "Roomchang Main Hospital, 2011"
+    },
+    "2014": {
+      "caption": "Expanding reach",
+      "heading": "Rose Condo Branch",
+      "body": "Roomchang opens at Rose Condo — bringing specialist dental care to one of Phnom Penh's growing residential communities, with the same team and standards as the main hospital.",
+      "alt": "Roomchang Rose Condo branch, 2014"
+    },
+    "2018": {
+      "caption": "Going further",
+      "heading": "AEON Mall Sen Sok",
+      "body": "A new branch inside AEON Mall Sen Sok — making specialist dental care accessible in one of Phnom Penh's busiest shopping destinations, serving families and walk-in patients in the city's northern corridor.",
+      "alt": "Roomchang AEON Mall Sen Sok branch, 2018"
+    },
+    "2022a": {
+      "caption": "Growth continues",
+      "heading": "PH Euro Park",
+      "body": "Roomchang opens at PH Euro Park — extending our reach to another key area of Phnom Penh with a fully equipped branch delivering the full range of specialist dental services.",
+      "alt": "Roomchang PH Euro Park branch, 2022"
+    },
+    "2022b": {
+      "caption": "Five branches",
+      "heading": "Fun Mall — TK Avenue",
+      "body": "The fifth branch opens at Fun Mall on TK Avenue — completing Roomchang's network of five locations across Phnom Penh, each delivering the same specialist care and hospital-grade standards.",
+      "alt": "Roomchang Fun Mall TK Avenue branch, 2022"
+    },
+    "now": {
+      "caption": "A hospital network",
+      "heading": "Present Day",
+      "body": "Five branches. Seventy-four chairs. 37+ specialist dentists. 9 operation rooms. Thousands of patients every month. And the same conviction that started it all — quality care, close to home.",
+      "alt": "Roomchang Dental Hospital — present day aerial view"
+    }
+  },
+  "services": {
+    "meta": {
+      "title": "Dental Services | Roomchang Dental Hospital",
+      "description": "Comprehensive dental treatments at Roomchang — from implants and crowns to orthodontics, cosmetic dentistry, and oral surgery in Phnom Penh."
+    },
+    "stat": {
+      "specialties": "Specialties",
+      "specialists": "Specialists",
+      "locations": "Locations"
+    },
+    "hero": {
+      "eyebrow": "What We Treat",
+      "heading": "Dental Services",
+      "body": "Roomchang offers hospital-level dental care across all major specialties. Whether you're based in Phnom Penh or travelling from overseas, our multilingual team is here to guide you through every step."
+    },
+    "card": {
+      "learnMore": "Learn more"
+    },
+    "sub": {
+      "allOn4": "All-on-4, 6 & 8",
+      "implantBridges": "Implant Bridges"
+    },
+    "alt": {
+      "preventive": "Preventive dentistry consultation at Roomchang Dental Hospital",
+      "implants": "Dental implant treatment at Roomchang Dental Hospital",
+      "crowns": "Dental crowns treatment at Roomchang Dental Hospital",
+      "orthodontics": "Orthodontic clear aligner treatment at Roomchang Dental Hospital",
+      "cosmetic": "Cosmetic dentistry treatment at Roomchang Dental Hospital",
+      "oralSurgery": "Oral surgery treatment at Roomchang Dental Hospital",
+      "pediatric": "Pediatric dentistry treatment at Roomchang Dental Hospital",
+      "sleepApnea": "Sleep apnea dental appliance consultation at Roomchang Dental Hospital",
+      "whitening": "Teeth whitening treatment at Roomchang Dental Hospital",
+      "endodontics": "Endodontic treatment at Roomchang Dental Hospital",
+      "generic": "{name} treatment at Roomchang Dental Hospital"
+    },
+    "cta": {
+      "heading": "Not sure which treatment?",
+      "body": "Send us a message or call and our team will help you find the right path.",
+      "button": "Request a Consultation"
+    },
+    "detail": {
+      "bookConsultation": "Book a Consultation",
+      "allServices": "All Services",
+      "imageAlt": "{name} at Roomchang Dental Hospital",
+      "pricingTreatment": "Treatment",
+      "pricingPrice": "Price (USD)",
+      "ctaHeading": "Ready to restore your smile?",
+      "ctaBody": "Call us on {phone} or send an enquiry and we'll get back to you within one business day.",
+      "ctaButton": "Book a Consultation"
+    }
+  },
+  "team": {
+    "meta": {
+      "title": "Our Doctors & Team | Roomchang Dental Hospital",
+      "description": "Meet the specialist dentists and clinical team at Roomchang Dental Hospital — multilingual experts in implants, orthodontics, cosmetic dentistry, and more."
+    },
+    "stat": {
+      "doctors": "Doctors",
+      "languages": "Languages",
+      "yearsExp": "Yrs Exp.",
+      "branches": "Branches"
+    },
+    "hero": {
+      "eyebrow": "Meet the Team",
+      "heading": "Our Doctors",
+      "body": "Roomchang's clinical team combines decades of local experience with internationally trained specialists. All consultations are available in your language."
+    }
+  },
+  "doctorGrid": {
+    "filterLabel": "Filter by language:",
+    "filterAll": "All",
+    "filterResult": "{count} doctor(s) speak {language}",
+    "noResults": "No doctors found for {language}.",
+    "showAll": "Show all doctors",
+    "dept": {
+      "implantology": "Implantology and Oral Reconstruction",
+      "cosmetic": "Cosmetic Dentistry",
+      "general": "General Dentistry",
+      "periodontics": "Periodontics",
+      "orthodontics": "Orthodontics",
+      "pediatrics": "Pediatrics",
+      "seniorConsultant": "Senior Consultant"
+    },
+    "lang": {
+      "khmer": "Khmer",
+      "english": "English",
+      "mandarin": "Mandarin",
+      "japanese": "Japanese",
+      "german": "German",
+      "french": "French"
+    },
+    "modal": {
+      "close": "Close",
+      "about": "About",
+      "specialties": "Specialties",
+      "languages": "Languages",
+      "bookWith": "Book with Dr. {lastName}"
+    },
+    "cta": {
+      "heading": "Not sure who to see?",
+      "body": "Tell us what you're looking for and we'll match you with the right specialist.",
+      "button": "Get Matched"
+    }
+  },
+  "contact": {
+    "meta": {
+      "title": "Contact & Appointments | Roomchang Dental Hospital",
+      "description": "Book an appointment at Roomchang Dental Hospital. Five branches across Phnom Penh with 24/7 emergency line."
+    },
+    "hero": {
+      "eyebrow": "Get In Touch",
+      "heading": "Contact & Appointments",
+      "body": "Fill in the form and one of our team will be in touch within one business day. For urgent enquiries, call us directly — we have a 24/7 line.",
+      "twentyFourSeven": "(24/7)"
+    }
+  },
+  "contactForm": {
+    "service": {
+      "implants": "Dental Implants",
+      "crowns": "Crowns & Bridges",
+      "orthodontics": "Orthodontics",
+      "cosmetic": "Cosmetic Dentistry",
+      "fullMouth": "Full Mouth Reconstruction",
+      "oralSurgery": "Oral Surgery",
+      "endodontics": "Endodontics",
+      "whitening": "Teeth Whitening",
+      "paediatric": "Paediatric Dentistry",
+      "sleepApnea": "Sleep Apnea Treatment",
+      "general": "General Dentistry / Check-up",
+      "other": "Other"
+    },
+    "success": {
+      "heading": "Thanks, we'll be in touch!",
+      "body": "Your enquiry has been received. A member of our team will contact you within one business day to confirm your appointment or answer your questions.",
+      "sendAnother": "Send another enquiry"
+    },
+    "label": {
+      "fullName": "Full Name",
+      "email": "Email",
+      "phone": "Phone / WhatsApp / Telegram",
+      "country": "Country",
+      "treatment": "Treatment Needed",
+      "branch": "Preferred Branch",
+      "doctor": "Preferred Doctor",
+      "date": "Preferred Appointment Date",
+      "message": "Message"
+    },
+    "placeholder": {
+      "name": "Your name",
+      "email": "you@email.com",
+      "country": "Cambodia",
+      "treatment": "Select a treatment (optional)",
+      "branch": "Any branch (optional)",
+      "doctor": "Any doctor (optional)",
+      "message": "Tell us about your dental concerns or what you're hoping to achieve..."
+    },
+    "button": {
+      "sending": "Sending…",
+      "submit": "Send Enquiry"
+    },
+    "privacy": "We respond within one business day. Your information is kept private.",
+    "error": {
+      "generic": "Sorry, something went wrong. Please try again or call us directly."
+    },
+    "branches": {
+      "heading": "Our Branches",
+      "directions": "Get directions"
+    },
+    "messaging": {
+      "heading": "Message Us",
+      "messenger": "Facebook Messenger",
+      "whatsapp": "WhatsApp",
+      "telegram": "Telegram",
+      "wechat": "WeChat"
+    }
+  },
+  "international": {
+    "meta": {
+      "title": "International Patients | Roomchang Dental Hospital",
+      "description": "Planning dental treatment in Cambodia? Roomchang supports international patients from Australia, Asia, and worldwide — treatment planning, coordination, and multilingual care."
+    },
+    "stat": {
+      "savings": "Savings",
+      "experience": "Experience"
+    },
+    "hero": {
+      "eyebrow": "Dental Tourism",
+      "heading": "International Patients",
+      "body": "Thousands of patients travel from Australia, Japan, Singapore, and beyond to receive world-class dental care at Roomchang. We make the process simple, transparent, and as comfortable as possible.",
+      "ctaPrimary": "Start Your Treatment Plan",
+      "ctaSecondary": "Browse Services",
+      "imageAlt": "Roomchang dental team welcoming an international patient"
+    },
+    "why": {
+      "heading": "Why Choose Roomchang?",
+      "body": "Quality dental care in Cambodia offers genuine value — not as a compromise, but as a deliberate choice by patients who have done their research.",
+      "testimonialsCta": "Read Patient Testimonials"
+    },
+    "cost": {
+      "heading": "Cost Comparison",
+      "body": "Indicative savings vs. equivalent treatments in Australia, Singapore & the UK.",
+      "disclaimer": "* Savings are estimates compared to typical prices in Australia, Singapore & the UK. Exact quotes depend on your specific treatment needs. Contact us for a personalised plan."
+    },
+    "howItWorks": {
+      "heading": "How It Works",
+      "body": "From your first message to your last appointment, we make every step clear and manageable — even from the other side of the world."
+    },
+    "cta": {
+      "heading": "Ready to get started?",
+      "body": "Send us your X-rays or a short message and we'll put together a free treatment plan within two business days.",
+      "button": "Request a Free Plan"
+    }
+  },
+  "technology": {
+    "meta": {
+      "title": "Technology | Roomchang Dental Hospital",
+      "description": "Roomchang Dental Hospital uses the latest in digital dentistry — CAD/CAM technology, CBCT imaging, in-house Clear Aligners®, and advanced sterilisation systems."
+    },
+    "category": {
+      "orthodontics": "Orthodontics",
+      "labRestoration": "Lab & Restoration",
+      "cosmetic": "Cosmetic",
+      "infectionControl": "Infection Control",
+      "diagnostics": "Diagnostics"
+    },
+    "stat": {
+      "inhouseLab": "In-house Lab",
+      "cbctImaging": "CBCT Imaging",
+      "clearAligners": "Clear Aligners®",
+      "sterilisation": "Sterilisation"
+    },
+    "hero": {
+      "eyebrow": "Precision & Innovation",
+      "heading": "Our Technology",
+      "body": "Roomchang invests continuously in the tools and systems that make dental care safer, faster, and more precise — from in-house CAD/CAM fabrication and 3D surgical planning, to specialised systems like Ortho-Tain® for early orthodontics, ResMed ApneaLink Air™ for sleep diagnostics, and ICON® Vestibular for minimally invasive enamel repair."
+    },
+    "card": {
+      "learnMore": "Learn more",
+      "askAbout": "Ask about this"
+    },
+    "cta": {
+      "heading": "See it in person",
+      "body": "Book a consultation and our team will walk you through exactly what technology applies to your treatment.",
+      "button": "Book a Consultation"
+    }
+  },
+  "pricing": {
+    "meta": {
+      "title": "Dental Treatment Prices | Roomchang Dental Hospital",
+      "description": "Transparent pricing for dental implants, crowns, orthodontics, veneers, and more at Roomchang Dental Hospital in Phnom Penh, Cambodia."
+    },
+    "stat": {
+      "vsAusUk": "vs. Aus/UK",
+      "hiddenFees": "Hidden Fees"
+    },
+    "hero": {
+      "eyebrow": "Transparent Pricing",
+      "heading": "Treatment Prices",
+      "body": "We believe in clear, upfront pricing — no hidden fees. All prices below are in USD and reflect actual treatment costs. Your exact quote will be confirmed after consultation and X-rays.",
+      "ctaPrimary": "Get a Personalised Quote",
+      "ctaSecondary": "International Patients",
+      "consultationNote": "*Subject to case complexity. Some cases may incur a consultation fee."
+    },
+    "itemCount": "{count, plural, one {# treatment} other {# treatments}}",
+    "ausAvg": "AU avg:",
+    "free": "Free",
+    "consultationHeading": "Free initial consultation*",
+    "consultationDisclaimer": "*Subject to case complexity. Some cases may incur a consultation fee. All prices in USD. Final pricing confirmed after clinical assessment. Prices subject to change — please contact us for the latest quote.",
+    "cta": {
+      "heading": "Get your exact quote",
+      "body": "Send us your X-rays or photos and we'll provide a detailed treatment plan with exact pricing within two business days — at no charge.",
+      "button": "Request a Free Quote"
+    }
+  },
+  "clinicalResults": {
+    "meta": {
+      "title": "Clinical Results | Roomchang Dental Hospital",
+      "description": "Real patient results from Roomchang Dental Hospital — before and after cases for implants, orthodontics, full mouth reconstruction, cosmetic dentistry and more."
+    },
+    "stat": {
+      "countriesServed": "Countries served",
+      "clinicalExperience": "Clinical experience",
+      "specialistDentists": "Specialist Dentists",
+      "patientsTreated": "Patients Treated"
+    },
+    "hero": {
+      "eyebrow": "Real Patients, Real Results",
+      "heading": "Clinical Results",
+      "body": "A selection of cases from Roomchang's clinical team — covering implants, orthodontics, full mouth reconstructions, and cosmetic transformations. All cases are documented with clinical notes, photos, and patient consent."
+    }
+  },
+  "clinicalResultsGrid": {
+    "filterAll": "All",
+    "cat": {
+      "fullMouth": "Full Mouth",
+      "implantsCrowns": "Implants & Crowns",
+      "implantBridges": "Implant Bridges",
+      "orthodontics": "Orthodontics",
+      "cosmeticEmax": "Cosmetic & E-Max"
+    },
+    "altPattern": "Before and after — {title}",
+    "duration": "Duration:",
+    "viewCase": "View case",
+    "noResults": "No cases found for {category}.",
+    "showAll": "Show all",
+    "disclaimer": "* Patient images and full case photography available upon request in clinic. Cases shown with patient consent. Individual results may vary depending on oral health, bone density, and treatment complexity.",
+    "cta": {
+      "heading": "Achieve similar results",
+      "body": "Book a consultation and our specialists will assess your case and show you what's possible — with a personalised treatment plan and clear pricing.",
+      "bookButton": "Book a Consultation",
+      "pricingButton": "View Pricing"
+    }
+  },
+  "checklistForm": {
+    "success": {
+      "heading": "Checklist sent!",
+      "body": "Check your inbox — we've sent you a step-by-step guide to getting started."
+    },
+    "heading": "Get this checklist in your inbox",
+    "body": "We'll send you a step-by-step guide you can follow along with.",
+    "placeholder": {
+      "name": "Your name",
+      "email": "Your email"
+    },
+    "button": {
+      "sending": "Sending…",
+      "submit": "Send Checklist"
+    },
+    "error": "Something went wrong. Please try again."
+  },
+  "chatbot": {
+    "day": {
+      "sun": "Sun",
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat"
+    },
+    "monthShort": {
+      "jan": "Jan",
+      "feb": "Feb",
+      "mar": "Mar",
+      "apr": "Apr",
+      "may": "May",
+      "jun": "Jun",
+      "jul": "Jul",
+      "aug": "Aug",
+      "sep": "Sep",
+      "oct": "Oct",
+      "nov": "Nov",
+      "dec": "Dec"
+    },
+    "monthFull": {
+      "january": "January",
+      "february": "February",
+      "march": "March",
+      "april": "April",
+      "may": "May",
+      "june": "June",
+      "july": "July",
+      "august": "August",
+      "september": "September",
+      "october": "October",
+      "november": "November",
+      "december": "December"
+    },
+    "booking": {
+      "heading": "Confirm Booking",
+      "name": "Name:",
+      "contact": "Contact:",
+      "treatment": "Treatment:",
+      "date": "Date:",
+      "submitting": "Submitting...",
+      "confirmButton": "Confirm Booking",
+      "edit": "Edit"
+    },
+    "datePicker": {
+      "heading": "Pick a date",
+      "previous": "Previous",
+      "next": "Next",
+      "hours": "Mon – Sat · 8:00–17:30"
+    },
+    "suggestion": {
+      "services": "Our services",
+      "doctors": "Meet our doctors",
+      "implantPrices": "Implant prices",
+      "bookAppointment": "Book appointment",
+      "teethWhitening": "Teeth whitening",
+      "bracesOptions": "Braces options",
+      "visitingAbroad": "Visiting from abroad",
+      "openingHours": "Opening hours"
+    },
+    "suggestionText": {
+      "services": "What dental services do you offer?",
+      "doctors": "Tell me about your doctors",
+      "implantPrices": "How much do dental implants cost?",
+      "bookAppointment": "I'd like to book an appointment",
+      "teethWhitening": "Do you offer teeth whitening? How much does it cost?",
+      "bracesOptions": "What braces and aligner options do you have?",
+      "visitingAbroad": "I'm travelling from abroad — how does it work?",
+      "openingHours": "What are your opening hours and location?"
+    },
+    "greeting": "Hi! I'm Roomchang's virtual assistant. I can help you with treatment information, pricing, or booking an appointment. How can I help you today?",
+    "errorMessage": "Sorry, I'm having trouble connecting right now. Please try again or contact us directly at +855 69 811 338.",
+    "bookingSuccess": "Your appointment request has been submitted! Our team will confirm your booking via email or phone within 1-2 business days. Thank you for choosing Roomchang!",
+    "bookingCancelled": "No problem! What would you like to change?",
+    "bookingError": "Booking failed — please try again or call +855 69 811 338.",
+    "panelBrand": "Roomchang",
+    "panelSubtitle": "Virtual Assistant",
+    "closeAriaLabel": "Close chat",
+    "inputPlaceholder": "Type your message...",
+    "sendAriaLabel": "Send message",
+    "openAriaLabel": "Chat with us"
+  },
+  "technologyDetail": {
+    "backLink": "Technology",
+    "bookConsultation": "Book a Consultation",
+    "allTechnology": "All Technology",
+    "ctaHeading": "Want to know if this is right for you?",
+    "ctaBody": "Book a consultation and our specialists will assess your case and advise on the best approach."
+  },
+  "caseDetail": {
+    "backLink": "Clinical Results",
+    "clinicalNotes": "Clinical Notes",
+    "treatmentSummary": "Treatment Summary",
+    "categoryLabel": "Category",
+    "treatmentLabel": "Treatment",
+    "durationLabel": "Treatment Duration",
+    "bookConsultation": "Book a Consultation",
+    "viewPricing": "View Pricing",
+    "disclaimer": "* Cases shown with patient consent. Individual results may vary depending on oral health, bone density, and treatment complexity.",
+    "previousCase": "Previous Case",
+    "nextCase": "Next Case"
+  },
+  "common": {
+    "learnMore": "Learn more",
+    "bookAppointment": "Book Appointment",
+    "contactUs": "Contact Us",
+    "readMore": "Read more",
+    "close": "Close",
+    "free": "Free"
+  }
+}
