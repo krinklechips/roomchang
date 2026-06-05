@@ -22,7 +22,6 @@ const PARTNER_CATEGORIES: PartnerCategory[] = [
       { name: "Vattanac Bank",           logo: "/about/partners/vattanac-bank.jpg" },
       { name: "Cambodia Post Bank",       logo: "/about/partners/cambodia-post-bank.webp" },
       { name: "Chip Mong Bank",           logo: "/about/partners/chip-mong-bank.png" },
-      { name: "Prince Bank" },
       { name: "BRED Bank",                logo: "/about/partners/bred-bank.webp" },
       { name: "Phillip Bank",             logo: "/about/partners/phillip-bank.svg" },
       { name: "Maybank",                  logo: "/about/partners/maybank.png" },
