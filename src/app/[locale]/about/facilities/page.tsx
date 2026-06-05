@@ -151,16 +151,16 @@ export default async function FacilitiesPage() {
               </div>
             </div>
 
-            {/* Interior photo grid */}
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3">
+            {/* Interior photo grid — 3-col × 2-row, uniform aspect ratio */}
+            <div className="grid grid-cols-3 gap-3">
               {GALLERY_INTERIOR.map(({ src, alt }) => (
-                <div key={src} className="relative h-48 overflow-hidden rounded-2xl lg:h-44 xl:h-48">
+                <div key={src} className="relative aspect-[4/3] overflow-hidden rounded-2xl">
                   <Image
                     src={src}
                     alt={alt}
                     fill
                     className="object-cover transition duration-500 hover:scale-[1.04]"
-                    sizes="(min-width: 1280px) 220px, (min-width: 1024px) 180px, (min-width: 640px) 33vw, 50vw"
+                    sizes="(min-width: 1280px) 220px, (min-width: 1024px) 180px, 33vw"
                   />
                 </div>
               ))}
