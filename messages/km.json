@@ -427,7 +427,8 @@
       "about": "អំពី",
       "specialties": "ជំនាញឯកទេស",
       "languages": "ភាសា",
-      "bookWith": "កក់ជួប Dr. {lastName}"
+      "bookWith": "កក់ជួប Dr. {lastName}",
+      "consultantNote": "អ្នកប្រឹក្សាមកលេង — មិនមានសម្រាប់ការណាត់ជួបធម្មតាទេ។"
     },
     "cta": {
       "heading": "មិនច្បាស់ថាត្រូវជួបវេជ្ជបណ្ឌិតណា?",

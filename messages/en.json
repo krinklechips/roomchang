@@ -427,7 +427,8 @@
       "about": "About",
       "specialties": "Specialties",
       "languages": "Languages",
-      "bookWith": "Book with Dr. {lastName}"
+      "bookWith": "Book with Dr. {lastName}",
+      "consultantNote": "Visiting consultant — not available for routine appointments."
     },
     "cta": {
       "heading": "Not sure who to see?",

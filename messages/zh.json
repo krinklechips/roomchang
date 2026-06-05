@@ -427,7 +427,8 @@
       "about": "简介",
       "specialties": "专长领域",
       "languages": "语言",
-      "bookWith": "预约{lastName}医生"
+      "bookWith": "预约{lastName}医生",
+      "consultantNote": "客座顾问 — 不提供常规预约。"
     },
     "cta": {
       "heading": "不确定该看哪位医生？",

@@ -7,6 +7,7 @@ export type ChatbotContext = {
     name: string;
     credentials: string;
     role: string;
+    department: string;
     specialty: string[];
     languages: string[];
   }[];
@@ -28,7 +29,7 @@ export async function getChatbotContext(): Promise<ChatbotContext> {
       .limit(60),
     supabase
       .from("doctors")
-      .select("name, credentials, role, specialty, languages")
+      .select("name, credentials, role, department, specialty, languages")
       .eq("published", true)
       .order("order"),
   ]);
@@ -46,12 +47,14 @@ export async function getChatbotContext(): Promise<ChatbotContext> {
       name: string;
       credentials: string;
       role: string;
+      department: string;
       specialty: string[];
       languages: string[];
     }) => ({
       name: d.name,
       credentials: d.credentials || "",
       role: d.role || "",
+      department: d.department || "",
       specialty: d.specialty || [],
       languages: d.languages || [],
     }),

@@ -154,12 +154,18 @@ function DoctorModal({ doctor, onClose }: { doctor: Doctor; onClose: () => void 
             </p>
           )}
 
-          <Link
-            href={`/contact?doctor=${encodeURIComponent(doctor.name)}`}
-            className="btn-primary mt-2 self-start"
-          >
-            {t("bookWith", { lastName: doctor.name.split(" ").at(-1) ?? "" })}
-          </Link>
+          {doctor.department === "SENIOR_CONSULTANT" ? (
+            <p className="mt-2 self-start rounded-full bg-[color:var(--brand-soft)] px-4 py-2 text-xs font-semibold text-[color:var(--brand-deep)]">
+              {t("consultantNote")}
+            </p>
+          ) : (
+            <Link
+              href={`/contact?doctor=${encodeURIComponent(doctor.name)}`}
+              className="btn-primary mt-2 self-start"
+            >
+              {t("bookWith", { lastName: doctor.name.split(" ").at(-1) ?? "" })}
+            </Link>
+          )}
         </div>
       </div>
     </div>
