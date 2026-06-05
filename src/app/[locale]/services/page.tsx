@@ -75,8 +75,8 @@ function resolveServiceImage(src: string | null | undefined): string | null {
 const HIDDEN_FROM_GRID = new Set(["all-on-4", "implant-bridges"]);
 
 const SUB_SERVICES: Record<string, { key: string; href: string }[]> = {
+  // All-on-4 retired — its content now lives on the Dentures page.
   "dental-implants": [
-    { key: "allOn4", href: "/services/all-on-4" },
     { key: "implantBridges", href: "/services/implant-bridges" },
   ],
 };
