@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState, useRef, useEffect, useCallback, type ReactNode } from "react";
 import {
   CalendarDots,
@@ -758,8 +759,10 @@ const GREETING: Message = {
   id: "greeting",
   role: "assistant",
   content:
-    "Hi! I'm Roomchang's virtual assistant. I can help you with treatment information, pricing, or booking an appointment. How can I help you today?",
+    "Hi, I'm Roomy — Roomchang's virtual assistant! 😊 I can help you with treatment information, pricing, or booking an appointment. How can I help you today?",
 };
+
+const ROOMY_AVATAR = "/chatbot/roomy-aibot.png";
 
 /** Save messages to localStorage with a timestamp */
 function persistMessages(msgs: Message[]) {
@@ -807,6 +810,9 @@ export function Chatbot() {
   const [showBubble, setShowBubble] = useState(false);
   const [voiceMode, setVoiceMode] = useState(false);
   const [voiceSupported, setVoiceSupported] = useState(false);
+  // Gate the conversation behind a "Start Chat" tap so no API call fires on a
+  // casual open. Becomes true once a real conversation exists (a user message).
+  const [started, setStarted] = useState(false);
 
   // Voice conversation (OpenAI Whisper STT + OpenAI TTS). English only for now.
   const { state: voiceState, setState: setVoiceState, listenOnce, cancel: cancelVoice, release: releaseVoice } = useVoiceRecorder();
@@ -824,6 +830,8 @@ export function Chatbot() {
     const saved = loadPersistedMessages();
     if (saved && saved.length > 0) {
       setMessages(saved);
+      // An ongoing conversation (any user message) skips the Start gate.
+      if (saved.some((m) => m.role === "user")) setStarted(true);
     }
     setHydrated(true);
   }, []);
@@ -1068,6 +1076,7 @@ export function Chatbot() {
 
   async function sendMessage(text: string) {
     if (!text || isStreaming) return;
+    if (!started) setStarted(true);
 
     const isoDate = extractIsoDate(text);
     if (isoDate) {
@@ -1225,19 +1234,24 @@ export function Chatbot() {
         <div className="fixed inset-x-0 bottom-0 top-[30vh] z-[60] flex flex-col overflow-hidden rounded-t-3xl border-t border-x border-[color:var(--border-strong)] bg-white shadow-[0_-10px_40px_rgba(36,20,31,0.18)] sm:inset-auto sm:bottom-24 sm:right-[5.5rem] sm:h-[560px] sm:w-[400px] sm:rounded-3xl sm:border sm:shadow-[0_20px_60px_rgba(36,20,31,0.18)] animate-[fadeSlideUp_0.2s_ease-out]">
           {/* Header */}
           <div className="flex shrink-0 items-center justify-between bg-[color:var(--brand)] px-5 py-4">
-            <div>
-              <p className="font-display text-lg text-white">Roomchang</p>
-              <p className="text-[11px] text-white/70">
-                {voiceMode
-                  ? voiceState === "recording"
-                    ? "Listening…"
-                    : voiceState === "thinking"
-                      ? "Thinking…"
-                      : voiceState === "speaking"
-                        ? "Speaking…"
-                        : "Listening…"
-                  : "Virtual Assistant"}
-              </p>
+            <div className="flex items-center gap-3">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.15)]">
+                <Image src={ROOMY_AVATAR} alt="Roomy" width={40} height={40} className="h-full w-full object-cover" />
+              </span>
+              <div>
+                <p className="font-display text-lg text-white">Roomy</p>
+                <p className="text-[11px] text-white/70">
+                  {voiceMode
+                    ? voiceState === "recording"
+                      ? "Listening…"
+                      : voiceState === "thinking"
+                        ? "Thinking…"
+                        : voiceState === "speaking"
+                          ? "Speaking…"
+                          : "Listening…"
+                    : "Virtual Assistant"}
+                </p>
+              </div>
             </div>
             <div className="flex items-center gap-1">
               {voiceMode && (
@@ -1257,19 +1271,38 @@ export function Chatbot() {
             </div>
           </div>
 
-          {/* Messages */}
+          {/* Messages — or the welcome / Start gate before the chat begins */}
           <div
             ref={scrollRef}
-            className="flex-1 overflow-y-auto px-4 py-4 space-y-3"
+            className={`flex-1 overflow-y-auto px-4 py-4 ${
+              started ? "space-y-3" : "flex flex-col items-center justify-center text-center"
+            }`}
             role="log"
             aria-live="polite"
           >
-            {messages.map((msg) =>
+            {!started ? (
+              <div className="flex max-w-[18rem] flex-col items-center gap-4">
+                <Image
+                  src={ROOMY_AVATAR}
+                  alt="Roomy"
+                  width={96}
+                  height={96}
+                  className="h-24 w-24 rounded-full bg-white object-cover shadow-[0_8px_28px_rgba(204,55,113,0.25)]"
+                  priority
+                />
+                <p className="font-display text-2xl text-[color:var(--text-main)]">Hi, I&apos;m Roomy 👋</p>
+                <p className="text-sm leading-relaxed text-[color:var(--text-soft)]">
+                  Roomchang&apos;s virtual assistant. Ask me about treatments, pricing, or booking a visit —
+                  tap below to start.
+                </p>
+              </div>
+            ) : (
+              messages.map((msg) =>
               msg.role === "assistant" ? (
                 <div key={msg.id} className="flex gap-2.5">
-                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[color:var(--brand-soft)] text-[color:var(--brand)]">
-                    <ChatCircleDots size={14} weight="fill" />
-                  </div>
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white shadow-[0_1px_4px_rgba(0,0,0,0.12)]">
+                    <Image src={ROOMY_AVATAR} alt="Roomy" width={28} height={28} className="h-full w-full object-cover" />
+                  </span>
                   <div className="max-w-[85%] rounded-2xl rounded-tl-md bg-[color:var(--surface)] px-4 py-2.5 text-sm leading-relaxed text-[color:var(--text-main)]">
                     {msg.content ? (
                       renderMarkdown(msg.content, handleListItemClick)
@@ -1285,6 +1318,7 @@ export function Chatbot() {
                   </div>
                 </div>
               ),
+              )
             )}
           </div>
 
@@ -1324,14 +1358,27 @@ export function Chatbot() {
             </p>
           )}
 
-          {/* Suggestion bar with scroll chevrons */}
-          <SuggestionBar
-            onSelect={handleSuggestionClick}
-            disabled={isStreaming}
-          />
+          {/* Suggestion bar — only once the chat has started */}
+          {started && (
+            <SuggestionBar
+              onSelect={handleSuggestionClick}
+              disabled={isStreaming}
+            />
+          )}
 
-          {/* Input — voice control bar while in a voice conversation, else text input */}
-          {voiceMode ? (
+          {/* Start gate — before the chat begins, a single deliberate entry point
+              (no OpenAI call fires until the user starts) */}
+          {!started ? (
+            <div className="shrink-0 border-t border-[color:var(--border-strong)] px-4 py-3">
+              <button
+                type="button"
+                onClick={() => setStarted(true)}
+                className="flex w-full items-center justify-center gap-2 rounded-full bg-[color:var(--brand)] px-6 py-3 text-sm font-bold text-white shadow-[0_4px_16px_rgba(204,55,113,0.3)] transition hover:bg-[color:var(--brand-deep)]"
+              >
+                <ChatCircleDots size={18} weight="fill" /> Start Chat
+              </button>
+            </div>
+          ) : voiceMode ? (
             <div className="flex shrink-0 items-center gap-3 border-t border-[color:var(--border-strong)] px-4 py-3">
               <div className="flex flex-1 items-center gap-3 rounded-xl bg-[color:var(--brand-soft)] px-4 py-2.5">
                 <span className="relative flex h-3 w-3 shrink-0">
@@ -1452,17 +1499,21 @@ export function Chatbot() {
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        aria-label={open ? "Close chat" : "Chat with us"}
-        className={`fixed bottom-4 right-[4.5rem] z-[60] flex h-12 w-12 items-center justify-center rounded-full shadow-[0_8px_28px_rgba(204,55,113,0.45)] transition hover:scale-105 active:scale-95 sm:bottom-6 sm:right-[5.75rem] sm:h-14 sm:w-14 ${
-          open
-            ? "bg-[color:var(--brand-deep)]"
-            : "bg-[color:var(--brand)]"
+        aria-label={open ? "Close chat" : "Chat with Roomy"}
+        className={`fixed bottom-4 right-[4.5rem] z-[60] flex h-12 w-12 items-center justify-center overflow-hidden rounded-full shadow-[0_8px_28px_rgba(204,55,113,0.45)] transition hover:scale-105 active:scale-95 sm:bottom-6 sm:right-[5.75rem] sm:h-14 sm:w-14 ${
+          open ? "bg-[color:var(--brand-deep)]" : "bg-white"
         }`}
       >
         {open ? (
           <X size={22} weight="bold" className="text-white" />
         ) : (
-          <ChatCircleDots size={24} weight="fill" className="text-white" />
+          <Image
+            src={ROOMY_AVATAR}
+            alt="Chat with Roomy"
+            width={56}
+            height={56}
+            className="h-full w-full object-cover"
+          />
         )}
       </button>
     </>
