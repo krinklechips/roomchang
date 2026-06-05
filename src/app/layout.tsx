@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Manrope } from "next/font/google";
 import localFont from "next/font/local";
 import { getLocale } from "next-intl/server";
+import { Analytics } from "@vercel/analytics/next";
 import { CmsPreviewInteractionGuard } from "@/components/site/cms-preview-interaction-guard";
 import "./globals.css";
 
@@ -106,6 +107,7 @@ export default async function RootLayout({
         />
         <CmsPreviewInteractionGuard />
         {children}
+        <Analytics />
       </body>
     </html>
   );
