@@ -19,6 +19,7 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import type { Icon } from "@phosphor-icons/react/dist/lib/types";
 import { SiteShell } from "@/components/site/site-shell";
+import { PricingHashOpener } from "@/components/sections/pricing-hash-opener";
 import { getPricingCategories } from "@/lib/data";
 import type { Metadata } from "next";
 
@@ -104,6 +105,8 @@ export default async function PricingPage() {
 
   return (
     <SiteShell>
+      {/* Opens & scrolls to the accordion section matching the URL hash (deep links from service pages) */}
+      <PricingHashOpener />
       {/* Header */}
       <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--surface)]">
         <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8 lg:grid lg:grid-cols-2 lg:items-center lg:gap-16">

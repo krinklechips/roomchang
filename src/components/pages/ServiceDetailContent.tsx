@@ -198,10 +198,12 @@ function PricingCTA({
   s,
   ctaLabel,
   ctaNote,
+  href,
 }: {
   s: Extract<ServiceSection, { type: "pricing" }>;
   ctaLabel: string;
   ctaNote: string;
+  href: string;
 }) {
   return (
     <div className="rounded-3xl border border-[color:var(--border-strong)] bg-white p-8 shadow-[0_8px_32px_rgba(57,28,45,0.06)] sm:p-10">
@@ -218,7 +220,7 @@ function PricingCTA({
           </p>
           <div className="mt-5">
             <Link
-              href="/pricing"
+              href={href}
               className="inline-flex items-center gap-2 rounded-full bg-[color:var(--brand)] px-6 py-3 text-sm font-bold text-white shadow-[0_4px_16px_rgba(204,55,113,0.3)] transition hover:bg-[color:var(--brand-deep)] hover:shadow-[0_4px_20px_rgba(204,55,113,0.4)]"
             >
               {ctaLabel} →
@@ -276,10 +278,12 @@ function RenderSection({
   s,
   pricingCtaLabel,
   pricingCtaNote,
+  pricingHref,
 }: {
   s: ServiceSection;
   pricingCtaLabel: string;
   pricingCtaNote: string;
+  pricingHref: string;
 }) {
   if (s.type === "callout") return <Callout s={s} />;
   if (s.type === "text") return <TextBlock s={s} />;
@@ -288,17 +292,35 @@ function RenderSection({
   if (s.type === "steps") return <Steps s={s} />;
   if (s.type === "gallery") return <Gallery s={s} />;
   if (s.type === "pricetable") return <PriceTable s={s} />;
-  if (s.type === "pricing") return <PricingCTA s={s} ctaLabel={pricingCtaLabel} ctaNote={pricingCtaNote} />;
+  if (s.type === "pricing") return <PricingCTA s={s} ctaLabel={pricingCtaLabel} ctaNote={pricingCtaNote} href={pricingHref} />;
   if (s.type === "twocol") {
     return (
       <div className="grid gap-8 lg:grid-cols-2">
-        <RenderSection s={s.left} pricingCtaLabel={pricingCtaLabel} pricingCtaNote={pricingCtaNote} />
-        <RenderSection s={s.right} pricingCtaLabel={pricingCtaLabel} pricingCtaNote={pricingCtaNote} />
+        <RenderSection s={s.left} pricingCtaLabel={pricingCtaLabel} pricingCtaNote={pricingCtaNote} pricingHref={pricingHref} />
+        <RenderSection s={s.right} pricingCtaLabel={pricingCtaLabel} pricingCtaNote={pricingCtaNote} pricingHref={pricingHref} />
       </div>
     );
   }
   return null;
 }
+
+// Maps a service slug → the matching accordion category id on /pricing,
+// so the "View Full Pricing" CTA deep-links to the relevant section.
+const PRICING_ANCHOR: Record<string, string> = {
+  "preventive-dentistry":      "exams-cleaning",
+  "cosmetic-dentistry":        "filling",
+  "endodontics":               "root-canal",
+  "dental-crowns":             "crowns",
+  "orthodontics":              "orthodontics",
+  "periodontics":              "periodontic",
+  "dentures":                  "dentures",
+  "dental-implants":           "implants",
+  "implant-bridges":           "implants",
+  "full-mouth-reconstruction": "implants",
+  "oral-surgery":              "surgery",
+  "teeth-whitening":           "whitening",
+  "sleep-apnea":               "sleep-apnea",
+};
 
 // ─── Main content component ─────────────────────────────────────────────────
 
@@ -308,6 +330,8 @@ export async function ServiceDetailContent({ service }: { service: Service }) {
   const heroImage = resolveServiceImage(service.imageSrc);
   const pricingCtaLabel = t("pricingCtaLabel");
   const pricingCtaNote = t("pricingCtaNote");
+  const anchor = PRICING_ANCHOR[service.slug];
+  const pricingHref = anchor ? `/pricing#${anchor}` : "/pricing";
 
   return (
     <SiteShell>
@@ -350,7 +374,7 @@ export async function ServiceDetailContent({ service }: { service: Service }) {
       {sections.length > 0 && (
         <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8 space-y-16">
           {sections.map((s, i) => (
-            <RenderSection key={i} s={s} pricingCtaLabel={pricingCtaLabel} pricingCtaNote={pricingCtaNote} />
+            <RenderSection key={i} s={s} pricingCtaLabel={pricingCtaLabel} pricingCtaNote={pricingCtaNote} pricingHref={pricingHref} />
           ))}
         </div>
       )}
