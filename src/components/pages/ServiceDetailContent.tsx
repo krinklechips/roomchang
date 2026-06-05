@@ -65,6 +65,13 @@ function resolveServiceImage(src: string | null | undefined): string | null {
 // ─── Section renderers ───────────────────────────────────────────────────────
 
 function Callout({ s }: { s: Extract<ServiceSection, { type: "callout" }> }) {
+  // Distribute the stat pills evenly across the full width based on how many there are.
+  const statCount = s.stats?.length ?? 0;
+  const statGrid =
+    statCount === 1 ? "grid-cols-1" :
+    statCount === 2 ? "grid-cols-2" :
+    statCount === 3 ? "grid-cols-3" :
+    "grid-cols-2 sm:grid-cols-4";
   return (
     <div className="rounded-3xl bg-[color:var(--brand-soft)] px-8 py-8">
       <div className="flex flex-col sm:flex-row sm:items-start gap-4">
@@ -79,9 +86,9 @@ function Callout({ s }: { s: Extract<ServiceSection, { type: "callout" }> }) {
         </div>
       </div>
       {s.stats && (
-        <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div className={`mt-6 grid gap-4 ${statGrid}`}>
           {s.stats.map((st) => (
-            <div key={st.label} className="rounded-2xl bg-white/60 px-4 py-3 text-center">
+            <div key={st.label} className="flex flex-col items-center justify-center rounded-2xl bg-white/60 px-4 py-4 text-center">
               <p className="text-xl font-bold text-[color:var(--brand-deep)]">{st.value}</p>
               <p className="mt-1 text-xs text-[color:var(--text-soft)]">{st.label}</p>
             </div>
