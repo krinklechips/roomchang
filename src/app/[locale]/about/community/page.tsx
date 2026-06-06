@@ -8,7 +8,7 @@ import type { Metadata } from "next";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "Community & Charity | Roomchang Dental Hospital",
+  title: "Roomchang in the Community | Roomchang Dental Hospital",
   description:
     "Roomchang's charity missions bring free dental care to underserved communities across Cambodia — mobile clinics, blood drives, and oral health education.",
 };
@@ -73,7 +73,7 @@ export default async function CommunityPage() {
             <ArrowLeft size={13} weight="bold" aria-hidden="true" /> About
           </Link>
           <h1 className="mt-4 font-display text-5xl leading-none text-[color:var(--text-main)] sm:text-6xl">
-            Community & Charity
+            Roomchang in the Community
           </h1>
           <p className="mt-5 max-w-2xl text-base leading-7 text-[color:var(--text-soft)]">
             Dental care shouldn&apos;t be a luxury. Since 1996, Roomchang has run charity missions

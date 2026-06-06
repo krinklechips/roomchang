@@ -86,7 +86,7 @@ export default async function CommunityArticlePage({
             href="/about/community"
             className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--brand)] transition hover:text-[color:var(--brand-deep)]"
           >
-            <ArrowLeft size={13} weight="bold" aria-hidden="true" /> Community & Charity
+            <ArrowLeft size={13} weight="bold" aria-hidden="true" /> Roomchang in the Community
           </Link>
           <p className="mt-6 text-xs font-semibold uppercase tracking-[0.22em] text-[color:var(--brand)]">
             {article.date}
