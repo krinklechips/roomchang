@@ -93,6 +93,12 @@ export default async function PriceComparisonPage() {
   };
   const comparisonRows: ComparisonRow[] = cmsRows?.length ? cmsRows : FALLBACK_COMPARISON.rows;
 
+  // Split the combined source note into numbered footnotes: ¹ Australia, ² Singapore.
+  // Falls back gracefully to a single note if the "Singapore" boundary isn't found.
+  const sourceParts = comparisonMeta.sourceNote.split(/\s*(?=Singapore figures)/i);
+  const australiaNote = sourceParts[0]?.trim() ?? comparisonMeta.sourceNote;
+  const singaporeNote = sourceParts[1]?.trim() ?? "";
+
   return (
     <SiteShell>
       {/* Hero */}
@@ -138,9 +144,11 @@ export default async function PriceComparisonPage() {
                     </th>
                     <th className="px-5 py-4 text-right text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
                       {tComp("colAustralia")}
+                      <sup className="ml-0.5 font-bold text-[color:var(--brand)]">1</sup>
                     </th>
                     <th className="px-5 py-4 text-right text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
                       {tComp("colSingapore")}
+                      <sup className="ml-0.5 font-bold text-[color:var(--brand)]">2</sup>
                     </th>
                   </tr>
                 </thead>
@@ -157,10 +165,17 @@ export default async function PriceComparisonPage() {
                 </tbody>
               </table>
             </div>
-            <div className="border-t border-[color:var(--brand-soft)] bg-[color:var(--brand-soft)] px-6 py-4">
+            <div className="border-t border-[color:var(--brand-soft)] bg-[color:var(--brand-soft)] px-6 py-4 space-y-1.5">
               <p className="text-xs leading-relaxed text-[color:var(--text-soft)]">
-                {tComp("sourcePrefix")}{comparisonMeta.sourceNote}
+                <span className="mr-1 font-bold text-[color:var(--brand)]">1.</span>
+                {australiaNote}
               </p>
+              {singaporeNote && (
+                <p className="text-xs leading-relaxed text-[color:var(--text-soft)]">
+                  <span className="mr-1 font-bold text-[color:var(--brand)]">2.</span>
+                  {singaporeNote}
+                </p>
+              )}
             </div>
           </div>
         </section>
