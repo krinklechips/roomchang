@@ -104,12 +104,12 @@ export default async function CommunityArticlePage({
 
         {/* Hero image */}
         {article.image && (
-          <div className="relative aspect-[16/9] overflow-hidden rounded-3xl shadow-[0_20px_60px_rgba(57,28,45,0.10)]">
+          <div className="relative aspect-[16/9] overflow-hidden rounded-3xl bg-[color:var(--surface)] shadow-[0_20px_60px_rgba(57,28,45,0.10)]">
             <Image
               src={article.image}
               alt={article.imageAlt || article.title}
               fill
-              className="object-cover"
+              className="object-contain"
               sizes="(min-width: 896px) 864px, 100vw"
               priority
               unoptimized
