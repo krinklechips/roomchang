@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     "Roomchang partners with leading banks, schools, insurers, hotels, and organisations across Cambodia to provide dental benefits for employees and members.",
 };
 
-type Partner = { name: string; logo?: string };
+type Partner = { name: string; logo?: string; website?: string };
 type PartnerCategory = { title: string; partners: Partner[] };
 
 const PARTNER_CATEGORIES: PartnerCategory[] = [
@@ -109,24 +109,41 @@ const PARTNER_CATEGORIES: PartnerCategory[] = [
 ];
 
 function PartnerLogo({ partner }: { partner: Partner }) {
+  const inner = partner.logo ? (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={partner.logo}
+      alt={partner.name}
+      className="h-auto w-auto max-h-28 max-w-[90%] object-contain mx-auto"
+      loading="lazy"
+    />
+  ) : (
+    <span className="text-center text-sm font-semibold leading-tight text-[color:var(--text-main)] px-2">
+      {partner.name}
+    </span>
+  );
+
+  const cardClass =
+    "flex items-center justify-center rounded-2xl bg-white p-3 shadow-[0_4px_16px_rgba(57,28,45,0.06)] transition hover:shadow-[0_8px_24px_rgba(57,28,45,0.10)] aspect-[4/3]";
+
+  // Partners with a website become clickable (open in a new tab).
+  if (partner.website) {
+    return (
+      <a
+        href={partner.website}
+        target="_blank"
+        rel="noopener noreferrer"
+        title={`Visit ${partner.name}`}
+        className={`${cardClass} hover:-translate-y-0.5`}
+      >
+        {inner}
+      </a>
+    );
+  }
+
   return (
-    <div
-      title={partner.name}
-      className="flex items-center justify-center rounded-2xl bg-white p-3 shadow-[0_4px_16px_rgba(57,28,45,0.06)] transition hover:shadow-[0_8px_24px_rgba(57,28,45,0.10)] aspect-[4/3]"
-    >
-      {partner.logo ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={partner.logo}
-          alt={partner.name}
-          className="h-auto w-auto max-h-28 max-w-[90%] object-contain mx-auto"
-          loading="lazy"
-        />
-      ) : (
-        <span className="text-center text-sm font-semibold leading-tight text-[color:var(--text-main)] px-2">
-          {partner.name}
-        </span>
-      )}
+    <div title={partner.name} className={cardClass}>
+      {inner}
     </div>
   );
 }
@@ -134,6 +151,7 @@ function PartnerLogo({ partner }: { partner: Partner }) {
 type PartnerRow = {
   name: string;
   logo_src: string | null;
+  website: string | null;
   sort_order: number | null;
   partner_categories: { name: string; sort_order: number | null } | null;
 };
@@ -160,6 +178,7 @@ export default async function PartnershipsPage() {
     existing.partners.push({
       name: row.name,
       ...(row.logo_src ? { logo: row.logo_src } : {}),
+      ...(row.website ? { website: row.website } : {}),
     });
     categoryMap.set(category.name, existing);
   });
