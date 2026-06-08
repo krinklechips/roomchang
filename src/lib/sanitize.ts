@@ -1,14 +1,18 @@
-import DOMPurify from "isomorphic-dompurify";
+import sanitize from "sanitize-html";
 
 /**
  * Sanitize HTML content from the CMS before rendering.
- * Strips scripts, event handlers, and dangerous attributes
- * while preserving safe formatting tags.
+ * Strips scripts, event handlers, styles, and dangerous URIs while preserving
+ * safe formatting/layout tags.
+ *
+ * Uses `sanitize-html` (htmlparser2-based) rather than DOMPurify so we don't
+ * pull in `jsdom` on the server — jsdom's dependency chain (html-encoding-sniffer
+ * → @exodus/bytes, ESM) fails to load in Vercel's serverless runtime, which was
+ * crashing every dynamically-rendered route (e.g. the 404 page) with a 500.
  */
 export function sanitizeHtml(dirty: string): string {
-  return DOMPurify.sanitize(dirty, {
-    // Allow common formatting + layout tags
-    ALLOWED_TAGS: [
+  return sanitize(dirty, {
+    allowedTags: [
       "h1", "h2", "h3", "h4", "h5", "h6",
       "p", "br", "hr",
       "ul", "ol", "li",
@@ -19,19 +23,21 @@ export function sanitizeHtml(dirty: string): string {
       "img", "figure", "figcaption",
       "video", "source",
     ],
-    // Allow safe attributes only
-    ALLOWED_ATTR: [
-      "href", "target", "rel",
-      "src", "alt", "width", "height", "loading",
-      "class", "id",
-      "colspan", "rowspan",
-      "autoplay", "loop", "muted", "playsinline", "controls",
-      "type",
-    ],
-    // Force rel="noopener noreferrer" on links with target
-    ADD_ATTR: ["target"],
-    // Remove any data: or javascript: URIs
-    ALLOW_DATA_ATTR: false,
-    FORBID_ATTR: ["style", "onerror", "onload", "onclick", "onmouseover"],
+    allowedAttributes: {
+      "*": ["class", "id"],
+      a: ["href", "target", "rel"],
+      img: ["src", "alt", "width", "height", "loading"],
+      video: ["autoplay", "loop", "muted", "playsinline", "controls", "width", "height"],
+      source: ["src", "type"],
+      td: ["colspan", "rowspan"],
+      th: ["colspan", "rowspan"],
+    },
+    // Only safe URL schemes — excludes javascript: and data:
+    allowedSchemes: ["http", "https", "mailto", "tel"],
+    allowProtocolRelative: false,
+    // Force rel="noopener noreferrer" on links (esp. target="_blank")
+    transformTags: {
+      a: sanitize.simpleTransform("a", { rel: "noopener noreferrer" }),
+    },
   });
 }

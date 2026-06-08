@@ -18,7 +18,6 @@
     "@supabase/supabase-js": "^2.100.1",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
-    "isomorphic-dompurify": "^3.12.0",
     "lucide-react": "^1.7.0",
     "next": "16.2.1",
     "next-intl": "^4.12.0",
@@ -27,7 +26,8 @@
     "prisma": "^7.5.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "resend": "^6.10.0"
+    "resend": "^6.10.0",
+    "sanitize-html": "^2.17.4"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -38,6 +38,7 @@
     "@types/nodemailer": "^8.0.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/sanitize-html": "^2.16.1",
     "eslint": "^9",
     "eslint-config-next": "16.2.1",
     "jsdom": "^29.0.1",
