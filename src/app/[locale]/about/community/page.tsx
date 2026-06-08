@@ -3,15 +3,19 @@ import { Link } from "@/i18n/navigation";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import { supabaseServer } from "@/lib/supabase-server";
+import { getTranslatedFieldsBatch, mergeTranslation } from "@/lib/i18n-content";
+import { getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
 
-export const metadata: Metadata = {
-  title: "Roomchang in the Community | Roomchang Dental Hospital",
-  description:
-    "Roomchang's charity missions bring free dental care to underserved communities across Cambodia — mobile clinics, blood drives, and oral health education.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("communityPage");
+  return {
+    title: t("metaTitle"),
+    description: t("metaDescription"),
+  };
+}
 
 type Article = {
   id: string;
@@ -59,7 +63,11 @@ export default async function CommunityPage() {
     console.error("[CommunityPage] fetch failed:", error.message);
   }
 
-  const articles: Article[] = (data as Article[] | null)?.filter(a => a.slug) ?? FALLBACK_ARTICLES;
+  const baseArticles: Article[] = (data as Article[] | null)?.filter(a => a.slug) ?? FALLBACK_ARTICLES;
+  const articleTr = await getTranslatedFieldsBatch("community_article", baseArticles.map((a) => a.id));
+  const articles: Article[] = baseArticles.map((a) => mergeTranslation(a, articleTr.get(a.id) ?? {}));
+
+  const t = await getTranslations("communityPage");
 
   return (
     <SiteShell>
@@ -70,15 +78,13 @@ export default async function CommunityPage() {
             href="/about"
             className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--brand)] transition hover:text-[color:var(--brand-deep)]"
           >
-            <ArrowLeft size={13} weight="bold" aria-hidden="true" /> About
+            <ArrowLeft size={13} weight="bold" aria-hidden="true" /> {t("backToAbout")}
           </Link>
           <h1 className="mt-4 font-display text-5xl leading-none text-[color:var(--text-main)] sm:text-6xl">
-            Roomchang in the Community
+            {t("heading")}
           </h1>
           <p className="mt-5 max-w-2xl text-base leading-7 text-[color:var(--text-soft)]">
-            Dental care shouldn&apos;t be a luxury. Since 1996, Roomchang has run charity missions
-            bringing free treatment to underserved communities across Cambodia — rural provinces,
-            schools, orphanages, and beyond.
+            {t("intro")}
           </p>
         </div>
       </div>
@@ -114,7 +120,7 @@ export default async function CommunityPage() {
                   {article.description}
                 </p>
                 <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[color:var(--brand-deep)] transition group-hover:text-[color:var(--brand)]">
-                  Read More <ArrowRight size={14} weight="bold" aria-hidden="true" />
+                  {t("readMore")} <ArrowRight size={14} weight="bold" aria-hidden="true" />
                 </span>
               </div>
             </Link>
@@ -125,14 +131,13 @@ export default async function CommunityPage() {
         <div className="rounded-3xl bg-[color:var(--brand-soft)] p-10 sm:p-12">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h2 className="font-display text-3xl text-[color:var(--text-main)]">Partner With Us</h2>
+              <h2 className="font-display text-3xl text-[color:var(--text-main)]">{t("partnerTitle")}</h2>
               <p className="mt-2 max-w-md text-sm leading-7 text-[color:var(--text-soft)]">
-                If your organisation would like to support or co-sponsor a charity dental mission,
-                we&apos;d love to hear from you.
+                {t("partnerBody")}
               </p>
             </div>
             <Link href="/contact" className="btn-primary shrink-0">
-              Get In Touch
+              {t("getInTouch")}
             </Link>
           </div>
         </div>

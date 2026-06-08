@@ -172,7 +172,9 @@ export async function getDoctors(): Promise<Doctor[]> {
     console.error("Failed to fetch doctors:", error.message);
     return [];
   }
-  return data ?? [];
+  const doctors = data ?? [];
+  const tr = await getTranslatedFieldsBatch("doctor", doctors.map((d) => d.id));
+  return doctors.map((d) => mergeTranslation(d, tr.get(d.id) ?? {}));
 }
 
 export async function getBranches(): Promise<Branch[]> {
@@ -261,7 +263,9 @@ export async function getTestimonials(): Promise<Testimonial[]> {
     console.error("Failed to fetch testimonials:", error.message);
     return [];
   }
-  return data ?? [];
+  const testimonials = data ?? [];
+  const tr = await getTranslatedFieldsBatch("testimonial", testimonials.map((t) => t.id));
+  return testimonials.map((t) => mergeTranslation(t, tr.get(t.id) ?? {}));
 }
 
 export async function getTechnology(): Promise<TechnologyItem[]> {
@@ -275,7 +279,9 @@ export async function getTechnology(): Promise<TechnologyItem[]> {
     console.error("Failed to fetch technology:", error.message);
     return [];
   }
-  return data ?? [];
+  const tech = data ?? [];
+  const tr = await getTranslatedFieldsBatch("technology", tech.map((t) => t.id));
+  return tech.map((t) => mergeTranslation(t, tr.get(t.id) ?? {}));
 }
 
 export const getTechnologyBySlug = cache(async function getTechnologyBySlug(slug: string): Promise<TechnologyItem | null> {
@@ -290,7 +296,8 @@ export const getTechnologyBySlug = cache(async function getTechnologyBySlug(slug
     console.error("Failed to fetch technology:", error.message);
     return null;
   }
-  return data ?? null;
+  if (!data) return null;
+  return mergeTranslation(data, await getTranslatedFields("technology", data.id));
 });
 
 export async function getClinicalCases(): Promise<ClinicalCase[]> {
@@ -304,11 +311,13 @@ export async function getClinicalCases(): Promise<ClinicalCase[]> {
     console.error("Failed to fetch clinical cases:", error.message);
     return [];
   }
-  return (data ?? []).map((row) => ({
+  const cases = (data ?? []).map((row) => ({
     ...row,
     cardImage: row.imageUrl ?? null,
     images: Array.isArray(row.images) ? row.images : [],
   }));
+  const tr = await getTranslatedFieldsBatch("clinical_case", cases.map((c) => c.id));
+  return cases.map((c) => mergeTranslation(c, tr.get(c.id) ?? {}));
 }
 
 export const getClinicalCaseBySlug = cache(async function getClinicalCaseBySlug(slug: string): Promise<ClinicalCase | null> {
@@ -323,7 +332,9 @@ export const getClinicalCaseBySlug = cache(async function getClinicalCaseBySlug(
     console.error("Failed to fetch clinical case:", error.message);
     return null;
   }
-  return data ? { ...data, cardImage: data.imageUrl ?? null, images: Array.isArray(data.images) ? data.images : [] } : null;
+  if (!data) return null;
+  const base = { ...data, cardImage: data.imageUrl ?? null, images: Array.isArray(data.images) ? data.images : [] };
+  return mergeTranslation(base, await getTranslatedFields("clinical_case", data.id));
 });
 
 export type InternationalStep = {
@@ -467,7 +478,9 @@ export async function getFaqItems(): Promise<FaqItem[]> {
     console.error("Failed to fetch FAQ items:", error.message);
     return [];
   }
-  return data ?? [];
+  const faqs = data ?? [];
+  const tr = await getTranslatedFieldsBatch("faq", faqs.map((f) => f.id));
+  return faqs.map((f) => mergeTranslation(f, tr.get(f.id) ?? {}));
 }
 
 export async function getBlogPosts(category?: "dentist-talks" | "publications"): Promise<BlogPost[]> {

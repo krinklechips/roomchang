@@ -3,6 +3,7 @@ import { Link } from "@/i18n/navigation";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import { supabaseServer } from "@/lib/supabase-server";
+import { getTranslatedFields, mergeTranslation } from "@/lib/i18n-content";
 import { CommunityGallery } from "@/components/sections/community-gallery";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
@@ -30,7 +31,7 @@ async function getArticle(slug: string): Promise<Article | null> {
     .single();
 
   if (error || !data) return null;
-  return data as Article;
+  return mergeTranslation(data as Article, await getTranslatedFields("community_article", data.id));
 }
 
 async function getAdjacentArticles(currentSlug: string) {

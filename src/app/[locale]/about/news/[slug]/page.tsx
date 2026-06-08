@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { supabaseServer } from "@/lib/supabase-server";
+import { getTranslatedFields, mergeTranslation } from "@/lib/i18n-content";
 import { getArticleBySlug as getFallbackArticle } from "@/lib/news";
 import type { Metadata } from "next";
 
@@ -37,7 +38,10 @@ async function getArticle(slug: string): Promise<Article | null> {
     return fallback ?? null;
   }
 
-  return data as Article;
+  return mergeTranslation(
+    data as Article,
+    await getTranslatedFields("news_article", (data as { id: string }).id),
+  );
 }
 
 async function getAdjacentArticles(slug: string) {

@@ -7,7 +7,7 @@
     "visionMission": "愿景、使命与价值观",
     "directorMessage": "院长寄语",
     "newsEvents": "新闻与活动",
-    "communityCharity": "Roomchang 走进社区",
+    "communityCharity": "Roomchang 回馈社区",
     "corporatePartnerships": "企业合作",
     "employmentOpportunities": "招聘信息",
     "services": "诊疗项目",
@@ -241,7 +241,7 @@
         "description": "认识我们的专科团队——精通种植、正畸、美容牙科、儿童牙科等领域的多语言专家。"
       },
       "community": {
-        "title": "Roomchang 走进社区",
+        "title": "Roomchang 回馈社区",
         "description": "为弱势社区提供免费牙科服务——流动诊所、献血活动以及覆盖柬埔寨各地的口腔健康教育。"
       },
       "partnerships": {
@@ -803,5 +803,27 @@
     "readMore": "阅读更多",
     "close": "关闭",
     "free": "免费"
+  },
+  "communityPage": {
+    "metaTitle": "Roomchang 回馈社区 | Roomchang 牙科医院",
+    "metaDescription": "Roomchang 的公益行动为柬埔寨各地的弱势社区带来免费牙科服务——流动诊所、献血活动以及口腔健康教育。",
+    "backToAbout": "关于我们",
+    "heading": "Roomchang 回馈社区",
+    "intro": "牙科护理不应是一种奢侈。自 1996 年以来，Roomchang 持续开展公益行动，为柬埔寨各地的弱势社区——偏远省份、学校、孤儿院等——提供免费治疗。",
+    "readMore": "阅读更多",
+    "partnerTitle": "与我们合作",
+    "partnerBody": "如果贵机构希望支持或共同赞助公益牙科行动，我们诚挚期待与您联系。",
+    "getInTouch": "联系我们"
+  },
+  "newsPage": {
+    "metaTitle": "新闻与活动 | Roomchang 牙科医院",
+    "metaDescription": "了解 Roomchang 牙科医院的最新新闻、活动、媒体报道与公告——柬埔寨自 1996 年以来领先的牙科集团。",
+    "backToAbout": "关于我们",
+    "heading": "新闻与活动",
+    "intro": "及时了解 Roomchang 牙科医院的最新新闻、活动、媒体报道与公告——柬埔寨自 1996 年以来领先的牙科集团。",
+    "readArticle": "阅读文章",
+    "stayConnectedTitle": "保持联系",
+    "stayConnectedBody": "在社交媒体上关注我们，获取 Roomchang 牙科医院的最新动态、活动以及口腔健康小贴士。",
+    "contactUs": "联系我们"
   }
 }

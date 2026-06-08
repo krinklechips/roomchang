@@ -803,5 +803,27 @@
     "readMore": "Read more",
     "close": "Close",
     "free": "Free"
+  },
+  "communityPage": {
+    "metaTitle": "Roomchang in the Community | Roomchang Dental Hospital",
+    "metaDescription": "Roomchang's charity missions bring free dental care to underserved communities across Cambodia — mobile clinics, blood drives, and oral health education.",
+    "backToAbout": "About",
+    "heading": "Roomchang in the Community",
+    "intro": "Dental care shouldn't be a luxury. Since 1996, Roomchang has run charity missions bringing free treatment to underserved communities across Cambodia — rural provinces, schools, orphanages, and beyond.",
+    "readMore": "Read More",
+    "partnerTitle": "Partner With Us",
+    "partnerBody": "If your organisation would like to support or co-sponsor a charity dental mission, we'd love to hear from you.",
+    "getInTouch": "Get In Touch"
+  },
+  "newsPage": {
+    "metaTitle": "News & Events | Roomchang Dental Hospital",
+    "metaDescription": "The latest news, events, press coverage, and announcements from Roomchang Dental Hospital — Cambodia's leading dental group since 1996.",
+    "backToAbout": "About",
+    "heading": "News & Events",
+    "intro": "Stay updated with the latest news, events, press coverage, and announcements from Roomchang Dental Hospital — Cambodia's leading dental group since 1996.",
+    "readArticle": "Read Article",
+    "stayConnectedTitle": "Stay Connected",
+    "stayConnectedBody": "Follow us on social media for the latest updates, events, and dental health tips from Roomchang Dental Hospital.",
+    "contactUs": "Contact Us"
   }
 }
