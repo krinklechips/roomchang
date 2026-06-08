@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { Manrope } from "next/font/google";
 import localFont from "next/font/local";
 import { getLocale } from "next-intl/server";
 import { Analytics } from "@vercel/analytics/next";
@@ -7,9 +6,15 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { CmsPreviewInteractionGuard } from "@/components/site/cms-preview-interaction-guard";
 import "./globals.css";
 
-const manrope = Manrope({
+// Self-hosted Manrope (variable, latin). Previously next/font/google — but that
+// failed to load at runtime on dynamically-rendered routes (e.g. the 404 page),
+// throwing "Failed to load external font" → 500. Self-hosting removes the
+// external dependency so every render path works.
+const manrope = localFont({
+  src: [{ path: "../../public/fonts/manrope/manrope-latin.woff2", style: "normal" }],
+  weight: "200 800",
   variable: "--font-manrope",
-  subsets: ["latin"],
+  display: "swap",
 });
 
 const gotham = localFont({
