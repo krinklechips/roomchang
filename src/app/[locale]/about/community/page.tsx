@@ -104,7 +104,7 @@ export default async function CommunityPage() {
                   src={article.image}
                   alt={article.imageAlt || article.title}
                   fill
-                  className="object-cover object-center transition duration-500 group-hover:scale-[1.03]"
+                  className="object-contain"
                   sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                   unoptimized
                 />
