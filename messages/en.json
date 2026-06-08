@@ -825,5 +825,18 @@
     "stayConnectedTitle": "Stay Connected",
     "stayConnectedBody": "Follow us on social media for the latest updates, events, and dental health tips from Roomchang Dental Hospital.",
     "contactUs": "Contact Us"
+  },
+  "notFound": {
+    "code": "404",
+    "title": "Page not found",
+    "body": "Sorry, we couldn't find the page you were looking for. It may have moved, or the link might be incorrect.",
+    "home": "Back to Home",
+    "contact": "Contact Us"
+  },
+  "errorPage": {
+    "title": "Something went wrong",
+    "body": "Sorry, an unexpected error occurred. Please try again.",
+    "retry": "Try again",
+    "home": "Back to Home"
   }
 }

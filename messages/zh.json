@@ -825,5 +825,18 @@
     "stayConnectedTitle": "保持联系",
     "stayConnectedBody": "在社交媒体上关注我们，获取 Roomchang 牙科医院的最新动态、活动以及口腔健康小贴士。",
     "contactUs": "联系我们"
+  },
+  "notFound": {
+    "code": "404",
+    "title": "页面未找到",
+    "body": "抱歉，我们找不到您要访问的页面。它可能已被移动，或链接有误。",
+    "home": "返回首页",
+    "contact": "联系我们"
+  },
+  "errorPage": {
+    "title": "出现错误",
+    "body": "抱歉，发生了意外错误。请重试。",
+    "retry": "重试",
+    "home": "返回首页"
   }
 }
