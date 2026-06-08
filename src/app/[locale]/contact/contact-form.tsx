@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { DatePicker } from "@/components/ui/date-picker";
 import { CheckCircle2 } from "lucide-react";
 import type { Branch, Doctor } from "@/lib/data";
+import { DIAL_CODES } from "@/lib/dial-codes";
 
 const SERVICE_KEYS = [
   "implants",
@@ -22,58 +23,13 @@ const SERVICE_KEYS = [
   "other",
 ] as const;
 
-// Country calling codes for the phone field. Cambodia first (default), then the
-// common patient-origin countries, then a broad international list. Option text
-// leads with flag + code so the closed <select> shows the dial code even when
-// the country name is truncated.
-const DIAL_CODES: { flag: string; code: string; name: string }[] = [
-  { flag: "🇰🇭", code: "+855", name: "Cambodia" },
-  { flag: "🇦🇺", code: "+61", name: "Australia" },
-  { flag: "🇺🇸", code: "+1", name: "United States" },
-  { flag: "🇬🇧", code: "+44", name: "United Kingdom" },
-  { flag: "🇨🇳", code: "+86", name: "China" },
-  { flag: "🇭🇰", code: "+852", name: "Hong Kong" },
-  { flag: "🇸🇬", code: "+65", name: "Singapore" },
-  { flag: "🇹🇭", code: "+66", name: "Thailand" },
-  { flag: "🇻🇳", code: "+84", name: "Vietnam" },
-  { flag: "🇲🇾", code: "+60", name: "Malaysia" },
-  { flag: "🇮🇩", code: "+62", name: "Indonesia" },
-  { flag: "🇯🇵", code: "+81", name: "Japan" },
-  { flag: "🇰🇷", code: "+82", name: "South Korea" },
-  { flag: "🇵🇭", code: "+63", name: "Philippines" },
-  { flag: "🇮🇳", code: "+91", name: "India" },
-  { flag: "🇫🇷", code: "+33", name: "France" },
-  { flag: "🇩🇪", code: "+49", name: "Germany" },
-  { flag: "🇧🇪", code: "+32", name: "Belgium" },
-  { flag: "🇳🇱", code: "+31", name: "Netherlands" },
-  { flag: "🇨🇭", code: "+41", name: "Switzerland" },
-  { flag: "🇮🇹", code: "+39", name: "Italy" },
-  { flag: "🇪🇸", code: "+34", name: "Spain" },
-  { flag: "🇸🇪", code: "+46", name: "Sweden" },
-  { flag: "🇳🇴", code: "+47", name: "Norway" },
-  { flag: "🇩🇰", code: "+45", name: "Denmark" },
-  { flag: "🇮🇪", code: "+353", name: "Ireland" },
-  { flag: "🇨🇦", code: "+1", name: "Canada" },
-  { flag: "🇳🇿", code: "+64", name: "New Zealand" },
-  { flag: "🇦🇪", code: "+971", name: "UAE" },
-  { flag: "🇸🇦", code: "+966", name: "Saudi Arabia" },
-  { flag: "🇶🇦", code: "+974", name: "Qatar" },
-  { flag: "🇷🇺", code: "+7", name: "Russia" },
-  { flag: "🇹🇼", code: "+886", name: "Taiwan" },
-  { flag: "🇲🇲", code: "+95", name: "Myanmar" },
-  { flag: "🇱🇦", code: "+856", name: "Laos" },
-  { flag: "🇧🇩", code: "+880", name: "Bangladesh" },
-  { flag: "🇵🇰", code: "+92", name: "Pakistan" },
-  { flag: "🇿🇦", code: "+27", name: "South Africa" },
-  { flag: "🇧🇷", code: "+55", name: "Brazil" },
-];
-
-// Longest code first so "+855" matches before "+85"/"+8".
+// Longest code first so the most specific country wins when guessing a flag.
 const DIAL_CODES_BY_LEN = [...DIAL_CODES].sort((a, b) => b.code.length - a.code.length);
 
-/** Flag for a typed/selected calling code (globe if unrecognised). */
+/** Best-guess flag for a typed code (longest matching prefix; globe if none). */
 function flagForCode(code: string): string {
   const norm = code.replace(/[^\d+]/g, "");
+  if (!norm.startsWith("+") || norm.length < 2) return "🌐";
   const match = DIAL_CODES_BY_LEN.find((c) => norm.startsWith(c.code));
   return match ? match.flag : "🌐";
 }
@@ -91,6 +47,7 @@ export function ContactForm({ branches, doctors }: { branches: Branch[]; doctors
 
   // Country calling-code combobox (type to filter by code or country, or pick)
   const [dialCode, setDialCode] = useState("+855");
+  const [dialFlag, setDialFlag] = useState("🇰🇭");
   const [codeQuery, setCodeQuery] = useState("+855");
   const [codeOpen, setCodeOpen] = useState(false);
   const codeInputRef = useRef<HTMLInputElement>(null);
@@ -137,15 +94,19 @@ export function ContactForm({ branches, doctors }: { branches: Branch[]; doctors
   }, []);
 
   const filteredCodes = useMemo(() => {
-    const q = codeQuery.trim().toLowerCase();
-    if (!q) return DIAL_CODES;
-    const digits = q.replace(/[^\d]/g, "");
-    return DIAL_CODES.filter(
-      (c) =>
-        c.name.toLowerCase().includes(q) ||
-        c.code.includes(q) ||
-        (digits.length > 0 && c.code.includes(digits)),
-    );
+    const raw = codeQuery.trim();
+    if (!raw) return DIAL_CODES;
+    // Numeric query (starts with + or a digit) → match codes by PREFIX, so
+    // "+1" shows +1 countries and not "+61". Shorter codes first.
+    if (/^[+\d]/.test(raw)) {
+      const norm = "+" + raw.replace(/\D/g, "");
+      return DIAL_CODES.filter((c) => c.code.startsWith(norm)).sort(
+        (a, b) => a.code.length - b.code.length || a.name.localeCompare(b.name),
+      );
+    }
+    // Otherwise search by country name.
+    const q = raw.toLowerCase();
+    return DIAL_CODES.filter((c) => c.name.toLowerCase().includes(q));
   }, [codeQuery]);
 
   const filteredDoctors = useMemo(() => {
@@ -260,7 +221,7 @@ export function ContactForm({ branches, doctors }: { branches: Branch[]; doctors
                     <input type="hidden" name="dialCode" value={dialCode} />
                     <div className="relative flex shrink-0 items-center">
                       <span className="pointer-events-none absolute left-2.5 text-base leading-none" aria-hidden="true">
-                        {flagForCode(dialCode)}
+                        {dialFlag}
                       </span>
                       <input
                         ref={codeInputRef}
@@ -274,7 +235,10 @@ export function ContactForm({ branches, doctors }: { branches: Branch[]; doctors
                           const v = e.target.value;
                           setCodeQuery(v);
                           const norm = v.replace(/[^\d+]/g, "");
-                          if (norm.startsWith("+")) setDialCode(norm);
+                          if (norm.startsWith("+")) {
+                            setDialCode(norm);
+                            setDialFlag(flagForCode(norm));
+                          }
                           setCodeOpen(true);
                         }}
                         className="w-[5.25rem] bg-transparent py-3 pl-8 pr-1 text-sm text-[color:var(--text-main)] outline-none"
@@ -301,6 +265,7 @@ export function ContactForm({ branches, doctors }: { branches: Branch[]; doctors
                             type="button"
                             onClick={() => {
                               setDialCode(c.code);
+                              setDialFlag(c.flag);
                               setCodeQuery(c.code);
                               setCodeOpen(false);
                             }}
