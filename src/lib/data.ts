@@ -1,6 +1,7 @@
 import { cache } from "react";
 import { supabase } from "./supabase";
 import { supabaseServer } from "./supabase-server";
+import { getTranslatedFields, getTranslatedFieldsBatch, mergeTranslation } from "./i18n-content";
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -226,7 +227,10 @@ export async function getServices(): Promise<Service[]> {
     console.error("Failed to fetch services:", error.message);
     return [];
   }
-  return data ?? [];
+  const services = data ?? [];
+  // Overlay active-locale translations (no-op on en / when none exist)
+  const translations = await getTranslatedFieldsBatch("service", services.map((s) => s.id));
+  return services.map((s) => mergeTranslation(s, translations.get(s.id) ?? {}));
 }
 
 export const getServiceBySlug = cache(async function getServiceBySlug(slug: string): Promise<Service | null> {
@@ -241,7 +245,9 @@ export const getServiceBySlug = cache(async function getServiceBySlug(slug: stri
     console.error("Failed to fetch service:", error.message);
     return null;
   }
-  return data ?? null;
+  if (!data) return null;
+  const translations = await getTranslatedFields("service", data.id);
+  return mergeTranslation(data, translations);
 });
 
 export async function getTestimonials(): Promise<Testimonial[]> {
