@@ -17,7 +17,7 @@ export const NEWS_ARTICLES: NewsArticle[] = [
     description:
       "After evaluation by Bureau Veritas, Roomchang Dental Hospital was awarded the ISO 9001:2015 (UKAS Accreditation) — recognising our commitment to quality management and continuous improvement in dental care.",
     image:
-      "https://roomchang.com/wp-content/uploads/2023/02/ISO-9001-2015-300x139-1.png",
+      "https://pub-2b835c19d8644293b271deaeb97352b1.r2.dev/roomchang/news/ISO-9001-2015-300x139-1.png",
     imageAlt: "Roomchang Dental Hospital ISO 9001:2015 UKAS Accreditation",
     body: [
       "Roomchang Dental Hospital received its ISO 9001:2015 certification with UKAS accreditation following a comprehensive three-day evaluation conducted by Bureau Veritas, an internationally recognised standards certification body.",
@@ -34,7 +34,7 @@ export const NEWS_ARTICLES: NewsArticle[] = [
     description:
       "A special event celebrating 20 years of Roomchang Dental Hospital — giving patients the opportunity to meet the specialists behind their treatments and learn about the technology that powers modern dentistry.",
     image:
-      "https://roomchang.com/wp-content/uploads/2015/12/DSC_7984.jpg",
+      "https://pub-2b835c19d8644293b271deaeb97352b1.r2.dev/roomchang/news/DSC_7984.jpg",
     imageAlt: "Roomchang Customer Meet Inventor event",
     body: [
       "To mark two decades of operation, Roomchang Dental Hospital hosted the “Customers Meet Inventor” 2015 event, bringing together patients, partners, and the specialist team for a celebration of the hospital’s journey since 1996.",
@@ -50,7 +50,7 @@ export const NEWS_ARTICLES: NewsArticle[] = [
     description:
       "Roomchang Dental Hospital held its second annual dental conference at the Kravan Hotel, with the opening ceremony presided over by Dr. Tith Hong Yoeu — bringing together dental professionals from across the region.",
     image:
-      "https://roomchang.com/wp-content/uploads/2023/02/1-1-300x201-1.jpg",
+      "https://pub-2b835c19d8644293b271deaeb97352b1.r2.dev/roomchang/news/1-1-300x201-1.jpg",
     imageAlt:
       "2nd Annual Conference — Roomchang Excellence in Dentistry",
     body: [
@@ -65,7 +65,7 @@ export const NEWS_ARTICLES: NewsArticle[] = [
     title: "1st Conference — Roomchang Excellence in Dentistry",
     description:
       "Roomchang Dental Hospital held its inaugural annual dental conference at the Cambodiana Hotel — a milestone event for continuing dental education in Cambodia.",
-    image: "https://roomchang.com/wp-content/uploads/2023/02/01.jpg",
+    image: "https://pub-2b835c19d8644293b271deaeb97352b1.r2.dev/roomchang/news/01.jpg",
     imageAlt:
       "1st Annual Conference — Roomchang Excellence in Dentistry at the Cambodiana Hotel",
     body: [
@@ -82,7 +82,7 @@ export const NEWS_ARTICLES: NewsArticle[] = [
     description:
       "Roomchang Dental Hospital was awarded the ISO 9001:2008 (UKAS Accreditation) for the sixth consecutive time — demonstrating sustained excellence in quality management and patient care.",
     image:
-      "https://roomchang.com/wp-content/uploads/2023/02/Roomchang-Dental-Hospital-Awarded-ISO-90012008-for-Sixth-Time-1.jpg",
+      "https://pub-2b835c19d8644293b271deaeb97352b1.r2.dev/roomchang/news/Roomchang-Dental-Hospital-Awarded-ISO-90012008-for-Sixth-Time-1.jpg",
     imageAlt: "Roomchang Dental Hospital ISO 9001:2008 sixth-time award",
     body: [
       "Roomchang Dental Hospital was awarded the ISO 9001:2008 (UKAS Accreditation) for the sixth consecutive time, reinforcing its position as Cambodia’s most quality-assured dental provider.",
@@ -97,7 +97,7 @@ export const NEWS_ARTICLES: NewsArticle[] = [
     description:
       "On August 15, 2014, the Roomchang Rose Condo Branch in Bassac Garden City was officially opened — expanding our reach to serve the surrounding residential communities of Bassac and BKK.",
     image:
-      "https://roomchang.com/wp-content/uploads/2023/02/Opening-of-Roomchang-Rose-Condo-Branch-1.jpg",
+      "https://pub-2b835c19d8644293b271deaeb97352b1.r2.dev/roomchang/news/Opening-of-Roomchang-Rose-Condo-Branch-1.jpg",
     imageAlt: "Official opening of Roomchang Rose Condo Branch in Bassac Garden City",
     body: [
       "On August 15, 2014, Roomchang officially opened its Rose Condo Branch in Bassac Garden City, Phnom Penh. The launch event was attended by corporate partners, loyal patients, friends, and family.",
@@ -113,7 +113,7 @@ export const NEWS_ARTICLES: NewsArticle[] = [
     description:
       "Roomchang Dental Hospital was awarded an ISO 9001:2008 (UKAS Accreditation) for the sixth time in a row — a testament to our continued focus on international standards of dental quality.",
     image:
-      "https://roomchang.com/wp-content/uploads/2023/02/Roomchang-earns-international-accreditation-for-dental-quality-a-sixth-time.jpg",
+      "https://pub-2b835c19d8644293b271deaeb97352b1.r2.dev/roomchang/news/Roomchang-earns-international-accreditation-for-dental-quality-a-sixth-time.jpg",
     imageAlt:
       "Roomchang earns international dental quality accreditation — sixth time",
     body: [
@@ -129,7 +129,7 @@ export const NEWS_ARTICLES: NewsArticle[] = [
     description:
       "A patient experience article describing the decision to choose Roomchang for dental treatment over other options — highlighting the hospital’s modern facilities, multilingual staff, and international standards.",
     image:
-      "https://roomchang.com/wp-content/uploads/2023/02/Roomchang-Dental-Care-in-Cambodia.jpg",
+      "https://pub-2b835c19d8644293b271deaeb97352b1.r2.dev/roomchang/news/Roomchang-Dental-Care-in-Cambodia.jpg",
     imageAlt: "Roomchang Dental Care in Cambodia — patient experience",
     body: [
       "An international visitor to Cambodia chose Roomchang Dental Hospital for dental treatment after comparing options in the region. The patient described the facility as exceptionally hygienic, air-conditioned, and professionally run.",
@@ -145,7 +145,7 @@ export const NEWS_ARTICLES: NewsArticle[] = [
     description:
       "A detailed account from an international patient visiting Roomchang Dental Hospital for treatment — documenting their experience with the facility, staff, and quality of care received.",
     image:
-      "https://roomchang.com/wp-content/uploads/2023/02/Getting-dental-care-in-Cambodia-A-visit-to-Roomchang.jpg",
+      "https://pub-2b835c19d8644293b271deaeb97352b1.r2.dev/roomchang/news/Getting-dental-care-in-Cambodia-A-visit-to-Roomchang.jpg",
     imageAlt:
       "Getting dental care in Cambodia — international patient visit to Roomchang",
     body: [
@@ -162,7 +162,7 @@ export const NEWS_ARTICLES: NewsArticle[] = [
     description:
       "A profile of Dr. Tith Hong Yoeu, Founder and Director of Roomchang Dental Hospital, discussing his training in Germany and how it shaped his vision to bring world-class dentistry to Cambodia.",
     image:
-      "https://roomchang.com/wp-content/uploads/2023/02/Top-Cambodian-dentist-credits-Germany-for-training.jpg",
+      "https://pub-2b835c19d8644293b271deaeb97352b1.r2.dev/roomchang/news/Top-Cambodian-dentist-credits-Germany-for-training.jpg",
     imageAlt:
       "Dr. Tith Hong Yoeu — top Cambodian dentist credits Germany for training",
     body: [
@@ -180,7 +180,7 @@ export const NEWS_ARTICLES: NewsArticle[] = [
     description:
       "Dr. Tith Hong Yoeu opened Roomchang Dental Hospital in a new 10-storey building on Street 184 — a purpose-built facility that exceeded expectations and set a new benchmark for dental care in Cambodia.",
     image:
-      "https://roomchang.com/wp-content/uploads/2023/02/Expectations-exceeded-at-new-dental-hospital.jpg",
+      "https://pub-2b835c19d8644293b271deaeb97352b1.r2.dev/roomchang/news/Expectations-exceeded-at-new-dental-hospital.jpg",
     imageAlt:
       "Expectations exceeded at new Roomchang Dental Hospital — 10-storey building",
     body: [
