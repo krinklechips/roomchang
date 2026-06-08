@@ -151,6 +151,14 @@ async function previewAuth(request: NextRequest): Promise<NextResponse | null> {
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // Webmail shortcut → SiteGround webmail. The old SiteGround "/webmail" domain
+  // redirect stopped firing once the apex moved to Vercel, so recreate it here.
+  // Handle it before locale routing so it isn't rewritten to /en/webmail (500).
+  const noLocale = pathname.replace(/^\/(en|zh|km)(?=\/|$)/, "");
+  if (noLocale === "/webmail" || noLocale.startsWith("/webmail/")) {
+    return NextResponse.redirect("https://sm12.siteground.biz/webmail/mail/", 307);
+  }
+
   // Skip locale routing for API routes, admin, and preview
   const isApi = pathname.startsWith("/api");
   const isAdmin = pathname.startsWith("/admin") || pathname.match(/^\/(en|zh|km)\/admin/);
