@@ -68,10 +68,21 @@ const DIAL_CODES: { flag: string; code: string; name: string }[] = [
   { flag: "🇧🇷", code: "+55", name: "Brazil" },
 ];
 
+// Longest code first, so "+855" matches before "+85"/"+8" when detecting the flag.
+const DIAL_CODES_BY_LEN = [...DIAL_CODES].sort((a, b) => b.code.length - a.code.length);
+
+/** Flag for whatever calling code the user has typed (globe if unrecognised). */
+function flagForPhone(value: string): string {
+  const norm = value.replace(/[^\d+]/g, "");
+  const match = DIAL_CODES_BY_LEN.find((c) => norm.startsWith(c.code));
+  return match ? match.flag : "🌐";
+}
+
 export function ContactForm({ branches, doctors }: { branches: Branch[]; doctors: Doctor[] }) {
   const t = useTranslations("contactForm");
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [phone, setPhone] = useState("+855 ");
   const searchParams = useSearchParams();
   const [preferredDoctor, setPreferredDoctor] = useState("");
   const [doctorQuery, setDoctorQuery] = useState("");
@@ -119,13 +130,10 @@ export function ContactForm({ branches, doctors }: { branches: Branch[]; doctors
     setSubmitting(true);
 
     const form = e.currentTarget;
-    const dialCode = (form.elements.namedItem("dialCode") as HTMLSelectElement).value;
-    const rawPhone = (form.elements.namedItem("phone") as HTMLInputElement).value.trim();
     const data = {
       name:      (form.elements.namedItem("name")    as HTMLInputElement).value,
       email:     (form.elements.namedItem("email")   as HTMLInputElement).value,
-      // Prefix the dial code unless the user already typed a full +country number.
-      phone:     rawPhone ? (rawPhone.startsWith("+") ? rawPhone : `${dialCode} ${rawPhone}`) : "",
+      phone:     (form.elements.namedItem("phone")   as HTMLInputElement).value.trim(),
       country:   (form.elements.namedItem("country") as HTMLInputElement).value,
       wechat:    (form.elements.namedItem("wechat")  as HTMLInputElement).value,
       treatment: (form.elements.namedItem("service") as HTMLSelectElement).value,
@@ -210,27 +218,23 @@ export function ContactForm({ branches, doctors }: { branches: Branch[]; doctors
                   <label htmlFor="phone" className="block text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
                     {t("label.phone")} <span className="text-[color:var(--brand)]">*</span>
                   </label>
-                  <div className="flex gap-2">
-                    <select
-                      name="dialCode"
-                      defaultValue="+855"
-                      aria-label="Country calling code"
-                      className="w-[7.5rem] shrink-0 truncate rounded-xl border border-[color:var(--border-strong)] bg-white px-2 py-3 text-sm text-[color:var(--text-main)] outline-none transition focus:border-[color:var(--brand)] focus:ring-2 focus:ring-[color:var(--brand)]/20"
+                  <div className="relative">
+                    <span
+                      className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-lg leading-none"
+                      aria-hidden="true"
                     >
-                      {DIAL_CODES.map((c) => (
-                        <option key={`${c.code}-${c.name}`} value={c.code}>
-                          {c.flag} {c.code} {c.name}
-                        </option>
-                      ))}
-                    </select>
+                      {flagForPhone(phone)}
+                    </span>
                     <input
                       id="phone"
                       name="phone"
                       type="tel"
                       required
                       autoComplete="tel"
-                      className="w-full rounded-xl border border-[color:var(--border-strong)] bg-white px-4 py-3 text-sm text-[color:var(--text-main)] placeholder-[color:var(--text-soft)]/50 outline-none transition focus:border-[color:var(--brand)] focus:ring-2 focus:ring-[color:var(--brand)]/20"
-                      placeholder="12 345 678"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      className="w-full rounded-xl border border-[color:var(--border-strong)] bg-white py-3 pl-11 pr-4 text-sm text-[color:var(--text-main)] placeholder-[color:var(--text-soft)]/50 outline-none transition focus:border-[color:var(--brand)] focus:ring-2 focus:ring-[color:var(--brand)]/20"
+                      placeholder="+855 12 345 678"
                     />
                   </div>
                 </div>
