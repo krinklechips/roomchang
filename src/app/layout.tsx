@@ -1,32 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import localFont from "next/font/local";
 import { getLocale } from "next-intl/server";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { CmsPreviewInteractionGuard } from "@/components/site/cms-preview-interaction-guard";
 import "./globals.css";
-
-// Self-hosted Manrope (variable, latin). Previously next/font/google — but that
-// failed to load at runtime on dynamically-rendered routes (e.g. the 404 page),
-// throwing "Failed to load external font" → 500. Self-hosting removes the
-// external dependency so every render path works.
-const manrope = localFont({
-  src: [{ path: "../../public/fonts/manrope/manrope-latin.woff2", style: "normal" }],
-  weight: "200 800",
-  variable: "--font-manrope",
-  display: "swap",
-});
-
-const gotham = localFont({
-  src: [
-    { path: "../../public/fonts/gotham/GothamHTF-Book.otf",      weight: "400", style: "normal" },
-    { path: "../../public/fonts/gotham/GothamHTF-BookItalic.otf", weight: "400", style: "italic" },
-    { path: "../../public/fonts/gotham/GothamHTF-Medium.otf",     weight: "500", style: "normal" },
-    { path: "../../public/fonts/gotham/GothamHTF-Bold.otf",       weight: "700", style: "normal" },
-    { path: "../../public/fonts/gotham/GothamHTF-Black.otf",      weight: "900", style: "normal" },
-  ],
-  variable: "--font-gotham",
-});
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -104,7 +81,7 @@ export default async function RootLayout({
   return (
     <html
       lang={locale}
-      className={`${manrope.variable} ${gotham.variable} h-full scroll-smooth antialiased`}
+      className="h-full scroll-smooth antialiased"
     >
       <body className="min-h-full flex flex-col">
         <script
