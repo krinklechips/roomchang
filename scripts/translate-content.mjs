@@ -81,49 +81,85 @@ async function translateObj(obj, langName) {
   return JSON.parse(res.choices[0].message.content);
 }
 
+/** Rows for an entity type, applying any configured `where` filters. */
+function fetchRows(cfg) {
+  let q = supabase.from(cfg.table).select("*");
+  if (cfg.where) for (const [k, v] of Object.entries(cfg.where)) q = q.eq(k, v);
+  return q;
+}
+
+/** True if this (entity, locale) already has translations stored. */
+async function alreadyTranslated(entityType, id, locale) {
+  const { count } = await supabase
+    .from("content_translations")
+    .select("id", { count: "exact", head: true })
+    .eq("entity_type", entityType)
+    .eq("entity_id", id)
+    .eq("locale", locale);
+  return (count ?? 0) > 0;
+}
+
+/** Pick only the fields that actually have content to translate. */
+function buildSource(row, fields) {
+  const src = {};
+  for (const f of fields) {
+    const val = row[f];
+    if (val === null || val === undefined) continue;
+    if (Array.isArray(val) && val.length === 0) continue;
+    src[f] = val;
+  }
+  return src;
+}
+
+/** One content_translations row per translated field. */
+function buildInserts(entityType, id, locale, src, translated) {
+  const inserts = [];
+  for (const f of Object.keys(src)) {
+    if (translated[f] === undefined) continue;
+    inserts.push({ entity_type: entityType, entity_id: id, locale, field: f, value: translated[f] });
+  }
+  return inserts;
+}
+
+/** Translate + upsert a single (row, locale), logging the outcome. */
+async function translateRowLocale(entityType, cfg, row, id, locale, langName, force) {
+  if (!force && (await alreadyTranslated(entityType, id, locale))) {
+    process.stdout.write(`  skip ${entityType}#${id} ${locale} (exists)\n`);
+    return;
+  }
+  const src = buildSource(row, cfg.fields);
+  if (Object.keys(src).length === 0) return;
+
+  try {
+    const translated = await translateObj(src, langName);
+    const inserts = buildInserts(entityType, id, locale, src, translated);
+    const { error: upErr } = await supabase
+      .from("content_translations")
+      .upsert(inserts, { onConflict: "entity_type,entity_id,locale,field" });
+    if (upErr) console.log(`  ERR ${entityType}#${id} ${locale}: ${upErr.message}`);
+    else process.stdout.write(`  ✓ ${entityType}#${id} ${locale} (${inserts.length} fields)\n`);
+  } catch (e) {
+    console.log(`  FAIL ${entityType}#${id} ${locale}: ${e.message}`);
+  }
+}
+
 async function run() {
   const entityType = process.argv[2];
   const force = process.argv.includes("--force");
   const cfg = CONFIGS[entityType];
-  if (!cfg) { console.error("Unknown entity type:", entityType, "\nKnown:", Object.keys(CONFIGS).join(", ")); process.exit(1); }
+  if (!cfg) {
+    console.error("Unknown entity type:", entityType, "\nKnown:", Object.keys(CONFIGS).join(", "));
+    process.exit(1);
+  }
 
-  let q = supabase.from(cfg.table).select("*");
-  if (cfg.where) for (const [k, v] of Object.entries(cfg.where)) q = q.eq(k, v);
-  const { data: rows, error } = await q;
+  const { data: rows, error } = await fetchRows(cfg);
   if (error) { console.error("fetch failed:", error.message); process.exit(1); }
   console.log(`Translating ${rows.length} ${entityType} rows → zh, km`);
 
   for (const row of rows) {
     const id = String(row[cfg.idField]);
     for (const [locale, langName] of Object.entries(LOCALES)) {
-      if (!force) {
-        const { count } = await supabase.from("content_translations").select("id", { count: "exact", head: true })
-          .eq("entity_type", entityType).eq("entity_id", id).eq("locale", locale);
-        if (count > 0) { process.stdout.write(`  skip ${entityType}#${id} ${locale} (exists)\n`); continue; }
-      }
-      // Build the object of only the fields that have content
-      const src = {};
-      for (const f of cfg.fields) {
-        const val = row[f];
-        if (val === null || val === undefined) continue;
-        if (Array.isArray(val) && val.length === 0) continue;
-        src[f] = val;
-      }
-      if (Object.keys(src).length === 0) continue;
-      try {
-        const translated = await translateObj(src, langName);
-        const inserts = [];
-        for (const f of Object.keys(src)) {
-          if (translated[f] === undefined) continue;
-          inserts.push({ entity_type: entityType, entity_id: id, locale, field: f, value: translated[f] });
-        }
-        const { error: upErr } = await supabase.from("content_translations")
-          .upsert(inserts, { onConflict: "entity_type,entity_id,locale,field" });
-        if (upErr) console.log(`  ERR ${entityType}#${id} ${locale}: ${upErr.message}`);
-        else process.stdout.write(`  ✓ ${entityType}#${id} ${locale} (${inserts.length} fields)\n`);
-      } catch (e) {
-        console.log(`  FAIL ${entityType}#${id} ${locale}: ${e.message}`);
-      }
+      await translateRowLocale(entityType, cfg, row, id, locale, langName, force);
     }
   }
   console.log("Done.");
