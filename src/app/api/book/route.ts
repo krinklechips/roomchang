@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Resend } from "resend";
+import { sendMail } from "@/lib/mailer";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 
 const SLOT_TIMES = buildSlotTimes();
@@ -15,14 +15,6 @@ function buildSlotTimes(): Set<string> {
   return slots;
 }
 
-function getResend() {
-  const key = process.env.RESEND_API_KEY;
-  if (!key) {
-    console.error("[book] RESEND_API_KEY is not configured — emails will not be sent");
-    return null;
-  }
-  return new Resend(key);
-}
 
 function escHtml(str: string): string {
   return str
@@ -200,47 +192,40 @@ export async function POST(request: NextRequest) {
       ["Preferred Doctor", cleanDoctor ? escHtml(cleanDoctor) : "—"],
     ];
 
-    const resend = getResend();
-    if (resend) {
-      const patientHtml = buildEmailHtml({
-        title: "Roomchang Dental Hospital",
-        subtitle: "Appointment request received",
-        rows,
-        notes: cleanNotes,
+    const patientHtml = buildEmailHtml({
+      title: "Roomchang Dental Hospital",
+      subtitle: "Appointment request received",
+      rows,
+      notes: cleanNotes,
+    });
+
+    if (cleanEmail) {
+      const { ok, error: patientEmailError } = await sendMail({
+        to: cleanEmail,
+        subject: "Roomchang appointment request received",
+        html: patientHtml,
       });
-
-      if (cleanEmail) {
-        const { error: patientEmailError } = await resend.emails.send({
-          from: "Roomchang Dental <onboarding@resend.dev>",
-          to: [cleanEmail],
-          subject: "Roomchang appointment request received",
-          html: patientHtml,
-        });
-
-        if (patientEmailError) {
-          console.error("[book] Patient email error:", patientEmailError);
-        }
+      if (!ok) {
+        console.error("[book] Patient email error:", patientEmailError);
       }
+    }
 
-      const toEmail = process.env.ENQUIRY_TO_EMAIL || "contact@roomchang.com";
-      const clinicHtml = buildEmailHtml({
-        title: "Roomchang Dental Hospital",
-        subtitle: "New pending appointment request",
-        rows: [["Booking ID", escHtml(String(bookingId))], ...rows],
-        notes: cleanNotes,
-      });
+    const toEmail = process.env.ENQUIRY_TO_EMAIL || "contact@roomchang.com";
+    const clinicHtml = buildEmailHtml({
+      title: "Roomchang Dental Hospital",
+      subtitle: "New pending appointment request",
+      rows: [["Booking ID", escHtml(String(bookingId))], ...rows],
+      notes: cleanNotes,
+    });
 
-      const { error: clinicEmailError } = await resend.emails.send({
-        from: "Roomchang Dental <onboarding@resend.dev>",
-        to: [toEmail],
-        replyTo: cleanEmail || undefined,
-        subject: `New appointment request - ${cleanName} at ${cleanTime}`,
-        html: clinicHtml,
-      });
-
-      if (clinicEmailError) {
-        console.error("[book] Clinic email error:", clinicEmailError);
-      }
+    const { ok: clinicOk, error: clinicEmailError } = await sendMail({
+      to: toEmail,
+      replyTo: cleanEmail || undefined,
+      subject: `New appointment request - ${cleanName} at ${cleanTime}`,
+      html: clinicHtml,
+    });
+    if (!clinicOk) {
+      console.error("[book] Clinic email error:", clinicEmailError);
     }
 
     return NextResponse.json({ ok: true, bookingId });

@@ -1,14 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Resend } from "resend";
-
-function getResend() {
-  const key = process.env.RESEND_API_KEY;
-  if (!key) {
-    console.error("[checklist] RESEND_API_KEY is not configured");
-    return null;
-  }
-  return new Resend(key);
-}
+import { sendMail } from "@/lib/mailer";
 
 function escHtml(str: string): string {
   return str
@@ -169,24 +160,16 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Valid email is required" }, { status: 400 });
     }
 
-    const resend = getResend();
-    if (!resend) {
-      return NextResponse.json({ error: "Email service unavailable" }, { status: 503 });
-    }
-
     const html = buildHtml(cleanName);
 
-    // TODO: Switch to "Roomchang Dental <noreply@roomchang.com>" once
-    // roomchang.com domain is verified in Resend (resend.com/domains).
-    const { error: emailError } = await resend.emails.send({
-      from: "Roomchang Dental <onboarding@resend.dev>",
-      to: [cleanEmail],
+    const { ok, error: emailError } = await sendMail({
+      to: cleanEmail,
       subject: `Your Treatment Checklist — Roomchang Dental Hospital`,
       html,
     });
 
-    if (emailError) {
-      console.error("[checklist] Resend error:", emailError);
+    if (!ok) {
+      console.error("[checklist] email send failed:", emailError);
       return NextResponse.json({ error: "Failed to send email" }, { status: 500 });
     }
 

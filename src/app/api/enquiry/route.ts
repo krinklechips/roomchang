@@ -1,16 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Resend } from "resend";
+import { sendMail } from "@/lib/mailer";
 import { supabaseAdmin } from "@/lib/supabase-admin";
-
-/** Lazy-init so the build doesn't crash when RESEND_API_KEY is unset. */
-function getResend() {
-  const key = process.env.RESEND_API_KEY;
-  if (!key) {
-    console.error("[enquiry] RESEND_API_KEY is not configured — emails will not be sent");
-    return null;
-  }
-  return new Resend(key);
-}
 
 /** Escape user-supplied strings before interpolating into HTML email. */
 function escHtml(str: string): string {
@@ -170,22 +160,16 @@ export async function POST(request: NextRequest) {
 </body>
 </html>`;
 
-    const resend = getResend();
-    if (resend) {
-      // TODO: Switch to "Roomchang Website <noreply@roomchang.com>" once
-      // roomchang.com domain is verified in Resend (resend.com/domains).
-      const { error: emailError } = await resend.emails.send({
-        from: "Roomchang Website <onboarding@resend.dev>",
-        to: [toEmail],
-        replyTo: cleanEmail || undefined,
-        subject: `New Enquiry — ${cleanName}${cleanTreat ? ` (${cleanTreat})` : ""}`,
-        html,
-      });
-
-      if (emailError) {
-        // Don't fail the request — enquiry is already saved to DB
-        console.error("Resend email error:", emailError);
-      }
+    // Send the clinic notification via SiteGround SMTP. Don't fail the request
+    // if the email errors — the enquiry is already saved to the DB.
+    const { ok, error: emailError } = await sendMail({
+      to: toEmail,
+      replyTo: cleanEmail || undefined,
+      subject: `New Enquiry — ${cleanName}${cleanTreat ? ` (${cleanTreat})` : ""}`,
+      html,
+    });
+    if (!ok) {
+      console.error("[enquiry] email send failed:", emailError);
     }
 
     return NextResponse.json({ ok: true });
