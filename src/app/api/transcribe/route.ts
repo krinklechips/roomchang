@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
     const transcription = await openai.audio.transcriptions.create({
       file: audio,
       model: "whisper-1",
-      language: "en", // English only for now
+      // Auto-detect language so voice works on the KM/ZH site too, not just EN.
     });
 
     return NextResponse.json({ text: (transcription.text ?? "").trim() });

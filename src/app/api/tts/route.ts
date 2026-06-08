@@ -1,5 +1,50 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
+import { createHash } from "crypto";
+
+// ─── In-memory audio cache ───────────────────────────────────────────────────
+// The greeting (and many canned replies) are identical every time. Caching the
+// generated mp3 by text hash lets a warm instance replay them instantly instead
+// of paying the full OpenAI generation round-trip on each voice-mode entry.
+// Note: serverless cold starts drop this cache; for a guaranteed-instant
+// greeting we'd pre-generate static audio per locale (follow-up).
+const TTS_VOICE = "shimmer";
+const TTS_MODEL = "tts-1";
+const audioCache = new Map<string, ArrayBuffer>();
+const CACHE_MAX = 50;
+
+function cacheKey(text: string): string {
+  return createHash("sha256").update(`${TTS_MODEL}:${TTS_VOICE}:${text}`).digest("hex");
+}
+
+function cacheGet(key: string): ArrayBuffer | undefined {
+  const hit = audioCache.get(key);
+  if (hit) {
+    // refresh LRU position
+    audioCache.delete(key);
+    audioCache.set(key, hit);
+  }
+  return hit;
+}
+
+function cacheSet(key: string, buf: ArrayBuffer): void {
+  audioCache.set(key, buf);
+  while (audioCache.size > CACHE_MAX) {
+    const oldest = audioCache.keys().next().value;
+    if (oldest === undefined) break;
+    audioCache.delete(oldest);
+  }
+}
+
+function mp3Response(audio: ArrayBuffer, cache: "hit" | "miss"): NextResponse {
+  return new NextResponse(new Uint8Array(audio), {
+    headers: {
+      "Content-Type": "audio/mpeg",
+      "Cache-Control": "private, max-age=86400",
+      "x-tts-cache": cache,
+    },
+  });
+}
 
 const rateMap = new Map<string, { count: number; resetAt: number }>();
 const RATE_LIMIT = 40;
@@ -43,20 +88,22 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "No text provided" }, { status: 400 });
     }
 
+    const key = cacheKey(clean);
+    const cached = cacheGet(key);
+    if (cached) {
+      return mp3Response(cached, "hit");
+    }
+
     const speech = await openai.audio.speech.create({
-      model: "tts-1",
-      voice: "shimmer", // warm, friendly receptionist voice
+      model: TTS_MODEL,
+      voice: TTS_VOICE, // warm, friendly receptionist voice
       input: clean,
       response_format: "mp3",
     });
 
-    const buffer = Buffer.from(await speech.arrayBuffer());
-    return new NextResponse(buffer, {
-      headers: {
-        "Content-Type": "audio/mpeg",
-        "Cache-Control": "no-store",
-      },
-    });
+    const audio = await speech.arrayBuffer();
+    cacheSet(key, audio);
+    return mp3Response(audio, "miss");
   } catch (err) {
     console.error("[tts] error:", err);
     return NextResponse.json({ error: "Speech generation failed" }, { status: 500 });

@@ -27,7 +27,16 @@ export function useVoiceRecorder() {
   const ensureStream = useCallback(async (): Promise<MediaStream | null> => {
     if (streamRef.current) return streamRef.current;
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      // echoCancellation stops the mic from re-recording Roomy's own TTS
+      // playback (which otherwise trips the VAD and makes "listening" flaky);
+      // noiseSuppression + autoGainControl steady the level for the RMS gate.
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true,
+        },
+      });
       streamRef.current = stream;
       return stream;
     } catch {

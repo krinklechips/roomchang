@@ -1054,7 +1054,19 @@ export function Chatbot() {
     if (isStreaming) return;
     voiceModeRef.current = true;
     setVoiceMode(true);
-    runVoiceTurn();
+
+    // If the last message is an assistant line that hasn't been read yet (e.g.
+    // the greeting on first entry), let the speak-effect read it and start
+    // listening only once playback ends — otherwise the mic would record Roomy's
+    // own voice and the two loops would collide. If there's nothing to read,
+    // start listening right away.
+    const last = messages[messages.length - 1];
+    const willSpeakFirst =
+      !!last &&
+      last.role === "assistant" &&
+      last.id !== lastSpokenIdRef.current &&
+      !!stripMarkdownForSpeech(stripBookingBlock(last.content)).trim();
+    if (!willSpeakFirst) runVoiceTurn();
   }
 
   // When a reply finishes streaming in voice mode: speak it (OpenAI TTS), then
