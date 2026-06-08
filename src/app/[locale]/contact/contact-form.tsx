@@ -68,6 +68,16 @@ const DIAL_CODES: { flag: string; code: string; name: string }[] = [
   { flag: "🇧🇷", code: "+55", name: "Brazil" },
 ];
 
+// Longest code first so "+855" matches before "+85"/"+8".
+const DIAL_CODES_BY_LEN = [...DIAL_CODES].sort((a, b) => b.code.length - a.code.length);
+
+/** Flag for a typed/selected calling code (globe if unrecognised). */
+function flagForCode(code: string): string {
+  const norm = code.replace(/[^\d+]/g, "");
+  const match = DIAL_CODES_BY_LEN.find((c) => norm.startsWith(c.code));
+  return match ? match.flag : "🌐";
+}
+
 export function ContactForm({ branches, doctors }: { branches: Branch[]; doctors: Doctor[] }) {
   const t = useTranslations("contactForm");
   const [submitted, setSubmitted] = useState(false);
@@ -78,6 +88,13 @@ export function ContactForm({ branches, doctors }: { branches: Branch[]; doctors
   const [doctorDropdownOpen, setDoctorDropdownOpen] = useState(false);
   const doctorInputRef = useRef<HTMLInputElement>(null);
   const doctorDropdownRef = useRef<HTMLDivElement>(null);
+
+  // Country calling-code combobox (type to filter by code or country, or pick)
+  const [dialCode, setDialCode] = useState("+855");
+  const [codeQuery, setCodeQuery] = useState("+855");
+  const [codeOpen, setCodeOpen] = useState(false);
+  const codeInputRef = useRef<HTMLInputElement>(null);
+  const codeDropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const doc = searchParams.get("doctor");
@@ -102,6 +119,34 @@ export function ContactForm({ branches, doctors }: { branches: Branch[]; doctors
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  // Close the dial-code dropdown on outside click
+  useEffect(() => {
+    function handler(e: MouseEvent) {
+      if (
+        codeDropdownRef.current &&
+        !codeDropdownRef.current.contains(e.target as Node) &&
+        codeInputRef.current &&
+        !codeInputRef.current.contains(e.target as Node)
+      ) {
+        setCodeOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  const filteredCodes = useMemo(() => {
+    const q = codeQuery.trim().toLowerCase();
+    if (!q) return DIAL_CODES;
+    const digits = q.replace(/[^\d]/g, "");
+    return DIAL_CODES.filter(
+      (c) =>
+        c.name.toLowerCase().includes(q) ||
+        c.code.includes(q) ||
+        (digits.length > 0 && c.code.includes(digits)),
+    );
+  }, [codeQuery]);
 
   const filteredDoctors = useMemo(() => {
     if (!doctorQuery.trim()) return doctors;
@@ -210,19 +255,31 @@ export function ContactForm({ branches, doctors }: { branches: Branch[]; doctors
                   <label htmlFor="phone" className="block text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
                     {t("label.phone")} <span className="text-[color:var(--brand)]">*</span>
                   </label>
-                  <div className="flex items-stretch overflow-hidden rounded-xl border border-[color:var(--border-strong)] bg-white transition focus-within:border-[color:var(--brand)] focus-within:ring-2 focus-within:ring-[color:var(--brand)]/20">
-                    <select
-                      name="dialCode"
-                      defaultValue="+855"
-                      aria-label="Country calling code"
-                      className="shrink-0 cursor-pointer bg-transparent py-3 pl-3 pr-1 text-sm text-[color:var(--text-main)] outline-none"
-                    >
-                      {DIAL_CODES.map((c) => (
-                        <option key={`${c.code}-${c.name}`} value={c.code}>
-                          {c.flag} {c.code}
-                        </option>
-                      ))}
-                    </select>
+                  <div className="relative flex items-stretch rounded-xl border border-[color:var(--border-strong)] bg-white transition focus-within:border-[color:var(--brand)] focus-within:ring-2 focus-within:ring-[color:var(--brand)]/20">
+                    {/* Country code — type to filter by code or country, or pick */}
+                    <input type="hidden" name="dialCode" value={dialCode} />
+                    <div className="relative flex shrink-0 items-center">
+                      <span className="pointer-events-none absolute left-2.5 text-base leading-none" aria-hidden="true">
+                        {flagForCode(dialCode)}
+                      </span>
+                      <input
+                        ref={codeInputRef}
+                        type="text"
+                        inputMode="tel"
+                        autoComplete="off"
+                        aria-label="Country calling code"
+                        value={codeQuery}
+                        onFocus={() => setCodeOpen(true)}
+                        onChange={(e) => {
+                          const v = e.target.value;
+                          setCodeQuery(v);
+                          const norm = v.replace(/[^\d+]/g, "");
+                          if (norm.startsWith("+")) setDialCode(norm);
+                          setCodeOpen(true);
+                        }}
+                        className="w-[5.25rem] bg-transparent py-3 pl-8 pr-1 text-sm text-[color:var(--text-main)] outline-none"
+                      />
+                    </div>
                     <span aria-hidden="true" className="my-2 w-px self-stretch bg-[color:var(--border-strong)]" />
                     <input
                       id="phone"
@@ -233,6 +290,29 @@ export function ContactForm({ branches, doctors }: { branches: Branch[]; doctors
                       className="w-full bg-transparent px-3 py-3 text-sm text-[color:var(--text-main)] placeholder-[color:var(--text-soft)]/50 outline-none"
                       placeholder="12 345 678"
                     />
+                    {codeOpen && filteredCodes.length > 0 && (
+                      <div
+                        ref={codeDropdownRef}
+                        className="absolute left-0 top-full z-30 mt-1 max-h-56 w-64 overflow-y-auto rounded-2xl border border-[color:var(--border-strong)] bg-white p-1.5 shadow-[0_20px_50px_rgba(61,24,47,0.14)]"
+                      >
+                        {filteredCodes.map((c) => (
+                          <button
+                            key={`${c.code}-${c.name}`}
+                            type="button"
+                            onClick={() => {
+                              setDialCode(c.code);
+                              setCodeQuery(c.code);
+                              setCodeOpen(false);
+                            }}
+                            className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-sm transition-colors hover:bg-[color:var(--brand-soft)]"
+                          >
+                            <span className="text-base leading-none">{c.flag}</span>
+                            <span className="font-medium text-[color:var(--text-main)]">{c.code}</span>
+                            <span className="truncate text-[color:var(--text-soft)]">{c.name}</span>
+                          </button>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div className="space-y-2">
