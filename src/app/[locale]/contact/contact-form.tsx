@@ -22,6 +22,52 @@ const SERVICE_KEYS = [
   "other",
 ] as const;
 
+// Country calling codes for the phone field. Cambodia first (default), then the
+// common patient-origin countries, then a broad international list. Option text
+// leads with flag + code so the closed <select> shows the dial code even when
+// the country name is truncated.
+const DIAL_CODES: { flag: string; code: string; name: string }[] = [
+  { flag: "🇰🇭", code: "+855", name: "Cambodia" },
+  { flag: "🇦🇺", code: "+61", name: "Australia" },
+  { flag: "🇺🇸", code: "+1", name: "United States" },
+  { flag: "🇬🇧", code: "+44", name: "United Kingdom" },
+  { flag: "🇨🇳", code: "+86", name: "China" },
+  { flag: "🇭🇰", code: "+852", name: "Hong Kong" },
+  { flag: "🇸🇬", code: "+65", name: "Singapore" },
+  { flag: "🇹🇭", code: "+66", name: "Thailand" },
+  { flag: "🇻🇳", code: "+84", name: "Vietnam" },
+  { flag: "🇲🇾", code: "+60", name: "Malaysia" },
+  { flag: "🇮🇩", code: "+62", name: "Indonesia" },
+  { flag: "🇯🇵", code: "+81", name: "Japan" },
+  { flag: "🇰🇷", code: "+82", name: "South Korea" },
+  { flag: "🇵🇭", code: "+63", name: "Philippines" },
+  { flag: "🇮🇳", code: "+91", name: "India" },
+  { flag: "🇫🇷", code: "+33", name: "France" },
+  { flag: "🇩🇪", code: "+49", name: "Germany" },
+  { flag: "🇧🇪", code: "+32", name: "Belgium" },
+  { flag: "🇳🇱", code: "+31", name: "Netherlands" },
+  { flag: "🇨🇭", code: "+41", name: "Switzerland" },
+  { flag: "🇮🇹", code: "+39", name: "Italy" },
+  { flag: "🇪🇸", code: "+34", name: "Spain" },
+  { flag: "🇸🇪", code: "+46", name: "Sweden" },
+  { flag: "🇳🇴", code: "+47", name: "Norway" },
+  { flag: "🇩🇰", code: "+45", name: "Denmark" },
+  { flag: "🇮🇪", code: "+353", name: "Ireland" },
+  { flag: "🇨🇦", code: "+1", name: "Canada" },
+  { flag: "🇳🇿", code: "+64", name: "New Zealand" },
+  { flag: "🇦🇪", code: "+971", name: "UAE" },
+  { flag: "🇸🇦", code: "+966", name: "Saudi Arabia" },
+  { flag: "🇶🇦", code: "+974", name: "Qatar" },
+  { flag: "🇷🇺", code: "+7", name: "Russia" },
+  { flag: "🇹🇼", code: "+886", name: "Taiwan" },
+  { flag: "🇲🇲", code: "+95", name: "Myanmar" },
+  { flag: "🇱🇦", code: "+856", name: "Laos" },
+  { flag: "🇧🇩", code: "+880", name: "Bangladesh" },
+  { flag: "🇵🇰", code: "+92", name: "Pakistan" },
+  { flag: "🇿🇦", code: "+27", name: "South Africa" },
+  { flag: "🇧🇷", code: "+55", name: "Brazil" },
+];
+
 export function ContactForm({ branches, doctors }: { branches: Branch[]; doctors: Doctor[] }) {
   const t = useTranslations("contactForm");
   const [submitted, setSubmitted] = useState(false);
@@ -73,10 +119,13 @@ export function ContactForm({ branches, doctors }: { branches: Branch[]; doctors
     setSubmitting(true);
 
     const form = e.currentTarget;
+    const dialCode = (form.elements.namedItem("dialCode") as HTMLSelectElement).value;
+    const rawPhone = (form.elements.namedItem("phone") as HTMLInputElement).value.trim();
     const data = {
       name:      (form.elements.namedItem("name")    as HTMLInputElement).value,
       email:     (form.elements.namedItem("email")   as HTMLInputElement).value,
-      phone:     (form.elements.namedItem("phone")   as HTMLInputElement).value,
+      // Prefix the dial code unless the user already typed a full +country number.
+      phone:     rawPhone ? (rawPhone.startsWith("+") ? rawPhone : `${dialCode} ${rawPhone}`) : "",
       country:   (form.elements.namedItem("country") as HTMLInputElement).value,
       wechat:    (form.elements.namedItem("wechat")  as HTMLInputElement).value,
       treatment: (form.elements.namedItem("service") as HTMLSelectElement).value,
@@ -161,15 +210,29 @@ export function ContactForm({ branches, doctors }: { branches: Branch[]; doctors
                   <label htmlFor="phone" className="block text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
                     {t("label.phone")} <span className="text-[color:var(--brand)]">*</span>
                   </label>
-                  <input
-                    id="phone"
-                    name="phone"
-                    type="tel"
-                    required
-                    autoComplete="tel"
-                    className="w-full rounded-xl border border-[color:var(--border-strong)] bg-white px-4 py-3 text-sm text-[color:var(--text-main)] placeholder-[color:var(--text-soft)]/50 outline-none transition focus:border-[color:var(--brand)] focus:ring-2 focus:ring-[color:var(--brand)]/20"
-                    placeholder="+855 ..."
-                  />
+                  <div className="flex gap-2">
+                    <select
+                      name="dialCode"
+                      defaultValue="+855"
+                      aria-label="Country calling code"
+                      className="w-[7.5rem] shrink-0 truncate rounded-xl border border-[color:var(--border-strong)] bg-white px-2 py-3 text-sm text-[color:var(--text-main)] outline-none transition focus:border-[color:var(--brand)] focus:ring-2 focus:ring-[color:var(--brand)]/20"
+                    >
+                      {DIAL_CODES.map((c) => (
+                        <option key={`${c.code}-${c.name}`} value={c.code}>
+                          {c.flag} {c.code} {c.name}
+                        </option>
+                      ))}
+                    </select>
+                    <input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      required
+                      autoComplete="tel"
+                      className="w-full rounded-xl border border-[color:var(--border-strong)] bg-white px-4 py-3 text-sm text-[color:var(--text-main)] placeholder-[color:var(--text-soft)]/50 outline-none transition focus:border-[color:var(--brand)] focus:ring-2 focus:ring-[color:var(--brand)]/20"
+                      placeholder="12 345 678"
+                    />
+                  </div>
                 </div>
                 <div className="space-y-2">
                   <label htmlFor="wechat" className="block text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
