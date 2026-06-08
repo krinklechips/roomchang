@@ -13,25 +13,21 @@ export function InteractiveSteps({ steps }: { steps: Step[] }) {
   const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const index = Number(entry.target.getAttribute("data-index"));
-            setVisibleSteps((prev) => {
-              const next = new Set(prev);
-              next.add(index);
-              return next;
-            });
-          }
-        });
-      },
-      { threshold: 0.3, rootMargin: "0px 0px -40px 0px" },
-    );
+    const reveal = (index: number) =>
+      setVisibleSteps((prev) => new Set(prev).add(index));
 
-    stepRefs.current.forEach((el) => {
-      if (el) observer.observe(el);
+    const onIntersect: IntersectionObserverCallback = (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        reveal(Number((entry.target as HTMLElement).dataset.index));
+      }
+    };
+
+    const observer = new IntersectionObserver(onIntersect, {
+      threshold: 0.3,
+      rootMargin: "0px 0px -40px 0px",
     });
+    stepRefs.current.forEach((el) => el && observer.observe(el));
 
     return () => observer.disconnect();
   }, [steps]);

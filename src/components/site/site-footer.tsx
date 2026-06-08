@@ -72,30 +72,29 @@ export async function SiteFooter() {
 
   // Resolve link labels: services column uses nav keys, others use footer.link keys
   function linkLabel(column: FooterColumn, link: FooterLink): string {
-    if (column.headingKey === "services") {
-      // Service links share keys with nav except "allServices"
-      if (link.tKey === "allServices") return tFooter("link.allServices");
-      return tNav(link.tKey);
+    const key = link.tKey;
+    switch (column.headingKey) {
+      case "services":
+        // Service links share keys with nav except "allServices"
+        return key === "allServices" ? tFooter("link.allServices") : tNav(key);
+      case "about": {
+        // Some about links share keys with nav; the rest are footer-specific
+        const navKeys = ["aboutRoomchang", "ourFacilities", "technology", "communityCharity", "employmentOpportunities"];
+        if (navKeys.includes(key)) return tNav(key);
+        if (key === "visionMission") return tFooter("link.visionMission");
+        if (key === "ourDoctors") return tFooter("link.ourDoctors");
+        return key;
+      }
+      case "international": {
+        const navKeys = ["priceComparison", "clinicalResults"];
+        return navKeys.includes(key) ? tNav(key) : tFooter(`link.${key}`);
+      }
+      case "contact":
+        // External social links vs footer link keys
+        return link.external ? tFooter(`social.${key}`) : tFooter(`link.${key}`);
+      default:
+        return key;
     }
-    if (column.headingKey === "about") {
-      // Some about links share keys with nav
-      const navKeys = ["aboutRoomchang", "ourFacilities", "technology", "communityCharity", "employmentOpportunities"];
-      if (navKeys.includes(link.tKey)) return tNav(link.tKey);
-      // Footer-specific about labels
-      if (link.tKey === "visionMission") return tFooter("link.visionMission");
-      if (link.tKey === "ourDoctors") return tFooter("link.ourDoctors");
-    }
-    if (column.headingKey === "international") {
-      const navKeys = ["priceComparison", "clinicalResults"];
-      if (navKeys.includes(link.tKey)) return tNav(link.tKey);
-      return tFooter(`link.${link.tKey}`);
-    }
-    if (column.headingKey === "contact") {
-      // External social links
-      if (link.external) return tFooter(`social.${link.tKey}`);
-      return tFooter(`link.${link.tKey}`);
-    }
-    return link.tKey;
   }
 
   return (

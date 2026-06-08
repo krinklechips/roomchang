@@ -66,20 +66,23 @@ function getCategoryIcon(title: string): Icon {
   return Sparkle;
 }
 
-/** Extract numeric min/max across all items and return a human-readable range */
-function getPriceRange(items: { price: string }[], freeLabel: string): string {
+/** Parse every numeric value out of the item prices ("free" → 0). */
+function parsePrices(items: { price: string }[]): number[] {
   const nums: number[] = [];
   for (const item of items) {
     const p = item.price.toLowerCase().trim();
     if (p === "free") { nums.push(0); continue; }
-    const matches = p.match(/[\d,]+(?:\.\d+)?/g);
-    if (matches) {
-      for (const m of matches) {
-        const n = parseFloat(m.replace(/,/g, ""));
-        if (!isNaN(n)) nums.push(n);
-      }
+    for (const m of p.match(/[\d,]+(?:\.\d+)?/g) ?? []) {
+      const n = parseFloat(m.replace(/,/g, ""));
+      if (!isNaN(n)) nums.push(n);
     }
   }
+  return nums;
+}
+
+/** Extract numeric min/max across all items and return a human-readable range */
+function getPriceRange(items: { price: string }[], freeLabel: string): string {
+  const nums = parsePrices(items);
   if (nums.length === 0) return "";
   const min = Math.min(...nums);
   const max = Math.max(...nums);

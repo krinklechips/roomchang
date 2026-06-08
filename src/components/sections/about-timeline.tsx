@@ -24,19 +24,18 @@ export function AboutTimeline() {
 
   useEffect(() => {
     const obs: IntersectionObserver[] = [];
+    const reveal = (i: number) => setVisibleSet((prev) => new Set([...prev, i]));
 
-    function makeCallback(i: number): IntersectionObserverCallback {
-      return ([entry]) => {
-        if (entry.isIntersecting) setVisibleSet((prev) => new Set([...prev, i]));
-      };
-    }
-
-    refs.current.forEach((el, i) => {
-      if (!el) return;
-      const o = new IntersectionObserver(makeCallback(i), { threshold: 0.08 });
+    const observe = (el: HTMLDivElement, i: number) => {
+      const o = new IntersectionObserver(
+        ([entry]) => entry.isIntersecting && reveal(i),
+        { threshold: 0.08 },
+      );
       o.observe(el);
       obs.push(o);
-    });
+    };
+
+    refs.current.forEach((el, i) => { if (el) observe(el, i); });
     return () => obs.forEach((o) => o.disconnect());
   }, []);
 

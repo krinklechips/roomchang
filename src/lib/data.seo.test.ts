@@ -1,5 +1,20 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
+/**
+ * Flat chainable mock of supabaseServer: from()/select()/eq() all return the
+ * same chain, and single() resolves to `result`. Avoids deeply nested factory
+ * arrows in each test.
+ */
+function mockSupabaseSingle(result: { data: unknown; error: unknown }) {
+  const chain: Record<string, unknown> = {
+    from: () => chain,
+    select: () => chain,
+    eq: () => chain,
+    single: async () => result,
+  };
+  return { supabaseServer: chain };
+}
+
 afterEach(() => {
   vi.resetModules();
   vi.clearAllMocks();
@@ -7,32 +22,24 @@ afterEach(() => {
 
 describe("getSeoPageMeta", () => {
   it("maps a CMS row into the server SEO shape", async () => {
-    vi.doMock("@/lib/supabase-server", () => ({
-      supabaseServer: {
-        from: () => ({
-          select: () => ({
-            eq: () => ({
-              single: async () => ({
-                data: {
-                  page_path: "/services/dental-implants",
-                  title: "Dental Implants in Phnom Penh",
-                  description: "CMS description",
-                  og_title: "CMS OG Title",
-                  og_description: "CMS OG Description",
-                  og_image: "https://roomchang.com/og-implants.jpg",
-                  twitter_title: "CMS Twitter Title",
-                  twitter_description: "CMS Twitter Description",
-                  twitter_image: "https://roomchang.com/twitter-implants.jpg",
-                  canonical_url: "https://roomchang.com/services/dental-implants",
-                  noindex: true,
-                },
-                error: null,
-              }),
-            }),
-          }),
-        }),
-      },
-    }));
+    vi.doMock("@/lib/supabase-server", () =>
+      mockSupabaseSingle({
+        data: {
+          page_path: "/services/dental-implants",
+          title: "Dental Implants in Phnom Penh",
+          description: "CMS description",
+          og_title: "CMS OG Title",
+          og_description: "CMS OG Description",
+          og_image: "https://roomchang.com/og-implants.jpg",
+          twitter_title: "CMS Twitter Title",
+          twitter_description: "CMS Twitter Description",
+          twitter_image: "https://roomchang.com/twitter-implants.jpg",
+          canonical_url: "https://roomchang.com/services/dental-implants",
+          noindex: true,
+        },
+        error: null,
+      }),
+    );
 
     const { getSeoPageMeta } = await import("./data");
 
@@ -52,20 +59,9 @@ describe("getSeoPageMeta", () => {
   });
 
   it("returns null when the CMS lookup fails", async () => {
-    vi.doMock("@/lib/supabase-server", () => ({
-      supabaseServer: {
-        from: () => ({
-          select: () => ({
-            eq: () => ({
-              single: async () => ({
-                data: null,
-                error: { message: "boom" },
-              }),
-            }),
-          }),
-        }),
-      },
-    }));
+    vi.doMock("@/lib/supabase-server", () =>
+      mockSupabaseSingle({ data: null, error: { message: "boom" } }),
+    );
 
     const { getSeoPageMeta } = await import("./data");
 

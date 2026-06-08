@@ -96,22 +96,30 @@ export function useVoiceRecorder() {
         resolve(new Blob(chunks, { type: mime || "audio/webm" }));
       };
 
-      const tick = () => {
-        if (cancelRef.current) {
-          try {
-            recorder.stop();
-          } catch {
-            /* ignore */
-          }
-          return;
+      const stopSafely = () => {
+        try {
+          recorder.stop();
+        } catch {
+          /* ignore */
         }
+      };
+
+      const currentRms = () => {
         analyser.getByteTimeDomainData(data);
         let sum = 0;
         for (let i = 0; i < data.length; i++) {
           const v = (data[i] - 128) / 128;
           sum += v * v;
         }
-        const rms = Math.sqrt(sum / data.length);
+        return Math.sqrt(sum / data.length);
+      };
+
+      const tick = () => {
+        if (cancelRef.current) {
+          stopSafely();
+          return;
+        }
+        const rms = currentRms();
         const now = Date.now();
 
         if (rms > SILENCE_THRESHOLD) {
@@ -123,20 +131,12 @@ export function useVoiceRecorder() {
         } else if (hasSpoken) {
           if (!silenceStart) silenceStart = now;
           else if (now - silenceStart > SILENCE_AFTER_SPEECH_MS) {
-            try {
-              recorder.stop();
-            } catch {
-              /* ignore */
-            }
+            stopSafely();
             return;
           }
         } else if (now - startTime > NO_SPEECH_TIMEOUT_MS) {
           // Nobody spoke within the timeout — bail out.
-          try {
-            recorder.stop();
-          } catch {
-            /* ignore */
-          }
+          stopSafely();
           return;
         }
         raf = requestAnimationFrame(tick);

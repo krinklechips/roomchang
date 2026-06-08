@@ -115,58 +115,112 @@ function buildEmailHtml({
 </html>`;
 }
 
+type CleanBooking = {
+  cleanName: string; cleanEmail: string; cleanPhone: string; cleanTelegram: string;
+  cleanTreatment: string; cleanDate: string; cleanTime: string;
+  cleanBranch: string; cleanDoctor: string; cleanNotes: string;
+};
+
+/** Clean + validate the request body. Returns an error+status or the clean data. */
+function validateBooking(
+  body: Record<string, unknown>,
+): { error: string; status: number } | { data: CleanBooking } {
+  const cleanName = trunc(body.name, 120).trim();
+  const cleanEmail = trunc(body.email, 254).trim();
+  const cleanPhone = trunc(body.phone, 40).trim();
+  const cleanTelegram = trunc(body.telegram, 80).trim();
+  const cleanTreatment = trunc(body.treatment, 120).trim();
+  const cleanDate = trunc(body.date, 20).trim();
+  const cleanTime = normalizeTime(trunc(body.time, 20).trim());
+  const cleanBranch = trunc(body.branch, 120).trim();
+  const cleanDoctor = trunc(body.doctor, 120).trim();
+  const cleanNotes = trunc(body.notes, 2000).trim();
+
+  if (!cleanName) return { error: "Name is required", status: 400 };
+  if (!cleanEmail && !cleanPhone) return { error: "Email or phone is required", status: 400 };
+  if (cleanEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail))
+    return { error: "Invalid email address", status: 400 };
+  if (!cleanTreatment) return { error: "Treatment is required", status: 400 };
+  if (!isValidDate(cleanDate) || isSunday(cleanDate))
+    return { error: "Valid Monday-Saturday date is required", status: 400 };
+  if (!SLOT_TIMES.has(cleanTime)) return { error: "Valid appointment time is required", status: 400 };
+
+  return {
+    data: {
+      cleanName, cleanEmail, cleanPhone, cleanTelegram, cleanTreatment,
+      cleanDate, cleanTime, cleanBranch, cleanDoctor, cleanNotes,
+    },
+  };
+}
+
+/** Email the patient (if they gave an email) and the clinic. Failures are logged, not thrown. */
+async function sendBookingEmails(b: CleanBooking, bookingId: unknown): Promise<void> {
+  const rows: [string, string][] = [
+    ["Name", escHtml(b.cleanName)],
+    ["Email", b.cleanEmail ? escHtml(b.cleanEmail) : "—"],
+    ["Phone / WhatsApp", b.cleanPhone ? escHtml(b.cleanPhone) : "—"],
+    ["Telegram", b.cleanTelegram ? escHtml(b.cleanTelegram) : "—"],
+    ["Treatment", escHtml(b.cleanTreatment)],
+    ["Preferred Date", escHtml(b.cleanDate)],
+    ["Preferred Time", escHtml(b.cleanTime)],
+    ["Preferred Branch", b.cleanBranch ? escHtml(b.cleanBranch) : "—"],
+    ["Preferred Doctor", b.cleanDoctor ? escHtml(b.cleanDoctor) : "—"],
+  ];
+
+  if (b.cleanEmail) {
+    const patientHtml = buildEmailHtml({
+      title: "Roomchang Dental Hospital",
+      subtitle: "Appointment request received",
+      rows,
+      notes: b.cleanNotes,
+    });
+    const { ok, error } = await sendMail({
+      to: b.cleanEmail,
+      subject: "Roomchang appointment request received",
+      html: patientHtml,
+    });
+    if (!ok) console.error("[book] Patient email error:", error);
+  }
+
+  const toEmail = process.env.ENQUIRY_TO_EMAIL || "contact@roomchang.com";
+  const clinicHtml = buildEmailHtml({
+    title: "Roomchang Dental Hospital",
+    subtitle: "New pending appointment request",
+    rows: [["Booking ID", escHtml(String(bookingId))], ...rows],
+    notes: b.cleanNotes,
+  });
+  const { ok: clinicOk, error: clinicEmailError } = await sendMail({
+    to: toEmail,
+    replyTo: b.cleanEmail || undefined,
+    subject: `New appointment request - ${b.cleanName} at ${b.cleanTime}`,
+    html: clinicHtml,
+  });
+  if (!clinicOk) console.error("[book] Clinic email error:", clinicEmailError);
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    const cleanName = trunc(body.name, 120).trim();
-    const cleanEmail = trunc(body.email, 254).trim();
-    const cleanPhone = trunc(body.phone, 40).trim();
-    const cleanTelegram = trunc(body.telegram, 80).trim();
-    const cleanTreatment = trunc(body.treatment, 120).trim();
-    const cleanDate = trunc(body.date, 20).trim();
-    const cleanTime = normalizeTime(trunc(body.time, 20).trim());
-    const cleanBranch = trunc(body.branch, 120).trim();
-    const cleanDoctor = trunc(body.doctor, 120).trim();
-    const cleanNotes = trunc(body.notes, 2000).trim();
-
-    if (!cleanName) {
-      return NextResponse.json({ error: "Name is required" }, { status: 400 });
+    const result = validateBooking(body);
+    if ("error" in result) {
+      return NextResponse.json({ error: result.error }, { status: result.status });
     }
-
-    if (!cleanEmail && !cleanPhone) {
-      return NextResponse.json({ error: "Email or phone is required" }, { status: 400 });
-    }
-
-    if (cleanEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail)) {
-      return NextResponse.json({ error: "Invalid email address" }, { status: 400 });
-    }
-
-    if (!cleanTreatment) {
-      return NextResponse.json({ error: "Treatment is required" }, { status: 400 });
-    }
-
-    if (!isValidDate(cleanDate) || isSunday(cleanDate)) {
-      return NextResponse.json({ error: "Valid Monday-Saturday date is required" }, { status: 400 });
-    }
-
-    if (!SLOT_TIMES.has(cleanTime)) {
-      return NextResponse.json({ error: "Valid appointment time is required" }, { status: 400 });
-    }
+    const booking = result.data;
 
     const { data: bookingId, error: bookingError } = await supabaseAdmin.rpc(
       "book_appointment_slot",
       {
-        p_name: cleanName,
-        p_email: cleanEmail,
-        p_phone: cleanPhone,
-        p_telegram: cleanTelegram,
-        p_treatment: cleanTreatment,
-        p_date: cleanDate,
-        p_time: cleanTime,
-        p_branch: cleanBranch,
-        p_doctor: cleanDoctor,
-        p_notes: cleanNotes,
+        p_name: booking.cleanName,
+        p_email: booking.cleanEmail,
+        p_phone: booking.cleanPhone,
+        p_telegram: booking.cleanTelegram,
+        p_treatment: booking.cleanTreatment,
+        p_date: booking.cleanDate,
+        p_time: booking.cleanTime,
+        p_branch: booking.cleanBranch,
+        p_doctor: booking.cleanDoctor,
+        p_notes: booking.cleanNotes,
       },
     );
 
@@ -175,58 +229,11 @@ export async function POST(request: NextRequest) {
       if (message.includes("slot_not_available")) {
         return NextResponse.json({ error: "Slot is no longer available" }, { status: 409 });
       }
-
       console.error("[book] Supabase booking error:", bookingError);
       return NextResponse.json({ error: "Failed to book appointment" }, { status: 500 });
     }
 
-    const rows: [string, string][] = [
-      ["Name", escHtml(cleanName)],
-      ["Email", cleanEmail ? escHtml(cleanEmail) : "—"],
-      ["Phone / WhatsApp", cleanPhone ? escHtml(cleanPhone) : "—"],
-      ["Telegram", cleanTelegram ? escHtml(cleanTelegram) : "—"],
-      ["Treatment", escHtml(cleanTreatment)],
-      ["Preferred Date", escHtml(cleanDate)],
-      ["Preferred Time", escHtml(cleanTime)],
-      ["Preferred Branch", cleanBranch ? escHtml(cleanBranch) : "—"],
-      ["Preferred Doctor", cleanDoctor ? escHtml(cleanDoctor) : "—"],
-    ];
-
-    const patientHtml = buildEmailHtml({
-      title: "Roomchang Dental Hospital",
-      subtitle: "Appointment request received",
-      rows,
-      notes: cleanNotes,
-    });
-
-    if (cleanEmail) {
-      const { ok, error: patientEmailError } = await sendMail({
-        to: cleanEmail,
-        subject: "Roomchang appointment request received",
-        html: patientHtml,
-      });
-      if (!ok) {
-        console.error("[book] Patient email error:", patientEmailError);
-      }
-    }
-
-    const toEmail = process.env.ENQUIRY_TO_EMAIL || "contact@roomchang.com";
-    const clinicHtml = buildEmailHtml({
-      title: "Roomchang Dental Hospital",
-      subtitle: "New pending appointment request",
-      rows: [["Booking ID", escHtml(String(bookingId))], ...rows],
-      notes: cleanNotes,
-    });
-
-    const { ok: clinicOk, error: clinicEmailError } = await sendMail({
-      to: toEmail,
-      replyTo: cleanEmail || undefined,
-      subject: `New appointment request - ${cleanName} at ${cleanTime}`,
-      html: clinicHtml,
-    });
-    if (!clinicOk) {
-      console.error("[book] Clinic email error:", clinicEmailError);
-    }
+    await sendBookingEmails(booking, bookingId);
 
     return NextResponse.json({ ok: true, bookingId });
   } catch (err) {

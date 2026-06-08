@@ -11,6 +11,32 @@ function newItem(): PriceItem {
   return { ada: "", name: "", price: "", aus: "" };
 }
 
+// ── Immutable category/item helpers (module-level, to keep the handlers flat) ──
+function updateCategoryAt(
+  d: PricingData | null,
+  catIdx: number,
+  update: (c: Category) => Category,
+): PricingData | null {
+  if (!d) return d;
+  return { ...d, categories: d.categories.map((c, ci) => (ci === catIdx ? update(c) : c)) };
+}
+
+function setItemField(c: Category, rowIdx: number, field: keyof PriceItem, value: string): Category {
+  return { ...c, items: c.items.map((item, ri) => (ri === rowIdx ? { ...item, [field]: value } : item)) };
+}
+
+function removeItem(c: Category, rowIdx: number): Category {
+  return { ...c, items: c.items.filter((_, ri) => ri !== rowIdx) };
+}
+
+function moveItem(c: Category, rowIdx: number, dir: -1 | 1): Category {
+  const items = [...c.items];
+  const target = rowIdx + dir;
+  if (target < 0 || target >= items.length) return c;
+  [items[rowIdx], items[target]] = [items[target], items[rowIdx]];
+  return { ...c, items };
+}
+
 export default function AdminPricingPage() {
   const [data, setData] = useState<PricingData | null>(null);
   const [saving, setSaving] = useState(false);
@@ -47,55 +73,19 @@ export default function AdminPricingPage() {
   }
 
   function updateItem(catIdx: number, rowIdx: number, field: keyof PriceItem, value: string) {
-    function applyUpdate(d: PricingData | null): PricingData | null {
-      if (!d) return d;
-      const categories = d.categories.map((c, ci) => {
-        if (ci !== catIdx) return c;
-        const items = c.items.map((item, ri) =>
-          ri !== rowIdx ? item : { ...item, [field]: value }
-        );
-        return { ...c, items };
-      });
-      return { ...d, categories };
-    }
-    setData(applyUpdate);
+    setData((d) => updateCategoryAt(d, catIdx, (c) => setItemField(c, rowIdx, field, value)));
   }
 
   function addRow(catIdx: number) {
-    function applyAdd(d: PricingData | null): PricingData | null {
-      if (!d) return d;
-      const categories = d.categories.map((c, ci) =>
-        ci !== catIdx ? c : { ...c, items: [...c.items, newItem()] }
-      );
-      return { ...d, categories };
-    }
-    setData(applyAdd);
+    setData((d) => updateCategoryAt(d, catIdx, (c) => ({ ...c, items: [...c.items, newItem()] })));
   }
 
   function deleteRow(catIdx: number, rowIdx: number) {
-    function applyDelete(d: PricingData | null): PricingData | null {
-      if (!d) return d;
-      const categories = d.categories.map((c, ci) =>
-        ci !== catIdx ? c : { ...c, items: c.items.filter((_, ri) => ri !== rowIdx) }
-      );
-      return { ...d, categories };
-    }
-    setData(applyDelete);
+    setData((d) => updateCategoryAt(d, catIdx, (c) => removeItem(c, rowIdx)));
   }
 
   function moveRow(catIdx: number, rowIdx: number, dir: -1 | 1) {
-    setData((d) => {
-      if (!d) return d;
-      const cats = d.categories.map((c, ci) => {
-        if (ci !== catIdx) return c;
-        const items = [...c.items];
-        const target = rowIdx + dir;
-        if (target < 0 || target >= items.length) return c;
-        [items[rowIdx], items[target]] = [items[target], items[rowIdx]];
-        return { ...c, items };
-      });
-      return { ...d, categories: cats };
-    });
+    setData((d) => updateCategoryAt(d, catIdx, (c) => moveItem(c, rowIdx, dir)));
   }
 
   if (!data) return (

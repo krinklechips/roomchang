@@ -45,11 +45,8 @@ export function HomeTestimonials({
 
   useEffect(() => {
     if (paused || testimonials.length === 0) return;
-    function advance() {
-      startTransition(() => {
-        setActive((i) => (i + 1) % testimonials.length);
-      });
-    }
+    const nextActive = (i: number) => (i + 1) % testimonials.length;
+    const advance = () => startTransition(() => setActive(nextActive));
     const id = setInterval(advance, 6000);
     return () => clearInterval(id);
   }, [paused, testimonials.length]);
