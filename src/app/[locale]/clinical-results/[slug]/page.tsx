@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { notFound } from "next/navigation";
 import { SiteShell } from "@/components/site/site-shell";
+import { ZoomableImage } from "@/components/ui/zoomable-image";
 import { ArrowLeft, ArrowRight, Clock, Tag } from "lucide-react";
 import { getClinicalCases, getClinicalCaseBySlug, getSeoPageMeta } from "@/lib/data";
 import { buildSeoMetadata } from "@/lib/seo";
@@ -108,26 +109,31 @@ export default async function ClinicalCaseDetailPage({
 
             {/* Image gallery — full natural size, no cropping */}
             <div className="flex flex-col gap-4">
-              {c.images.map(({ src, caption }, i) => (
-                <figure key={src} className="overflow-hidden rounded-3xl border border-[color:var(--border-strong)] shadow-[0_12px_40px_rgba(57,28,45,0.07)]">
-                  <div className="w-full bg-[color:var(--brand-soft)]">
-                    <Image
-                      src={src}
-                      alt={caption ?? `${c.title} — image ${i + 1}`}
-                      width={1200}
-                      height={900}
-                      className="w-full h-auto"
-                      sizes="(min-width: 1280px) 780px, (min-width: 1024px) 65vw, 100vw"
-                      priority={i === 0}
-                    />
-                  </div>
-                  {caption && (
-                    <figcaption className="border-t border-[color:var(--border-strong)] bg-white px-5 py-3 text-xs text-[color:var(--text-soft)]">
-                      {caption}
-                    </figcaption>
-                  )}
-                </figure>
-              ))}
+              {c.images.map(({ src, caption }, i) => {
+                const imageAlt = caption ?? `${c.title} — image ${i + 1}`;
+                return (
+                  <figure key={src} className="overflow-hidden rounded-3xl border border-[color:var(--border-strong)] shadow-[0_12px_40px_rgba(57,28,45,0.07)]">
+                    <ZoomableImage src={src} alt={imageAlt} caption={caption ?? undefined}>
+                      <div className="w-full bg-[color:var(--brand-soft)]">
+                        <Image
+                          src={src}
+                          alt={imageAlt}
+                          width={1200}
+                          height={900}
+                          className="w-full h-auto"
+                          sizes="(min-width: 1280px) 780px, (min-width: 1024px) 65vw, 100vw"
+                          priority={i === 0}
+                        />
+                      </div>
+                    </ZoomableImage>
+                    {caption && (
+                      <figcaption className="border-t border-[color:var(--border-strong)] bg-white px-5 py-3 text-xs text-[color:var(--text-soft)]">
+                        {caption}
+                      </figcaption>
+                    )}
+                  </figure>
+                );
+              })}
             </div>
 
             {/* Clinical narrative */}

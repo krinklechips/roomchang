@@ -1,5 +1,6 @@
 import { Link } from "@/i18n/navigation";
 import Image from "next/image";
+import { ZoomableImage } from "@/components/ui/zoomable-image";
 import {
   ArrowLeft, CheckCircle, ArrowRight,
   Star, ShieldCheck, Sparkle, Lightning, Clock, CurrencyDollar,
@@ -112,16 +113,18 @@ function InlineImage({ s }: { s: Extract<TechSection, { type: "image" }> }) {
     "max-w-3xl mx-auto";
   return (
     <figure className={sizeClass}>
-      <div className="overflow-hidden rounded-2xl border border-[color:var(--border-strong)] shadow-[0_16px_48px_rgba(57,28,45,0.08)]">
-        <Image
-          src={s.src}
-          alt={s.alt}
-          width={1200}
-          height={700}
-          className="w-full h-auto"
-          sizes="(min-width: 1024px) 80vw, 100vw"
-        />
-      </div>
+      <ZoomableImage src={s.src} alt={s.alt} caption={s.caption}>
+        <div className="overflow-hidden rounded-2xl border border-[color:var(--border-strong)] shadow-[0_16px_48px_rgba(57,28,45,0.08)]">
+          <Image
+            src={s.src}
+            alt={s.alt}
+            width={1200}
+            height={700}
+            className="w-full h-auto"
+            sizes="(min-width: 768px) 768px, 100vw"
+          />
+        </div>
+      </ZoomableImage>
       {s.caption && (
         <figcaption className="mt-3 text-center text-xs text-[color:var(--text-soft)]">{s.caption}</figcaption>
       )}
@@ -134,34 +137,41 @@ function ImagePair({ s }: { s: Extract<TechSection, { type: "image_pair" }> }) {
 
   return (
     <div className="grid gap-6 sm:grid-cols-2">
-      {[s.left, s.right].map((img) => (
-        <figure key={img.src}>
-          <div className="relative aspect-video overflow-hidden rounded-2xl border border-[color:var(--border-strong)] bg-[color:var(--surface)] shadow-[0_16px_48px_rgba(57,28,45,0.08)]">
+      {[s.left, s.right].map((img) => {
+        const mediaWrap = "relative aspect-video overflow-hidden rounded-2xl border border-[color:var(--border-strong)] bg-[color:var(--surface)] shadow-[0_16px_48px_rgba(57,28,45,0.08)]";
+        return (
+          <figure key={img.src}>
             {isVideo(img.src) ? (
-              /* eslint-disable-next-line jsx-a11y/media-has-caption */
-              <video
-                src={img.src}
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="absolute inset-0 h-full w-full object-cover"
-              />
+              <div className={mediaWrap}>
+                {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+                <video
+                  src={img.src}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+              </div>
             ) : (
-              <Image
-                src={img.src}
-                alt={img.alt}
-                fill
-                className="object-cover"
-                sizes="(min-width: 640px) 50vw, 100vw"
-              />
+              <ZoomableImage src={img.src} alt={img.alt} caption={img.caption}>
+                <div className={mediaWrap}>
+                  <Image
+                    src={img.src}
+                    alt={img.alt}
+                    fill
+                    className="object-cover"
+                    sizes="(min-width: 640px) 50vw, 100vw"
+                  />
+                </div>
+              </ZoomableImage>
             )}
-          </div>
-          {img.caption && (
-            <figcaption className="mt-2 text-center text-xs text-[color:var(--text-soft)]">{img.caption}</figcaption>
-          )}
-        </figure>
-      ))}
+            {img.caption && (
+              <figcaption className="mt-2 text-center text-xs text-[color:var(--text-soft)]">{img.caption}</figcaption>
+            )}
+          </figure>
+        );
+      })}
     </div>
   );
 }
