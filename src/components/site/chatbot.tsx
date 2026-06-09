@@ -14,6 +14,7 @@ import {
   Microphone,
   WhatsappLogo,
   TelegramLogo,
+  CheckCircle,
 } from "@phosphor-icons/react";
 import { useVoiceRecorder } from "@/lib/use-voice-recorder";
 
@@ -316,10 +317,16 @@ function buildBookingSummary(d: BookingData): string {
 
 function BookingCard({
   data,
+  submitting,
+  error,
+  onConfirm,
   onSend,
   onEdit,
 }: {
   data: BookingData;
+  submitting: boolean;
+  error: string | null;
+  onConfirm: () => void;
   onSend: (channel: "whatsapp" | "telegram") => void;
   onEdit: () => void;
 }) {
@@ -337,7 +344,7 @@ function BookingCard({
   return (
     <div className="mx-3 mb-3 rounded-xl border border-[color:var(--brand-soft)] bg-[color:var(--brand-soft)] p-4">
       <p className="text-xs font-bold uppercase tracking-widest text-[color:var(--brand)]">
-        Send to confirm
+        Confirm your appointment
       </p>
       <div className="mt-2 space-y-1 text-sm text-[color:var(--text-main)]">
         {rows.map(([label, value]) => (
@@ -347,21 +354,56 @@ function BookingCard({
         ))}
       </div>
       <p className="mt-2 text-[11px] leading-snug text-[color:var(--text-soft)]">
-        Send this summary to our team and a staff member will confirm your appointment.
+        Tap confirm to send your request — our team will review it and confirm your appointment.
       </p>
+
+      {error && (
+        <p
+          role="alert"
+          className="mt-3 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-[12px] font-medium leading-snug text-red-700"
+        >
+          {error}
+        </p>
+      )}
+
       <div className="mt-3 flex flex-col gap-2">
+        {/* Primary action — books the appointment for real */}
+        <button
+          type="button"
+          onClick={onConfirm}
+          disabled={submitting}
+          className="flex items-center justify-center gap-1.5 rounded-full bg-[color:var(--brand)] px-4 py-2.5 text-xs font-bold text-white transition hover:bg-[color:var(--brand-deep)] disabled:opacity-60"
+        >
+          {submitting ? (
+            <>
+              <SpinnerGap size={16} className="animate-spin" /> Booking…
+            </>
+          ) : (
+            <>
+              <CheckCircle size={16} weight="fill" />{" "}
+              {error ? "Try again" : "Confirm appointment"}
+            </>
+          )}
+        </button>
+
+        {/* Alternative — message a human directly (does not reserve a slot) */}
+        <p className="mt-1 text-center text-[10px] font-semibold uppercase tracking-wider text-[color:var(--text-soft)]">
+          or message us directly
+        </p>
         <div className="flex gap-2">
           <button
             type="button"
             onClick={() => onSend("whatsapp")}
-            className="flex flex-1 items-center justify-center gap-1.5 rounded-full bg-[#25D366] px-4 py-2.5 text-xs font-bold text-white transition hover:brightness-95"
+            disabled={submitting}
+            className="flex flex-1 items-center justify-center gap-1.5 rounded-full bg-[#25D366] px-4 py-2.5 text-xs font-bold text-white transition hover:brightness-95 disabled:opacity-60"
           >
             <WhatsappLogo size={16} weight="fill" /> WhatsApp
           </button>
           <button
             type="button"
             onClick={() => onSend("telegram")}
-            className="flex flex-1 items-center justify-center gap-1.5 rounded-full bg-[#229ED9] px-4 py-2.5 text-xs font-bold text-white transition hover:brightness-95"
+            disabled={submitting}
+            className="flex flex-1 items-center justify-center gap-1.5 rounded-full bg-[#229ED9] px-4 py-2.5 text-xs font-bold text-white transition hover:brightness-95 disabled:opacity-60"
           >
             <TelegramLogo size={16} weight="fill" /> Telegram
           </button>
@@ -369,7 +411,8 @@ function BookingCard({
         <button
           type="button"
           onClick={onEdit}
-          className="rounded-full border border-[color:var(--border-strong)] bg-white px-4 py-2 text-xs font-bold text-[color:var(--text-soft)] transition hover:bg-[color:var(--surface-strong)]"
+          disabled={submitting}
+          className="rounded-full border border-[color:var(--border-strong)] bg-white px-4 py-2 text-xs font-bold text-[color:var(--text-soft)] transition hover:bg-[color:var(--surface-strong)] disabled:opacity-60"
         >
           Edit details
         </button>
@@ -868,6 +911,10 @@ export function Chatbot() {
   const [pendingBooking, setPendingBooking] = useState<BookingData | null>(
     null,
   );
+  // Real booking submission state — the confirm card POSTs to /api/book and we
+  // surface success/failure loudly rather than faking a confirmation.
+  const [bookingSubmitting, setBookingSubmitting] = useState(false);
+  const [bookingError, setBookingError] = useState<string | null>(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
@@ -1292,6 +1339,74 @@ export function Chatbot() {
   // Patient sends their booking summary to the clinic's Telegram/WhatsApp; a
   // staff member then confirms the appointment. WhatsApp pre-fills the message;
   // Telegram can't pre-fill a username chat, so we copy it for pasting.
+  /** Submit the booking for real: reserve the slot + email staff via /api/book.
+   *  Succeeds → confirmation message with a reference. Fails → show the actual
+   *  error and keep the card so the patient can edit/retry or message a human.
+   *  (Fail loud, never fake.) */
+  async function handleBookingConfirm() {
+    if (!pendingBooking || bookingSubmitting) return;
+    setBookingSubmitting(true);
+    setBookingError(null);
+
+    try {
+      const res = await fetch("/api/book", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: pendingBooking.name,
+          email: pendingBooking.email,
+          phone: pendingBooking.phone,
+          telegram: pendingBooking.telegram,
+          treatment: pendingBooking.treatment,
+          date: pendingBooking.date,
+          time: pendingBooking.time,
+          branch: pendingBooking.branch,
+          doctor: pendingBooking.doctor,
+          notes: pendingBooking.notes ?? "",
+        }),
+      });
+
+      let payload: { ok?: boolean; bookingId?: unknown; error?: string } = {};
+      try {
+        payload = await res.json();
+      } catch {
+        /* non-JSON response handled by the !res.ok branch below */
+      }
+
+      if (!res.ok || !payload.ok) {
+        // 409 = slot taken, 400 = validation, 5xx = server. Show the real reason.
+        const reason =
+          res.status === 409
+            ? "That time slot was just taken. Please pick another time."
+            : payload.error ||
+              "We couldn't complete your booking just now.";
+        setBookingError(reason);
+        return;
+      }
+
+      const ref = payload.bookingId ? ` (ref #${String(payload.bookingId)})` : "";
+      setPendingBooking(null);
+      setBookingError(null);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: uid(),
+          role: "assistant",
+          content: `✅ Your appointment request is in${ref}! Our team will review it and confirm shortly${pendingBooking.email ? ", and a confirmation email is on its way" : ""}. You can also message us anytime using the buttons at the top. 😊`,
+        },
+      ]);
+    } catch {
+      // Network/unreachable — fail loud and point to the human channels.
+      setBookingError(
+        "We couldn't reach our booking system. Please check your connection and try again, or message us directly using the buttons at the top.",
+      );
+    } finally {
+      setBookingSubmitting(false);
+    }
+  }
+
+  /** Optional alternative to confirming in-chat: send the summary to a human via
+   *  WhatsApp/Telegram. Does NOT reserve a slot — staff handle it manually. */
   function handleBookingSend(channel: "whatsapp" | "telegram") {
     if (!pendingBooking) return;
     const summary = buildBookingSummary(pendingBooking);
@@ -1309,6 +1424,7 @@ export function Chatbot() {
     }
 
     setPendingBooking(null);
+    setBookingError(null);
     setMessages((prev) => [
       ...prev,
       {
@@ -1451,13 +1567,19 @@ export function Chatbot() {
             <TimePicker date={selectedDate} onSelect={handleTimeSelect} />
           )}
 
-          {/* Booking confirmation — patient sends the summary to the clinic */}
+          {/* Booking confirmation — Confirm books it for real via /api/book;
+              WhatsApp/Telegram remain an optional way to message a human. */}
           {pendingBooking && (
             <BookingCard
               data={pendingBooking}
+              submitting={bookingSubmitting}
+              error={bookingError}
+              onConfirm={handleBookingConfirm}
               onSend={handleBookingSend}
               onEdit={() => {
+                if (bookingSubmitting) return;
                 setPendingBooking(null);
+                setBookingError(null);
                 setMessages((prev) => [
                   ...prev,
                   {
