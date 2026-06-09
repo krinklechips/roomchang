@@ -71,7 +71,8 @@ const NAV_ITEMS: NavItem[] = [
     tKey: "clinicalResults",
     href: "/clinical-results",
     children: [
-      { tKey: "allCases", href: "/clinical-results" },
+      // No "All Cases" item — tapping the "Clinical Results" parent already goes
+      // to /clinical-results (the full gallery), on both desktop and mobile.
       { tKey: "fullMouthReconstructionResults", href: "/clinical-results/category/full-mouth-reconstruction" },
       { tKey: "implantsCrowns", href: "/clinical-results/category/implants-and-crowns" },
       { tKey: "implantBridges", href: "/clinical-results/category/implant-bridges" },
