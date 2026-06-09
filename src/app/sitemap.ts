@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { BRANCHES } from "@/lib/branches";
+import { CLINICAL_CATEGORIES } from "@/lib/clinical-categories";
 import { supabaseServer } from "@/lib/supabase-server";
 import { routing } from "@/i18n/routing";
 
@@ -86,6 +87,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...serviceSlugs.map((slug) => localized(`/services/${slug}`, "weekly", 0.8)),
     ...technologySlugs.map((slug) => localized(`/technology/${slug}`, "monthly", 0.7)),
     ...clinicalCaseSlugs.map((slug) => localized(`/clinical-results/${slug}`, "weekly", 0.7)),
+    ...CLINICAL_CATEGORIES.map((c) => localized(`/clinical-results/category/${c.slug}`, "weekly", 0.7)),
     ...BRANCHES.map((branch) => localized(`/about/branches/${branch.slug}`, "monthly", 0.6)),
   ];
 }

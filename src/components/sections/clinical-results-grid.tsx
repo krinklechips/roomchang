@@ -37,7 +37,17 @@ const TAG_I18N: Record<string, string> = {
   "Cosmetic":       "tag.cosmetic",
 };
 
-export function ClinicalResultsGrid({ cases }: { cases: ClinicalCase[] }) {
+export function ClinicalResultsGrid({
+  cases,
+  initialCategory,
+  showFilters = true,
+}: {
+  cases: ClinicalCase[];
+  /** When set, the grid opens on this category instead of "All" (category pages). */
+  initialCategory?: string;
+  /** Hide the category filter pills (e.g. on a dedicated category page). */
+  showFilters?: boolean;
+}) {
   const t = useTranslations("clinicalResultsGrid");
   const rawCategories = Array.from(new Set(cases.map((c) => c.category)));
   const categories = [
@@ -45,7 +55,7 @@ export function ClinicalResultsGrid({ cases }: { cases: ClinicalCase[] }) {
     ...CATEGORY_ORDER.filter((c) => rawCategories.includes(c)),
     ...rawCategories.filter((c) => !CATEGORY_ORDER.includes(c)),
   ];
-  const [active, setActive] = useState("All");
+  const [active, setActive] = useState(initialCategory ?? "All");
 
   // Activate the filter from the URL hash — on first load AND whenever the hash
   // changes. Without the hashchange listener, tapping another category in the
@@ -59,8 +69,9 @@ export function ClinicalResultsGrid({ cases }: { cases: ClinicalCase[] }) {
         // Scroll the matching filter pill into view
         document.getElementById(`filter-${hash}`)?.scrollIntoView({ block: "center" });
       } else if (!hash) {
-        // "All Cases" link (no hash) resets the filter
-        setActive("All");
+        // No hash → reset to the page's default (category pages stay on their
+        // category; the main gallery resets to "All").
+        setActive(initialCategory ?? "All");
       }
     }
 
@@ -84,13 +95,14 @@ export function ClinicalResultsGrid({ cases }: { cases: ClinicalCase[] }) {
       window.clearInterval(intervalId);
       window.removeEventListener("hashchange", applyHashFilter);
     };
-  }, []);
+  }, [initialCategory]);
 
   const filtered = active === "All" ? cases : cases.filter((c) => c.category === active);
 
   return (
     <div className="space-y-14">
       {/* Category filter */}
+      {showFilters && (
       <div className="flex flex-wrap gap-2">
         {categories.map((cat) => {
           const hashKey = Object.entries(HASH_TO_CATEGORY).find(([, v]) => v === cat)?.[0];
@@ -111,6 +123,7 @@ export function ClinicalResultsGrid({ cases }: { cases: ClinicalCase[] }) {
           );
         })}
       </div>
+      )}
 
       {/* Cases grid */}
       <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
