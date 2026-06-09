@@ -65,7 +65,7 @@ export async function HomeHero() {
       : fallbackSlides;
 
   return (
-    <section className="relative overflow-hidden sm:min-h-[calc(100svh-6.625rem)] lg:min-h-[calc(100svh-7.25rem)]">
+    <section className="relative overflow-hidden lg:min-h-[calc(100svh-7.25rem)]">
 
       {/* Trust pill — always overlaid on the image */}
       <div className="absolute left-3 top-3 z-20 sm:left-7 sm:top-7">
@@ -74,24 +74,24 @@ export async function HomeHero() {
         </p>
       </div>
 
-      {/* Slideshow — natural height on mobile, fills full section on sm+ */}
-      <div className="relative sm:absolute sm:inset-0">
+      {/* Slideshow — natural 16:9 height on mobile & tablet; fills full section on desktop */}
+      <div className="relative lg:absolute lg:inset-0">
         <HeroSlideshow
           slides={heroSlides}
           showCaption={false}
           flush
-          className="sm:h-full"
-          mediaClassName="aspect-[16/9] sm:rounded-none sm:h-full sm:aspect-auto"
+          className="lg:h-full"
+          mediaClassName="aspect-[16/9] lg:rounded-none lg:h-full lg:aspect-auto"
         />
 
         {/* Bottom pink fade blending into page */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[color:var(--brand-soft)] via-[rgba(255,220,235,0.5)] to-transparent sm:h-48" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[color:var(--brand-soft)] via-[rgba(255,220,235,0.5)] to-transparent lg:h-48" />
 
         {/* Scroll chevron — desktop only */}
         <a
           href="#brands"
           aria-label={t("scrollAriaLabel")}
-          className="absolute bottom-1 left-1/2 z-10 hidden -translate-x-1/2 animate-bounce text-white/60 transition hover:text-white sm:block"
+          className="absolute bottom-1 left-1/2 z-10 hidden -translate-x-1/2 animate-bounce text-white/60 transition hover:text-white lg:block"
         >
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -99,24 +99,24 @@ export async function HomeHero() {
         </a>
       </div>
 
-      {/* CTA dock — in flow below image on mobile, absolute bottom on sm+ */}
-      <div className="relative z-20 flex justify-center px-4 pb-3 pt-2 sm:absolute sm:inset-x-0 sm:bottom-10 sm:pb-0 sm:pt-0">
-        <div className="flex w-full max-w-xs flex-col gap-1.5 sm:w-auto sm:max-w-none sm:flex-row sm:gap-2 sm:rounded-full sm:border sm:border-white/18 sm:bg-[color:rgba(20,10,18,0.16)] sm:p-1.5 sm:shadow-[0_10px_30px_rgba(20,10,18,0.14)] sm:backdrop-blur-md">
+      {/* CTA dock — in flow below image on mobile & tablet, absolute overlay on desktop */}
+      <div className="relative z-20 flex justify-center px-4 pb-3 pt-2 lg:absolute lg:inset-x-0 lg:bottom-10 lg:pb-0 lg:pt-0">
+        <div className="flex w-full max-w-xs flex-col gap-1.5 lg:w-auto lg:max-w-none lg:flex-row lg:gap-2 lg:rounded-full lg:border lg:border-white/18 lg:bg-[color:rgba(20,10,18,0.16)] lg:p-1.5 lg:shadow-[0_10px_30px_rgba(20,10,18,0.14)] lg:backdrop-blur-md">
           <Link
             href="/contact"
-            className="btn-primary justify-center whitespace-nowrap !px-4 !py-2.5 !text-[0.7rem] sm:!px-5 sm:!py-3 sm:!text-xs"
+            className="btn-primary justify-center whitespace-nowrap !px-4 !py-2.5 !text-[0.7rem] lg:!px-5 lg:!py-3 lg:!text-xs"
           >
             {t("ctaPrimary")}
           </Link>
           <Link
             href="/services"
-            className="inline-flex items-center justify-center whitespace-nowrap rounded-full border border-[rgba(33,23,31,0.12)] bg-[rgba(255,255,255,0.72)] px-4 py-2.5 text-[0.7rem] font-semibold text-[color:var(--text-main)] transition hover:-translate-y-px hover:bg-[rgba(255,255,255,0.92)] sm:border-white/22 sm:bg-[color:rgba(255,255,255,0.12)] sm:px-5 sm:py-3 sm:text-xs sm:text-white sm:hover:bg-[color:rgba(255,255,255,0.22)]"
+            className="inline-flex items-center justify-center whitespace-nowrap rounded-full border border-[rgba(33,23,31,0.12)] bg-[rgba(255,255,255,0.72)] px-4 py-2.5 text-[0.7rem] font-semibold text-[color:var(--text-main)] transition hover:-translate-y-px hover:bg-[rgba(255,255,255,0.92)] lg:border-white/22 lg:bg-[color:rgba(255,255,255,0.12)] lg:px-5 lg:py-3 lg:text-xs lg:text-white lg:hover:bg-[color:rgba(255,255,255,0.22)]"
           >
             {t("ctaSecondary")}
           </Link>
           <Link
             href="/team"
-            className="inline-flex items-center justify-center whitespace-nowrap rounded-full border border-[rgba(33,23,31,0.12)] bg-[rgba(255,255,255,0.72)] px-4 py-2.5 text-[0.7rem] font-semibold text-[color:var(--text-main)] transition hover:-translate-y-px hover:bg-[rgba(255,255,255,0.92)] sm:border-white/22 sm:bg-[color:rgba(255,255,255,0.12)] sm:px-5 sm:py-3 sm:text-xs sm:text-white sm:hover:bg-[color:rgba(255,255,255,0.22)]"
+            className="inline-flex items-center justify-center whitespace-nowrap rounded-full border border-[rgba(33,23,31,0.12)] bg-[rgba(255,255,255,0.72)] px-4 py-2.5 text-[0.7rem] font-semibold text-[color:var(--text-main)] transition hover:-translate-y-px hover:bg-[rgba(255,255,255,0.92)] lg:border-white/22 lg:bg-[color:rgba(255,255,255,0.12)] lg:px-5 lg:py-3 lg:text-xs lg:text-white lg:hover:bg-[color:rgba(255,255,255,0.22)]"
           >
             {t("ctaTertiary")}
           </Link>
