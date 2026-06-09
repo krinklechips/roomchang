@@ -260,7 +260,7 @@ export function TechnologyDetailContent({ tech, translations: i18n }: { tech: Te
     <SiteShell>
       {/* Header */}
       <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--surface)]">
-        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-20 lg:px-8">
           <Link
             href="/technology"
             className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--brand)] transition hover:text-[color:var(--brand-deep)]"
@@ -323,7 +323,7 @@ export function TechnologyDetailContent({ tech, translations: i18n }: { tech: Te
 
       {/* Content sections */}
       {sections.length > 0 && (
-        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8 space-y-16">
+        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-16 lg:px-8 space-y-8 sm:space-y-16">
           {sections.map((s, i) => (
             <RenderSection key={i} s={s} />
           ))}
@@ -332,7 +332,7 @@ export function TechnologyDetailContent({ tech, translations: i18n }: { tech: Te
 
       {/* CTA */}
       <div className="border-t border-[color:var(--border-strong)] bg-[color:var(--surface)]">
-        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8 flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-16 lg:px-8 flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="font-display text-3xl text-[color:var(--text-main)]">
               {i18n?.ctaHeading ?? "Want to know if this is right for you?"}

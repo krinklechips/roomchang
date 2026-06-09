@@ -107,7 +107,7 @@ export async function SiteFooter() {
 
   return (
     <footer className="border-t border-[color:var(--border-strong)] bg-[color:var(--surface)]">
-      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         {/* Top row */}
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.6fr_repeat(4,1fr)]">
           {/* Brand */}

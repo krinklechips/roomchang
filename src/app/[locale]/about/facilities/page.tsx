@@ -91,7 +91,7 @@ export default async function FacilitiesPage() {
     <SiteShell>
       {/* Header */}
       <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--surface)]">
-        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-20 lg:px-8">
           <Link
             href="/about"
             className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--brand)] transition hover:text-[color:var(--brand-deep)]"
@@ -169,7 +169,7 @@ export default async function FacilitiesPage() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-20 lg:px-8">
         <div className="grid gap-8 sm:grid-cols-2">
           {FACILITY_SECTIONS.map((section) => (
             <div

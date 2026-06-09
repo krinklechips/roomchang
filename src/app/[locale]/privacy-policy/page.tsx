@@ -16,7 +16,7 @@ export default function PrivacyPolicyPage() {
     <SiteShell>
       {/* Header */}
       <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--surface)]">
-        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-20 lg:px-8">
           <Link
             href="/"
             className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--brand)] transition hover:text-[color:var(--brand-deep)]"
@@ -29,7 +29,7 @@ export default function PrivacyPolicyPage() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-3xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
+      <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 sm:py-20 lg:px-8">
         <div className="space-y-8 text-base leading-8 text-[color:var(--text-soft)]">
           <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[color:var(--brand)]">
             Last updated: June 2026

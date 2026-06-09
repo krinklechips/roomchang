@@ -69,7 +69,7 @@ export function StatsBlock({
   return (
     <section
       ref={ref}
-      className="bg-[color:var(--brand-soft)] px-6 py-16 lg:px-8 lg:py-20"
+      className="bg-[color:var(--brand-soft)] px-6 py-8 sm:py-16 lg:px-8 lg:py-20"
     >
       <div className="mx-auto max-w-5xl">
         {title && (

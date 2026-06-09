@@ -103,7 +103,7 @@ export default async function PriceComparisonPage() {
     <SiteShell>
       {/* Hero */}
       <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--surface)]">
-        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-20 lg:px-8">
           <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--brand)]">
             {tComp("eyebrow")}
           </p>
@@ -125,7 +125,7 @@ export default async function PriceComparisonPage() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8 space-y-16">
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-20 lg:px-8 space-y-8 sm:space-y-16">
         {/* Comparison table */}
         <section>
           <div className="overflow-hidden rounded-3xl border border-[color:var(--brand-soft)] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)]">

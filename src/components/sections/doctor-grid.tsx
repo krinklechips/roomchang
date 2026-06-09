@@ -284,7 +284,7 @@ export function DoctorGrid({ doctors }: { doctors: Doctor[] }) {
       </div>
 
       {/* Doctor grid */}
-      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-16 lg:px-8">
         {grouped ? (
           // Grouped by department
           <div className="flex flex-col gap-16">
@@ -307,7 +307,7 @@ export function DoctorGrid({ doctors }: { doctors: Doctor[] }) {
         )}
 
         {filtered.length === 0 && (
-          <div className="py-20 text-center">
+          <div className="py-10 sm:py-20 text-center">
             <p className="text-base text-[color:var(--text-soft)]">
               {t("noResults", { language: activeLanguage ?? "" })}
             </p>

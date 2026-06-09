@@ -17,7 +17,7 @@ export function ProfileMessageBlock({
   if (!profileName || !profileMessage) return null;
 
   return (
-    <section className="px-6 py-16 lg:px-8 lg:py-20">
+    <section className="px-6 py-8 sm:py-16 lg:px-8 lg:py-20">
       <div className="mx-auto grid max-w-5xl gap-10 lg:grid-cols-3 lg:items-start">
         <aside className="lg:sticky lg:top-24">
           <div className="panel-card p-5">

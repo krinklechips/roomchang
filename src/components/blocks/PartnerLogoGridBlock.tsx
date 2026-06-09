@@ -32,7 +32,7 @@ export function PartnerLogoGridBlock({
   if (categories.length === 0) return null;
 
   return (
-    <section className="px-6 py-16 lg:px-8 lg:py-20">
+    <section className="px-6 py-8 sm:py-16 lg:px-8 lg:py-20">
       <div className="mx-auto max-w-7xl">
         {(partnerTitle || partnerSubtitle) && (
           <div className="mx-auto mb-12 max-w-3xl text-center">

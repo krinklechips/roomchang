@@ -29,7 +29,7 @@ export function ImageGalleryBlock({
   if (items.length === 0) return null;
 
   return (
-    <section className="px-6 py-16 lg:px-8 lg:py-20">
+    <section className="px-6 py-8 sm:py-16 lg:px-8 lg:py-20">
       <div className="mx-auto max-w-7xl">
         {galleryTitle && (
           <h2 className="mb-10 text-center font-display text-4xl text-[color:var(--text-main)] lg:text-5xl">

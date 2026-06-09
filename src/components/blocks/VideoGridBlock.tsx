@@ -47,7 +47,7 @@ export function VideoGridBlock({
   if (items.length === 0) return null;
 
   return (
-    <section className="px-6 py-16 lg:px-8 lg:py-20">
+    <section className="px-6 py-8 sm:py-16 lg:px-8 lg:py-20">
       <div className="mx-auto max-w-7xl">
         {(videoGridTitle || videoGridSubtitle) && (
           <div className="mx-auto mb-10 max-w-3xl text-center">

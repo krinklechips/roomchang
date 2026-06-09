@@ -33,7 +33,7 @@ export function CarouselBlock({ slides }: { slides?: Slide[] }) {
       <div className="absolute inset-0 bg-[color:var(--text-main)]/45" />
 
       {/* Content */}
-      <div className="relative flex min-h-[420px] flex-col items-center justify-center px-6 py-20 text-center">
+      <div className="relative flex min-h-[420px] flex-col items-center justify-center px-6 py-10 sm:py-20 text-center">
         <h2 className="font-display text-4xl text-white md:text-5xl">
           {slide.title}
         </h2>

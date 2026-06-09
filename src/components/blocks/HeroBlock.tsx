@@ -48,7 +48,7 @@ export function HeroBlock({
         </>
       )}
 
-      <div className="relative mx-auto w-full max-w-5xl px-6 py-20 lg:px-8 lg:py-28">
+      <div className="relative mx-auto w-full max-w-5xl px-6 py-10 sm:py-20 lg:px-8 lg:py-28">
         {heroEyebrow && (
           <p
             className={`mb-3 text-[0.65rem] font-bold uppercase tracking-[0.35em] ${

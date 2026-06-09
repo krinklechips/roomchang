@@ -19,7 +19,7 @@ export function FaqBlock({
   if (faqItems.length === 0) return null;
 
   return (
-    <section className="mx-auto max-w-3xl px-6 py-14 lg:px-8 lg:py-20">
+    <section className="mx-auto max-w-3xl px-6 py-8 lg:px-8 lg:py-20">
       {title && (
         <h2 className="mb-10 text-center font-display text-4xl text-[color:var(--text-main)] lg:text-5xl">
           {title}

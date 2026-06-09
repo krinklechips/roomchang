@@ -344,7 +344,7 @@ export async function ServiceDetailContent({ service }: { service: Service }) {
     <SiteShell>
       {/* Hero */}
       <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--surface)]">
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 sm:py-20 lg:grid-cols-[minmax(0,1fr)_minmax(360px,520px)] lg:items-center lg:px-8">
+        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-8 sm:px-6 sm:py-20 lg:grid-cols-[minmax(0,1fr)_minmax(360px,520px)] lg:items-center lg:px-8">
           <div>
             {service.eyebrow && (
               <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--brand)]">
@@ -379,7 +379,7 @@ export async function ServiceDetailContent({ service }: { service: Service }) {
 
       {/* Sections */}
       {sections.length > 0 && (
-        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8 space-y-16">
+        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-16 lg:px-8 space-y-8 sm:space-y-16">
           {sections.map((s, i) => (
             <RenderSection key={i} s={s} pricingCtaLabel={pricingCtaLabel} pricingCtaNote={pricingCtaNote} pricingHref={pricingHref} />
           ))}
@@ -388,7 +388,7 @@ export async function ServiceDetailContent({ service }: { service: Service }) {
 
       {/* CTA */}
       <div className="border-t border-[color:var(--border-strong)] bg-[color:var(--surface)]">
-        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8 flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-16 lg:px-8 flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="font-display text-3xl text-[color:var(--text-main)]">{t("ctaHeading")}</h2>
             <p className="mt-2 text-sm text-[color:var(--text-soft)]">
