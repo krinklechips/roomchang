@@ -90,7 +90,7 @@ export default async function ServicesPage() {
     <SiteShell>
       {/* Page header */}
       <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--surface)]">
-        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8 lg:grid lg:grid-cols-2 lg:items-center lg:gap-16">
+        <div className="mx-auto max-w-7xl px-4 pt-14 pb-8 sm:px-6 sm:py-20 lg:px-8 lg:grid lg:grid-cols-2 lg:items-center lg:gap-16">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--brand)]">
               {t("hero.eyebrow")}
@@ -116,7 +116,7 @@ export default async function ServicesPage() {
       </div>
 
       {/* Services grid */}
-      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 pt-8 pb-14 sm:px-6 sm:py-16 lg:px-8">
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {services.filter((s) => !HIDDEN_FROM_GRID.has(s.slug)).map((service) => {
             const Icon = SERVICE_ICONS[service.slug] ?? Tooth;
