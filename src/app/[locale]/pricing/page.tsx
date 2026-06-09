@@ -66,34 +66,6 @@ function getCategoryIcon(title: string): Icon {
   return Sparkle;
 }
 
-/** Parse every numeric value out of the item prices ("free" → 0). */
-function parsePrices(items: { price: string }[]): number[] {
-  const nums: number[] = [];
-  for (const item of items) {
-    const p = item.price.toLowerCase().trim();
-    if (p === "free") { nums.push(0); continue; }
-    for (const m of p.match(/[\d,]+(?:\.\d+)?/g) ?? []) {
-      const n = parseFloat(m.replace(/,/g, ""));
-      if (!isNaN(n)) nums.push(n);
-    }
-  }
-  return nums;
-}
-
-/** Extract numeric min/max across all items and return a human-readable range */
-function getPriceRange(items: { price: string }[], freeLabel: string): string {
-  const nums = parsePrices(items);
-  if (nums.length === 0) return "";
-  const min = Math.min(...nums);
-  const max = Math.max(...nums);
-  const fmt = (n: number) =>
-    n === 0 ? freeLabel : `$${n >= 1000 ? n.toLocaleString() : n % 1 === 0 ? n : n.toFixed(0)}`;
-  if (min === 0 && max === 0) return freeLabel;
-  if (min === max) return fmt(min);
-  if (min === 0) return `${freeLabel} – ${fmt(max)}`;
-  return `${fmt(min)} – ${fmt(max)}`;
-}
-
 
 export default async function PricingPage() {
   const [categories, t] = await Promise.all([
@@ -152,9 +124,8 @@ export default async function PricingPage() {
         {/* Accordion price list */}
         <section>
           <div className="overflow-hidden rounded-3xl border border-[color:var(--brand-soft)] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)] divide-y divide-[color:var(--brand-soft)]">
-            {categories.map((cat, idx) => {
+            {categories.map((cat) => {
               const Icon = getCategoryIcon(cat.title);
-              const range = getPriceRange(cat.items, t("free"));
               return (
                 <details
                   key={cat.id}
@@ -180,13 +151,6 @@ export default async function PricingPage() {
                         {t("itemCount", { count: cat.items.length })}
                       </p>
                     </div>
-
-                    {/* Price range teaser */}
-                    {range && (
-                      <span className="hidden shrink-0 text-sm font-semibold text-[color:var(--brand-deep)] sm:block">
-                        {range}
-                      </span>
-                    )}
 
                     {/* Chevron — rotates when open */}
                     <CaretDown
