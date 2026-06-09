@@ -66,6 +66,14 @@ const SOCIAL = [
   { tKey: "linkedin", href: "https://www.linkedin.com/company/roomchang/" },
 ];
 
+const LEGAL_LINKS = [
+  { label: "Privacy Policy", href: "/privacy-policy" },
+  { label: "Terms of Service", href: "/terms-of-service" },
+  { label: "Disclaimer", href: "/disclaimer" },
+  { label: "Cookie Policy", href: "/cookie-policy" },
+  { label: "Booking & Cancellation Policy", href: "/booking-cancellation-policy" },
+];
+
 export async function SiteFooter() {
   const tNav = await getTranslations("nav");
   const tFooter = await getTranslations("footer");
@@ -166,9 +174,22 @@ export async function SiteFooter() {
 
         {/* Bottom bar */}
         <div className="mt-12 flex flex-col items-start gap-4 border-t border-[color:var(--border-strong)] pt-8 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-xs text-[color:var(--text-soft)]">
-            {tFooter("copyright", { year: new Date().getFullYear() })}
-          </p>
+          <div className="space-y-3">
+            <p className="text-xs text-[color:var(--text-soft)]">
+              {tFooter("copyright", { year: new Date().getFullYear() })}
+            </p>
+            <nav aria-label="Legal links" className="flex flex-wrap items-center gap-x-4 gap-y-2">
+              {LEGAL_LINKS.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="text-xs text-[color:var(--text-soft)] transition-colors hover:text-[color:var(--brand)]"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
             {SOCIAL.map((s) => (
               <a
