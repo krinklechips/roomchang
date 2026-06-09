@@ -1117,6 +1117,18 @@ export function Chatbot() {
     if (!open && voiceModeRef.current) exitVoiceMode();
   }, [open, exitVoiceMode]);
 
+  // On mobile the panel is a near-full-screen sheet — lock the page behind it so
+  // scrolling stays inside the chat instead of moving the page.
+  useEffect(() => {
+    if (!open || typeof window === "undefined") return;
+    if (!window.matchMedia("(max-width: 639px)").matches) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [open]);
+
   // Voice needs mic recording — supported on iOS Safari, Android, and desktop over HTTPS
   useEffect(() => {
     setVoiceSupported(
@@ -1320,7 +1332,7 @@ export function Chatbot() {
           {/* Messages — or the welcome / Start gate before the chat begins */}
           <div
             ref={scrollRef}
-            className={`flex-1 overflow-y-auto px-4 py-4 ${
+            className={`flex-1 overflow-y-auto overscroll-contain px-4 py-4 [touch-action:pan-y] ${
               started ? "space-y-3" : "flex flex-col items-center justify-center text-center"
             }`}
             role="log"
@@ -1465,7 +1477,7 @@ export function Chatbot() {
                 data-form-type="other"
                 data-lpignore="true"
                 data-1p-ignore
-                className="min-w-0 flex-1 rounded-xl border border-[color:var(--border-strong)] bg-[color:var(--surface)] px-4 py-2.5 text-sm text-[color:var(--text-main)] placeholder:text-[color:var(--text-soft)]/50 outline-none transition focus:border-[color:var(--brand-light)] focus:ring-2 focus:ring-[color:var(--brand-soft)] disabled:opacity-50"
+                className="min-w-0 flex-1 rounded-xl border border-[color:var(--border-strong)] bg-[color:var(--surface)] px-4 py-2.5 text-base text-[color:var(--text-main)] placeholder:text-[color:var(--text-soft)]/50 outline-none transition focus:border-[color:var(--brand-light)] focus:ring-2 focus:ring-[color:var(--brand-soft)] disabled:opacity-50 sm:text-sm"
               />
               {voiceSupported && !input.trim() && (
                 <button
