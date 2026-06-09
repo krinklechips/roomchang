@@ -2,8 +2,8 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 /**
  * Flat chainable mock of supabaseServer: from()/select()/eq() all return the
- * same chain, and single() resolves to `result`. Avoids deeply nested factory
- * arrows in each test.
+ * same chain, and single()/maybeSingle() resolve to `result`. Avoids deeply
+ * nested factory arrows in each test.
  */
 function mockSupabaseSingle(result: { data: unknown; error: unknown }) {
   const chain: Record<string, unknown> = {
@@ -11,6 +11,7 @@ function mockSupabaseSingle(result: { data: unknown; error: unknown }) {
     select: () => chain,
     eq: () => chain,
     single: async () => result,
+    maybeSingle: async () => result,
   };
   return { supabaseServer: chain };
 }

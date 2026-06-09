@@ -417,12 +417,16 @@ export const getSeoPageMeta = cache(async function getSeoPageMeta(path: string):
       noindex
     `)
     .eq("page_path", path)
-    .single();
+    .maybeSingle();
 
-  if (error || !data) {
-    if (error) {
-      console.error(`Failed to fetch SEO page meta for ${path}:`, error.message);
-    }
+  // maybeSingle() returns data=null (no error) when no override row exists for
+  // this path — the normal case, since most pages rely on their built-in
+  // metadata. A non-null error here is a genuine failure worth surfacing.
+  if (error) {
+    console.error(`Failed to fetch SEO page meta for ${path}:`, error.message);
+    return null;
+  }
+  if (!data) {
     return null;
   }
 
