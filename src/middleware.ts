@@ -159,10 +159,8 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect("https://sm12.siteground.biz/webmail/mail/", 307);
   }
 
-  // Skip locale routing for API routes, admin, and preview
+  // Skip locale routing for API routes (auth checks below use cleanPath)
   const isApi = pathname.startsWith("/api");
-  const isAdmin = pathname.startsWith("/admin") || pathname.match(/^\/(en|zh|km)\/admin/);
-  const isPreview = pathname.startsWith("/preview") || pathname.match(/^\/(en|zh|km)\/preview/);
 
   // Strip locale prefix for auth checks
   const cleanPath = pathname.replace(/^\/(en|zh|km)/, "") || "/";

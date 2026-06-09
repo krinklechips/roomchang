@@ -7,7 +7,7 @@ import {
   isR2Configured,
 } from "@/lib/r2";
 import { supabaseServer } from "@/lib/supabase-server";
-import { randomUUID } from "crypto";
+import { randomUUID } from "node:crypto";
 
 export const runtime = "nodejs";
 

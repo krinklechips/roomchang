@@ -75,7 +75,7 @@ export function CommunityGallery({
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={src}
-              alt={`${title} — photo ${i + 1}`}
+              alt={`${title}, ${i + 1} of ${images.length}`}
               loading="lazy"
               className="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-[1.04]"
             />
@@ -126,7 +126,7 @@ export function CommunityGallery({
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={images[openIndex]}
-              alt={`${title} — photo ${openIndex + 1}`}
+              alt={`${title}, ${openIndex + 1} of ${images.length}`}
               className="max-h-[82vh] max-w-full rounded-lg object-contain shadow-2xl"
             />
             <p className="mt-3 text-sm font-medium text-white/70">

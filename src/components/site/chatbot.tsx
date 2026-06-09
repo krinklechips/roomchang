@@ -356,8 +356,6 @@ function DatePicker({ onSelect }: { onSelect: (date: string) => void }) {
   maxDate.setFullYear(maxDate.getFullYear() + 1);
 
   // Generate calendar grid for current view month
-  // Find first Monday on or before the 1st of the month
-  const firstOfMonth = new Date(viewYear, viewMonth, 1);
   const lastOfMonth = new Date(viewYear, viewMonth + 1, 0);
 
   // Build grid: 6 columns Mon–Sat (we skip Sundays)

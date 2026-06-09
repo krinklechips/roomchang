@@ -165,4 +165,9 @@ async function run() {
   console.log("Done.");
 }
 
-run().catch((e) => { console.error(e); process.exit(1); });
+try {
+  await run();
+} catch (e) {
+  console.error(e);
+  process.exit(1);
+}

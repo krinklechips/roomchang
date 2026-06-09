@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { readFileSync, writeFileSync } from "fs";
-import { join } from "path";
+import { readFileSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
 
 const DATA_PATH = join(process.cwd(), "src/data/pricing.json");
 

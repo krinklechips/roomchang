@@ -6,8 +6,8 @@
  * Uses playwright-core with the locally installed Google Chrome.
  */
 const { chromium } = require("playwright-core");
-const path = require("path");
-const fs = require("fs");
+const path = require("node:path");
+const fs = require("node:fs");
 
 const BASE_URL = "https://roomchang.vercel.app/en";
 const CHROME_PATH = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";

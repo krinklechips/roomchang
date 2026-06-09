@@ -8,7 +8,7 @@ interface StatItem {
   description?: string;
 }
 
-function useCountUp(target: number, duration = 1200, active: boolean) {
+function useCountUp(target: number, active: boolean, duration = 1200) {
   const [count, setCount] = useState(0);
   useEffect(() => {
     if (!active) return;
@@ -29,7 +29,7 @@ function StatCard({ item, active }: { item: StatItem; active: boolean }) {
   const match = item.value.match(/^(\d+)(.*)$/);
   const numericPart = match ? parseInt(match[1], 10) : null;
   const suffix = match ? match[2] : "";
-  const count = useCountUp(numericPart ?? 0, 1200, active && numericPart !== null);
+  const count = useCountUp(numericPart ?? 0, active && numericPart !== null);
   const displayValue = numericPart !== null ? `${count}${suffix}` : item.value;
 
   return (

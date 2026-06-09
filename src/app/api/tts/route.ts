@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
-import { createHash } from "crypto";
+import { createHash } from "node:crypto";
 
 // ─── In-memory audio cache ───────────────────────────────────────────────────
 // The greeting (and many canned replies) are identical every time. Caching the
