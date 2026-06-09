@@ -258,50 +258,46 @@ export function TechnologyDetailContent({ tech, translations: i18n }: { tech: Te
 
   return (
     <SiteShell>
-      {/* Header */}
+      {/* Hero — text left, product image upper-right (matches the services page) */}
       <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--surface)]">
-        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-20 lg:px-8">
-          <Link
-            href="/technology"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--brand)] transition hover:text-[color:var(--brand-deep)]"
-          >
-            <ArrowLeft size={13} weight="bold" aria-hidden="true" /> {i18n?.backLink ?? "Technology"}
-          </Link>
-          <div className="mt-4">
-            <span className={`inline-block rounded-full px-3 py-1 text-[0.68rem] font-bold uppercase tracking-[0.22em] text-white ${CATEGORY_COLORS[tech.category] ?? "bg-[color:var(--brand)]"}`}>
-              {tech.category}
-            </span>
+        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-8 sm:px-6 sm:py-20 lg:grid-cols-[minmax(0,1fr)_minmax(300px,440px)] lg:items-stretch lg:px-8">
+          <div className="flex flex-col justify-center">
+            <Link
+              href="/technology"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--brand)] transition hover:text-[color:var(--brand-deep)]"
+            >
+              <ArrowLeft size={13} weight="bold" aria-hidden="true" /> {i18n?.backLink ?? "Technology"}
+            </Link>
+            <div className="mt-4">
+              <span className={`inline-block rounded-full px-3 py-1 text-[0.68rem] font-bold uppercase tracking-[0.22em] text-white ${CATEGORY_COLORS[tech.category] ?? "bg-[color:var(--brand)]"}`}>
+                {tech.category}
+              </span>
+            </div>
+            <h1 className="mt-3 font-display text-5xl leading-none text-[color:var(--text-main)] sm:text-6xl">
+              {tech.name}
+            </h1>
+            <p className="mt-5 max-w-2xl text-base leading-7 text-[color:var(--text-soft)]">
+              {tech.description}
+            </p>
+            <div className="mt-8 flex flex-wrap gap-4">
+              <Link href="/contact" className="btn-primary">{i18n?.bookConsultation ?? "Book a Consultation"}</Link>
+              <Link href="/technology" className="btn-secondary">{i18n?.allTechnology ?? "All Technology"}</Link>
+            </div>
           </div>
-          <h1 className="mt-3 font-display text-5xl leading-none text-[color:var(--text-main)] sm:text-6xl">
-            {tech.name}
-          </h1>
-          <p className="mt-5 max-w-2xl text-base leading-7 text-[color:var(--text-soft)]">
-            {tech.description}
-          </p>
-          <div className="mt-8 flex flex-wrap gap-4">
-            <Link href="/contact" className="btn-primary">{i18n?.bookConsultation ?? "Book a Consultation"}</Link>
-            <Link href="/technology" className="btn-secondary">{i18n?.allTechnology ?? "All Technology"}</Link>
-          </div>
-        </div>
-      </div>
-
-      {/* Product image */}
-      {tech.imageSrc && (
-        <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--surface)]">
-          <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
-            <div className="relative aspect-[3/2] overflow-hidden rounded-2xl">
+          {tech.imageSrc && (
+            <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-[color:var(--border-strong)] bg-white shadow-[0_20px_60px_rgba(57,28,45,0.10)] lg:aspect-auto lg:min-h-[300px]">
               <Image
                 src={tech.imageSrc}
                 alt={tech.name}
                 fill
                 priority
-                sizes="(min-width: 1024px) 768px, 100vw"
-                className="object-contain"
+                sizes="(min-width: 1024px) 440px, 100vw"
+                className="object-contain p-6"
               />
             </div>
-          </div>
+          )}
         </div>
-      )}
+      </div>
 
       {/* Highlights strip */}
       {tech.highlights.length > 0 && (

@@ -344,8 +344,8 @@ export async function ServiceDetailContent({ service }: { service: Service }) {
     <SiteShell>
       {/* Hero */}
       <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--surface)]">
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-8 sm:px-6 sm:py-20 lg:grid-cols-[minmax(0,1fr)_minmax(360px,520px)] lg:items-center lg:px-8">
-          <div>
+        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-8 sm:px-6 sm:py-20 lg:grid-cols-[minmax(0,1fr)_minmax(300px,440px)] lg:items-stretch lg:px-8">
+          <div className="flex flex-col justify-center">
             {service.eyebrow && (
               <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--brand)]">
                 {service.eyebrow}
@@ -363,13 +363,13 @@ export async function ServiceDetailContent({ service }: { service: Service }) {
             </div>
           </div>
           {heroImage && (
-            <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-[color:var(--border-strong)] bg-white shadow-[0_20px_60px_rgba(57,28,45,0.10)]">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-[color:var(--border-strong)] bg-white shadow-[0_20px_60px_rgba(57,28,45,0.10)] lg:aspect-auto lg:min-h-[300px]">
               <Image
                 src={heroImage}
                 alt={t("imageAlt", { name: service.name })}
                 fill
                 priority
-                sizes="(min-width: 1024px) 520px, 100vw"
+                sizes="(min-width: 1024px) 440px, 100vw"
                 className="object-cover"
               />
             </div>
