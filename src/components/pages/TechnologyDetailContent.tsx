@@ -103,10 +103,13 @@ function Steps({ s }: { s: Extract<TechSection, { type: "steps" }> }) {
 }
 
 function InlineImage({ s }: { s: Extract<TechSection, { type: "image" }> }) {
+  // Inline images are contained + centered by default so a single photo never
+  // spans the full content width. `size: "full"` opts back into full width.
   const sizeClass =
     s.size === "small"  ? "max-w-md mx-auto" :
     s.size === "medium" ? "max-w-2xl mx-auto" :
-    "";
+    s.size === "full"   ? "" :
+    "max-w-3xl mx-auto";
   return (
     <figure className={sizeClass}>
       <div className="overflow-hidden rounded-2xl border border-[color:var(--border-strong)] shadow-[0_16px_48px_rgba(57,28,45,0.08)]">
