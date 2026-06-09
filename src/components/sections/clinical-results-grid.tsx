@@ -47,14 +47,43 @@ export function ClinicalResultsGrid({ cases }: { cases: ClinicalCase[] }) {
   ];
   const [active, setActive] = useState("All");
 
-  // Activate filter from URL hash on first load (e.g. /clinical-results#implants)
+  // Activate the filter from the URL hash — on first load AND whenever the hash
+  // changes. Without the hashchange listener, tapping another category in the
+  // header dropdown while already on this page would do nothing (the effect ran
+  // only once at mount, so the filter stayed stuck on its initial value).
   useEffect(() => {
-    const hash = window.location.hash.replace("#", "");
-    if (hash && HASH_TO_CATEGORY[hash]) {
-      setActive(HASH_TO_CATEGORY[hash]);
-      // Scroll filter pills into view
-      document.getElementById(`filter-${hash}`)?.scrollIntoView({ block: "center" });
+    function applyHashFilter() {
+      const hash = window.location.hash.replace("#", "");
+      if (hash && HASH_TO_CATEGORY[hash]) {
+        setActive(HASH_TO_CATEGORY[hash]);
+        // Scroll the matching filter pill into view
+        document.getElementById(`filter-${hash}`)?.scrollIntoView({ block: "center" });
+      } else if (!hash) {
+        // "All Cases" link (no hash) resets the filter
+        setActive("All");
+      }
     }
+
+    applyHashFilter();
+
+    // hashchange fires for back/forward and native hash changes, but NOT for the
+    // header dropdown's Next.js <Link>, whose same-page hash navigation goes
+    // through history.pushState. Rather than patch global history (which runs
+    // inside React's insertion-effect during navigation and throws), poll the
+    // hash on a light interval to catch those changes.
+    let lastHash = window.location.hash;
+    const intervalId = window.setInterval(() => {
+      if (window.location.hash !== lastHash) {
+        lastHash = window.location.hash;
+        applyHashFilter();
+      }
+    }, 150);
+    window.addEventListener("hashchange", applyHashFilter);
+
+    return () => {
+      window.clearInterval(intervalId);
+      window.removeEventListener("hashchange", applyHashFilter);
+    };
   }, []);
 
   const filtered = active === "All" ? cases : cases.filter((c) => c.category === active);
