@@ -57,19 +57,30 @@ describe("sitemap", () => {
     const entries = await sitemap();
     const urls = entries.map((entry) => entry.url);
 
-    expect(urls).toContain("https://roomchang.com/");
-    expect(urls).toContain("https://roomchang.com/services");
-    expect(urls).toContain("https://roomchang.com/about/vision-mission-values");
-    expect(urls).toContain("https://roomchang.com/services/dental-implants");
-    expect(urls).toContain("https://roomchang.com/services/veneers");
-    expect(urls).toContain("https://roomchang.com/technology/cbct");
-    expect(urls).toContain("https://roomchang.com/clinical-results/all-on-4");
-    expect(urls).toContain("https://roomchang.com/about/branches/monivong");
-    expect(urls).not.toContain("https://roomchang.com/services/draft-service");
-    expect(urls).not.toContain("https://roomchang.com/technology/draft-tech");
-    expect(urls).not.toContain("https://roomchang.com/clinical-results/draft-case");
+    // URLs are now locale-prefixed (default locale = en)
+    expect(urls).toContain("https://roomchang.com/en/");
+    expect(urls).toContain("https://roomchang.com/en/services");
+    expect(urls).toContain("https://roomchang.com/en/about/vision-mission-values");
+    expect(urls).toContain("https://roomchang.com/en/services/dental-implants");
+    expect(urls).toContain("https://roomchang.com/en/services/veneers");
+    expect(urls).toContain("https://roomchang.com/en/technology/cbct");
+    expect(urls).toContain("https://roomchang.com/en/clinical-results/all-on-4");
+    expect(urls).toContain("https://roomchang.com/en/about/branches/sisowath-high-school");
+    expect(urls).toContain("https://roomchang.com/en/privacy-policy");
+    expect(urls).not.toContain("https://roomchang.com/en/services/draft-service");
+    expect(urls).not.toContain("https://roomchang.com/en/technology/draft-tech");
+    expect(urls).not.toContain("https://roomchang.com/en/clinical-results/draft-case");
 
-    expect(entries.find((entry) => entry.url === "https://roomchang.com/")?.priority).toBe(1);
-    expect(entries.find((entry) => entry.url === "https://roomchang.com/services")?.changeFrequency).toBe("weekly");
+    expect(entries.find((entry) => entry.url === "https://roomchang.com/en/")?.priority).toBe(1);
+
+    const services = entries.find((entry) => entry.url === "https://roomchang.com/en/services");
+    expect(services?.changeFrequency).toBe("weekly");
+    // hreflang alternates for all three languages + x-default
+    expect(services?.alternates?.languages).toMatchObject({
+      en: "https://roomchang.com/en/services",
+      zh: "https://roomchang.com/zh/services",
+      km: "https://roomchang.com/km/services",
+      "x-default": "https://roomchang.com/en/services",
+    });
   });
 });

@@ -1,24 +1,52 @@
 import type { MetadataRoute } from "next";
 import { BRANCHES } from "@/lib/branches";
 import { supabaseServer } from "@/lib/supabase-server";
+import { routing } from "@/i18n/routing";
 
 const BASE_URL = "https://roomchang.com";
+const LOCALES = routing.locales; // ["en", "zh", "km"]
+const DEFAULT_LOCALE = routing.defaultLocale; // "en"
 
-const STATIC_ROUTES: MetadataRoute.Sitemap = [
-  { url: `${BASE_URL}/`, changeFrequency: "weekly", priority: 1 },
-  { url: `${BASE_URL}/services`, changeFrequency: "weekly", priority: 0.9 },
-  { url: `${BASE_URL}/team`, changeFrequency: "monthly", priority: 0.8 },
-  { url: `${BASE_URL}/technology`, changeFrequency: "monthly", priority: 0.8 },
-  { url: `${BASE_URL}/pricing`, changeFrequency: "weekly", priority: 0.8 },
-  { url: `${BASE_URL}/clinical-results`, changeFrequency: "weekly", priority: 0.8 },
-  { url: `${BASE_URL}/international`, changeFrequency: "weekly", priority: 0.9 },
-  { url: `${BASE_URL}/contact`, changeFrequency: "monthly", priority: 0.7 },
-  { url: `${BASE_URL}/about`, changeFrequency: "monthly", priority: 0.7 },
-  { url: `${BASE_URL}/about/facilities`, changeFrequency: "monthly", priority: 0.6 },
-  { url: `${BASE_URL}/about/community`, changeFrequency: "monthly", priority: 0.6 },
-  { url: `${BASE_URL}/about/partnerships`, changeFrequency: "monthly", priority: 0.6 },
-  { url: `${BASE_URL}/about/director-message`, changeFrequency: "monthly", priority: 0.6 },
-  { url: `${BASE_URL}/about/vision-mission-values`, changeFrequency: "monthly", priority: 0.6 },
+type ChangeFreq = NonNullable<MetadataRoute.Sitemap[number]["changeFrequency"]>;
+type RouteEntry = { path: string; changeFrequency: ChangeFreq; priority: number };
+
+/**
+ * One sitemap entry per page, with hreflang alternates for every locale so
+ * Google/Baidu serve the right language version. The canonical `url` is the
+ * default-locale (en) URL; `x-default` also points there.
+ */
+function localized(path: string, changeFrequency: ChangeFreq, priority: number): MetadataRoute.Sitemap[number] {
+  const languages: Record<string, string> = {};
+  for (const locale of LOCALES) languages[locale] = `${BASE_URL}/${locale}${path}`;
+  const canonical = `${BASE_URL}/${DEFAULT_LOCALE}${path}`;
+  return {
+    url: canonical,
+    changeFrequency,
+    priority,
+    alternates: { languages: { ...languages, "x-default": canonical } },
+  };
+}
+
+const STATIC_ROUTES: RouteEntry[] = [
+  { path: "/", changeFrequency: "weekly", priority: 1 },
+  { path: "/services", changeFrequency: "weekly", priority: 0.9 },
+  { path: "/team", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/technology", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/pricing", changeFrequency: "weekly", priority: 0.8 },
+  { path: "/clinical-results", changeFrequency: "weekly", priority: 0.8 },
+  { path: "/international", changeFrequency: "weekly", priority: 0.9 },
+  { path: "/contact", changeFrequency: "monthly", priority: 0.7 },
+  { path: "/about", changeFrequency: "monthly", priority: 0.7 },
+  { path: "/about/facilities", changeFrequency: "monthly", priority: 0.6 },
+  { path: "/about/community", changeFrequency: "monthly", priority: 0.6 },
+  { path: "/about/partnerships", changeFrequency: "monthly", priority: 0.6 },
+  { path: "/about/director-message", changeFrequency: "monthly", priority: 0.6 },
+  { path: "/about/vision-mission-values", changeFrequency: "monthly", priority: 0.6 },
+  { path: "/privacy-policy", changeFrequency: "yearly", priority: 0.3 },
+  { path: "/terms-of-service", changeFrequency: "yearly", priority: 0.3 },
+  { path: "/disclaimer", changeFrequency: "yearly", priority: 0.3 },
+  { path: "/cookie-policy", changeFrequency: "yearly", priority: 0.3 },
+  { path: "/booking-cancellation-policy", changeFrequency: "yearly", priority: 0.3 },
 ];
 
 async function getPublishedSlugs(
@@ -54,26 +82,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ]);
 
   return [
-    ...STATIC_ROUTES,
-    ...serviceSlugs.map((slug) => ({
-      url: `${BASE_URL}/services/${slug}`,
-      changeFrequency: "weekly" as const,
-      priority: 0.8,
-    })),
-    ...technologySlugs.map((slug) => ({
-      url: `${BASE_URL}/technology/${slug}`,
-      changeFrequency: "monthly" as const,
-      priority: 0.7,
-    })),
-    ...clinicalCaseSlugs.map((slug) => ({
-      url: `${BASE_URL}/clinical-results/${slug}`,
-      changeFrequency: "weekly" as const,
-      priority: 0.7,
-    })),
-    ...BRANCHES.map((branch) => ({
-      url: `${BASE_URL}/about/branches/${branch.slug}`,
-      changeFrequency: "monthly" as const,
-      priority: 0.6,
-    })),
+    ...STATIC_ROUTES.map((r) => localized(r.path, r.changeFrequency, r.priority)),
+    ...serviceSlugs.map((slug) => localized(`/services/${slug}`, "weekly", 0.8)),
+    ...technologySlugs.map((slug) => localized(`/technology/${slug}`, "monthly", 0.7)),
+    ...clinicalCaseSlugs.map((slug) => localized(`/clinical-results/${slug}`, "weekly", 0.7)),
+    ...BRANCHES.map((branch) => localized(`/about/branches/${branch.slug}`, "monthly", 0.6)),
   ];
 }
