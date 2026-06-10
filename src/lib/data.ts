@@ -60,7 +60,7 @@ export type ServiceSection =
   | { type: "pricing"; heading?: string; subheading?: string; rows: { treatment: string; price: string }[] }
   | { type: "pricetable"; heading?: string; subheading?: string; rows: { treatment: string; price: string }[] }
   | { type: "gallery"; heading?: string; subheading?: string; images: string[] }
-  | { type: "diameters"; heading?: string; subheading?: string; note?: string; items: { color: string; label: string; description?: string }[] }
+  | { type: "image"; heading?: string; subheading?: string; src: string; alt: string; caption?: string; size?: "small" | "medium" | "large" | "full"; width?: number; height?: number }
   | { type: "twocol"; left: ServiceSection; right: ServiceSection };
 
 export type Service = {

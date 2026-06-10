@@ -7,6 +7,8 @@
 
 import { Link } from "@/i18n/navigation";
 import Image from "next/image";
+import { ZoomableImage } from "@/components/ui/zoomable-image";
+import { InteractiveSteps } from "@/components/sections/interactive-steps";
 import {
   CheckCircle,
   CurrencyDollar,
@@ -188,15 +190,17 @@ function Steps({ s }: { s: Extract<ServiceSection, { type: "steps" }> }) {
   return (
     <div>
       <h2 className="font-display text-3xl text-[color:var(--text-main)]">{s.heading}</h2>
-      {s.subheading && <p className="mt-3 text-sm text-[color:var(--text-soft)]">{s.subheading}</p>}
-      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {s.items.map((item) => (
-          <div key={item.step} className="rounded-2xl border border-[color:var(--border-strong)] bg-white p-6">
-            <p className="text-xs font-semibold uppercase tracking-widest text-[color:var(--brand)]">{item.step}</p>
-            <p className="mt-2 text-sm leading-7 text-[color:var(--text-soft)]">{item.detail}</p>
-          </div>
-        ))}
-      </div>
+      {s.subheading && (
+        <p className="mt-3 max-w-2xl text-sm leading-7 text-[color:var(--text-soft)]">{s.subheading}</p>
+      )}
+      {/* Vertical numbered timeline (same treatment as the International "How It Works") */}
+      <InteractiveSteps
+        steps={s.items.map((item, i) => ({
+          step_label: String(i + 1).padStart(2, "0"),
+          title: item.step,
+          description: item.detail,
+        }))}
+      />
     </div>
   );
 }
@@ -281,27 +285,31 @@ function PriceTable({ s }: { s: Extract<ServiceSection, { type: "pricetable" }> 
   );
 }
 
-function DiameterChart({ s }: { s: Extract<ServiceSection, { type: "diameters" }> }) {
+function ServiceImage({ s }: { s: Extract<ServiceSection, { type: "image" }> }) {
+  const sizeClass =
+    s.size === "small" ? "max-w-md" :
+    s.size === "large" ? "max-w-4xl" :
+    s.size === "full" ? "" :
+    "max-w-2xl";
   return (
     <div>
       {s.heading && <h2 className="font-display text-3xl text-[color:var(--text-main)]">{s.heading}</h2>}
       {s.subheading && <p className="mt-3 max-w-2xl text-sm leading-7 text-[color:var(--text-soft)]">{s.subheading}</p>}
-      <div className={`${s.heading || s.subheading ? "mt-8" : ""} max-w-2xl divide-y divide-[color:var(--border-strong)] overflow-hidden rounded-3xl border border-[color:var(--border-strong)] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)]`}>
-        {s.items.map((item) => (
-          <div key={item.label} className="flex items-center gap-4 px-5 py-4 sm:gap-5 sm:px-6">
-            <span
-              className="h-7 w-14 shrink-0 rounded-md shadow-inner"
-              style={{ backgroundColor: item.color }}
-              aria-hidden="true"
+      <figure className={`${s.heading || s.subheading ? "mt-8" : ""} ${sizeClass}`}>
+        <ZoomableImage src={s.src} alt={s.alt} caption={s.caption}>
+          <div className="overflow-hidden rounded-3xl border border-[color:var(--border-strong)] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)]">
+            <Image
+              src={s.src}
+              alt={s.alt}
+              width={s.width ?? 1200}
+              height={s.height ?? 750}
+              className="h-auto w-full"
+              sizes="(min-width: 1024px) 1100px, 100vw"
             />
-            <span className="w-20 shrink-0 font-display text-xl text-[color:var(--brand-deep)]">{item.label}</span>
-            {item.description && (
-              <span className="text-sm leading-6 text-[color:var(--text-soft)]">{item.description}</span>
-            )}
           </div>
-        ))}
-      </div>
-      {s.note && <p className="mt-3 text-xs text-[color:var(--text-soft)]">{s.note}</p>}
+        </ZoomableImage>
+        {s.caption && <figcaption className="mt-3 text-xs text-[color:var(--text-soft)]">{s.caption}</figcaption>}
+      </figure>
     </div>
   );
 }
@@ -323,7 +331,7 @@ function RenderSection({
   if (s.type === "cards") return <Cards s={s} />;
   if (s.type === "steps") return <Steps s={s} />;
   if (s.type === "gallery") return <Gallery s={s} />;
-  if (s.type === "diameters") return <DiameterChart s={s} />;
+  if (s.type === "image") return <ServiceImage s={s} />;
   if (s.type === "pricetable") return <PriceTable s={s} />;
   if (s.type === "pricing") return <PricingCTA s={s} ctaLabel={pricingCtaLabel} ctaNote={pricingCtaNote} href={pricingHref} />;
   if (s.type === "twocol") {
