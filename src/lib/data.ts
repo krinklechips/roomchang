@@ -60,6 +60,7 @@ export type ServiceSection =
   | { type: "pricing"; heading?: string; subheading?: string; rows: { treatment: string; price: string }[] }
   | { type: "pricetable"; heading?: string; subheading?: string; rows: { treatment: string; price: string }[] }
   | { type: "gallery"; heading?: string; subheading?: string; images: string[] }
+  | { type: "diameters"; heading?: string; subheading?: string; note?: string; items: { color: string; label: string; description?: string }[] }
   | { type: "twocol"; left: ServiceSection; right: ServiceSection };
 
 export type Service = {

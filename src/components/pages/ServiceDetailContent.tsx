@@ -281,6 +281,31 @@ function PriceTable({ s }: { s: Extract<ServiceSection, { type: "pricetable" }> 
   );
 }
 
+function DiameterChart({ s }: { s: Extract<ServiceSection, { type: "diameters" }> }) {
+  return (
+    <div>
+      {s.heading && <h2 className="font-display text-3xl text-[color:var(--text-main)]">{s.heading}</h2>}
+      {s.subheading && <p className="mt-3 max-w-2xl text-sm leading-7 text-[color:var(--text-soft)]">{s.subheading}</p>}
+      <div className={`${s.heading || s.subheading ? "mt-8" : ""} max-w-2xl divide-y divide-[color:var(--border-strong)] overflow-hidden rounded-3xl border border-[color:var(--border-strong)] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)]`}>
+        {s.items.map((item) => (
+          <div key={item.label} className="flex items-center gap-4 px-5 py-4 sm:gap-5 sm:px-6">
+            <span
+              className="h-7 w-14 shrink-0 rounded-md shadow-inner"
+              style={{ backgroundColor: item.color }}
+              aria-hidden="true"
+            />
+            <span className="w-20 shrink-0 font-display text-xl text-[color:var(--brand-deep)]">{item.label}</span>
+            {item.description && (
+              <span className="text-sm leading-6 text-[color:var(--text-soft)]">{item.description}</span>
+            )}
+          </div>
+        ))}
+      </div>
+      {s.note && <p className="mt-3 text-xs text-[color:var(--text-soft)]">{s.note}</p>}
+    </div>
+  );
+}
+
 function RenderSection({
   s,
   pricingCtaLabel,
@@ -298,6 +323,7 @@ function RenderSection({
   if (s.type === "cards") return <Cards s={s} />;
   if (s.type === "steps") return <Steps s={s} />;
   if (s.type === "gallery") return <Gallery s={s} />;
+  if (s.type === "diameters") return <DiameterChart s={s} />;
   if (s.type === "pricetable") return <PriceTable s={s} />;
   if (s.type === "pricing") return <PricingCTA s={s} ctaLabel={pricingCtaLabel} ctaNote={pricingCtaNote} href={pricingHref} />;
   if (s.type === "twocol") {
