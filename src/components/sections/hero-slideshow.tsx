@@ -118,7 +118,7 @@ export function HeroSlideshow({
   return (
     <section
       aria-label={t("ariaLabel")}
-      className={`${flush ? "" : "panel-card p-3 sm:p-4"} relative overflow-hidden lg:h-full ${className}`}
+      className={`${flush ? "" : "panel-card p-3 sm:p-4"} relative overflow-hidden xl:h-full ${className}`}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onFocusCapture={() => setIsPaused(true)}
@@ -142,7 +142,10 @@ export function HeroSlideshow({
         data-testid="hero-stage"
         role="img"
         aria-label={activeSlide.imageAlt}
-        className={`relative min-h-0 overflow-hidden rounded-[1.6rem] bg-[color:var(--surface-strong)] bg-no-repeat [background-position:var(--hero-mobile-image-position)] [background-size:var(--hero-mobile-image-size)] sm:min-h-[28rem] sm:[background-position:var(--hero-image-position)] sm:[background-size:var(--hero-image-size)] lg:min-h-[31rem] ${mediaClassName}`}
+        // preserveFullImage slides are panoramic (~2.4:1) — fit them with an
+        // aspect that matches, so contain doesn't leave huge top/bottom gaps
+        // inside an unrelated 16/9 box (Aliza feedback).
+        className={`relative min-h-0 overflow-hidden rounded-[1.6rem] bg-[color:var(--surface-strong)] bg-no-repeat [background-position:var(--hero-mobile-image-position)] [background-size:var(--hero-mobile-image-size)] ${shouldPreserveFullImage ? "sm:!aspect-[12/5]" : "sm:min-h-[28rem]"} sm:[background-position:var(--hero-image-position)] sm:[background-size:var(--hero-image-size)] xl:min-h-[31rem] xl:!aspect-auto ${mediaClassName}`}
         style={stageStyle}
       >
         {/* Foreground image layer for preserve mode — rendered first so overlays sit on top */}
