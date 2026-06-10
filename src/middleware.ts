@@ -10,6 +10,38 @@ const PREVIEW_COOKIE_MAX_AGE = 60 * 60 * 2; // 2 hours
 
 const intlMiddleware = createIntlMiddleware(routing);
 
+const AUTODISCOVER_XML = `<?xml version="1.0" encoding="utf-8"?>
+<Autodiscover xmlns="http://schemas.microsoft.com/exchange/autodiscover/responseschema/2006">
+  <Response xmlns="http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a">
+    <Account>
+      <AccountType>email</AccountType>
+      <Action>settings</Action>
+      <Protocol>
+        <Type>IMAP</Type>
+        <Server>sm12.siteground.biz</Server>
+        <Port>993</Port>
+        <DomainRequired>off</DomainRequired>
+        <LoginName></LoginName>
+        <SPA>off</SPA>
+        <SSL>on</SSL>
+        <AuthRequired>on</AuthRequired>
+      </Protocol>
+      <Protocol>
+        <Type>SMTP</Type>
+        <Server>sm12.siteground.biz</Server>
+        <Port>465</Port>
+        <DomainRequired>off</DomainRequired>
+        <LoginName></LoginName>
+        <SPA>off</SPA>
+        <SSL>on</SSL>
+        <AuthRequired>on</AuthRequired>
+        <UsePOPAuth>on</UsePOPAuth>
+        <SMTPLast>off</SMTPLast>
+      </Protocol>
+    </Account>
+  </Response>
+</Autodiscover>`;
+
 // ─── Admin Basic Auth ──────────────────────────────────────────────────────
 
 function adminAuth(request: NextRequest): NextResponse | null {
@@ -150,6 +182,13 @@ async function previewAuth(request: NextRequest): Promise<NextResponse | null> {
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  if (pathname.toLowerCase() === "/autodiscover/autodiscover.xml") {
+    return new NextResponse(AUTODISCOVER_XML, {
+      status: 200,
+      headers: { "Content-Type": "application/xml; charset=utf-8" },
+    });
+  }
 
   // Webmail shortcut → SiteGround webmail. The old SiteGround "/webmail" domain
   // redirect stopped firing once the apex moved to Vercel, so recreate it here.
