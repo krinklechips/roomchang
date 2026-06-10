@@ -33,12 +33,11 @@ export default async function BranchPage({
   const branch = getBranchBySlug(slug);
   if (!branch) notFound();
 
-  // Google Maps embed centered on this branch's exact coordinates (single pin,
-  // no API key needed). Using coords avoids the generic-name search showing every branch.
-  const mapEmbedUrl = `https://maps.google.com/maps?q=${encodeURIComponent(branch.coords)}&z=16&output=embed&hl=en`;
-
-  // Directions URL — destination is the exact coordinate
-  const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(branch.coords)}`;
+  // Google Maps URLs — use the branch-named search so Maps snaps to the
+  // Roomchang Business listing rather than labeling the surrounding building
+  // (Rose Condo, Euro Park, etc.) at the raw coordinate.
+  const mapEmbedUrl = `https://maps.google.com/maps?q=${encodeURIComponent(branch.mapQuery)}&z=17&output=embed&hl=en`;
+  const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(branch.mapQuery)}`;
 
   // Other branches for "Also nearby" section
   const otherBranches = BRANCHES.filter((b) => b.slug !== slug);

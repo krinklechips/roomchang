@@ -44,7 +44,7 @@ export const BRANCHES: Branch[] = [
     address: "No. 10, Block 252, Bassac Garden City",
     addressLine2: "Chamkarmorn, Phnom Penh, Cambodia",
     hours: "Mon–Sat 08:00–17:30",
-    phone: "+855 23 723 338",
+    phone: "+855 78 911 338",
     description:
       "Serving the Bassac and BKK residential communities, this branch offers specialist consultations and treatments in a quiet, accessible setting.",
     imageSrc: "/about/facilities/2014.jpg",
@@ -61,7 +61,7 @@ export const BRANCHES: Branch[] = [
     address: "1st Floor, AEON Mall Sen Sok City, Street 1003",
     addressLine2: "Khan Sen Sok, Phnom Penh, Cambodia",
     hours: "Mon–Sun 09:00–20:00",
-    phone: "+855 23 911 338",
+    phone: "+855 93 911 338",
     description:
       "Conveniently located on the 1st floor of AEON Mall Sen Sok — offering the full range of Roomchang dental services, 7 days a week.",
     imageSrc: "/about/facilities/Aeon-Mall-2018.jpg",
@@ -78,7 +78,7 @@ export const BRANCHES: Branch[] = [
     address: "Euro Park, Borey Peng Huoth, National Road 1",
     addressLine2: "Chbar Ampov, Phnom Penh, Cambodia",
     hours: "Mon–Sat 08:00–17:30",
-    phone: "+855 86 811 338",
+    phone: "+855 86 911 338",
     description:
       "Located within the Euro Park development in Borey Peng Huoth — serving residents on the eastern side of Phnom Penh along National Road 1.",
     imageSrc: "/about/facilities/T-PH-1-2022.jpg",

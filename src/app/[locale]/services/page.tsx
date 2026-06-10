@@ -130,7 +130,7 @@ export default async function ServicesPage() {
               <article
                 key={service.id}
                 id={service.slug}
-                className="group flex flex-col overflow-hidden rounded-3xl border border-[color:var(--border-strong)] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_60px_rgba(57,28,45,0.1)]"
+                className="group flex scroll-mt-24 flex-col overflow-hidden rounded-3xl border border-[color:var(--border-strong)] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_60px_rgba(57,28,45,0.1)] sm:scroll-mt-32"
               >
                 {imageSrc && (
                   <div className="relative aspect-[4/3] overflow-hidden border-b border-[color:var(--border-strong)] bg-[color:var(--surface)]">
