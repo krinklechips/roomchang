@@ -18,7 +18,7 @@ const AUTODISCOVER_XML = `<?xml version="1.0" encoding="utf-8"?>
       <Action>settings</Action>
       <Protocol>
         <Type>IMAP</Type>
-        <Server>sm12.siteground.biz</Server>
+        <Server>mail.roomchang.com</Server>
         <Port>993</Port>
         <DomainRequired>off</DomainRequired>
         <LoginName></LoginName>
@@ -28,7 +28,7 @@ const AUTODISCOVER_XML = `<?xml version="1.0" encoding="utf-8"?>
       </Protocol>
       <Protocol>
         <Type>SMTP</Type>
-        <Server>sm12.siteground.biz</Server>
+        <Server>mail.roomchang.com</Server>
         <Port>465</Port>
         <DomainRequired>off</DomainRequired>
         <LoginName></LoginName>
