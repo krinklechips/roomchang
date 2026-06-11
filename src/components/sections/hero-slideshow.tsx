@@ -142,10 +142,11 @@ export function HeroSlideshow({
         data-testid="hero-stage"
         role="img"
         aria-label={activeSlide.imageAlt}
-        // preserveFullImage slides are panoramic (~2.4:1) — fit them with an
-        // aspect that matches, so contain doesn't leave huge top/bottom gaps
-        // inside an unrelated 16/9 box (Aliza feedback).
-        className={`relative min-h-0 overflow-hidden rounded-[1.6rem] bg-[color:var(--surface-strong)] bg-no-repeat [background-position:var(--hero-mobile-image-position)] [background-size:var(--hero-mobile-image-size)] ${shouldPreserveFullImage ? "sm:!aspect-[12/5]" : "sm:min-h-[28rem]"} sm:[background-position:var(--hero-image-position)] sm:[background-size:var(--hero-image-size)] xl:min-h-[31rem] xl:!aspect-auto ${mediaClassName}`}
+        // preserveFullImage slides are panoramic (~2.4:1). At lg (small-laptop
+        // ~1024-1280px) the 16/9 stage left big top/bottom gaps — switch to a
+        // matching ~2.4:1 box ONLY at lg. Mobile/tablet keep the natural 16/9
+        // hero (Aliza feedback round 2).
+        className={`relative min-h-0 overflow-hidden rounded-[1.6rem] bg-[color:var(--surface-strong)] bg-no-repeat [background-position:var(--hero-mobile-image-position)] [background-size:var(--hero-mobile-image-size)] sm:min-h-[28rem] sm:[background-position:var(--hero-image-position)] sm:[background-size:var(--hero-image-size)] ${shouldPreserveFullImage ? "lg:!aspect-[12/5] lg:!min-h-0" : ""} xl:min-h-[31rem] xl:!aspect-auto ${mediaClassName}`}
         style={stageStyle}
       >
         {/* Foreground image layer for preserve mode — rendered first so overlays sit on top */}
