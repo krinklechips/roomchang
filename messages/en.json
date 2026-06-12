@@ -478,7 +478,12 @@
       "doctor": "Preferred Doctor",
       "date": "Preferred Appointment Date",
       "message": "Message",
-      "wechat": "WeChat ID"
+      "wechat": "WeChat ID",
+      "patientType": "Patient Type"
+    },
+    "patientType": {
+      "new": "New patient",
+      "existing": "Existing patient"
     },
     "placeholder": {
       "name": "Your name",

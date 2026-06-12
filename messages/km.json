@@ -478,7 +478,12 @@
       "doctor": "ទន្តបណ្ឌិតដែលពេញចិត្ត",
       "date": "កាលបរិច្ឆេទណាត់ជួបដែលពេញចិត្ត",
       "message": "សារ",
-      "wechat": "WeChat ID"
+      "wechat": "WeChat ID",
+      "patientType": "ប្រភេទអ្នកជំងឺ"
+    },
+    "patientType": {
+      "new": "អ្នកជំងឺថ្មី",
+      "existing": "អ្នកជំងឺចាស់"
     },
     "placeholder": {
       "name": "ឈ្មោះរបស់អ្នក",

@@ -478,7 +478,12 @@
       "doctor": "首选医生",
       "date": "首选就诊日期",
       "message": "留言",
-      "wechat": "微信号"
+      "wechat": "微信号",
+      "patientType": "患者类型"
+    },
+    "patientType": {
+      "new": "新患者",
+      "existing": "现有患者"
     },
     "placeholder": {
       "name": "您的姓名",

@@ -133,6 +133,7 @@ export function ContactForm({ branches, doctors }: { branches: Branch[]; doctors
       // Combine the chosen code with the number, unless they typed a full +number.
       phone:     rawPhone ? (rawPhone.startsWith("+") ? rawPhone : `${dialCode} ${rawPhone}`) : "",
       country:   (form.elements.namedItem("country") as HTMLInputElement).value,
+      patientType: (form.elements.namedItem("patientType") as RadioNodeList | null)?.value ?? "",
       wechat:    (form.elements.namedItem("wechat")  as HTMLInputElement).value,
       treatment: (form.elements.namedItem("service") as HTMLSelectElement).value,
       branch:    (form.elements.namedItem("branch")  as HTMLSelectElement).value,
@@ -307,6 +308,29 @@ export function ContactForm({ branches, doctors }: { branches: Branch[]; doctors
                   placeholder={t("placeholder.country")}
                 />
               </div>
+
+              {/* Patient type — stable English values for the clinic email; UI label localized */}
+              <fieldset className="space-y-2">
+                <legend className="block text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
+                  {t("label.patientType")}
+                </legend>
+                <div className="grid grid-cols-2 gap-3">
+                  {(["new", "existing"] as const).map((key) => (
+                    <label
+                      key={key}
+                      className="flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-[color:var(--border-strong)] bg-white px-4 py-3 text-sm text-[color:var(--text-main)] transition hover:border-[color:var(--brand)] has-[:checked]:border-[color:var(--brand)] has-[:checked]:bg-[color:var(--brand-soft)] has-[:checked]:font-semibold has-[:checked]:text-[color:var(--brand-deep)] has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-[color:var(--brand)]/20"
+                    >
+                      <input
+                        type="radio"
+                        name="patientType"
+                        value={key === "new" ? "New patient" : "Existing patient"}
+                        className="sr-only"
+                      />
+                      {t(`patientType.${key}`)}
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
 
               <div className="grid gap-6 sm:grid-cols-2">
                 <div className="space-y-2">

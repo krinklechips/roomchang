@@ -23,6 +23,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const {
       name, email, phone, country, wechat, treatment, branch, doctor, date, message,
+      patientType,
       _gotcha, // honeypot — bots fill this; humans leave it empty
     } = body;
 
@@ -45,6 +46,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Phone / WhatsApp / Telegram is required" }, { status: 400 });
     }
     const cleanCountry = trunc(country, 80).trim();
+    // Only accept the two known values; anything else is treated as unset.
+    const rawPatientType = trunc(patientType, 40).trim();
+    const cleanPatientType =
+      rawPatientType === "New patient" || rawPatientType === "Existing patient"
+        ? rawPatientType
+        : "";
     const cleanTreat   = trunc(treatment, 120).trim();
     const cleanBranch  = trunc(branch, 120).trim();
     const cleanDoctor  = trunc(doctor, 120).trim();
@@ -67,6 +74,7 @@ export async function POST(request: NextRequest) {
       phone: cleanPhone || null,
       wechat: cleanWechat || null,
       country: cleanCountry || null,
+      patient_type: cleanPatientType || null,
       treatment: cleanTreat || null,
       branch: cleanBranch || null,
       doctor: cleanDoctor || null,
@@ -90,6 +98,7 @@ export async function POST(request: NextRequest) {
       ["Phone / WhatsApp",   escHtml(cleanPhone) || "—"],
       ["WeChat ID",          escHtml(cleanWechat) || "—"],
       ["Country",            escHtml(cleanCountry) || "—"],
+      ["Patient Type",       escHtml(cleanPatientType) || "—"],
       ["Treatment",          escHtml(cleanTreat) || "—"],
       ["Preferred Branch",   escHtml(cleanBranch) || "—"],
       ["Preferred Doctor",   escHtml(cleanDoctor) || "—"],
