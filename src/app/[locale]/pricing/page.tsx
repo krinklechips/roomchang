@@ -130,7 +130,9 @@ export default async function PricingPage() {
                 <details
                   key={cat.id}
                   id={cat.id}
-                  className="group"
+                  // scroll-margin keeps the category title + first row clear of the
+                  // sticky header when deep-linked from a service page (#anchor).
+                  className="group scroll-mt-24 sm:scroll-mt-32"
                 >
                   {/* Summary row */}
                   <summary className="flex cursor-pointer list-none items-center gap-4 px-5 py-5 transition hover:bg-[color:var(--surface)] sm:px-6 [&::-webkit-details-marker]:hidden">
