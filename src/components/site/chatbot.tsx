@@ -140,10 +140,43 @@ function renderMarkdown(
       );
     }
 
-    // Regular paragraph — render inline formatting
+    // Numbered list (1. 2. 3.) — render each item on its own line. Without this,
+    // the paragraph branch below collapses the newlines into spaces and the list
+    // runs together (e.g. the branch picker in the booking flow).
+    const isOrderedList =
+      lines.length > 1 && lines.every((l) => /^\s*\d+\.\s/.test(l));
+
+    if (isOrderedList) {
+      return (
+        <ol key={bi} className="my-1.5 space-y-1">
+          {lines.map((line, li) => {
+            const m = line.match(/^\s*(\d+)\.\s+(.*)$/);
+            const num = m ? m[1] : String(li + 1);
+            const itemText = m ? m[2] : line.trim();
+
+            return (
+              <li key={li} className="flex items-start gap-2 text-sm leading-relaxed">
+                <span className="mt-[1px] shrink-0 font-semibold text-[color:var(--brand)]">
+                  {num}.
+                </span>
+                <span className="min-w-0">{renderInline(itemText)}</span>
+              </li>
+            );
+          })}
+        </ol>
+      );
+    }
+
+    // Regular paragraph — preserve intentional single line breaks as <br>, so a
+    // list/sequence the model put on separate lines stays on separate lines.
     return (
       <p key={bi} className={bi > 0 ? "mt-2" : ""}>
-        {renderInline(trimmed.replace(/\n/g, " "))}
+        {lines.map((line, li) => (
+          <span key={li}>
+            {li > 0 && <br />}
+            {renderInline(line)}
+          </span>
+        ))}
       </p>
     );
   });
