@@ -33,12 +33,12 @@ export default async function BranchPage({
   const branch = getBranchBySlug(slug);
   if (!branch) notFound();
 
-  // Google Maps URLs — show the LOCATION (a pin), never a forced directions
-  // route (branch feedback: easier to share + smoother for patients to review).
-  // Embed pins the exact coordinate so it always lands on the spot; the link
-  // opens the Roomchang place via a named search (resolves to the listing, so
-  // the place page + reviews are one tap away — no navigation route).
-  const mapEmbedUrl = `https://www.google.com/maps?q=${encodeURIComponent(branch.coords)}&z=16&output=embed&hl=en`;
+  // Google Maps URLs — show the LOCATION, never a forced directions route
+  // (branch feedback: easier to share + smoother for patients to review).
+  // Embed by the place NAME so Google loads the labelled place card (a bare
+  // lat,lng makes the embed show "Place info couldn't load"); the button opens
+  // the exact place via its share link (place page + review button, no route).
+  const mapEmbedUrl = `https://www.google.com/maps?q=${encodeURIComponent(branch.mapQuery)}&z=16&output=embed&hl=en`;
   // Prefer the branch's official place share link (exact pin + place page +
   // review button); fall back to a named search where we don't have one yet.
   const mapUrl =
@@ -54,7 +54,7 @@ export default async function BranchPage({
       <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--surface)]">
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-20 lg:px-8">
           <Link
-            href="/about"
+            href="/about/facilities#locations"
             className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--brand)] transition hover:text-[color:var(--brand-deep)]"
           >
             <ArrowLeft size={13} strokeWidth={2.5} aria-hidden="true" /> Our Branches
@@ -122,7 +122,7 @@ export default async function BranchPage({
               />
             </div>
 
-            {/* View-location CTA — opens the pin/place, not a directions route */}
+            {/* View-location CTA — sits under the map; opens the place, not a route */}
             <a
               href={mapUrl}
               target="_blank"
@@ -187,15 +187,6 @@ export default async function BranchPage({
                 <Link href="/contact" className="btn-primary w-full justify-center">
                   Book an Appointment
                 </Link>
-                <a
-                  href={mapUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-secondary w-full justify-center"
-                >
-                  <MapPin size={14} strokeWidth={2} aria-hidden="true" />
-                  View on Map
-                </a>
               </div>
             </div>
 

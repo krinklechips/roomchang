@@ -110,8 +110,9 @@ export const BRANCHES: Branch[] = [
     imageSrc: "/about/facilities/RCD_9243Fun Mall.jpg",
     imageAlt: "Roomchang Dental — Fun Mall TK Avenue branch",
     coords: "11.5781534,104.8939555",
-    mapQuery: "Roomchang Dental, Fun Mall, Street 315, Toul Kork, Phnom Penh",
+    mapQuery: "Roomchang Dental Clinic - Fun Mall Branch, Phnom Penh",
     mapDirectionsQuery: "Roomchang+Dental+Fun+Mall+Street+315+Toul+Kork+Phnom+Penh+Cambodia",
+    mapPlaceUrl: "https://maps.app.goo.gl/sF4cnqWVmk6Ye4j49",
   },
 ];
 

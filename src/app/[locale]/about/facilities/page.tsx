@@ -3,7 +3,9 @@ import { Link } from "@/i18n/navigation";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, ArrowRight, Check, MapPin, Clock, Phone as PhoneIcon } from "lucide-react";
 import { supabaseServer } from "@/lib/supabase-server";
+import { cdnUrl } from "@/lib/supabase";
 import { BRANCHES } from "@/lib/branches";
+import { HashScroll } from "@/components/sections/hash-scroll";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -65,13 +67,12 @@ const FACILITY_SECTIONS = [
   },
 ];
 
+// Images live on R2 (same CDN as the rest of the site) via cdnUrl().
 const GALLERY_INTERIOR = [
-  { src: "/about/facilities/facility-treatment-abroad.jpg",      alt: "Roomchang treatment room — international patient care" },
-  { src: "/about/facilities/facility-room-a.jpg",                alt: "Roomchang dental chair and treatment suite" },
-  { src: "/about/facilities/facility-room-b.jpg",                alt: "Modern dental treatment room at Roomchang" },
-  { src: "/about/facilities/facility-room-c.jpg",                alt: "Specialist dental suite with advanced equipment" },
-  { src: "/about/facilities/treatment-room-1.jpg",               alt: "Treatment room at Roomchang Dental Hospital" },
-  { src: "/about/facilities/international-patient-consultation.jpg", alt: "International patient consultation at Roomchang" },
+  { src: cdnUrl("roomchang/about/facilities/facility-treatment-abroad.jpg"), alt: "Roomchang treatment room — international patient care" },
+  { src: cdnUrl("roomchang/about/facilities/facility-room-a.jpg"),           alt: "Roomchang dental chair and treatment suite" },
+  { src: cdnUrl("roomchang/about/facilities/facility-room-b.jpg"),           alt: "Modern dental treatment room at Roomchang" },
+  { src: cdnUrl("roomchang/about/facilities/facility-room-c.jpg"),           alt: "Specialist dental suite with advanced equipment" },
 ];
 
 export default async function FacilitiesPage() {
@@ -89,6 +90,7 @@ export default async function FacilitiesPage() {
 
   return (
     <SiteShell>
+      <HashScroll />
       {/* Header */}
       <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--surface)]">
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-20 lg:px-8">
@@ -132,16 +134,15 @@ export default async function FacilitiesPage() {
       {/* Building hero — full-bleed tall portrait */}
       <div className="border-b border-[color:var(--border-strong)]">
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-          <div className="grid gap-4 lg:grid-cols-[340px_1fr]">
+          <div className="grid gap-4 lg:grid-cols-[340px_1fr] lg:items-stretch">
             {/* Tall building portrait */}
-            <div className="relative overflow-hidden rounded-3xl shadow-[0_20px_60px_rgba(57,28,45,0.12)]">
+            <div className="relative h-[420px] overflow-hidden rounded-3xl shadow-[0_20px_60px_rgba(57,28,45,0.12)] sm:h-[480px] lg:h-full">
               <Image
-                src="/about/facilities/EDJI_0381.jpg"
+                src={cdnUrl("roomchang/about/facilities/EDJI_0381.jpg")}
                 alt="Roomchang Dental Hospital — 10-storey building, Sisowath High School, Phnom Penh"
-                width={769}
-                height={1280}
+                width={3000}
+                height={1999}
                 className="h-full w-full object-cover object-center"
-                style={{ minHeight: "480px" }}
                 priority
               />
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[rgba(44,26,40,0.7)] to-transparent px-6 pb-6 pt-16">
@@ -151,8 +152,8 @@ export default async function FacilitiesPage() {
               </div>
             </div>
 
-            {/* Interior photo grid — 3-col × 2-row, uniform aspect ratio */}
-            <div className="grid grid-cols-3 gap-3">
+            {/* Interior photo grid — unique facility photos with uniform aspect ratio */}
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-2">
               {GALLERY_INTERIOR.map(({ src, alt }) => (
                 <div key={src} className="relative aspect-[4/3] overflow-hidden rounded-2xl">
                   <Image
@@ -192,7 +193,7 @@ export default async function FacilitiesPage() {
         </div>
 
         {/* Our Locations */}
-        <div className="mt-16">
+        <div id="locations" className="mt-16 scroll-mt-24 sm:scroll-mt-32">
           <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--brand)]">
             Our Locations
           </p>
