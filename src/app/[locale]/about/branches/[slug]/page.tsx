@@ -39,7 +39,11 @@ export default async function BranchPage({
   // opens the Roomchang place via a named search (resolves to the listing, so
   // the place page + reviews are one tap away — no navigation route).
   const mapEmbedUrl = `https://www.google.com/maps?q=${encodeURIComponent(branch.coords)}&z=16&output=embed&hl=en`;
-  const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(branch.mapQuery)}`;
+  // Prefer the branch's official place share link (exact pin + place page +
+  // review button); fall back to a named search where we don't have one yet.
+  const mapUrl =
+    branch.mapPlaceUrl ??
+    `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(branch.mapQuery)}`;
 
   // Other branches for "Also nearby" section
   const otherBranches = BRANCHES.filter((b) => b.slug !== slug);

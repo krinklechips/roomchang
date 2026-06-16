@@ -12,10 +12,17 @@ export type Branch = {
   imageAlt: string;
   /** Exact "lat,lng" of this specific branch — used for the map embed pin and directions */
   coords: string;
-  /** Google Maps search query for the embed iframe */
+  /** Google Maps search query for the embed iframe + link fallback */
   mapQuery: string;
   /** Lat,Lng for the directions link */
   mapDirectionsQuery: string;
+  /**
+   * Official Google Maps share link for this branch's exact place listing.
+   * When set, the "View on map" button uses it — guarantees the correct pin +
+   * the right place page (and "Write a review" button). Falls back to a named
+   * search (mapQuery) when absent.
+   */
+  mapPlaceUrl?: string;
 };
 
 export const BRANCHES: Branch[] = [
@@ -50,8 +57,9 @@ export const BRANCHES: Branch[] = [
     imageSrc: "/about/facilities/2014.jpg",
     imageAlt: "Roomchang Dental — Rose Condo Bassac branch",
     coords: "11.5442748,104.931863",
-    mapQuery: "Roomchang Dental Hospital, Bassac Garden City, Phnom Penh",
+    mapQuery: "Roomchang Dental Clinic - Rose Condo Branch, Phnom Penh",
     mapDirectionsQuery: "Roomchang+Dental+Bassac+Garden+City+Chamkarmorn+Phnom+Penh+Cambodia",
+    mapPlaceUrl: "https://maps.app.goo.gl/vJaeFEA8ShY5LVeQ9",
   },
   {
     slug: "aeon-mall",
@@ -84,8 +92,9 @@ export const BRANCHES: Branch[] = [
     imageSrc: "/about/facilities/T-PH-1-2022.jpg",
     imageAlt: "Roomchang Dental — PH Euro Park branch",
     coords: "11.5157673,104.9563122",
-    mapQuery: "Roomchang Dental Hospital Borey Peng Huoth Phnom Penh",
+    mapQuery: "Roomchang Dental Clinic - PH Euro Park, Phnom Penh",
     mapDirectionsQuery: "Roomchang+Dental+Hospital+Borey+Peng+Huoth+National+Road+1+Phnom+Penh+Cambodia",
+    mapPlaceUrl: "https://maps.app.goo.gl/fxbZyAifkUQP9vRi8",
   },
   {
     slug: "fun-mall",
