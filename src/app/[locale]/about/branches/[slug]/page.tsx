@@ -2,7 +2,7 @@ import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { notFound } from "next/navigation";
 import { SiteShell } from "@/components/site/site-shell";
-import { ArrowLeft, Phone, Clock, MapPin, Navigation } from "lucide-react";
+import { ArrowLeft, Phone, Clock, MapPin } from "lucide-react";
 import { BRANCHES, getBranchBySlug } from "@/lib/branches";
 import type { Metadata } from "next";
 
@@ -33,11 +33,13 @@ export default async function BranchPage({
   const branch = getBranchBySlug(slug);
   if (!branch) notFound();
 
-  // Google Maps URLs — use the branch-named search so Maps snaps to the
-  // Roomchang Business listing rather than labeling the surrounding building
-  // (Rose Condo, Euro Park, etc.) at the raw coordinate.
-  const mapEmbedUrl = `https://maps.google.com/maps?q=${encodeURIComponent(branch.mapQuery)}&z=17&output=embed&hl=en`;
-  const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(branch.mapQuery)}`;
+  // Google Maps URLs — show the LOCATION (a pin), never a forced directions
+  // route (branch feedback: easier to share + smoother for patients to review).
+  // Embed pins the exact coordinate so it always lands on the spot; the link
+  // opens the Roomchang place via a named search (resolves to the listing, so
+  // the place page + reviews are one tap away — no navigation route).
+  const mapEmbedUrl = `https://www.google.com/maps?q=${encodeURIComponent(branch.coords)}&z=16&output=embed&hl=en`;
+  const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(branch.mapQuery)}`;
 
   // Other branches for "Also nearby" section
   const otherBranches = BRANCHES.filter((b) => b.slug !== slug);
@@ -116,15 +118,15 @@ export default async function BranchPage({
               />
             </div>
 
-            {/* Directions CTA */}
+            {/* View-location CTA — opens the pin/place, not a directions route */}
             <a
-              href={directionsUrl}
+              href={mapUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary inline-flex items-center justify-center gap-2"
             >
-              <Navigation size={16} strokeWidth={2} aria-hidden="true" />
-              Get Directions in Google Maps
+              <MapPin size={16} strokeWidth={2} aria-hidden="true" />
+              View on Google Maps
             </a>
           </div>
 
@@ -182,13 +184,13 @@ export default async function BranchPage({
                   Book an Appointment
                 </Link>
                 <a
-                  href={directionsUrl}
+                  href={mapUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-secondary w-full justify-center"
                 >
-                  <Navigation size={14} strokeWidth={2} aria-hidden="true" />
-                  Get Directions
+                  <MapPin size={14} strokeWidth={2} aria-hidden="true" />
+                  View on Map
                 </a>
               </div>
             </div>
