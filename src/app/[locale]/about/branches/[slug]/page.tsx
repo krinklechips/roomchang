@@ -35,10 +35,12 @@ export default async function BranchPage({
 
   // Google Maps URLs — show the LOCATION, never a forced directions route
   // (branch feedback: easier to share + smoother for patients to review).
-  // Embed by the place NAME so Google loads the labelled place card (a bare
-  // lat,lng makes the embed show "Place info couldn't load"); the button opens
-  // the exact place via its share link (place page + review button, no route).
-  const mapEmbedUrl = `https://www.google.com/maps?q=${encodeURIComponent(branch.mapQuery)}&z=16&output=embed&hl=en`;
+  // Prefer the official place Embed (encodes the place_id → labelled place card,
+  // no "Place info couldn't load"); fall back to a keyless name embed. The
+  // button opens the exact place (share/cid link) — place page + review button.
+  const mapEmbedUrl =
+    branch.mapEmbedSrc ??
+    `https://www.google.com/maps?q=${encodeURIComponent(branch.mapQuery)}&z=16&output=embed&hl=en`;
   // Prefer the branch's official place share link (exact pin + place page +
   // review button); fall back to a named search where we don't have one yet.
   const mapUrl =
