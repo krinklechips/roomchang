@@ -484,7 +484,7 @@ export function ContactForm({ branches, doctors }: { branches: Branch[]; doctors
               )}
               <p className="mt-1 text-xs text-[color:var(--text-soft)]/70">{branch.hours}</p>
               <a
-                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`Roomchang Dental Hospital, ${branch.address}`)}`}
+                href={branch.map_place_url ?? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`Roomchang Dental Hospital, ${branch.address}`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-[color:var(--brand)] transition hover:text-[color:var(--brand-deep)]"

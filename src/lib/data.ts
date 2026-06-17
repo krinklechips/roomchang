@@ -31,6 +31,8 @@ export type Branch = {
   hours: string;
   order: number;
   published: boolean;
+  /** Official Google Maps place link (share/cid) — exact pin + place page. */
+  map_place_url: string | null;
 };
 
 export type PricingCategory = {
