@@ -696,14 +696,115 @@
     "error": "出了点问题，请重试。"
   },
   "chatbot": {
+    "panelBrand": "Roomy",
+    "panelSubtitle": "智能助手",
+    "closeAriaLabel": "关闭对话",
+    "openAriaLabel": "与 Roomy 对话",
+    "inputPlaceholder": "输入您的消息...",
+    "sendAriaLabel": "发送消息",
+    "greeting": "您好，我是 Roomy——Roomchang 的虚拟助手！😊 我可以帮您了解治疗信息、价格，或预约就诊。请问有什么可以帮您的？",
+    "errorMessage": "抱歉，当前连接出现问题。请重试，或直接致电联系我们：+855 69 811 338。",
+    "voice": {
+      "listening": "聆听中…",
+      "thinking": "思考中…",
+      "speaking": "回复中…",
+      "badge": "语音",
+      "stop": "停止",
+      "stopAriaLabel": "停止语音对话",
+      "startAriaLabel": "开始语音对话",
+      "startTitle": "与我们对话"
+    },
+    "humanRow": {
+      "label": "联系真人客服",
+      "messageOnAriaLabel": "通过 {channel} 联系 Roomchang"
+    },
+    "welcome": {
+      "greeting": "您好，我是 Roomy 👋",
+      "intro": "我是 Roomchang 的虚拟助手。您可以咨询治疗、价格或预约就诊——点击下方即可开始。",
+      "start": "开始对话"
+    },
+    "bubble": {
+      "prompt": "需要牙科方面的帮助吗？😊",
+      "cta": "在线咨询 →",
+      "dismissAriaLabel": "关闭"
+    },
+    "suggestionScroll": {
+      "leftAriaLabel": "向左滚动建议",
+      "rightAriaLabel": "向右滚动建议"
+    },
+    "suggestion": {
+      "services": "诊疗项目",
+      "doctors": "医生团队",
+      "implantPrices": "种植牙价格",
+      "bookAppointment": "预约就诊",
+      "teethWhitening": "牙齿美白",
+      "bracesOptions": "牙齿矫正方案",
+      "visitingAbroad": "海外就诊",
+      "openingHours": "营业时间"
+    },
+    "suggestionText": {
+      "services": "你们提供哪些牙科诊疗项目？",
+      "doctors": "介绍一下你们的医生团队",
+      "implantPrices": "种植牙需要多少钱？",
+      "bookAppointment": "我想预约就诊",
+      "teethWhitening": "你们有牙齿美白吗？多少钱？",
+      "bracesOptions": "你们有哪些牙齿矫正和隐形矫治方案？",
+      "visitingAbroad": "我从国外来——就诊流程是怎样的？",
+      "openingHours": "你们的营业时间和地址是？"
+    },
+    "booking": {
+      "confirmTitle": "确认您的预约",
+      "disclaimer": "点击确认即可发送预约申请——我们的团队将审核并确认您的预约。",
+      "submitting": "预约提交中…",
+      "confirm": "确认预约",
+      "tryAgain": "重试",
+      "orMessageDirectly": "或直接联系我们",
+      "edit": "修改信息",
+      "slotTaken": "该时间段刚刚被预约。请另选一个时间。",
+      "failGeneric": "我们暂时无法完成您的预约。",
+      "unreachable": "我们暂时无法连接到预约系统。请检查您的网络后重试，或使用顶部的按钮直接联系我们。",
+      "success": "✅ 您的预约申请已提交{ref}！我们的团队将审核并很快确认{email}。您也可以随时使用顶部的按钮联系我们。😊",
+      "successRef": "（编号 #{id}）",
+      "successEmail": "，确认邮件即将发出",
+      "cancelled": "没问题！您想修改什么？",
+      "sentWhatsApp": "正在为您打开 WhatsApp 并附上您的信息——只需点击发送，我们的团队便会确认您的预约。💬",
+      "sentTelegram": "我已复制您的预约摘要——请粘贴到我们的 Telegram 对话中并点击发送，我们的团队便会确认您的预约。💬",
+      "row": {
+        "name": "姓名",
+        "phone": "电话",
+        "email": "邮箱",
+        "treatment": "治疗项目",
+        "date": "日期",
+        "time": "时间",
+        "branch": "分院",
+        "doctor": "医生"
+      }
+    },
+    "datePicker": {
+      "heading": "选择日期",
+      "prevMonthAriaLabel": "上个月",
+      "nextMonthAriaLabel": "下个月",
+      "hours": "周一至周六 · 8:00–17:30"
+    },
+    "timePicker": {
+      "heading": "选择时间",
+      "chooseDateFirst": "请先选择日期，以便我们显示可预约的时间。",
+      "loading": "正在加载可预约时间...",
+      "loadError": "无法加载时间。请输入您希望的时间。",
+      "period": {
+        "morning": "上午",
+        "midday": "中午",
+        "afternoon": "下午"
+      }
+    },
     "day": {
-      "sun": "日",
-      "mon": "一",
-      "tue": "二",
-      "wed": "三",
-      "thu": "四",
-      "fri": "五",
-      "sat": "六"
+      "sun": "周日",
+      "mon": "周一",
+      "tue": "周二",
+      "wed": "周三",
+      "thu": "周四",
+      "fri": "周五",
+      "sat": "周六"
     },
     "monthShort": {
       "jan": "1月",
@@ -732,54 +833,7 @@
       "october": "十月",
       "november": "十一月",
       "december": "十二月"
-    },
-    "booking": {
-      "heading": "确认预约",
-      "name": "姓名：",
-      "contact": "联系方式：",
-      "treatment": "治疗项目：",
-      "date": "日期：",
-      "submitting": "提交中...",
-      "confirmButton": "确认预约",
-      "edit": "修改"
-    },
-    "datePicker": {
-      "heading": "选择日期",
-      "previous": "上一周",
-      "next": "下一周",
-      "hours": "周一至周六 · 8:00–17:30"
-    },
-    "suggestion": {
-      "services": "诊疗项目",
-      "doctors": "医生团队",
-      "implantPrices": "种植牙价格",
-      "bookAppointment": "预约挂号",
-      "teethWhitening": "牙齿美白",
-      "bracesOptions": "矫正方案",
-      "visitingAbroad": "海外就诊",
-      "openingHours": "营业时间"
-    },
-    "suggestionText": {
-      "services": "你们提供哪些牙科服务？",
-      "doctors": "介绍一下你们的医生",
-      "implantPrices": "种植牙多少钱？",
-      "bookAppointment": "我想预约",
-      "teethWhitening": "你们有牙齿美白吗？多少钱？",
-      "bracesOptions": "你们有哪些矫正和隐形矫治方案？",
-      "visitingAbroad": "我从国外来——流程是怎样的？",
-      "openingHours": "你们的营业时间和地址？"
-    },
-    "greeting": "您好，我是 Roomy——Roomchang 的虚拟助手！😊 我可以帮您了解治疗信息、价格或预约挂号。请问有什么可以帮您的？",
-    "errorMessage": "抱歉，当前连接出现问题。请重试或直接联系我们：+855 69 811 338。",
-    "bookingSuccess": "您的预约申请已提交！我们的团队将在1-2个工作日内通过邮件或电话确认您的预约。感谢您选择Roomchang！",
-    "bookingCancelled": "没问题！您想修改什么？",
-    "bookingError": "预约失败——请重试或拨打 +855 69 811 338。",
-    "panelBrand": "Roomy",
-    "panelSubtitle": "智能助手",
-    "closeAriaLabel": "关闭对话",
-    "inputPlaceholder": "输入您的消息...",
-    "sendAriaLabel": "发送消息",
-    "openAriaLabel": "在线咨询"
+    }
   },
   "technologyDetail": {
     "backLink": "医疗技术",

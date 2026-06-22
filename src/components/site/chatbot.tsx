@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { useState, useRef, useEffect, useCallback, type ReactNode } from "react";
 import {
   CalendarDots,
@@ -237,21 +238,18 @@ function renderInline(text: string): ReactNode {
 
 // ─── Date helpers ───────────────────────────────────────────────────────────
 
-const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-const MONTH_NAMES = [
-  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-];
-const FULL_MONTH_NAMES = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December",
-];
-
-function formatDateForMessage(date: Date): string {
-  const day = DAY_NAMES[date.getDay()];
-  const month = MONTH_NAMES[date.getMonth()];
-  return `${day}, ${month} ${date.getDate()}, ${date.getFullYear()}`;
-}
+// Translation-key lookups so the date picker can localize calendar labels via
+// the `chatbot` namespace. Indexed by JS month number (0–11); DOW_KEYS covers
+// the Mon–Sat week header (Sundays are skipped).
+const DOW_KEYS = ["mon", "tue", "wed", "thu", "fri", "sat"] as const;
+const MONTH_SHORT_KEYS = [
+  "jan", "feb", "mar", "apr", "may", "jun",
+  "jul", "aug", "sep", "oct", "nov", "dec",
+] as const;
+const MONTH_FULL_KEYS = [
+  "january", "february", "march", "april", "may", "june",
+  "july", "august", "september", "october", "november", "december",
+] as const;
 
 function formatDateForApi(date: Date): string {
   const year = date.getFullYear();
@@ -363,21 +361,22 @@ function BookingCard({
   onSend: (channel: "whatsapp" | "telegram") => void;
   onEdit: () => void;
 }) {
+  const t = useTranslations("chatbot");
   const rows: [string, string][] = [
-    ["Name", data.name],
-    ["Phone", data.phone],
-    ["Email", data.email],
-    ["Treatment", data.treatment],
-    ["Date", data.date],
-    ["Time", data.time],
-    ["Branch", data.branch],
-    ["Doctor", data.doctor],
+    [t("booking.row.name"), data.name],
+    [t("booking.row.phone"), data.phone],
+    [t("booking.row.email"), data.email],
+    [t("booking.row.treatment"), data.treatment],
+    [t("booking.row.date"), data.date],
+    [t("booking.row.time"), data.time],
+    [t("booking.row.branch"), data.branch],
+    [t("booking.row.doctor"), data.doctor],
   ].filter(([, v]) => v) as [string, string][];
 
   return (
     <div className="mx-3 mb-3 rounded-xl border border-[color:var(--brand-soft)] bg-[color:var(--brand-soft)] p-4">
       <p className="text-xs font-bold uppercase tracking-widest text-[color:var(--brand)]">
-        Confirm your appointment
+        {t("booking.confirmTitle")}
       </p>
       <div className="mt-2 space-y-1 text-sm text-[color:var(--text-main)]">
         {rows.map(([label, value]) => (
@@ -387,7 +386,7 @@ function BookingCard({
         ))}
       </div>
       <p className="mt-2 text-[11px] leading-snug text-[color:var(--text-soft)]">
-        Tap confirm to send your request — our team will review it and confirm your appointment.
+        {t("booking.disclaimer")}
       </p>
 
       {error && (
@@ -409,19 +408,19 @@ function BookingCard({
         >
           {submitting ? (
             <>
-              <SpinnerGap size={16} className="animate-spin" /> Booking…
+              <SpinnerGap size={16} className="animate-spin" /> {t("booking.submitting")}
             </>
           ) : (
             <>
               <CheckCircle size={16} weight="fill" />{" "}
-              {error ? "Try again" : "Confirm appointment"}
+              {error ? t("booking.tryAgain") : t("booking.confirm")}
             </>
           )}
         </button>
 
         {/* Alternative — message a human directly (does not reserve a slot) */}
         <p className="mt-1 text-center text-[10px] font-semibold uppercase tracking-wider text-[color:var(--text-soft)]">
-          or message us directly
+          {t("booking.orMessageDirectly")}
         </p>
         <div className="flex gap-2">
           <button
@@ -447,7 +446,7 @@ function BookingCard({
           disabled={submitting}
           className="rounded-full border border-[color:var(--border-strong)] bg-white px-4 py-2 text-xs font-bold text-[color:var(--text-soft)] transition hover:bg-[color:var(--surface-strong)] disabled:opacity-60"
         >
-          Edit details
+          {t("booking.edit")}
         </button>
       </div>
     </div>
@@ -457,6 +456,7 @@ function BookingCard({
 // ─── Date picker with month/year navigation ────────────────────────────────
 
 function DatePicker({ onSelect }: { onSelect: (date: string) => void }) {
+  const t = useTranslations("chatbot");
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
@@ -527,13 +527,12 @@ function DatePicker({ onSelect }: { onSelect: (date: string) => void }) {
   };
 
   // Generate available months for the picker
-  const availableMonths: { month: number; year: number; label: string }[] = [];
+  const availableMonths: { month: number; year: number }[] = [];
   const cursor = new Date(today.getFullYear(), today.getMonth(), 1);
   while (cursor <= maxDate) {
     availableMonths.push({
       month: cursor.getMonth(),
       year: cursor.getFullYear(),
-      label: `${FULL_MONTH_NAMES[cursor.getMonth()]} ${cursor.getFullYear()}`,
     });
     cursor.setMonth(cursor.getMonth() + 1);
   }
@@ -545,7 +544,7 @@ function DatePicker({ onSelect }: { onSelect: (date: string) => void }) {
         <div className="flex items-center gap-1.5 text-[color:var(--brand)]">
           <CalendarDots size={14} weight="fill" />
           <span className="text-xs font-bold uppercase tracking-widest">
-            Pick a date
+            {t("datePicker.heading")}
           </span>
         </div>
       </div>
@@ -557,7 +556,7 @@ function DatePicker({ onSelect }: { onSelect: (date: string) => void }) {
           onClick={prevMonth}
           disabled={!canPrevMonth()}
           className="flex h-7 w-7 items-center justify-center rounded-lg text-[color:var(--brand)] transition hover:bg-[color:var(--brand-soft)] disabled:opacity-30"
-          aria-label="Previous month"
+          aria-label={t("datePicker.prevMonthAriaLabel")}
         >
           <CaretLeft size={14} weight="bold" />
         </button>
@@ -568,7 +567,7 @@ function DatePicker({ onSelect }: { onSelect: (date: string) => void }) {
           onClick={() => setShowMonthPicker((v) => !v)}
           className="rounded-lg px-3 py-1 text-sm font-bold text-[color:var(--brand-deep)] transition hover:bg-[color:var(--brand-soft)]"
         >
-          {FULL_MONTH_NAMES[viewMonth]} {viewYear}
+          {t(`monthFull.${MONTH_FULL_KEYS[viewMonth]}`)} {viewYear}
         </button>
 
         <button
@@ -576,7 +575,7 @@ function DatePicker({ onSelect }: { onSelect: (date: string) => void }) {
           onClick={nextMonth}
           disabled={!canNextMonth()}
           className="flex h-7 w-7 items-center justify-center rounded-lg text-[color:var(--brand)] transition hover:bg-[color:var(--brand-soft)] disabled:opacity-30"
-          aria-label="Next month"
+          aria-label={t("datePicker.nextMonthAriaLabel")}
         >
           <CaretRight size={14} weight="bold" />
         </button>
@@ -603,7 +602,7 @@ function DatePicker({ onSelect }: { onSelect: (date: string) => void }) {
                     : "text-[color:var(--text-main)] hover:bg-[color:var(--brand-soft)]"
                 }`}
               >
-                {MONTH_NAMES[m.month]} {m.year !== today.getFullYear() ? m.year : ""}
+                {t(`monthShort.${MONTH_SHORT_KEYS[m.month]}`)} {m.year !== today.getFullYear() ? m.year : ""}
               </button>
             );
           })}
@@ -612,12 +611,12 @@ function DatePicker({ onSelect }: { onSelect: (date: string) => void }) {
 
       {/* Day-of-week labels */}
       <div className="mb-1 grid grid-cols-6 gap-1 text-center">
-        {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d) => (
+        {DOW_KEYS.map((d) => (
           <span
             key={d}
             className="text-[10px] font-semibold text-[color:var(--text-soft)]"
           >
-            {d}
+            {t(`day.${d}`)}
           </span>
         ))}
       </div>
@@ -656,7 +655,7 @@ function DatePicker({ onSelect }: { onSelect: (date: string) => void }) {
       {/* Footer */}
       <div className="mt-2 text-center">
         <span className="text-[10px] text-[color:var(--text-soft)]">
-          Mon – Sat &bull; 8:00–17:30
+          {t("datePicker.hours")}
         </span>
       </div>
     </div>
@@ -666,10 +665,10 @@ function DatePicker({ onSelect }: { onSelect: (date: string) => void }) {
 // ─── Time picker grouped by appointment period ──────────────────────────────
 
 const TIME_PERIODS = [
-  { label: "Morning", start: "08:00", end: "11:30" },
-  { label: "Midday", start: "12:00", end: "13:30" },
-  { label: "Afternoon", start: "14:00", end: "17:00" },
-];
+  { id: "morning", start: "08:00", end: "11:30" },
+  { id: "midday", start: "12:00", end: "13:30" },
+  { id: "afternoon", start: "14:00", end: "17:00" },
+] as const;
 
 function timeToMinutes(time: string): number {
   const [hour, minute] = time.split(":").map(Number);
@@ -683,6 +682,7 @@ function TimePicker({
   date: string | null;
   onSelect: (time: string) => void;
 }) {
+  const t = useTranslations("chatbot");
   const [slots, setSlots] = useState<SlotOption[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -705,19 +705,21 @@ function TimePicker({
       .catch((err) => {
         if (err instanceof DOMException && err.name === "AbortError") return;
         console.error("[chatbot] Slot fetch error:", err);
-        setError("Unable to load times. Please type your preferred time.");
+        setError(t("timePicker.loadError"));
       })
       .finally(() => {
         if (!controller.signal.aborted) setLoading(false);
       });
 
     return () => controller.abort();
+    // t() is stable for the active locale; only the date drives a refetch.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [date]);
 
   if (!date) {
     return (
       <div className="mx-3 mb-3 rounded-xl border border-[color:var(--brand-soft)] bg-white p-3 text-xs text-[color:var(--text-soft)]">
-        Please choose a date first so we can show available times.
+        {t("timePicker.chooseDateFirst")}
       </div>
     );
   }
@@ -727,14 +729,14 @@ function TimePicker({
       <div className="mb-3 flex items-center gap-1.5 text-[color:var(--brand)]">
         <CalendarDots size={14} weight="fill" />
         <span className="text-xs font-bold uppercase tracking-widest">
-          Pick a time
+          {t("timePicker.heading")}
         </span>
       </div>
 
       {loading && (
         <div className="flex items-center gap-2 text-xs text-[color:var(--text-soft)]">
           <SpinnerGap size={14} className="animate-spin" />
-          Loading available times...
+          {t("timePicker.loading")}
         </div>
       )}
 
@@ -751,9 +753,9 @@ function TimePicker({
             });
 
             return (
-              <div key={period.label}>
+              <div key={period.id}>
                 <p className="mb-1.5 text-[10px] font-bold uppercase tracking-widest text-[color:var(--text-soft)]">
-                  {period.label}
+                  {t(`timePicker.period.${period.id}`)}
                 </p>
                 <div className="grid grid-cols-3 gap-1.5">
                   {periodSlots.map((slot) => (
@@ -783,28 +785,18 @@ function TimePicker({
 
 // ─── Persistent suggestion bar with scroll chevrons ─────────────────────────
 
+// Suggestion chip keys — the visible label and the prompt sent on tap both come
+// from the `chatbot.suggestion.*` / `chatbot.suggestionText.*` namespaces.
 const SUGGESTIONS = [
-  { label: "Our services", text: "What dental services do you offer?" },
-  { label: "Meet our doctors", text: "Tell me about your doctors" },
-  { label: "Implant prices", text: "How much do dental implants cost?" },
-  { label: "Book appointment", text: "I'd like to book an appointment" },
-  {
-    label: "Teeth whitening",
-    text: "Do you offer teeth whitening? How much does it cost?",
-  },
-  {
-    label: "Braces options",
-    text: "What braces and aligner options do you have?",
-  },
-  {
-    label: "Visiting from abroad",
-    text: "I'm travelling from abroad — how does it work?",
-  },
-  {
-    label: "Opening hours",
-    text: "What are your opening hours and location?",
-  },
-];
+  "services",
+  "doctors",
+  "implantPrices",
+  "bookAppointment",
+  "teethWhitening",
+  "bracesOptions",
+  "visitingAbroad",
+  "openingHours",
+] as const;
 
 function SuggestionBar({
   onSelect,
@@ -813,6 +805,7 @@ function SuggestionBar({
   onSelect: (text: string) => void;
   disabled: boolean;
 }) {
+  const t = useTranslations("chatbot");
   const scrollRef = useRef<HTMLDivElement>(null);
   const [showLeft, setShowLeft] = useState(false);
   const [showRight, setShowRight] = useState(true);
@@ -847,7 +840,7 @@ function SuggestionBar({
         <button
           type="button"
           onClick={() => scrollBy(-1)}
-          aria-label="Scroll suggestions left"
+          aria-label={t("suggestionScroll.leftAriaLabel")}
           className="absolute left-0 top-0 z-10 flex h-full w-7 items-center justify-center bg-gradient-to-r from-[color:var(--surface)] via-[color:var(--surface)] to-transparent"
         >
           <CaretLeft
@@ -865,13 +858,13 @@ function SuggestionBar({
       >
         {SUGGESTIONS.map((s) => (
           <button
-            key={s.label}
+            key={s}
             type="button"
             disabled={disabled}
-            onClick={() => onSelect(s.text)}
+            onClick={() => onSelect(t(`suggestionText.${s}`))}
             className="shrink-0 rounded-full border border-[color:var(--brand-light)] bg-white px-3 py-1.5 text-[11px] font-semibold text-[color:var(--brand)] transition hover:bg-[color:var(--brand-soft)] active:scale-95 disabled:opacity-40"
           >
-            {s.label}
+            {t(`suggestion.${s}`)}
           </button>
         ))}
       </div>
@@ -881,7 +874,7 @@ function SuggestionBar({
         <button
           type="button"
           onClick={() => scrollBy(1)}
-          aria-label="Scroll suggestions right"
+          aria-label={t("suggestionScroll.rightAriaLabel")}
           className="absolute right-0 top-0 z-10 flex h-full w-7 items-center justify-center bg-gradient-to-l from-[color:var(--surface)] via-[color:var(--surface)] to-transparent"
         >
           <CaretRight
@@ -934,10 +927,11 @@ function loadPersistedMessages(): Message[] | null {
 }
 
 export function Chatbot() {
+  const t = useTranslations("chatbot");
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>(() => {
     // Will be re-hydrated in useEffect to avoid SSR mismatch
-    return [GREETING];
+    return [{ ...GREETING, content: t("greeting") }];
   });
   const [input, setInput] = useState("");
   const [isStreaming, setIsStreaming] = useState(false);
@@ -979,13 +973,16 @@ export function Chatbot() {
       // Refresh the stored greeting with the current copy so a returning
       // session doesn't keep showing an outdated welcome message.
       const refreshed = saved.map((m) =>
-        m.id === "greeting" ? { ...m, content: GREETING.content } : m,
+        m.id === "greeting" ? { ...m, content: t("greeting") } : m,
       );
       setMessages(refreshed);
       // An ongoing conversation (any user message) skips the Start gate.
       if (refreshed.some((m) => m.role === "user")) setStarted(true);
     }
     setHydrated(true);
+    // t() is stable for the active locale; re-running on its identity would
+    // re-hydrate from storage on every render.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Persist messages on every change (after hydration)
@@ -1356,8 +1353,7 @@ export function Chatbot() {
           m.id === assistantMsg.id
             ? {
                 ...m,
-                content:
-                  "Sorry, I'm having trouble connecting right now. Please try again or contact us directly at +855 69 811 338.",
+                content: t("errorMessage"),
               }
             : m,
         ),
@@ -1410,14 +1406,16 @@ export function Chatbot() {
         // 409 = slot taken, 400 = validation, 5xx = server. Show the real reason.
         const reason =
           res.status === 409
-            ? "That time slot was just taken. Please pick another time."
-            : payload.error ||
-              "We couldn't complete your booking just now.";
+            ? t("booking.slotTaken")
+            : payload.error || t("booking.failGeneric");
         setBookingError(reason);
         return;
       }
 
-      const ref = payload.bookingId ? ` (ref #${String(payload.bookingId)})` : "";
+      const ref = payload.bookingId
+        ? t("booking.successRef", { id: String(payload.bookingId) })
+        : "";
+      const emailNote = pendingBooking.email ? t("booking.successEmail") : "";
       setPendingBooking(null);
       setBookingError(null);
       setMessages((prev) => [
@@ -1425,14 +1423,12 @@ export function Chatbot() {
         {
           id: uid(),
           role: "assistant",
-          content: `✅ Your appointment request is in${ref}! Our team will review it and confirm shortly${pendingBooking.email ? ", and a confirmation email is on its way" : ""}. You can also message us anytime using the buttons at the top. 😊`,
+          content: t("booking.success", { ref, email: emailNote }),
         },
       ]);
     } catch {
       // Network/unreachable — fail loud and point to the human channels.
-      setBookingError(
-        "We couldn't reach our booking system. Please check your connection and try again, or message us directly using the buttons at the top.",
-      );
+      setBookingError(t("booking.unreachable"));
     } finally {
       setBookingSubmitting(false);
     }
@@ -1465,8 +1461,8 @@ export function Chatbot() {
         role: "assistant",
         content:
           channel === "whatsapp"
-            ? "Opening WhatsApp with your details — just tap send and our team will confirm your appointment. 💬"
-            : "I've copied your booking summary — paste it into our Telegram chat and tap send, and our team will confirm your appointment. 💬",
+            ? t("booking.sentWhatsApp")
+            : t("booking.sentTelegram"),
       },
     ]);
   }
@@ -1485,17 +1481,17 @@ export function Chatbot() {
                 <Image src={ROOMY_AVATAR} alt="Roomy" width={40} height={40} className="h-full w-full object-cover" />
               </span>
               <div>
-                <p className="font-display text-lg text-white">Roomy</p>
+                <p className="font-display text-lg text-white">{t("panelBrand")}</p>
                 <p className="text-[11px] text-white/70">
                   {voiceMode
                     ? voiceState === "recording"
-                      ? "Listening…"
+                      ? t("voice.listening")
                       : voiceState === "thinking"
-                        ? "Thinking…"
+                        ? t("voice.thinking")
                         : voiceState === "speaking"
-                          ? "Speaking…"
-                          : "Listening…"
-                    : "Virtual Assistant"}
+                          ? t("voice.speaking")
+                          : t("voice.listening")
+                    : t("panelSubtitle")}
                 </p>
               </div>
             </div>
@@ -1503,13 +1499,13 @@ export function Chatbot() {
               {voiceMode && (
                 <span className="mr-1 flex items-center gap-1.5 rounded-full bg-white/15 px-2.5 py-1 text-[11px] font-medium text-white">
                   <Microphone size={13} weight="fill" className="animate-pulse" />
-                  Voice
+                  {t("voice.badge")}
                 </span>
               )}
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                aria-label="Close chat"
+                aria-label={t("closeAriaLabel")}
                 className="flex h-8 w-8 items-center justify-center rounded-full text-white/70 transition hover:bg-white/20 hover:text-white"
               >
                 <X size={18} weight="bold" />
@@ -1520,7 +1516,7 @@ export function Chatbot() {
           {/* Talk to a human — always reachable, at any point in the chat */}
           <div className="flex shrink-0 items-center justify-between gap-2 border-b border-[color:var(--border-strong)] bg-[color:var(--surface)] px-4 py-2">
             <span className="text-xs font-medium text-[color:var(--text-soft)]">
-              Talk to a human
+              {t("humanRow.label")}
             </span>
             <div className="flex items-center gap-2">
               {HUMAN_CHANNELS.map((channel) => (
@@ -1529,8 +1525,8 @@ export function Chatbot() {
                   href={channel.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={`Message Roomchang on ${channel.label}`}
-                  title={`Message Roomchang on ${channel.label}`}
+                  aria-label={t("humanRow.messageOnAriaLabel", { channel: channel.label })}
+                  title={t("humanRow.messageOnAriaLabel", { channel: channel.label })}
                   className={`flex h-8 w-8 items-center justify-center rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.16)] transition hover:-translate-y-0.5 hover:shadow-[0_4px_14px_rgba(0,0,0,0.22)] ${channel.bg}`}
                 >
                   {channel.icon}
@@ -1558,10 +1554,9 @@ export function Chatbot() {
                   className="h-24 w-24 rounded-full bg-white object-cover shadow-[0_8px_28px_rgba(204,55,113,0.25)]"
                   priority
                 />
-                <p className="font-display text-2xl text-[color:var(--text-main)]">Hi, I&apos;m Roomy 👋</p>
+                <p className="font-display text-2xl text-[color:var(--text-main)]">{t("welcome.greeting")}</p>
                 <p className="text-sm leading-relaxed text-[color:var(--text-soft)]">
-                  Roomchang&apos;s virtual assistant. Ask me about treatments, pricing, or booking a visit —
-                  tap below to start.
+                  {t("welcome.intro")}
                 </p>
               </div>
             ) : (
@@ -1618,7 +1613,7 @@ export function Chatbot() {
                   {
                     id: uid(),
                     role: "assistant",
-                    content: "No problem! What would you like to change?",
+                    content: t("booking.cancelled"),
                   },
                 ]);
               }}
@@ -1642,7 +1637,7 @@ export function Chatbot() {
                 onClick={handleStart}
                 className="flex w-full items-center justify-center gap-2 rounded-full bg-[color:var(--brand)] px-6 py-3 text-sm font-bold text-white shadow-[0_4px_16px_rgba(204,55,113,0.3)] transition hover:bg-[color:var(--brand-deep)]"
               >
-                <ChatCircleDots size={18} weight="fill" /> Start Chat
+                <ChatCircleDots size={18} weight="fill" /> {t("welcome.start")}
               </button>
             </div>
           ) : voiceMode ? (
@@ -1654,19 +1649,19 @@ export function Chatbot() {
                 </span>
                 <span className="text-sm font-medium text-[color:var(--brand-deep)]">
                   {voiceState === "thinking"
-                    ? "Thinking…"
+                    ? t("voice.thinking")
                     : voiceState === "speaking"
-                      ? "Speaking…"
-                      : "Listening…"}
+                      ? t("voice.speaking")
+                      : t("voice.listening")}
                 </span>
               </div>
               <button
                 type="button"
                 onClick={toggleVoiceMode}
-                aria-label="Stop voice conversation"
+                aria-label={t("voice.stopAriaLabel")}
                 className="flex h-10 shrink-0 items-center gap-1.5 rounded-full bg-[color:var(--brand)] px-4 text-sm font-bold text-white transition hover:bg-[color:var(--brand-deep)]"
               >
-                <X size={16} weight="bold" /> Stop
+                <X size={16} weight="bold" /> {t("voice.stop")}
               </button>
             </div>
           ) : (
@@ -1682,7 +1677,7 @@ export function Chatbot() {
                 name="chatbot-msg"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Type your message..."
+                placeholder={t("inputPlaceholder")}
                 disabled={isStreaming}
                 autoComplete="off"
                 autoCorrect="on"
@@ -1700,8 +1695,8 @@ export function Chatbot() {
                   type="button"
                   onClick={toggleVoiceMode}
                   disabled={isStreaming}
-                  aria-label="Start voice conversation"
-                  title="Talk to us"
+                  aria-label={t("voice.startAriaLabel")}
+                  title={t("voice.startTitle")}
                   className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[color:var(--border-strong)] bg-[color:var(--surface)] text-[color:var(--brand-deep)] transition hover:border-[color:var(--brand-light)] disabled:opacity-40"
                 >
                   <Microphone size={18} />
@@ -1710,7 +1705,7 @@ export function Chatbot() {
               <button
                 type="submit"
                 disabled={isStreaming || !input.trim()}
-                aria-label="Send message"
+                aria-label={t("sendAriaLabel")}
                 className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[color:var(--brand)] text-white transition hover:bg-[color:var(--brand-deep)] disabled:opacity-40"
               >
                 {isStreaming ? (
@@ -1736,7 +1731,7 @@ export function Chatbot() {
                 try { sessionStorage.setItem("rc-bubble-seen", "1"); } catch {}
               }}
               className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-white border border-gray-200 text-gray-400 hover:text-gray-600 shadow-sm"
-              aria-label="Dismiss"
+              aria-label={t("bubble.dismissAriaLabel")}
             >
               <X size={10} weight="bold" />
             </button>
@@ -1750,10 +1745,10 @@ export function Chatbot() {
               className="text-left"
             >
               <p className="text-sm font-medium text-[color:var(--text-main)]">
-                Need help with dental care? 😊
+                {t("bubble.prompt")}
               </p>
               <p className="mt-0.5 text-xs text-[color:var(--brand)]">
-                Chat with us →
+                {t("bubble.cta")}
               </p>
             </button>
             {/* Arrow pointing down to chat button */}
@@ -1766,7 +1761,7 @@ export function Chatbot() {
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        aria-label={open ? "Close chat" : "Chat with Roomy"}
+        aria-label={open ? t("closeAriaLabel") : t("openAriaLabel")}
         className={`fixed bottom-4 right-4 z-[60] h-12 w-12 items-center justify-center overflow-hidden rounded-full shadow-[0_8px_28px_rgba(204,55,113,0.45)] transition hover:scale-105 active:scale-95 sm:bottom-6 sm:right-6 sm:h-14 sm:w-14 ${
           open ? "hidden bg-[color:var(--brand-deep)] sm:flex" : "flex bg-white"
         }`}
@@ -1776,7 +1771,7 @@ export function Chatbot() {
         ) : (
           <Image
             src={ROOMY_AVATAR}
-            alt="Chat with Roomy"
+            alt={t("openAriaLabel")}
             width={56}
             height={56}
             className="h-full w-full object-cover"
