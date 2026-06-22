@@ -1,87 +1,79 @@
+import { getTranslations } from "next-intl/server";
+
 const shortcuts = [
   {
-    label: "Treatment Costs",
+    id: "treatmentCosts",
     href: "#costs",
     accent: "bg-[linear-gradient(135deg,#0fa5a4,#0b8b8a)]",
   },
   {
-    label: "Testimonials",
+    id: "testimonials",
     href: "#testimonials",
     accent: "bg-[linear-gradient(135deg,#a22f7b,#8c2a8d)]",
   },
   {
-    label: "Our Team",
+    id: "ourTeam",
     href: "#team",
     accent: "bg-[linear-gradient(135deg,#c76ad7,#a750b7)]",
   },
   {
-    label: "Make Appointment",
+    id: "makeAppointment",
     href: "#book",
     accent: "bg-[linear-gradient(135deg,#1592db,#0e7cc7)]",
   },
   {
-    label: "Plan Your Trip",
+    id: "planYourTrip",
     href: "#trip",
     accent: "bg-[linear-gradient(135deg,#6cab18,#5a9514)]",
   },
-];
+] as const;
 
 const featuredCards = [
   {
     id: "international",
-    title: "International Patients",
-    description:
-      "Thousands of patients from Australia, Japan, Singapore, and beyond visit Roomchang each year. We make the journey simple.",
     imageSrc: "/hero/hero-customer-service.jpg?v=2",
-    imageAlt: "International patient at Roomchang Dental Hospital",
     href: "/international",
     bgSize: "cover",
     bgPosition: "center",
   },
   {
     id: "team",
-    title: "Meet Our Team",
-    description:
-      "37 specialist dentists across every discipline — multilingual, experienced, and committed to your comfort.",
     imageSrc: "/hero/hero-all-staff.jpg",
-    imageAlt: "Roomchang dental hospital team",
     href: "/team",
     bgSize: "contain",
     bgPosition: "center top",
   },
   {
     id: "aligner",
-    title: "Clear Aligner (CA)",
-    description:
-      "Designed, fabricated, and fitted in-house for a precise, discreet result.",
     imageSrc: "/hero/roomchang-clear-aligner.jpg",
-    imageAlt: "Roomchang clear aligner treatment",
     href: "/technology/ca-clear-aligner",
     bgSize: "contain",
     bgPosition: "center",
   },
-];
+] as const;
 
-export function HomeHighlights() {
+export async function HomeHighlights() {
+  const t = await getTranslations("homeHighlights");
+
   return (
     <section className="relative mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
       <div className="overflow-x-auto pb-2">
         <div className="grid min-w-[980px] grid-cols-5 gap-3 lg:min-w-0">
           {shortcuts.map((shortcut) => (
             <a
-              key={shortcut.label}
+              key={shortcut.id}
               href={shortcut.href}
               className={`${shortcut.accent} group flex min-h-28 flex-col justify-between rounded-2xl p-5 text-white shadow-[0_16px_40px_rgba(34,22,31,0.12)] transition hover:-translate-y-0.5`}
             >
               <span className="text-[0.76rem] font-semibold uppercase tracking-[0.22em] text-white/70">
-                Quick Access
+                {t("shortcut.quickAccess")}
               </span>
               <div className="space-y-2">
                 <p className="text-xl font-extrabold uppercase leading-none tracking-[0.04em]">
-                  {shortcut.label}
+                  {t(`shortcut.${shortcut.id}`)}
                 </p>
                 <span className="inline-flex items-center gap-2 text-sm font-semibold text-white/92">
-                  See more
+                  {t("shortcut.seeMore")}
                   <span aria-hidden="true" className="transition group-hover:translate-x-1">
                     →
                   </span>
@@ -101,7 +93,7 @@ export function HomeHighlights() {
             <div className="relative h-60 bg-[color:var(--brand-soft)] overflow-hidden">
               <img
                 src={card.imageSrc}
-                alt={card.imageAlt}
+                alt={t(`card.${card.id}.alt`)}
                 className="absolute inset-0 h-full w-full"
                 style={{
                   objectFit: card.bgSize as "cover" | "contain",
@@ -110,13 +102,13 @@ export function HomeHighlights() {
               />
             </div>
             <div className="space-y-4 p-6">
-              <h2 className="font-display text-[2rem] leading-none text-[color:var(--text-main)]">{card.title}</h2>
-              <p className="text-sm leading-7 text-[color:var(--text-soft)]">{card.description}</p>
+              <h2 className="font-display text-[2rem] leading-none text-[color:var(--text-main)]">{t(`card.${card.id}.title`)}</h2>
+              <p className="text-sm leading-7 text-[color:var(--text-soft)]">{t(`card.${card.id}.description`)}</p>
               <a
                 href={card.href}
                 className="inline-flex items-center gap-2 text-sm font-semibold text-[color:var(--brand-deep)] transition hover:text-[color:var(--brand)]"
               >
-                {card.id === "international" ? "Plan your trip" : card.id === "team" ? "Meet the doctors" : "Learn more"}
+                {t(`card.${card.id}.cta`)}
                 <span aria-hidden="true">→</span>
               </a>
             </div>
