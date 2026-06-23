@@ -9,10 +9,14 @@ import { CaretDown } from "@phosphor-icons/react";
 // for internal QA of in-progress translations) but greys it out in the public
 // switcher so visitors can't land on a half-translated page. Flip to `true`
 // once that language's content is fully translated.
+//
+// `code` is the ISO 639 language code used everywhere under the hood (routes,
+// <html lang>, hreflang/SEO). `display` is the country-style 2-letter chip shown
+// to users, matched to the flag (KH/CN) since that's what visitors recognise.
 const LANGUAGES = [
-  { code: "en", label: "English", flag: "🇬🇧", enabled: true },
-  { code: "km", label: "ខ្មែរ", flag: "🇰🇭", enabled: false },
-  { code: "zh", label: "中文", flag: "🇨🇳", enabled: false },
+  { code: "en", label: "English", display: "EN", flag: "🇬🇧", enabled: true },
+  { code: "km", label: "ខ្មែរ", display: "KH", flag: "🇰🇭", enabled: false },
+  { code: "zh", label: "中文", display: "CN", flag: "🇨🇳", enabled: false },
 ] as const;
 
 type LocaleCode = (typeof LANGUAGES)[number]["code"];
@@ -76,7 +80,7 @@ export function LanguageSwitcher() {
           {activeLanguage.flag}
         </span>
         <span className="hidden sm:inline">
-          {activeLanguage.code.toUpperCase()}
+          {activeLanguage.display}
         </span>
         <CaretDown
           size={13}
