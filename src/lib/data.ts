@@ -381,7 +381,8 @@ export async function getInternationalSteps(): Promise<InternationalStep[]> {
     .select("*")
     .order("sort_order");
   if (error) { console.error("Failed to fetch international steps:", error.message); return []; }
-  return data ?? [];
+  const tr = await getTranslatedFieldsBatch("international_step", (data ?? []).map((s) => s.id));
+  return (data ?? []).map((s) => mergeTranslation(s, tr.get(String(s.id)) ?? {}));
 }
 
 export async function getInternationalWhyItems(): Promise<InternationalWhyItem[]> {
@@ -390,7 +391,8 @@ export async function getInternationalWhyItems(): Promise<InternationalWhyItem[]
     .select("*")
     .order("sort_order");
   if (error) { console.error("Failed to fetch international why items:", error.message); return []; }
-  return data ?? [];
+  const tr = await getTranslatedFieldsBatch("international_why_item", (data ?? []).map((w) => w.id));
+  return (data ?? []).map((w) => mergeTranslation(w, tr.get(String(w.id)) ?? {}));
 }
 
 export async function getInternationalPopularTreatments(): Promise<InternationalPopularTreatment[]> {
@@ -399,7 +401,8 @@ export async function getInternationalPopularTreatments(): Promise<International
     .select("*")
     .order("sort_order");
   if (error) { console.error("Failed to fetch popular treatments:", error.message); return []; }
-  return data ?? [];
+  const tr = await getTranslatedFieldsBatch("international_popular_treatment", (data ?? []).map((p) => p.id));
+  return (data ?? []).map((p) => mergeTranslation(p, tr.get(String(p.id)) ?? {}));
 }
 
 export async function getHeroSlides(): Promise<HeroSlideDb[]> {

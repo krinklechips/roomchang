@@ -19,15 +19,18 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 function renderWhyCard(
-  item: { title: string; description: string },
+  item: { id: number; title: string; description: string },
   testimonialsCta: string,
   priceComparisonCta: string,
 ) {
-  const keyword = "Read their stories in our testimonials.";
-  const hasTestimonials = item.description.includes(keyword);
-  const cleanDesc = hasTestimonials ? item.description.replace(keyword, "").trim() : item.description;
-  // The cost-savings card links straight to the international price comparison.
-  const isCostSavings = /cost savings/i.test(item.title);
+  // CTAs are tied to specific cards by id (locale-independent — the old English
+  // text match hid them on /kh and /cn): the "Established Reputation" card links
+  // to testimonials, the "Significant Cost Savings" card to the price comparison.
+  const hasTestimonials = item.id === 6;
+  const isCostSavings = item.id === 1;
+  // Strip the embedded testimonials sentence from the English source (no-op once
+  // translated, since the translation omits it — the CTA button replaces it).
+  const cleanDesc = item.description.replace("Read their stories in our testimonials.", "").trim();
 
   return (
     <div
