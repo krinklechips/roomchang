@@ -190,10 +190,21 @@ export async function middleware(request: NextRequest) {
     });
   }
 
+  // Locale URLs moved from the ISO language codes to country-style codes
+  // (km → kh, zh → cn). Permanently redirect the old paths so any existing
+  // links keep working.
+  const oldLocale = pathname.match(/^\/(km|zh)(\/|$)/);
+  if (oldLocale) {
+    const renamed: Record<string, string> = { km: "kh", zh: "cn" };
+    const url = request.nextUrl.clone();
+    url.pathname = pathname.replace(/^\/(km|zh)/, `/${renamed[oldLocale[1]]}`);
+    return NextResponse.redirect(url, 308);
+  }
+
   // Webmail shortcut → SiteGround webmail. The old SiteGround "/webmail" domain
   // redirect stopped firing once the apex moved to Vercel, so recreate it here.
   // Handle it before locale routing so it isn't rewritten to /en/webmail (500).
-  const noLocale = pathname.replace(/^\/(en|zh|km)(?=\/|$)/, "");
+  const noLocale = pathname.replace(/^\/(en|kh|cn)(?=\/|$)/, "");
   if (noLocale === "/webmail" || noLocale.startsWith("/webmail/")) {
     return NextResponse.redirect("https://sm12.siteground.biz/webmail/mail/", 307);
   }
@@ -202,7 +213,7 @@ export async function middleware(request: NextRequest) {
   const isApi = pathname.startsWith("/api");
 
   // Strip locale prefix for auth checks
-  const cleanPath = pathname.replace(/^\/(en|zh|km)/, "") || "/";
+  const cleanPath = pathname.replace(/^\/(en|kh|cn)/, "") || "/";
 
   // Protect all /admin/* pages and /api/admin/* routes
   if (cleanPath.startsWith("/admin") || cleanPath.startsWith("/api/admin")) {

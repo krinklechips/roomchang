@@ -2,10 +2,10 @@ import type { MetadataRoute } from "next";
 import { BRANCHES } from "@/lib/branches";
 import { CLINICAL_CATEGORIES } from "@/lib/clinical-categories";
 import { supabaseServer } from "@/lib/supabase-server";
-import { routing } from "@/i18n/routing";
+import { routing, LOCALE_TO_LANG } from "@/i18n/routing";
 
 const BASE_URL = "https://roomchang.com";
-const LOCALES = routing.locales; // ["en", "zh", "km"]
+const LOCALES = routing.locales; // URL segments: ["en", "kh", "cn"]
 const DEFAULT_LOCALE = routing.defaultLocale; // "en"
 
 type ChangeFreq = NonNullable<MetadataRoute.Sitemap[number]["changeFrequency"]>;
@@ -18,7 +18,8 @@ type RouteEntry = { path: string; changeFrequency: ChangeFreq; priority: number 
  */
 function localized(path: string, changeFrequency: ChangeFreq, priority: number): MetadataRoute.Sitemap[number] {
   const languages: Record<string, string> = {};
-  for (const locale of LOCALES) languages[locale] = `${BASE_URL}/${locale}${path}`;
+  // hreflang key = ISO language code (en/km/zh); URL = country-style segment (/en, /kh, /cn).
+  for (const locale of LOCALES) languages[LOCALE_TO_LANG[locale] ?? locale] = `${BASE_URL}/${locale}${path}`;
   const canonical = `${BASE_URL}/${DEFAULT_LOCALE}${path}`;
   return {
     url: canonical,

@@ -1,6 +1,6 @@
 import { hasLocale } from "next-intl";
 import { getRequestConfig } from "next-intl/server";
-import { routing } from "./routing";
+import { routing, LOCALE_TO_LANG } from "./routing";
 
 // Static imports — NOT a dynamic `import(\`../../messages/${locale}.json\`)`.
 // The template-literal dynamic import compiled each locale to its own chunk,
@@ -21,6 +21,6 @@ export default getRequestConfig(async ({ requestLocale }) => {
 
   return {
     locale,
-    messages: MESSAGES[locale],
+    messages: MESSAGES[LOCALE_TO_LANG[locale] ?? locale],
   };
 });

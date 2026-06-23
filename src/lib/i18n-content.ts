@@ -1,4 +1,5 @@
 import { getLocale } from "next-intl/server";
+import { LOCALE_TO_LANG } from "@/i18n/routing";
 import { supabase } from "./supabase";
 
 /**
@@ -37,7 +38,7 @@ export async function getTranslatedFields(
     .select("field, value")
     .eq("entity_type", entityType)
     .eq("entity_id", String(entityId))
-    .eq("locale", locale);
+    .eq("locale", LOCALE_TO_LANG[locale] ?? locale);
 
   if (error || !data) return {};
   const out: FieldMap = {};
@@ -60,7 +61,7 @@ export async function getTranslatedFieldsBatch(
     .from("content_translations")
     .select('entity_id, field, value')
     .eq("entity_type", entityType)
-    .eq("locale", locale)
+    .eq("locale", LOCALE_TO_LANG[locale] ?? locale)
     .in("entity_id", entityIds.map(String));
 
   if (error || !data) return map;

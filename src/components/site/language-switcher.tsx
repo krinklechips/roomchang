@@ -5,18 +5,19 @@ import { useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { CaretDown } from "@phosphor-icons/react";
 
-// `enabled: false` keeps the locale's routes live (so /km and /zh still render
+// `enabled: false` keeps the locale's routes live (so /kh and /cn still render
 // for internal QA of in-progress translations) but greys it out in the public
 // switcher so visitors can't land on a half-translated page. Flip to `true`
 // once that language's content is fully translated.
 //
-// `code` is the ISO 639 language code used everywhere under the hood (routes,
-// <html lang>, hreflang/SEO). `display` is the country-style 2-letter chip shown
-// to users, matched to the flag (KH/CN) since that's what visitors recognise.
+// `code` is the URL path segment (country-style: kh/cn), which also matches the
+// `display` chip and the flag — what visitors recognise. The ISO 639 language
+// codes (km/zh) live under the hood for messages, content_translations,
+// <html lang>, and hreflang (see LOCALE_TO_LANG in src/i18n/routing.ts).
 const LANGUAGES = [
   { code: "en", label: "English", display: "EN", flag: "🇬🇧", enabled: true },
-  { code: "km", label: "ខ្មែរ", display: "KH", flag: "🇰🇭", enabled: false },
-  { code: "zh", label: "中文", display: "CN", flag: "🇨🇳", enabled: false },
+  { code: "kh", label: "ខ្មែរ", display: "KH", flag: "🇰🇭", enabled: false },
+  { code: "cn", label: "中文", display: "CN", flag: "🇨🇳", enabled: false },
 ] as const;
 
 type LocaleCode = (typeof LANGUAGES)[number]["code"];
