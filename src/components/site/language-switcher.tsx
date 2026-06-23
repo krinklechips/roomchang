@@ -88,7 +88,7 @@ export function LanguageSwitcher() {
         <div
           role="menu"
           aria-label={t("menuAriaLabel")}
-          className="absolute right-0 top-[calc(100%+0.6rem)] min-w-44 rounded-3xl border border-[color:var(--border-strong)] bg-white/96 p-2 shadow-[0_24px_60px_rgba(61,24,47,0.14)] backdrop-blur"
+          className="absolute right-0 top-[calc(100%+0.4rem)] min-w-32 rounded-2xl border border-[color:var(--border-strong)] bg-white/96 p-1.5 shadow-[0_24px_60px_rgba(61,24,47,0.14)] backdrop-blur"
         >
           {LANGUAGES.map((language) => {
             const isActive = language.code === currentLocale;
@@ -101,7 +101,7 @@ export function LanguageSwitcher() {
                 aria-current={isActive ? "true" : undefined}
                 aria-disabled={isDisabled || undefined}
                 disabled={isPending || isDisabled}
-                className={`flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-sm font-medium transition ${
+                className={`flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium transition ${
                   isActive
                     ? "bg-[color:var(--surface-strong)] text-[color:var(--brand-deep)]"
                     : isDisabled
