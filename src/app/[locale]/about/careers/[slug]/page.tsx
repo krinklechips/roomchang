@@ -1,6 +1,6 @@
 import { Link } from "@/i18n/navigation";
 import { notFound } from "next/navigation";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, Check, Mail, Phone } from "lucide-react";
 import { POSITIONS, getPositionBySlug } from "@/lib/careers";
@@ -27,9 +27,10 @@ export async function generateMetadata({
 export default async function CareerDetailPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }) {
-  const { slug } = await params;
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
   const pos = getPositionBySlug(slug);
   if (!pos) notFound();
 

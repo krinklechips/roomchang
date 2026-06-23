@@ -1,7 +1,7 @@
 import { Link } from "@/i18n/navigation";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft } from "lucide-react";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -12,7 +12,13 @@ export const metadata: Metadata = {
     "Review the cookies, anonymous analytics, and browser storage used by the Roomchang Dental Hospital website, including referral and preview cookies.",
 };
 
-export default async function CookiePolicyPage() {
+export default async function CookiePolicyPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations("cookiePolicy");
 
   return (

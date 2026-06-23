@@ -1,7 +1,7 @@
 import { SiteShell } from "@/components/site/site-shell";
 import { DoctorGrid } from "@/components/sections/doctor-grid";
 import { getDoctors } from "@/lib/data";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -12,7 +12,13 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default async function TeamPage() {
+export default async function TeamPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   const doctors = await getDoctors();
   const t = await getTranslations("team");
   const tStat = await getTranslations("team.stat");

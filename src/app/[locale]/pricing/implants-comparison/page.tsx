@@ -1,5 +1,5 @@
 import { Link } from "@/i18n/navigation";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 import { Package, FlaskConical, Building2 } from "lucide-react";
 import { SiteShell } from "@/components/site/site-shell";
@@ -34,7 +34,13 @@ type PricingComparisonRow = {
   sort_order: number | null;
 };
 
-export default async function ImplantsComparisonPage() {
+export default async function ImplantsComparisonPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations("implantsComparison");
 
   const { data, error } = await supabaseServer

@@ -4,7 +4,7 @@ import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { supabaseServer } from "@/lib/supabase-server";
 import { getTranslatedFieldsBatch, mergeTranslation } from "@/lib/i18n-content";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { NEWS_ARTICLES_SORTED } from "@/lib/news";
 import type { Metadata } from "next";
 
@@ -28,7 +28,14 @@ type Article = {
   imageAlt: string;
 };
 
-export default async function NewsPage() {
+export default async function NewsPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   const { data, error } = await supabaseServer
     .from("news_articles")
     .select("id, slug, date, title, description, image, imageAlt")

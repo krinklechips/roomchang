@@ -4,7 +4,7 @@ import { SiteShell } from "@/components/site/site-shell";
 import { getServices } from "@/lib/data";
 import { cdnUrl } from "@/lib/supabase";
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import {
   ShieldCheck,
   Tooth,
@@ -81,7 +81,13 @@ const SUB_SERVICES: Record<string, { key: string; href: string }[]> = {
   ],
 };
 
-export default async function ServicesPage() {
+export default async function ServicesPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   const [services, t] = await Promise.all([
     getServices(),
     getTranslations("services"),

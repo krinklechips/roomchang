@@ -1,7 +1,7 @@
 import { Link } from "@/i18n/navigation";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, GraduationCap, Handshake, Users, Lightbulb, Award, type LucideIcon } from "lucide-react";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -20,7 +20,14 @@ const VALUES: { id: string; Icon: LucideIcon }[] = [
   { id: "excellence", Icon: Award },
 ];
 
-export default async function VisionMissionValuesPage() {
+export default async function VisionMissionValuesPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   const t = await getTranslations("visionMission");
 
   return (

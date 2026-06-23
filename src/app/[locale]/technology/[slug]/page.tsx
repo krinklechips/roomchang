@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { getSeoPageMeta, getTechnologyBySlug, getTechnology } from "@/lib/data";
 import { buildSeoMetadata } from "@/lib/seo";
 import { TechnologyDetailContent } from "@/components/pages/TechnologyDetailContent";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -15,9 +15,10 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
   const [tech, seo] = await Promise.all([
     getTechnologyBySlug(slug),
     getSeoPageMeta(`/technology/${slug}`),
@@ -38,9 +39,10 @@ export async function generateMetadata({
 export default async function TechnologyDetailPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }) {
-  const { slug } = await params;
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
   const tech = await getTechnologyBySlug(slug);
   if (!tech) notFound();
 

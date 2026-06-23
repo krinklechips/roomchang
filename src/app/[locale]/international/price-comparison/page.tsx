@@ -1,5 +1,5 @@
 import { Link } from "@/i18n/navigation";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { SiteShell } from "@/components/site/site-shell";
 import { supabaseServer } from "@/lib/supabase-server";
 import type { Metadata } from "next";
@@ -26,7 +26,14 @@ type PricingComparisonRow = {
   sort_order: number | null;
 };
 
-export default async function PriceComparisonPage() {
+export default async function PriceComparisonPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   const [comparisonResult, tComp] = await Promise.all([
     supabaseServer
       .from("pricing_comparison_sets")

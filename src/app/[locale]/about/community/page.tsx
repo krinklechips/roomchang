@@ -4,7 +4,7 @@ import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import { supabaseServer } from "@/lib/supabase-server";
 import { getTranslatedFieldsBatch, mergeTranslation } from "@/lib/i18n-content";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -52,7 +52,13 @@ const FALLBACK_ARTICLES: Article[] = [
   },
 ];
 
-export default async function CommunityPage() {
+export default async function CommunityPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   const { data, error } = await supabaseServer
     .from("community_articles")
     .select("id, slug, title, date, description, image, imageAlt")

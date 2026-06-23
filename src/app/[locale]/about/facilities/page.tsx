@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, ArrowRight, Check, MapPin, Clock, Phone as PhoneIcon } from "lucide-react";
@@ -53,7 +53,14 @@ const GALLERY_INTERIOR = [
   { id: "room_c", src: cdnUrl("roomchang/about/facilities/facility-room-c.jpg") },
 ];
 
-export default async function FacilitiesPage() {
+export default async function FacilitiesPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   const t = await getTranslations("facilities");
 
   const { data: statsData, error } = await supabaseServer

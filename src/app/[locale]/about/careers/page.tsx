@@ -2,7 +2,7 @@ import { Link } from "@/i18n/navigation";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, ArrowRight, Briefcase, Mail, Phone } from "lucide-react";
 import { POSITIONS } from "@/lib/careers";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -11,7 +11,13 @@ export const metadata: Metadata = {
     "Join Cambodia’s leading dental group. View current job openings at Roomchang Dental Hospital — clinical fellowships, dentists, dental assistants, and customer service positions.",
 };
 
-export default async function CareersPage() {
+export default async function CareersPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations("careers");
   return (
     <SiteShell>

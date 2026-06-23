@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { getSeoPageMeta, getServiceBySlug, getServices } from "@/lib/data";
 import { buildSeoMetadata } from "@/lib/seo";
+import { setRequestLocale } from "next-intl/server";
 import { ServiceDetailContent } from "@/components/pages/ServiceDetailContent";
 import type { Metadata } from "next";
 
@@ -16,9 +17,10 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
   const [service, seo] = await Promise.all([
     getServiceBySlug(slug),
     getSeoPageMeta(`/services/${slug}`),
@@ -39,9 +41,10 @@ export async function generateMetadata({
 export default async function ServiceDetailPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }) {
-  const { slug } = await params;
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
   const service = await getServiceBySlug(slug);
   if (!service) notFound();
 

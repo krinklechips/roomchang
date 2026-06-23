@@ -6,7 +6,7 @@ import { supabaseServer } from "@/lib/supabase-server";
 import { getTranslatedFields, mergeTranslation } from "@/lib/i18n-content";
 import { CommunityGallery } from "@/components/sections/community-gallery";
 import { notFound } from "next/navigation";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -55,9 +55,10 @@ async function getAdjacentArticles(currentSlug: string) {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
   const article = await getArticle(slug);
   if (!article) return {};
   return {
@@ -69,9 +70,10 @@ export async function generateMetadata({
 export default async function CommunityArticlePage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }) {
-  const { slug } = await params;
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations("communityDetail");
   const [article, adjacent] = await Promise.all([
     getArticle(slug),

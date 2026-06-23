@@ -6,7 +6,7 @@ import { ZoomableImage } from "@/components/ui/zoomable-image";
 import { ArrowLeft, ArrowRight, Clock, Tag } from "lucide-react";
 import { getClinicalCases, getClinicalCaseBySlug, getSeoPageMeta } from "@/lib/data";
 import { buildSeoMetadata } from "@/lib/seo";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -19,9 +19,10 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
   const [c, seo] = await Promise.all([
     getClinicalCaseBySlug(slug),
     getSeoPageMeta(`/clinical-results/${slug}`),
@@ -42,9 +43,10 @@ export async function generateMetadata({
 export default async function ClinicalCaseDetailPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }) {
-  const { slug } = await params;
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
   const c = await getClinicalCaseBySlug(slug);
   if (!c) notFound();
 

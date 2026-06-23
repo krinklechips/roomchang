@@ -11,15 +11,17 @@
 
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { setRequestLocale } from "next-intl/server";
 import { getCmsPage } from "@/lib/cms";
 import { CmsPageContent } from "@/components/pages/CmsPageContent";
 
 interface Props {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
   const page = await getCmsPage(slug).catch(() => null);
 
   if (!page) {
@@ -36,7 +38,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function CmsPage({ params }: Props) {
-  const { slug } = await params;
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
 
   let page;
   try {

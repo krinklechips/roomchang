@@ -2,7 +2,7 @@ import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft } from "lucide-react";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -13,7 +13,14 @@ export const metadata: Metadata = {
     "A message from Dr. Tith Hong Yoeu, DDS, MSc. — Founder & Director of Roomchang Dental Hospital, on the hospital's commitment to quality dentistry in Cambodia.",
 };
 
-export default async function DirectorMessagePage() {
+export default async function DirectorMessagePage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   const t = await getTranslations("directorMessage");
 
   return (

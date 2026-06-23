@@ -2,7 +2,7 @@ import { SiteShell } from "@/components/site/site-shell";
 import { ClinicalResultsGrid } from "@/components/sections/clinical-results-grid";
 import { getClinicalCases } from "@/lib/data";
 import { supabaseServer } from "@/lib/supabase-server";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -17,7 +17,14 @@ export async function generateMetadata(): Promise<Metadata> {
 
 type DisplayStat = { display_value: string; label: string };
 
-export default async function ClinicalResultsPage() {
+export default async function ClinicalResultsPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   const t = await getTranslations("clinicalResults");
   const tStat = await getTranslations("clinicalResults.stat");
 

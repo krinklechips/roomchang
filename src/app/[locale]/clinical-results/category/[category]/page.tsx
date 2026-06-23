@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import type { Metadata } from "next";
 import { ArrowLeft } from "lucide-react";
@@ -21,9 +21,10 @@ export function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ category: string }>;
+  params: Promise<{ locale: string; category: string }>;
 }): Promise<Metadata> {
-  const { category: slug } = await params;
+  const { locale, category: slug } = await params;
+  setRequestLocale(locale);
   const category = getClinicalCategoryBySlug(slug);
   if (!category) return {};
 
@@ -43,9 +44,10 @@ export async function generateMetadata({
 export default async function ClinicalResultsCategoryPage({
   params,
 }: {
-  params: Promise<{ category: string }>;
+  params: Promise<{ locale: string; category: string }>;
 }) {
-  const { category: slug } = await params;
+  const { locale, category: slug } = await params;
+  setRequestLocale(locale);
   const category = getClinicalCategoryBySlug(slug);
   if (!category) notFound();
 

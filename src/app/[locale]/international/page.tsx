@@ -1,7 +1,7 @@
 import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { SiteShell } from "@/components/site/site-shell";
 import { InteractiveSteps } from "@/components/sections/interactive-steps";
 import { ChecklistForm } from "@/components/sections/checklist-form";
@@ -56,7 +56,13 @@ function renderWhyCard(
   );
 }
 
-export default async function InternationalPage() {
+export default async function InternationalPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   const [steps, whyItems, popularTreatments, t] = await Promise.all([
     getInternationalSteps(),
     getInternationalWhyItems(),

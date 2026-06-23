@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { notFound } from "next/navigation";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { supabaseServer } from "@/lib/supabase-server";
@@ -12,7 +12,7 @@ import type { Metadata } from "next";
 export const revalidate = 60;
 
 interface Props {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }
 
 type Article = {
@@ -62,7 +62,8 @@ async function getAdjacentArticles(slug: string) {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
   const article = await getArticle(slug);
 
   if (!article) {
@@ -81,7 +82,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function NewsArticlePage({ params }: Props) {
-  const { slug } = await params;
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations("newsDetail");
   const [article, adjacent] = await Promise.all([
     getArticle(slug),

@@ -2,7 +2,7 @@ import { Link } from "@/i18n/navigation";
 import { SiteShell } from "@/components/site/site-shell";
 import { getFaqItems, type FaqItem } from "@/lib/data";
 import { ArrowLeft } from "lucide-react";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -13,7 +13,14 @@ export const metadata: Metadata = {
     "Frequently asked questions about dental treatments, costs, and visiting Roomchang Dental Hospital in Phnom Penh.",
 };
 
-export default async function FaqPage() {
+export default async function FaqPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   const t = await getTranslations("faqPage");
 
   const STATIC_FAQS: FaqItem[] = [

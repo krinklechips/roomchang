@@ -2,7 +2,7 @@ import { Link } from "@/i18n/navigation";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
 export const revalidate = 60;
 
@@ -12,7 +12,13 @@ export const metadata: Metadata = {
     "Read the terms that apply when using the Roomchang Dental Hospital website, including informational content, intellectual property, and liability limits.",
 };
 
-export default async function TermsOfServicePage() {
+export default async function TermsOfServicePage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations("termsOfService");
 
   return (

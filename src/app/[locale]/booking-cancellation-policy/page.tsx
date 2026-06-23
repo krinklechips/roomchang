@@ -2,7 +2,7 @@ import { Link } from "@/i18n/navigation";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
 export const revalidate = 60;
 
@@ -12,7 +12,14 @@ export const metadata: Metadata = {
     "Learn how appointment requests, confirmations, rescheduling, and cancellations work at Roomchang Dental Hospital in Phnom Penh.",
 };
 
-export default async function BookingCancellationPolicyPage() {
+export default async function BookingCancellationPolicyPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   const t = await getTranslations("bookingPolicy");
 
   return (

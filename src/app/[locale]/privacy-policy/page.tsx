@@ -1,4 +1,4 @@
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft } from "lucide-react";
@@ -12,7 +12,13 @@ export const metadata: Metadata = {
     "Learn how Roomchang Dental Hospital collects, uses, stores, and protects information submitted through its website forms and appointment enquiries.",
 };
 
-export default async function PrivacyPolicyPage() {
+export default async function PrivacyPolicyPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations("privacyPolicy");
 
   return (

@@ -2,7 +2,7 @@ import { Link } from "@/i18n/navigation";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
 export const metadata: Metadata = {
   title: "Dentist Talks | Roomchang Dental Hospital",
@@ -39,7 +39,14 @@ export const DENTIST_TALKS = [
   { id: "98xjrKSG2Tg" },
 ];
 
-export default async function DentistTalksPage() {
+export default async function DentistTalksPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   const t = await getTranslations("dentistTalks");
 
   return (

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { notFound } from "next/navigation";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, Phone, Clock, MapPin } from "lucide-react";
 import { BRANCHES, getBranchBySlug } from "@/lib/branches";
@@ -28,9 +28,10 @@ export async function generateMetadata({
 export default async function BranchPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }) {
-  const { slug } = await params;
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
   const branch = getBranchBySlug(slug);
   if (!branch) notFound();
 

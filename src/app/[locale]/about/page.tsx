@@ -1,5 +1,5 @@
 import { Link } from "@/i18n/navigation";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { SiteShell } from "@/components/site/site-shell";
 import { AboutTimeline } from "@/components/sections/about-timeline";
 import { Building2, Star, Mail, Stethoscope, Heart, Handshake, ImagePlay, Cpu, Briefcase, ArrowRight, type LucideIcon } from "lucide-react";
@@ -44,7 +44,10 @@ const FALLBACK_VALUES: Record<string, string> = {
   dental_chairs:       "74",
 };
 
-export default async function AboutPage() {
+export default async function AboutPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   const t = await getTranslations("about");
 
   const { data: statsData, error } = await supabaseServer

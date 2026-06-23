@@ -1,5 +1,5 @@
 import { Link } from "@/i18n/navigation";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import {
   MagnifyingGlass,
   Scan,
@@ -67,7 +67,13 @@ function getCategoryIcon(title: string): Icon {
 }
 
 
-export default async function PricingPage() {
+export default async function PricingPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   const [categories, t] = await Promise.all([
     getPricingCategories(),
     getTranslations("pricing"),

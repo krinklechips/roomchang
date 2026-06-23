@@ -1,6 +1,6 @@
 import { Link } from "@/i18n/navigation";
 import { ArrowLeft } from "lucide-react";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { SiteShell } from "@/components/site/site-shell";
 import { getTestimonials } from "@/lib/data";
 import { abbreviateName } from "@/lib/format-name";
@@ -42,7 +42,13 @@ const VIDEO_TESTIMONIALS = [
   { id: "H6oW3rgIkXg" },
 ];
 
-export default async function TestimonialsPage() {
+export default async function TestimonialsPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations("testimonialsPage");
   const testimonials = await getTestimonials();
 

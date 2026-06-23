@@ -1,4 +1,4 @@
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft } from "lucide-react";
@@ -12,7 +12,14 @@ export const metadata: Metadata = {
     "Understand the medical and informational limits of the Roomchang Dental Hospital website, including dental advice, treatment outcomes, and illustrative cases.",
 };
 
-export default async function DisclaimerPage() {
+export default async function DisclaimerPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   const t = await getTranslations("disclaimer");
 
   return (

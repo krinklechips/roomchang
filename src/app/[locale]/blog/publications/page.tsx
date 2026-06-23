@@ -1,6 +1,6 @@
 import { Link } from "@/i18n/navigation";
 import type { ReactNode } from "react";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import type { Metadata } from "next";
@@ -125,7 +125,13 @@ function groupByYear(pubs: Publication[]): Map<number, Publication[]> {
   return map;
 }
 
-export default async function PublicationsPage() {
+export default async function PublicationsPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations("publications");
   const grouped = groupByYear(PUBLICATIONS);
   const years = Array.from(grouped.keys()).sort((a, b) => b - a);

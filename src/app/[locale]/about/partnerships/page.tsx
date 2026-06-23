@@ -2,7 +2,7 @@ import { Link } from "@/i18n/navigation";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft } from "lucide-react";
 import { supabaseServer } from "@/lib/supabase-server";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -171,7 +171,14 @@ type PartnerRow = {
   partner_categories: { name: string; sort_order: number | null } | null;
 };
 
-export default async function PartnershipsPage() {
+export default async function PartnershipsPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   const t = await getTranslations("partnerships");
 
   const { data, error } = await supabaseServer

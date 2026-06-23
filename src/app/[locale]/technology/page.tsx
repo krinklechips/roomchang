@@ -3,7 +3,7 @@ import Image from "next/image";
 import { SiteShell } from "@/components/site/site-shell";
 import { CheckCircle, ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import { getTechnology } from "@/lib/data";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -24,7 +24,13 @@ const CATEGORY_COLORS: Record<string, string> = {
   "Diagnostics":       "bg-[color:var(--brand)]",
 };
 
-export default async function TechnologyPage() {
+export default async function TechnologyPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   const technologies = await getTechnology();
   const t = await getTranslations("technology");
 
