@@ -215,9 +215,22 @@ export async function getPricingCategories(): Promise<PricingCategory[]> {
     return [];
   }
 
+  // Overlay active-locale translations (content_translations): category titles
+  // (entity 'pricing_category'/id) and item names (entity 'pricing_item'/id).
+  const catTr = await getTranslatedFieldsBatch(
+    "pricing_category",
+    (categories ?? []).map((c) => c.id),
+  );
+  const itemTr = await getTranslatedFieldsBatch(
+    "pricing_item",
+    (items ?? []).map((i) => i.id),
+  );
+
   return (categories ?? []).map((cat) => ({
-    ...cat,
-    items: (items ?? []).filter((item) => item.categoryId === cat.id),
+    ...mergeTranslation(cat, catTr.get(cat.id) ?? {}),
+    items: (items ?? [])
+      .filter((item) => item.categoryId === cat.id)
+      .map((item) => mergeTranslation(item, itemTr.get(item.id) ?? {})),
   }));
 }
 
