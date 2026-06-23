@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { PaperPlaneTilt, CheckCircle, WarningCircle } from "@phosphor-icons/react";
 
 export function ChecklistForm() {
+  const t = useTranslations("checklistForm");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [honeypot, setHoneypot] = useState("");
@@ -31,10 +33,10 @@ export function ChecklistForm() {
       <div className="mt-8 rounded-2xl border border-[color:var(--brand-soft)] bg-[color:var(--brand-soft)] p-6 text-center">
         <CheckCircle size={28} weight="duotone" className="mx-auto text-[color:var(--brand)]" />
         <p className="mt-2 font-semibold text-[color:var(--brand-deep)]">
-          Checklist sent!
+          {t("success.heading")}
         </p>
         <p className="mt-1 text-sm text-[color:var(--text-soft)]">
-          Check your inbox — we&apos;ve sent you a step-by-step guide to getting started.
+          {t("success.body")}
         </p>
       </div>
     );
@@ -46,10 +48,10 @@ export function ChecklistForm() {
       className="mt-8 rounded-2xl border border-[color:var(--border-strong)] bg-white p-6 shadow-[0_8px_30px_rgba(57,28,45,0.04)]"
     >
       <p className="font-semibold text-[color:var(--text-main)]">
-        Get this checklist in your inbox
+        {t("heading")}
       </p>
       <p className="mt-1 text-sm text-[color:var(--text-soft)]">
-        We&apos;ll send you a step-by-step guide you can follow along with.
+        {t("body")}
       </p>
 
       {/* Honeypot — hidden from real users */}
@@ -67,7 +69,7 @@ export function ChecklistForm() {
       <div className="mt-4 flex flex-col gap-3 sm:flex-row">
         <input
           type="text"
-          placeholder="Your name"
+          placeholder={t("placeholder.name")}
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
@@ -75,7 +77,7 @@ export function ChecklistForm() {
         />
         <input
           type="email"
-          placeholder="Your email"
+          placeholder={t("placeholder.email")}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
@@ -87,14 +89,14 @@ export function ChecklistForm() {
           className="btn-primary btn-primary-sm inline-flex items-center justify-center gap-2 whitespace-nowrap disabled:opacity-60"
         >
           <PaperPlaneTilt size={15} weight="bold" />
-          {status === "sending" ? "Sending…" : "Send Checklist"}
+          {status === "sending" ? t("button.sending") : t("button.submit")}
         </button>
       </div>
 
       {status === "error" && (
         <p className="mt-3 flex items-center gap-1.5 text-sm text-red-600">
           <WarningCircle size={16} weight="fill" />
-          Something went wrong. Please try again.
+          {t("error")}
         </p>
       )}
     </form>

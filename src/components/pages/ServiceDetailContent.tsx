@@ -243,20 +243,22 @@ function PricingCTA({
   );
 }
 
-function Gallery({ s }: { s: Extract<ServiceSection, { type: "gallery" }> }) {
+async function Gallery({ s }: { s: Extract<ServiceSection, { type: "gallery" }> }) {
+  const t = await getTranslations("services.detail");
   return (
     <div>
       {s.heading && <h2 className="font-display text-3xl text-[color:var(--text-main)]">{s.heading}</h2>}
       {s.subheading && <p className="mt-3 max-w-2xl text-sm leading-7 text-[color:var(--text-soft)]">{s.subheading}</p>}
       <div className={s.heading || s.subheading ? "mt-8" : ""}>
         {/* 4-up grid keeps thumbnails small (these diagrams are low-res) */}
-        <CommunityGallery images={s.images} title={s.heading ?? "Gallery"} columns={4} />
+        <CommunityGallery images={s.images} title={s.heading ?? t("galleryTitle")} columns={4} />
       </div>
     </div>
   );
 }
 
-function PriceTable({ s }: { s: Extract<ServiceSection, { type: "pricetable" }> }) {
+async function PriceTable({ s }: { s: Extract<ServiceSection, { type: "pricetable" }> }) {
+  const t = await getTranslations("services.detail");
   return (
     <div>
       {s.heading && <h2 className="font-display text-3xl text-[color:var(--text-main)]">{s.heading}</h2>}
@@ -266,8 +268,8 @@ function PriceTable({ s }: { s: Extract<ServiceSection, { type: "pricetable" }> 
           <table className="w-full min-w-[480px] text-sm">
             <thead>
               <tr className="border-b border-[color:var(--brand-soft)] bg-[color:var(--surface)]">
-                <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">Treatment</th>
-                <th className="px-6 py-4 text-right text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--brand-deep)]">Price (USD)</th>
+                <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">{t("priceTableTreatment")}</th>
+                <th className="px-6 py-4 text-right text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--brand-deep)]">{t("priceTablePriceUsd")}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[color:var(--brand-soft)]">

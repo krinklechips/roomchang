@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
 /**
@@ -24,6 +25,7 @@ export function ZoomableImage({
   caption?: string;
   children: ReactNode;
 }) {
+  const t = useTranslations("zoomableImage");
   const [open, setOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -57,7 +59,7 @@ export function ZoomableImage({
         ref={triggerRef}
         type="button"
         onClick={() => setOpen(true)}
-        aria-label={alt ? `Enlarge image: ${alt}` : "Enlarge image"}
+        aria-label={alt ? t("trigger.enlargeWithAlt", { alt }) : t("trigger.enlarge")}
         className="group relative block w-full cursor-zoom-in"
       >
         {children}
@@ -81,7 +83,7 @@ export function ZoomableImage({
         <div
           role="dialog"
           aria-modal="true"
-          aria-label={alt || "Enlarged image"}
+          aria-label={alt || t("dialog.label")}
           onClick={(e) => {
             if (e.target === e.currentTarget) setOpen(false);
           }}
@@ -91,7 +93,7 @@ export function ZoomableImage({
             ref={closeRef}
             type="button"
             onClick={() => setOpen(false)}
-            aria-label="Close enlarged image"
+            aria-label={t("close")}
             className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-white transition hover:bg-white/30"
           >
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">

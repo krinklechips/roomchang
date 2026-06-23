@@ -7,17 +7,25 @@ import { useTranslations } from "next-intl";
 import { X } from "lucide-react";
 import type { Doctor } from "@/lib/data";
 
-const LANGUAGES = ["Khmer", "English", "Mandarin", "Japanese", "German", "French"];
+/** Filter pills — `value` drives the filter logic, `key` maps to the lang.* translation */
+const LANGUAGES: { value: string; key: string }[] = [
+  { value: "Khmer", key: "khmer" },
+  { value: "English", key: "english" },
+  { value: "Mandarin", key: "mandarin" },
+  { value: "Japanese", key: "japanese" },
+  { value: "German", key: "german" },
+  { value: "French", key: "french" },
+];
 
 /** Each entry groups one or more DB department values under a single visible heading */
-const DEPARTMENT_GROUPS: { label: string; depts: string[] }[] = [
-  { label: "Implantology and Oral Reconstruction", depts: ["DIRECTOR", "IMPLANTOLOGY"] },
-  { label: "Cosmetic Dentistry",                   depts: ["COSMETIC"] },
-  { label: "General Dentistry",                    depts: ["GENERAL"] },
-  { label: "Periodontics",                         depts: ["PERIODONTICS"] },
-  { label: "Orthodontics",                         depts: ["ORTHODONTICS"] },
-  { label: "Pediatrics",                           depts: ["PEDIATRICS"] },
-  { label: "Senior Consultant",                    depts: ["SENIOR_CONSULTANT"] },
+const DEPARTMENT_GROUPS: { key: string; depts: string[] }[] = [
+  { key: "implantology",      depts: ["DIRECTOR", "IMPLANTOLOGY"] },
+  { key: "cosmetic",          depts: ["COSMETIC"] },
+  { key: "general",           depts: ["GENERAL"] },
+  { key: "periodontics",      depts: ["PERIODONTICS"] },
+  { key: "orthodontics",      depts: ["ORTHODONTICS"] },
+  { key: "pediatrics",        depts: ["PEDIATRICS"] },
+  { key: "seniorConsultant",  depts: ["SENIOR_CONSULTANT"] },
 ];
 
 // Sanitise credentials — replace any stray Cyrillic chars with ASCII equivalents
@@ -229,8 +237,8 @@ export function DoctorGrid({ doctors }: { doctors: Doctor[] }) {
   const grouped = activeLanguage
     ? null
     : DEPARTMENT_GROUPS
-        .map(({ label, depts }) => ({
-          label,
+        .map(({ key, depts }) => ({
+          key,
           docs: filtered.filter((d) => depts.includes(d.department ?? "")),
         }))
         .filter((g) => g.docs.length > 0);
@@ -262,15 +270,15 @@ export function DoctorGrid({ doctors }: { doctors: Doctor[] }) {
 
             {LANGUAGES.map((lang) => (
               <button
-                key={lang}
-                onClick={() => toggleLanguage(lang)}
+                key={lang.value}
+                onClick={() => toggleLanguage(lang.value)}
                 className={`rounded-full border px-3.5 py-1.5 text-xs font-semibold transition-all ${
-                  activeLanguage === lang
+                  activeLanguage === lang.value
                     ? "border-[color:var(--brand)] bg-[color:var(--brand)] text-white shadow-sm"
                     : "border-[color:var(--border-strong)] bg-white text-[color:var(--text-soft)] hover:border-[color:var(--brand)] hover:text-[color:var(--brand-deep)]"
                 }`}
               >
-                {lang}
+                {t(`lang.${lang.key}`)}
               </button>
             ))}
 
@@ -288,10 +296,10 @@ export function DoctorGrid({ doctors }: { doctors: Doctor[] }) {
         {grouped ? (
           // Grouped by department
           <div className="flex flex-col gap-16">
-            {grouped.map(({ label, docs }) => (
-              <section key={label}>
+            {grouped.map(({ key, docs }) => (
+              <section key={key}>
                 <h2 className="mb-8 font-display text-2xl text-[color:var(--brand-deep)]">
-                  {label}
+                  {t(`dept.${key}`)}
                 </h2>
                 <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                   {docs.map((doctor) => <DoctorCard key={doctor.id} doctor={doctor} onSelect={setSelectedDoctor} />)}

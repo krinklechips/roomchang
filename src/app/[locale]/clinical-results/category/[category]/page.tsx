@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import type { Metadata } from "next";
 import { ArrowLeft } from "lucide-react";
@@ -48,6 +49,8 @@ export default async function ClinicalResultsCategoryPage({
   const category = getClinicalCategoryBySlug(slug);
   if (!category) notFound();
 
+  const t = await getTranslations("clinicalResults");
+
   const cases = await getClinicalCases();
   const categoryCases = cases.filter((c) => c.category === category.category);
 
@@ -60,7 +63,7 @@ export default async function ClinicalResultsCategoryPage({
             href="/clinical-results"
             className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--brand)] transition hover:text-[color:var(--brand-deep)]"
           >
-            <ArrowLeft size={13} strokeWidth={2.5} aria-hidden="true" /> All Clinical Results
+            <ArrowLeft size={13} strokeWidth={2.5} aria-hidden="true" /> {t("category.backToAll")}
           </Link>
           <h1 className="mt-4 font-display text-5xl leading-none text-[color:var(--text-main)] sm:text-6xl">
             {category.label}
@@ -75,7 +78,7 @@ export default async function ClinicalResultsCategoryPage({
               href="/clinical-results"
               className="rounded-full border border-[color:var(--border-strong)] bg-white px-4 py-1.5 text-xs font-semibold text-[color:var(--text-soft)] transition hover:border-[color:var(--brand)] hover:text-[color:var(--brand-deep)]"
             >
-              All cases
+              {t("category.allCases")}
             </Link>
             {CLINICAL_CATEGORIES.map((c) => {
               const isActive = c.slug === category.slug;
@@ -108,9 +111,9 @@ export default async function ClinicalResultsCategoryPage({
           />
         ) : (
           <p className="text-sm text-[color:var(--text-soft)]">
-            New {category.label.toLowerCase()} cases are coming soon.{" "}
+            {t("category.emptyState", { label: category.label.toLowerCase() })}{" "}
             <Link href="/clinical-results" className="font-semibold text-[color:var(--brand)] underline">
-              Browse all clinical results
+              {t("category.browseAll")}
             </Link>
             .
           </p>

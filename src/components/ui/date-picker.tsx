@@ -2,11 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 
-const DAYS = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
-const MONTHS = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December",
+const DAY_IDS = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
+const MONTH_IDS = [
+  "january", "february", "march", "april", "may", "june",
+  "july", "august", "september", "october", "november", "december",
 ];
 
 function toISODate(d: Date) {
@@ -43,6 +44,7 @@ function daysInMonth(year: number, month: number) {
 type Props = { name: string; required?: boolean };
 
 export function DatePicker({ name, required }: Props) {
+  const t = useTranslations("datePicker");
   const today = startOfDay(new Date());
   const [selected, setSelected] = useState<Date | null>(null);
   const [open, setOpen] = useState(false);
@@ -85,7 +87,7 @@ export function DatePicker({ name, required }: Props) {
         className="flex w-full items-center justify-between rounded-xl border border-[color:var(--border-strong)] bg-white px-4 py-3 text-left text-sm outline-none transition focus:border-[color:var(--brand)] focus:ring-2 focus:ring-[color:var(--brand)]/20"
       >
         <span className={selected ? "text-[color:var(--text-main)]" : "text-[color:var(--text-soft)]/50"}>
-          {selected ? formatDisplay(selected) : "Select a date"}
+          {selected ? formatDisplay(selected) : t("placeholder")}
         </span>
         <svg className="h-4 w-4 text-[color:var(--text-soft)]" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
           <rect x="3" y="4" width="14" height="14" rx="2.5" />
@@ -106,7 +108,7 @@ export function DatePicker({ name, required }: Props) {
               <ChevronLeft size={16} strokeWidth={2.5} aria-hidden="true" />
             </button>
             <span className="text-sm font-semibold tracking-wide text-white">
-              {MONTHS[viewMonth]} {viewYear}
+              {t(`months.${MONTH_IDS[viewMonth]}`)} {viewYear}
             </span>
             <button
               type="button"
@@ -120,9 +122,9 @@ export function DatePicker({ name, required }: Props) {
           <div className="p-3">
             {/* Day labels */}
             <div className="mb-1 grid grid-cols-7 text-center">
-              {DAYS.map(d => (
+              {DAY_IDS.map(d => (
                 <div key={d} className="py-1 text-[0.6rem] font-semibold uppercase tracking-wide text-[color:var(--text-soft)]">
-                  {d}
+                  {t(`weekdays.${d}`)}
                 </div>
               ))}
             </div>
@@ -168,7 +170,7 @@ export function DatePicker({ name, required }: Props) {
               onClick={() => { setSelected(today); setViewYear(today.getFullYear()); setViewMonth(today.getMonth()); setOpen(false); }}
               className="text-xs font-semibold text-[color:var(--brand)] transition hover:text-[color:var(--brand-deep)]"
             >
-              Today
+              {t("today")}
             </button>
           </div>
         </div>

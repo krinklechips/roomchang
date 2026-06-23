@@ -280,55 +280,64 @@
       "caption": "梦想起航",
       "heading": "我们的第一个家",
       "body": "一间诊所，一个信念——柬埔寨人民值得在家门口享受世界一流的牙科医疗。Tith Hong Yoeu博士创立了Roomchang，这是柬埔寨首家按国际标准建设的专科牙科诊所。",
-      "alt": "Roomchang——1996年的第一家诊所"
+      "alt": "Roomchang——1996年的第一家诊所",
+      "year": "1996"
     },
     "2002": {
       "caption": "扎根成长",
       "heading": "第一次扩展",
       "body": "第二家诊所开业。全新设备，同样严格的标准——如今服务金边更多区域。多分院集团的基础正在悄然奠定。",
-      "alt": "Roomchang——2002年第二家诊所"
+      "alt": "Roomchang——2002年第二家诊所",
+      "year": "2002"
     },
     "2008": {
       "caption": "获得认可",
       "heading": "首获ISO认证",
       "body": "Roomchang获得首个ISO认证——成为柬埔寨首家获得国际质量管理标准认证的牙科机构，为全国临床卓越树立标杆。",
-      "alt": "Roomchang ISO认证"
+      "alt": "Roomchang ISO认证",
+      "year": "2008"
     },
     "2011": {
       "caption": "崭新时代",
       "heading": "迈上新台阶",
       "body": "旗舰型10层牙科医院启用——专门建造，配备46台牙椅、9间手术室、院内CAD/CAM实验室和医院级消毒系统。柬埔寨最先进的牙科设施。",
-      "alt": "Roomchang总院，2011年"
+      "alt": "Roomchang总院，2011年",
+      "year": "2011"
     },
     "2014": {
       "caption": "覆盖更广",
       "heading": "Rose Condo分院",
       "body": "Roomchang在Rose Condo开设分院——将专科牙科服务带入金边快速发展的住宅社区，与总院保持相同的团队和标准。",
-      "alt": "Roomchang Rose Condo分院，2014年"
+      "alt": "Roomchang Rose Condo分院，2014年",
+      "year": "2014"
     },
     "2018": {
       "caption": "继续前行",
       "heading": "AEON Mall Sen Sok分院",
       "body": "新分院入驻AEON Mall Sen Sok——在金边最繁忙的购物中心之一提供专科牙科服务，服务周边家庭和自行到店的患者。",
-      "alt": "Roomchang AEON Mall Sen Sok分院，2018年"
+      "alt": "Roomchang AEON Mall Sen Sok分院，2018年",
+      "year": "2018"
     },
     "2022a": {
       "caption": "持续成长",
       "heading": "PH Euro Park分院",
       "body": "Roomchang在PH Euro Park开设分院——将服务延伸至金边另一核心区域，提供全方位专科牙科服务。",
-      "alt": "Roomchang PH Euro Park分院，2022年"
+      "alt": "Roomchang PH Euro Park分院，2022年",
+      "year": "2022年5月"
     },
     "2022b": {
       "caption": "五院联动",
       "heading": "Fun Mall — TK Avenue分院",
       "body": "第五家分院在TK Avenue的Fun Mall开业——完成了Roomchang覆盖金边五大区位的医疗网络，每家分院均提供同等专科水准和医院级标准。",
-      "alt": "Roomchang Fun Mall TK Avenue分院，2022年"
+      "alt": "Roomchang Fun Mall TK Avenue分院，2022年",
+      "year": "2022年10月"
     },
     "now": {
       "caption": "医疗网络",
       "heading": "今天",
       "body": "五家分院。74台牙椅。37位以上专科医生。9间手术室。每月服务数千名患者。以及始终如一的初心——让优质医疗触手可及。",
-      "alt": "Roomchang牙科医院——今日鸟瞰图"
+      "alt": "Roomchang牙科医院——今日鸟瞰图",
+      "year": "至今"
     }
   },
   "services": {
@@ -379,7 +388,10 @@
       "pricingCtaNote": "所有价格均以美元计，经咨询后确认。查看我们完整透明的价格表。",
       "ctaHeading": "准备恢复您的微笑？",
       "ctaBody": "拨打 {phone} 或发送咨询，我们将在一个工作日内回复您。",
-      "ctaButton": "预约咨询"
+      "ctaButton": "预约咨询",
+      "galleryTitle": "图库",
+      "priceTableTreatment": "治疗",
+      "priceTablePriceUsd": "价格（美元）"
     }
   },
   "team": {
@@ -650,6 +662,12 @@
       "eyebrow": "真实患者，真实效果",
       "heading": "临床案例",
       "body": "精选Roomchang临床团队的治疗案例——涵盖种植牙、正畸、全口重建和美容改造。所有案例均附有临床记录、照片和患者知情同意书。"
+    },
+    "category": {
+      "backToAll": "全部临床案例",
+      "allCases": "全部案例",
+      "emptyState": "新的 {label} 案例即将推出。",
+      "browseAll": "浏览全部临床案例"
     }
   },
   "clinicalResultsGrid": {
@@ -681,9 +699,9 @@
   "checklistForm": {
     "success": {
       "heading": "清单已发送！",
-      "body": "请查看您的收件箱——我们已向您发送了分步指南。"
+      "body": "请查看您的收件箱——我们已向您发送了一份入门分步指南。"
     },
-    "heading": "将清单发送到您的邮箱",
+    "heading": "将此清单发送到您的邮箱",
     "body": "我们将向您发送一份可逐步参照的指南。",
     "placeholder": {
       "name": "您的姓名",
@@ -840,7 +858,8 @@
     "bookConsultation": "预约咨询",
     "allTechnology": "全部技术",
     "ctaHeading": "想知道这是否适合您？",
-    "ctaBody": "预约咨询，我们的专科医生将评估您的情况并提供最佳方案建议。"
+    "ctaBody": "预约咨询，我们的专科医生将评估您的情况并提供最佳方案建议。",
+    "video": "视频"
   },
   "caseDetail": {
     "backLink": "临床案例",
@@ -897,5 +916,55 @@
     "body": "抱歉，发生了意外错误。请重试。",
     "retry": "重试",
     "home": "返回首页"
+  },
+  "datePicker": {
+    "placeholder": "选择日期",
+    "today": "今天",
+    "weekdays": {
+      "mon": "一",
+      "tue": "二",
+      "wed": "三",
+      "thu": "四",
+      "fri": "五",
+      "sat": "六",
+      "sun": "日"
+    },
+    "months": {
+      "january": "一月",
+      "february": "二月",
+      "march": "三月",
+      "april": "四月",
+      "may": "五月",
+      "june": "六月",
+      "july": "七月",
+      "august": "八月",
+      "september": "九月",
+      "october": "十月",
+      "november": "十一月",
+      "december": "十二月"
+    }
+  },
+  "zoomableImage": {
+    "trigger": {
+      "enlarge": "放大图片",
+      "enlargeWithAlt": "放大图片：{alt}"
+    },
+    "dialog": {
+      "label": "放大的图片"
+    },
+    "close": "关闭放大的图片"
+  },
+  "communityGallery": {
+    "thumbnail": {
+      "viewPhoto": "查看第 {index} 张照片，共 {total} 张",
+      "alt": "{title}，第 {index} 张，共 {total} 张"
+    },
+    "lightbox": {
+      "dialogLabel": "{title} — 照片查看器",
+      "close": "关闭",
+      "previous": "上一张",
+      "alt": "{title}，第 {index} 张，共 {total} 张",
+      "next": "下一张"
+    }
   }
 }

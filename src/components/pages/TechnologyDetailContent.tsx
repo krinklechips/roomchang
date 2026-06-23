@@ -1,5 +1,6 @@
 import { Link } from "@/i18n/navigation";
 import Image from "next/image";
+import { getTranslations } from "next-intl/server";
 import { ZoomableImage } from "@/components/ui/zoomable-image";
 import {
   ArrowLeft, CheckCircle, ArrowRight,
@@ -198,7 +199,8 @@ function SelfVideo({ s }: { s: Extract<TechSection, { type: "self_video" }> }) {
   );
 }
 
-function VideoEmbed({ s }: { s: Extract<TechSection, { type: "video" }> }) {
+async function VideoEmbed({ s }: { s: Extract<TechSection, { type: "video" }> }) {
+  const t = await getTranslations("technologyDetail");
   return (
     <div>
       {s.heading && <h2 className="font-display text-3xl text-[color:var(--text-main)]">{s.heading}</h2>}
@@ -206,7 +208,7 @@ function VideoEmbed({ s }: { s: Extract<TechSection, { type: "video" }> }) {
       <div className={`${s.heading ? "mt-8" : ""} relative aspect-video overflow-hidden rounded-2xl border border-[color:var(--border-strong)] shadow-[0_16px_48px_rgba(57,28,45,0.08)]`}>
         <iframe
           src={`https://www.youtube.com/embed/${s.videoId}`}
-          title={s.heading ?? "Video"}
+          title={s.heading ?? t("video")}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
           className="absolute inset-0 h-full w-full"
@@ -266,8 +268,9 @@ export type TechnologyDetailTranslations = {
  * Renders the full technology detail page body.
  * Used by both the live page and the preview page.
  */
-export function TechnologyDetailContent({ tech, translations: i18n }: { tech: TechnologyItem; translations?: TechnologyDetailTranslations }) {
+export async function TechnologyDetailContent({ tech, translations: i18n }: { tech: TechnologyItem; translations?: TechnologyDetailTranslations }) {
   const sections = tech.content?.sections ?? [];
+  const t = await getTranslations("technologyDetail");
 
   return (
     <SiteShell>
@@ -279,7 +282,7 @@ export function TechnologyDetailContent({ tech, translations: i18n }: { tech: Te
               href="/technology"
               className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--brand)] transition hover:text-[color:var(--brand-deep)]"
             >
-              <ArrowLeft size={13} weight="bold" aria-hidden="true" /> {i18n?.backLink ?? "Technology"}
+              <ArrowLeft size={13} weight="bold" aria-hidden="true" /> {i18n?.backLink ?? t("backLink")}
             </Link>
             <div className="mt-4">
               <span className={`inline-block rounded-full px-3 py-1 text-[0.68rem] font-bold uppercase tracking-[0.22em] text-white ${CATEGORY_COLORS[tech.category] ?? "bg-[color:var(--brand)]"}`}>
@@ -293,8 +296,8 @@ export function TechnologyDetailContent({ tech, translations: i18n }: { tech: Te
               {tech.description}
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
-              <Link href="/contact" className="btn-primary">{i18n?.bookConsultation ?? "Book a Consultation"}</Link>
-              <Link href="/technology" className="btn-secondary">{i18n?.allTechnology ?? "All Technology"}</Link>
+              <Link href="/contact" className="btn-primary">{i18n?.bookConsultation ?? t("bookConsultation")}</Link>
+              <Link href="/technology" className="btn-secondary">{i18n?.allTechnology ?? t("allTechnology")}</Link>
             </div>
           </div>
           {tech.imageSrc && (
@@ -344,13 +347,13 @@ export function TechnologyDetailContent({ tech, translations: i18n }: { tech: Te
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-16 lg:px-8 flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="font-display text-3xl text-[color:var(--text-main)]">
-              {i18n?.ctaHeading ?? "Want to know if this is right for you?"}
+              {i18n?.ctaHeading ?? t("ctaHeading")}
             </h2>
             <p className="mt-2 text-sm text-[color:var(--text-soft)]">
-              {i18n?.ctaBody ?? "Book a consultation and our specialists will assess your case and advise on the best approach."}
+              {i18n?.ctaBody ?? t("ctaBody")}
             </p>
           </div>
-          <Link href="/contact" className="btn-primary shrink-0">{i18n?.bookConsultation ?? "Book a Consultation"}</Link>
+          <Link href="/contact" className="btn-primary shrink-0">{i18n?.bookConsultation ?? t("bookConsultation")}</Link>
         </div>
       </div>
     </SiteShell>

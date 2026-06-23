@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
+import { useTranslations } from "next-intl";
 import { CaretLeft, CaretRight, X } from "@phosphor-icons/react";
 
 export function CommunityGallery({
@@ -13,6 +14,7 @@ export function CommunityGallery({
   /** Max thumbnails per row on desktop (default 3). Use more for smaller thumbnails. */
   columns?: 3 | 4 | 5;
 }) {
+  const t = useTranslations("communityGallery");
   const gridCols =
     columns === 5 ? "sm:grid-cols-4 lg:grid-cols-5" :
     columns === 4 ? "sm:grid-cols-3 lg:grid-cols-4" :
@@ -70,12 +72,12 @@ export function CommunityGallery({
               setOpenIndex(i);
             }}
             className="group relative aspect-[4/3] cursor-zoom-in overflow-hidden rounded-2xl bg-[color:var(--surface)] shadow-[0_8px_24px_rgba(57,28,45,0.06)]"
-            aria-label={`View photo ${i + 1} of ${images.length}`}
+            aria-label={t("thumbnail.viewPhoto", { index: i + 1, total: images.length })}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={src}
-              alt={`${title}, ${i + 1} of ${images.length}`}
+              alt={t("thumbnail.alt", { title, index: i + 1, total: images.length })}
               loading="lazy"
               className="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-[1.04]"
             />
@@ -91,14 +93,14 @@ export function CommunityGallery({
           onClick={close}
           role="dialog"
           aria-modal="true"
-          aria-label={`${title} — photo viewer`}
+          aria-label={t("lightbox.dialogLabel", { title })}
         >
           {/* Close */}
           <button
             type="button"
             onClick={close}
             className="absolute right-4 top-4 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/20"
-            aria-label="Close"
+            aria-label={t("lightbox.close")}
           >
             <X size={22} weight="bold" />
           </button>
@@ -112,7 +114,7 @@ export function CommunityGallery({
                 prev();
               }}
               className="absolute left-2 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/20 sm:left-6"
-              aria-label="Previous photo"
+              aria-label={t("lightbox.previous")}
             >
               <CaretLeft size={26} weight="bold" />
             </button>
@@ -126,7 +128,7 @@ export function CommunityGallery({
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={images[openIndex]}
-              alt={`${title}, ${openIndex + 1} of ${images.length}`}
+              alt={t("lightbox.alt", { title, index: openIndex + 1, total: images.length })}
               className="max-h-[82vh] max-w-full rounded-lg object-contain shadow-2xl"
             />
             <p className="mt-3 text-sm font-medium text-white/70">
@@ -143,7 +145,7 @@ export function CommunityGallery({
                 next();
               }}
               className="absolute right-2 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/20 sm:right-6"
-              aria-label="Next photo"
+              aria-label={t("lightbox.next")}
             >
               <CaretRight size={26} weight="bold" />
             </button>

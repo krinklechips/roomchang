@@ -280,55 +280,64 @@
       "caption": "The beginning",
       "heading": "Our First Home",
       "body": "A single practice. A single belief — that Cambodians deserved world-class dental care at home. Dr. Tith Hong Yoeu opens Roomchang as Cambodia's first specialist dental clinic built to international standards.",
-      "alt": "Roomchang — the original clinic, 1996"
+      "alt": "Roomchang — the original clinic, 1996",
+      "year": "1996"
     },
     "2002": {
       "caption": "Roots deepen",
       "heading": "Our First Move",
       "body": "A second location. New equipment. The same uncompromising standard — now reaching more of Phnom Penh. The foundations of a multi-branch group are quietly being laid.",
-      "alt": "Roomchang — second location, 2002"
+      "alt": "Roomchang — second location, 2002",
+      "year": "2002"
     },
     "2008": {
       "caption": "Recognition",
       "heading": "First ISO Certification",
       "body": "Roomchang earns its first ISO certification — the first dental facility in Cambodia to achieve international quality management standards, setting the benchmark for clinical excellence in the country.",
-      "alt": "Roomchang ISO certification"
+      "alt": "Roomchang ISO certification",
+      "year": "2008"
     },
     "2011": {
       "caption": "A new era",
       "heading": "Taking the Next Step",
       "body": "The flagship 10-storey dental hospital opens — purpose-built with 46 dental chairs, 9 operation rooms, an in-house CAD/CAM laboratory, and hospital-grade sterilisation. Cambodia's most advanced dental facility.",
-      "alt": "Roomchang Main Hospital, 2011"
+      "alt": "Roomchang Main Hospital, 2011",
+      "year": "2011"
     },
     "2014": {
       "caption": "Expanding reach",
       "heading": "Rose Condo Branch",
       "body": "Roomchang opens at Rose Condo — bringing specialist dental care to one of Phnom Penh's growing residential communities, with the same team and standards as the main hospital.",
-      "alt": "Roomchang Rose Condo branch, 2014"
+      "alt": "Roomchang Rose Condo branch, 2014",
+      "year": "2014"
     },
     "2018": {
       "caption": "Going further",
       "heading": "AEON Mall Sen Sok",
       "body": "A new branch inside AEON Mall Sen Sok — making specialist dental care accessible in one of Phnom Penh's busiest shopping destinations, serving families and walk-in patients in the city's northern corridor.",
-      "alt": "Roomchang AEON Mall Sen Sok branch, 2018"
+      "alt": "Roomchang AEON Mall Sen Sok branch, 2018",
+      "year": "2018"
     },
     "2022a": {
       "caption": "Growth continues",
       "heading": "PH Euro Park",
       "body": "Roomchang opens at PH Euro Park — extending our reach to another key area of Phnom Penh with a fully equipped branch delivering the full range of specialist dental services.",
-      "alt": "Roomchang PH Euro Park branch, 2022"
+      "alt": "Roomchang PH Euro Park branch, 2022",
+      "year": "May 2022"
     },
     "2022b": {
       "caption": "Five branches",
       "heading": "Fun Mall — TK Avenue",
       "body": "The fifth branch opens at Fun Mall on TK Avenue — completing Roomchang's network of five locations across Phnom Penh, each delivering the same specialist care and hospital-grade standards.",
-      "alt": "Roomchang Fun Mall TK Avenue branch, 2022"
+      "alt": "Roomchang Fun Mall TK Avenue branch, 2022",
+      "year": "Oct 2022"
     },
     "now": {
       "caption": "A hospital network",
       "heading": "Present Day",
       "body": "Five branches. Seventy-four chairs. 37+ specialist dentists. 9 operation rooms. Thousands of patients every month. And the same conviction that started it all — quality care, close to home.",
-      "alt": "Roomchang Dental Hospital — present day aerial view"
+      "alt": "Roomchang Dental Hospital — present day aerial view",
+      "year": "Now"
     }
   },
   "services": {
@@ -379,7 +388,10 @@
       "pricingCtaNote": "All prices in USD and confirmed after consultation. View our complete, transparent price list.",
       "ctaHeading": "Ready to restore your smile?",
       "ctaBody": "Call us on {phone} or send an enquiry and we'll get back to you within one business day.",
-      "ctaButton": "Book a Consultation"
+      "ctaButton": "Book a Consultation",
+      "galleryTitle": "Gallery",
+      "priceTableTreatment": "Treatment",
+      "priceTablePriceUsd": "Price (USD)"
     }
   },
   "team": {
@@ -650,6 +662,12 @@
       "eyebrow": "Real Patients, Real Results",
       "heading": "Clinical Results",
       "body": "A selection of cases from Roomchang's clinical team — covering implants, orthodontics, full mouth reconstructions, and cosmetic transformations. All cases are documented with clinical notes, photos, and patient consent."
+    },
+    "category": {
+      "backToAll": "All Clinical Results",
+      "allCases": "All cases",
+      "emptyState": "New {label} cases are coming soon.",
+      "browseAll": "Browse all clinical results"
     }
   },
   "clinicalResultsGrid": {
@@ -840,7 +858,8 @@
     "bookConsultation": "Book a Consultation",
     "allTechnology": "All Technology",
     "ctaHeading": "Want to know if this is right for you?",
-    "ctaBody": "Book a consultation and our specialists will assess your case and advise on the best approach."
+    "ctaBody": "Book a consultation and our specialists will assess your case and advise on the best approach.",
+    "video": "Video"
   },
   "caseDetail": {
     "backLink": "Clinical Results",
@@ -897,5 +916,55 @@
     "body": "Sorry, an unexpected error occurred. Please try again.",
     "retry": "Try again",
     "home": "Back to Home"
+  },
+  "datePicker": {
+    "placeholder": "Select a date",
+    "today": "Today",
+    "weekdays": {
+      "mon": "Mo",
+      "tue": "Tu",
+      "wed": "We",
+      "thu": "Th",
+      "fri": "Fr",
+      "sat": "Sa",
+      "sun": "Su"
+    },
+    "months": {
+      "january": "January",
+      "february": "February",
+      "march": "March",
+      "april": "April",
+      "may": "May",
+      "june": "June",
+      "july": "July",
+      "august": "August",
+      "september": "September",
+      "october": "October",
+      "november": "November",
+      "december": "December"
+    }
+  },
+  "zoomableImage": {
+    "trigger": {
+      "enlarge": "Enlarge image",
+      "enlargeWithAlt": "Enlarge image: {alt}"
+    },
+    "dialog": {
+      "label": "Enlarged image"
+    },
+    "close": "Close enlarged image"
+  },
+  "communityGallery": {
+    "thumbnail": {
+      "viewPhoto": "View photo {index} of {total}",
+      "alt": "{title}, {index} of {total}"
+    },
+    "lightbox": {
+      "dialogLabel": "{title} — photo viewer",
+      "close": "Close",
+      "previous": "Previous photo",
+      "alt": "{title}, {index} of {total}",
+      "next": "Next photo"
+    }
   }
 }
