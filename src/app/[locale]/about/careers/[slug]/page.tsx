@@ -4,6 +4,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, Check, Mail, Phone } from "lucide-react";
 import { POSITIONS, getPositionBySlug } from "@/lib/careers";
+import { getTranslatedFields, mergeTranslation } from "@/lib/i18n-content";
 import type { Metadata } from "next";
 
 export function generateStaticParams() {
@@ -31,8 +32,10 @@ export default async function CareerDetailPage({
 }) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
-  const pos = getPositionBySlug(slug);
-  if (!pos) notFound();
+  const basePos = getPositionBySlug(slug);
+  if (!basePos) notFound();
+  // Overlay the active-locale job translation (content_translations).
+  const pos = mergeTranslation(basePos, await getTranslatedFields("career_position", slug));
 
   const t = await getTranslations("careersDetail");
 

@@ -2,6 +2,7 @@ import { Link } from "@/i18n/navigation";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, ArrowRight, Briefcase, Mail, Phone } from "lucide-react";
 import { POSITIONS } from "@/lib/careers";
+import { getTranslatedFieldsBatch, mergeTranslation } from "@/lib/i18n-content";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 
@@ -19,6 +20,10 @@ export default async function CareersPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("careers");
+
+  // Overlay active-locale job translations (content_translations).
+  const posTr = await getTranslatedFieldsBatch("career_position", POSITIONS.map((p) => p.slug));
+  const positions = POSITIONS.map((p) => mergeTranslation(p, posTr.get(p.slug) ?? {}));
   return (
     <SiteShell>
       <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--surface)]">
@@ -62,7 +67,7 @@ export default async function CareersPage({
         </p>
 
         <div className="grid gap-6 sm:grid-cols-2">
-          {POSITIONS.map((pos) => (
+          {positions.map((pos) => (
             <Link
               key={pos.slug}
               href={`/about/careers/${pos.slug}`}
