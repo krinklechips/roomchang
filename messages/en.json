@@ -966,5 +966,327 @@
       "alt": "{title}, {index} of {total}",
       "next": "Next photo"
     }
+  },
+  "directorMessage": {
+    "backLink": "About",
+    "heading": "Message from Our Director",
+    "portrait": {
+      "alt": "Dr. Tith Hong Yoeu — Founder & Director, Roomchang Dental Hospital",
+      "name": "Dr. Tith Hong Yoeu",
+      "credentials": "DDS, MSc.",
+      "role": "Founder & Director",
+      "degree": "MSc. in Oral Implantology",
+      "institution": "Goethe University Frankfurt, Germany"
+    },
+    "letter": {
+      "salutation": "Dear Patients,",
+      "paragraph1": "Thank you for entrusting your dental care to Roomchang. Over the last three decades, we have always had a strong commitment to providing quality dentistry to everyone — regardless of background, nationality, or the complexity of the case.",
+      "paragraph2": "When I founded Roomchang in 1996, my goal was simple: to build a dental hospital in Cambodia that could match the standard of care available anywhere in the world. That vision hasn't changed. What has changed is the scale at which we can deliver it — five branches, 74 chairs, a full in-house digital laboratory, and a team of 37 specialist dentists.",
+      "paragraph3": "We maintain strict ethical codes and invest continuously in the latest equipment and procedures. Our partnership with Prof. Nentwig and Goethe University of Frankfurt, Germany has been instrumental in shaping Roomchang's clinical philosophy — bringing European standards of implantology and oral surgery to our daily practice.",
+      "paragraph4": "Every member of our team — from our specialists to our front-desk staff — shares a belief that dentistry should be transparent, accessible, and delivered with genuine care. We don't just treat teeth; we build trust.",
+      "paragraph5": "I'm grateful for the support our patients have given us over the years. It is your confidence in us that drives us to keep improving, keep innovating, and keep showing up every day with the same commitment we started with.",
+      "signatureName": "Dr. Tith Hong Yoeu",
+      "signatureTitle": "Director, Roomchang Dental Hospital"
+    },
+    "cta": {
+      "title": "Meet the full team",
+      "description": "Get to know the specialist dentists Dr. Tith has assembled.",
+      "button": "Our Doctors"
+    }
+  },
+  "visionMission": {
+    "backLink": "About",
+    "title": "Vision, Mission & Values",
+    "intro": "The principles that have guided Roomchang since 1996 — and continue to shape every consultation, treatment plan, and patient interaction.",
+    "vision": {
+      "label": "Vision",
+      "statement": "Enriching lives with quality dentistry.",
+      "description": "We see a Cambodia where every person has access to world-class dental care — and where choosing local doesn't mean compromising on quality."
+    },
+    "mission": {
+      "label": "Mission",
+      "statement": "We truly care for your teeth.",
+      "description": "Every treatment plan is designed around the patient — not the procedure. We listen, educate, and deliver care that respects your time, your budget, and your goals."
+    },
+    "values": {
+      "heading": "Our Core Values",
+      "intro": "Five principles shape every interaction at Roomchang, from how we design treatments to how we answer the phone.",
+      "items": {
+        "professionalism": {
+          "title": "Professionalism",
+          "description": "Our team holds international qualifications and operates to the highest clinical standards, guided by rigorous internal protocols and continuous training."
+        },
+        "honesty": {
+          "title": "Honesty",
+          "description": "Clear pricing, transparent treatment options, and no hidden fees. We believe informed patients make the best decisions."
+        },
+        "teamwork": {
+          "title": "Teamwork",
+          "description": "A collaborative environment where specialists across disciplines work together to deliver the best outcome for every patient."
+        },
+        "innovation": {
+          "title": "Innovation",
+          "description": "We invest continuously in technology — from CAD/CAM digital labs to 3D CBCT imaging — to stay at the forefront of dentistry."
+        },
+        "excellence": {
+          "title": "Excellence",
+          "description": "From routine check-ups to complex full-mouth reconstructions, we hold ourselves to the same standard of excellence every time."
+        }
+      }
+    },
+    "cta": {
+      "heading": "See our values in action",
+      "description": "Meet the specialist team that brings these principles to life every day.",
+      "button": "Meet Our Doctors"
+    }
+  },
+  "facilities": {
+    "hero": {
+      "backLink": "About",
+      "title": "Our Facilities",
+      "intro": "A purpose-built, 10-storey dental hospital in the heart of Phnom Penh — equipped with advanced digital technology from Germany and hospital-grade sterilisation throughout."
+    },
+    "stats": {
+      "building_storeys": "Storey Building",
+      "dental_chairs": "Dental Chairs",
+      "surgical_theatres": "Operation Rooms",
+      "specialist_dentists": "Specialist Dentists"
+    },
+    "sections": {
+      "digital_lab": {
+        "title": "In-House Digital Laboratory",
+        "items": {
+          "scanners": "Digital intraoral scanners",
+          "cad_cam": "CAD/CAM technology from Germany",
+          "printers": "3D printers for precision restorations",
+          "aligner": "Clear Aligner (CA) fabrication"
+        }
+      },
+      "imaging": {
+        "title": "Diagnostic Imaging",
+        "items": {
+          "cbct": "3D cone-beam CT imaging (CBCT)",
+          "opg": "Digital panoramic X-ray (OPG)",
+          "ceph": "Cephalometric radiography",
+          "periapical": "Digital periapical and bitewing X-rays"
+        }
+      },
+      "sterilisation": {
+        "title": "Sterilisation & Infection Control",
+        "items": {
+          "autoclave": "Hospital-grade autoclave sterilisation",
+          "steam": "High-pressure saturated steam processing",
+          "all_instruments": "All instruments sterilised for invasive and non-invasive procedures",
+          "daily_cleaning": "Daily cleaning and disinfection of the entire hospital",
+          "cross_infection": "Strict cross-infection control protocols"
+        }
+      },
+      "comfort": {
+        "title": "Patient Comfort & Access",
+        "items": {
+          "children": "Dedicated children's treatment rooms",
+          "whitening": "Beyond® professional whitening system",
+          "emr": "Electronic Medical Record (EMR) system",
+          "parking": "Underground parking for 15 vehicles",
+          "wheelchair": "Full wheelchair accessibility",
+          "multilingual": "Multilingual staff: Khmer, English, French, Chinese, Japanese, German"
+        }
+      }
+    },
+    "gallery": {
+      "abroad": {
+        "alt": "Roomchang treatment room — international patient care"
+      },
+      "room_a": {
+        "alt": "Roomchang dental chair and treatment suite"
+      },
+      "room_b": {
+        "alt": "Modern dental treatment room at Roomchang"
+      },
+      "room_c": {
+        "alt": "Specialist dental suite with advanced equipment"
+      }
+    },
+    "buildingHero": {
+      "imageAlt": "Roomchang Dental Hospital — 10-storey building, Sisowath High School, Phnom Penh",
+      "eyebrow": "Main Hospital",
+      "title": "10-Storey Building",
+      "address": "No. 4, Street 184, Khan Daun Penh, Phnom Penh"
+    },
+    "locations": {
+      "eyebrow": "Our Locations",
+      "title": "Five Branches Across Phnom Penh",
+      "intro": "Every Roomchang branch delivers the same specialist care and hospital-grade standards — with the same team quality, equipment, and sterilisation protocols.",
+      "discoverCta": "Discover This Location"
+    },
+    "quality": {
+      "eyebrow": "Quality Assurance",
+      "title": "Hospital-Grade Standards",
+      "body": "Roomchang follows strict sterilisation, infection control, and clinical protocols — the same standards expected of leading international dental hospitals.",
+      "cta": "Book a Tour"
+    }
+  },
+  "partnerships": {
+    "backLink": "About",
+    "hero": {
+      "title": "Corporate Partnerships",
+      "subtitle": "Roomchang partners with leading organisations across Cambodia to provide dental care benefits for their employees, students, and members."
+    },
+    "partnerCount": "{count} partners",
+    "visitPartner": "Visit {name}",
+    "categories": {
+      "banks": "Banks & Financial Institutions",
+      "schools": "International Schools",
+      "healthcare": "Healthcare",
+      "insurance": "Insurance",
+      "hotels": "Hotels & Hospitality",
+      "realEstate": "Real Estate & Development",
+      "associations": "Professional Associations",
+      "other": "Other"
+    },
+    "cta": {
+      "title": "Become a Partner",
+      "description": "Offer your employees or members access to Cambodia's leading dental hospital. Contact us to discuss partnership options.",
+      "button": "Enquire About Partnerships"
+    }
+  },
+  "testimonialsPage": {
+    "backLink": "About",
+    "hero": {
+      "title": "Patient Testimonials",
+      "description": "Thousands of patients travel to Roomchang each year from Australia, Japan, Singapore, the USA, and beyond. Here's what they say about their experience."
+    },
+    "written": {
+      "title": "What Patients Say",
+      "description": "Verified reviews from patients who have visited Roomchang."
+    },
+    "video": {
+      "title": "Video Testimonials",
+      "description": "Watch real patients share their experience at Roomchang Dental Hospital.",
+      "items": {
+        "ryxcCSeH4ZE": {
+          "title": "Mr. Robert Backert — USA",
+          "description": "From the USA to Roomchang: Mr. Robert Backert's smile says it all after his successful dental implant procedure.",
+          "treatment": "Dental Implants"
+        },
+        "RdWGGl0U_p4": {
+          "title": "Mr. Kevin — Australia",
+          "description": "Mr. Kevin from Australia had a positive experience at Roomchang Dental Hospital — excellent dental treatment plus an enjoyable vacation in Cambodia.",
+          "treatment": "Dental Treatment"
+        },
+        "7ydJxsMTw4k": {
+          "title": "Mr. William Morris — Sydney, Australia",
+          "description": "Mr. William Morris traveled from Sydney, Australia to get his dental work done at Roomchang and enjoyed his vacation in Cambodia.",
+          "treatment": "Dental Tourism"
+        },
+        "bzfVyEb0Qak": {
+          "title": "Ms. Pauline Scott — New Zealand",
+          "description": "Ms. Pauline Scott travels from New Zealand to Cambodia to have her dental treatments done at Roomchang.",
+          "treatment": "Dental Treatment"
+        },
+        "jEnBISKgthw": {
+          "title": "Mr. Andrew Smith — Full Mouth Rehabilitation",
+          "description": "Mr. Andrew Smith shares his full mouth rehabilitation experience with Roomchang's Implantology department.",
+          "treatment": "Full Mouth Rehabilitation"
+        },
+        "GPI31xSd2TU": {
+          "title": "Ms. Jayadevi — Lingual Braces",
+          "description": "Ms. Jayadevi chose lingual braces (back-of-teeth) to correct her crooked teeth at Roomchang.",
+          "treatment": "Orthodontics"
+        },
+        "c33gA9XwUgA": {
+          "title": "Ms. Jenifer Padget — Lingual Braces",
+          "description": "Ms. Jenifer Padget shares her first experience with Lingual Braces from Roomchang.",
+          "treatment": "Orthodontics"
+        },
+        "TXsRqtNesVs": {
+          "title": "Mr. Pen Saravuth — Lingual Braces",
+          "description": "Mr. Pen Saravuth shares his experience with Lingual Braces from orthodontist Dr. Nicolas Salesse.",
+          "treatment": "Orthodontics"
+        },
+        "VaveFPmQSVA": {
+          "title": "Charley & Clem — Australia",
+          "description": "Charley and Clem from Australia explain why they chose to have dental implants at Roomchang.",
+          "treatment": "Dental Implants"
+        },
+        "917hvs8COHI": {
+          "title": "Mr. Russell — Australia",
+          "description": "Russell explains why he traveled from Australia to Cambodia for dental work at Roomchang.",
+          "treatment": "Dental Treatment"
+        },
+        "UVptrgYbvfk": {
+          "title": "Ms. Judy Hanson — Canada",
+          "description": "Judy Hanson from Canada talks about her experience at Roomchang.",
+          "treatment": "Dental Treatment"
+        },
+        "3sWMhXCD5GA": {
+          "title": "Ms. Wong Siew Wei",
+          "description": "Ms. Wong Siew Wei explains why she chose dental work at Roomchang — her family have been long-time customers for international quality at local prices.",
+          "treatment": "Dental Treatment"
+        },
+        "TT1bcfDV4k8": {
+          "title": "Ms. Kong Navy — Cambodia",
+          "description": "Ms. Kong Navy talks about her successful treatment at Roomchang Dental Hospital.",
+          "treatment": "Dental Treatment"
+        },
+        "4u1t_jnGM9k": {
+          "title": "Ms. Sharon Wilkinson — Britain",
+          "description": "Sharon Wilkinson from Britain talks about her successful treatment with Dr. Tith Hong Yoeu at Roomchang.",
+          "treatment": "Dental Treatment"
+        },
+        "H6oW3rgIkXg": {
+          "title": "Ms. Chhan Kimbuoy — Cambodia",
+          "description": "Roomchang happy brace patient Ms. Chhan Kimbuoy shares her orthodontic journey.",
+          "treatment": "Orthodontics"
+        }
+      }
+    },
+    "cta": {
+      "title": "Ready to start your journey?",
+      "description": "Join thousands of patients who have trusted Roomchang for world-class dental care. Get a free consultation and personalised treatment plan.",
+      "button": "Book a Free Consultation"
+    }
+  },
+  "careers": {
+    "backLink": "About",
+    "title": "Employment Opportunities",
+    "intro": "Roomchang Dental Hospital is a state-of-the-art dental hospital with over 3 decades of experience and a strong commitment to providing quality dentistry to everyone. We are always interested in hearing from potential applicants.",
+    "applyInstructions": {
+      "before": "Interested applicants should send their resume with related references and a cover letter to",
+      "middle": ". For further information please contact:",
+      "after": "."
+    },
+    "viewDetails": "View Details",
+    "cta": {
+      "heading": "Ready to Apply?",
+      "description": "Send your resume with related references and a cover letter to our HR team.",
+      "button": "Contact Us"
+    }
+  },
+  "careersDetail": {
+    "backLink": "All Positions",
+    "requirementsHeading": "Requirements",
+    "benefitsHeading": "Benefits",
+    "howToApplyHeading": "How to Apply",
+    "howToApplyDescription": "Send your resume with related references and a cover letter to our HR team.",
+    "emailLabel": "Email",
+    "phoneLabel": "Phone",
+    "contactCta": "Contact Us",
+    "otherPositionsHeading": "Other Positions"
+  },
+  "branchDetail": {
+    "backLink": "Our Branches",
+    "map": {
+      "title": "Map — {name}"
+    },
+    "viewOnGoogleMaps": "View on Google Maps",
+    "visitUs": "Visit Us",
+    "labels": {
+      "address": "Address",
+      "openingHours": "Opening Hours",
+      "phone": "Phone"
+    },
+    "bookAppointment": "Book an Appointment",
+    "otherBranches": "Other Branches"
   }
 }

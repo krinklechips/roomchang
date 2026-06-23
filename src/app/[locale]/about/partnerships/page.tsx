@@ -2,6 +2,7 @@ import { Link } from "@/i18n/navigation";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft } from "lucide-react";
 import { supabaseServer } from "@/lib/supabase-server";
+import { getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -13,10 +14,11 @@ export const metadata: Metadata = {
 };
 
 type Partner = { name: string; logo?: string; website?: string };
-type PartnerCategory = { title: string; partners: Partner[] };
+type PartnerCategory = { id: string; title: string; partners: Partner[] };
 
 const PARTNER_CATEGORIES: PartnerCategory[] = [
   {
+    id: "banks",
     title: "Banks & Financial Institutions",
     partners: [
       { name: "Vattanac Bank",           logo: "/about/partners/vattanac-bank.jpg" },
@@ -43,6 +45,7 @@ const PARTNER_CATEGORIES: PartnerCategory[] = [
     ],
   },
   {
+    id: "schools",
     title: "International Schools",
     partners: [
       { name: "American Intercon School" },
@@ -57,6 +60,7 @@ const PARTNER_CATEGORIES: PartnerCategory[] = [
     ],
   },
   {
+    id: "healthcare",
     title: "Healthcare",
     partners: [
       { name: "Orienda International Hospital" },
@@ -64,6 +68,7 @@ const PARTNER_CATEGORIES: PartnerCategory[] = [
     ],
   },
   {
+    id: "insurance",
     title: "Insurance",
     partners: [
       { name: "AIA",       logo: "/about/partners/aia.svg" },
@@ -75,6 +80,7 @@ const PARTNER_CATEGORIES: PartnerCategory[] = [
     ],
   },
   {
+    id: "hotels",
     title: "Hotels & Hospitality",
     partners: [
       { name: "Palace Gate Hotel & Resort" },
@@ -83,6 +89,7 @@ const PARTNER_CATEGORIES: PartnerCategory[] = [
     ],
   },
   {
+    id: "realEstate",
     title: "Real Estate & Development",
     partners: [
       { name: "Chip Mong Land Co., Ltd." },
@@ -90,6 +97,7 @@ const PARTNER_CATEGORIES: PartnerCategory[] = [
     ],
   },
   {
+    id: "associations",
     title: "Professional Associations",
     partners: [
       { name: "EuroCham Cambodia" },
@@ -98,6 +106,7 @@ const PARTNER_CATEGORIES: PartnerCategory[] = [
     ],
   },
   {
+    id: "other",
     title: "Other",
     partners: [
       { name: "PwC Cambodia", logo: "/about/partners/pwc.svg" },
@@ -108,7 +117,13 @@ const PARTNER_CATEGORIES: PartnerCategory[] = [
   },
 ];
 
-function PartnerLogo({ partner }: { partner: Partner }) {
+function PartnerLogo({
+  partner,
+  visitLabel,
+}: {
+  partner: Partner;
+  visitLabel: string;
+}) {
   const inner = partner.logo ? (
     // eslint-disable-next-line @next/next/no-img-element
     <img
@@ -133,7 +148,7 @@ function PartnerLogo({ partner }: { partner: Partner }) {
         href={partner.website}
         target="_blank"
         rel="noopener noreferrer"
-        title={`Visit ${partner.name}`}
+        title={visitLabel}
         className={`${cardClass} hover:-translate-y-0.5`}
       >
         {inner}
@@ -157,6 +172,8 @@ type PartnerRow = {
 };
 
 export default async function PartnershipsPage() {
+  const t = await getTranslations("partnerships");
+
   const { data, error } = await supabaseServer
     .from("partners")
     .select("*, partner_categories(name, sort_order)")
@@ -171,6 +188,7 @@ export default async function PartnershipsPage() {
     const category = row.partner_categories;
     if (!category) return;
     const existing = categoryMap.get(category.name) ?? {
+      id: category.name,
       title: category.name,
       partners: [],
       sortOrder: category.sort_order ?? 0,
@@ -186,7 +204,10 @@ export default async function PartnershipsPage() {
     ? Array.from(categoryMap.values())
         .sort((a, b) => a.sortOrder - b.sortOrder)
         .map(({ sortOrder, ...category }) => category)
-    : PARTNER_CATEGORIES;
+    : PARTNER_CATEGORIES.map((category) => ({
+        ...category,
+        title: t(`categories.${category.id}`),
+      }));
 
   return (
     <SiteShell>
@@ -197,14 +218,13 @@ export default async function PartnershipsPage() {
             href="/about"
             className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--brand)] transition hover:text-[color:var(--brand-deep)]"
           >
-            <ArrowLeft size={13} strokeWidth={2.5} aria-hidden="true" /> About
+            <ArrowLeft size={13} strokeWidth={2.5} aria-hidden="true" /> {t("backLink")}
           </Link>
           <h1 className="mt-4 font-display text-5xl leading-none text-[color:var(--text-main)] sm:text-6xl">
-            Corporate Partnerships
+            {t("hero.title")}
           </h1>
           <p className="mt-5 max-w-2xl text-base leading-7 text-[color:var(--text-soft)]">
-            Roomchang partners with leading organisations across Cambodia to provide dental care
-            benefits for their employees, students, and members.
+            {t("hero.subtitle")}
           </p>
         </div>
       </div>
@@ -215,12 +235,16 @@ export default async function PartnershipsPage() {
             <div className="mb-6 flex items-baseline gap-3">
               <h2 className="font-display text-2xl text-[color:var(--text-main)]">{category.title}</h2>
               <span className="text-xs font-semibold text-[color:var(--text-soft)]">
-                {category.partners.length} partners
+                {t("partnerCount", { count: category.partners.length })}
               </span>
             </div>
             <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-5">
               {category.partners.map((partner) => (
-                <PartnerLogo key={partner.name} partner={partner} />
+                <PartnerLogo
+                  key={partner.name}
+                  partner={partner}
+                  visitLabel={t("visitPartner", { name: partner.name })}
+                />
               ))}
             </div>
           </section>
@@ -230,14 +254,13 @@ export default async function PartnershipsPage() {
         <div className="rounded-3xl bg-[color:var(--brand-soft)] p-10 sm:p-12">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h2 className="font-display text-3xl text-[color:var(--text-main)]">Become a Partner</h2>
+              <h2 className="font-display text-3xl text-[color:var(--text-main)]">{t("cta.title")}</h2>
               <p className="mt-2 max-w-md text-sm leading-7 text-[color:var(--text-soft)]">
-                Offer your employees or members access to Cambodia&apos;s leading dental hospital.
-                Contact us to discuss partnership options.
+                {t("cta.description")}
               </p>
             </div>
             <Link href="/contact" className="btn-primary shrink-0">
-              Enquire About Partnerships
+              {t("cta.button")}
             </Link>
           </div>
         </div>

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, ArrowRight, Check, MapPin, Clock, Phone as PhoneIcon } from "lucide-react";
@@ -18,64 +19,43 @@ export const metadata: Metadata = {
 
 type DisplayStat = { display_value: string; label: string };
 
-const FALLBACK_STATS: Record<string, DisplayStat> = {
-  building_storeys: { display_value: "10", label: "Storey Building" },
-  dental_chairs: { display_value: "46", label: "Dental Chairs" },
-  surgical_theatres: { display_value: "9", label: "Operation Rooms" },
-  specialist_dentists: { display_value: "37", label: "Specialist Dentists" },
+const FALLBACK_STAT_VALUES: Record<string, string> = {
+  building_storeys: "10",
+  dental_chairs: "46",
+  surgical_theatres: "9",
+  specialist_dentists: "37",
 };
 
 const FACILITY_SECTIONS = [
   {
-    title: "In-House Digital Laboratory",
-    items: [
-      "Digital intraoral scanners",
-      "CAD/CAM technology from Germany",
-      "3D printers for precision restorations",
-      "Clear Aligner (CA) fabrication",
-    ],
+    id: "digital_lab",
+    items: ["scanners", "cad_cam", "printers", "aligner"],
   },
   {
-    title: "Diagnostic Imaging",
-    items: [
-      "3D cone-beam CT imaging (CBCT)",
-      "Digital panoramic X-ray (OPG)",
-      "Cephalometric radiography",
-      "Digital periapical and bitewing X-rays",
-    ],
+    id: "imaging",
+    items: ["cbct", "opg", "ceph", "periapical"],
   },
   {
-    title: "Sterilisation & Infection Control",
-    items: [
-      "Hospital-grade autoclave sterilisation",
-      "High-pressure saturated steam processing",
-      "All instruments sterilised for invasive and non-invasive procedures",
-      "Daily cleaning and disinfection of the entire hospital",
-      "Strict cross-infection control protocols",
-    ],
+    id: "sterilisation",
+    items: ["autoclave", "steam", "all_instruments", "daily_cleaning", "cross_infection"],
   },
   {
-    title: "Patient Comfort & Access",
-    items: [
-      "Dedicated children's treatment rooms",
-      "Beyond® professional whitening system",
-      "Electronic Medical Record (EMR) system",
-      "Underground parking for 15 vehicles",
-      "Full wheelchair accessibility",
-      "Multilingual staff: Khmer, English, French, Chinese, Japanese, German",
-    ],
+    id: "comfort",
+    items: ["children", "whitening", "emr", "parking", "wheelchair", "multilingual"],
   },
 ];
 
 // Images live on R2 (same CDN as the rest of the site) via cdnUrl().
 const GALLERY_INTERIOR = [
-  { src: cdnUrl("roomchang/about/facilities/facility-treatment-abroad.jpg"), alt: "Roomchang treatment room — international patient care" },
-  { src: cdnUrl("roomchang/about/facilities/facility-room-a.jpg"),           alt: "Roomchang dental chair and treatment suite" },
-  { src: cdnUrl("roomchang/about/facilities/facility-room-b.jpg"),           alt: "Modern dental treatment room at Roomchang" },
-  { src: cdnUrl("roomchang/about/facilities/facility-room-c.jpg"),           alt: "Specialist dental suite with advanced equipment" },
+  { id: "abroad", src: cdnUrl("roomchang/about/facilities/facility-treatment-abroad.jpg") },
+  { id: "room_a", src: cdnUrl("roomchang/about/facilities/facility-room-a.jpg") },
+  { id: "room_b", src: cdnUrl("roomchang/about/facilities/facility-room-b.jpg") },
+  { id: "room_c", src: cdnUrl("roomchang/about/facilities/facility-room-c.jpg") },
 ];
 
 export default async function FacilitiesPage() {
+  const t = await getTranslations("facilities");
+
   const { data: statsData, error } = await supabaseServer
     .from("site_stats")
     .select("key, display_value, label")
@@ -85,8 +65,11 @@ export default async function FacilitiesPage() {
     console.error("[FacilitiesPage] site_stats fetch failed:", error.message);
   }
 
-  const stat = (key: string) =>
-    statsData?.find((s) => s.key === key) ?? FALLBACK_STATS[key] ?? { display_value: "—", label: key };
+  const stat = (key: string): DisplayStat =>
+    statsData?.find((s) => s.key === key) ??
+    (FALLBACK_STAT_VALUES[key]
+      ? { display_value: FALLBACK_STAT_VALUES[key], label: t(`stats.${key}`) }
+      : { display_value: "—", label: key });
 
   return (
     <SiteShell>
@@ -98,14 +81,13 @@ export default async function FacilitiesPage() {
             href="/about"
             className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--brand)] transition hover:text-[color:var(--brand-deep)]"
           >
-            <ArrowLeft size={13} strokeWidth={2.5} aria-hidden="true" /> About
+            <ArrowLeft size={13} strokeWidth={2.5} aria-hidden="true" /> {t("hero.backLink")}
           </Link>
           <h1 className="mt-4 font-display text-5xl leading-none text-[color:var(--text-main)] sm:text-6xl">
-            Our Facilities
+            {t("hero.title")}
           </h1>
           <p className="mt-5 max-w-2xl text-base leading-7 text-[color:var(--text-soft)]">
-            A purpose-built, 10-storey dental hospital in the heart of Phnom Penh — equipped with
-            advanced digital technology from Germany and hospital-grade sterilisation throughout.
+            {t("hero.intro")}
           </p>
         </div>
       </div>
@@ -139,26 +121,26 @@ export default async function FacilitiesPage() {
             <div className="relative h-[420px] overflow-hidden rounded-3xl shadow-[0_20px_60px_rgba(57,28,45,0.12)] sm:h-[480px] lg:h-full">
               <Image
                 src={cdnUrl("roomchang/about/facilities/EDJI_0381.jpg")}
-                alt="Roomchang Dental Hospital — 10-storey building, Sisowath High School, Phnom Penh"
+                alt={t("buildingHero.imageAlt")}
                 width={3000}
                 height={1999}
                 className="h-full w-full object-cover object-center"
                 priority
               />
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[rgba(44,26,40,0.7)] to-transparent px-6 pb-6 pt-16">
-                <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/70">Main Hospital</p>
-                <p className="mt-1 font-display text-2xl text-white">10-Storey Building</p>
-                <p className="mt-0.5 text-xs text-white/60">No. 4, Street 184, Khan Daun Penh, Phnom Penh</p>
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/70">{t("buildingHero.eyebrow")}</p>
+                <p className="mt-1 font-display text-2xl text-white">{t("buildingHero.title")}</p>
+                <p className="mt-0.5 text-xs text-white/60">{t("buildingHero.address")}</p>
               </div>
             </div>
 
             {/* Interior photo grid — unique facility photos with uniform aspect ratio */}
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-2">
-              {GALLERY_INTERIOR.map(({ src, alt }) => (
+              {GALLERY_INTERIOR.map(({ id, src }) => (
                 <div key={src} className="relative aspect-[4/3] overflow-hidden rounded-2xl">
                   <Image
                     src={src}
-                    alt={alt}
+                    alt={t(`gallery.${id}.alt`)}
                     fill
                     className="object-cover transition duration-500 hover:scale-[1.04]"
                     sizes="(min-width: 1280px) 220px, (min-width: 1024px) 180px, 33vw"
@@ -174,17 +156,17 @@ export default async function FacilitiesPage() {
         <div className="grid gap-8 sm:grid-cols-2">
           {FACILITY_SECTIONS.map((section) => (
             <div
-              key={section.title}
+              key={section.id}
               className="rounded-3xl border border-[color:var(--border-strong)] bg-white p-8 shadow-[0_12px_40px_rgba(57,28,45,0.05)]"
             >
-              <h2 className="font-display text-2xl text-[color:var(--text-main)]">{section.title}</h2>
+              <h2 className="font-display text-2xl text-[color:var(--text-main)]">{t(`sections.${section.id}.title`)}</h2>
               <ul className="mt-5 space-y-3">
                 {section.items.map((item) => (
                   <li key={item} className="flex items-start gap-3 text-sm leading-6 text-[color:var(--text-soft)]">
                     <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[color:var(--brand-soft)] text-[color:var(--brand-deep)]">
                       <Check size={11} strokeWidth={3} aria-hidden="true" />
                     </span>
-                    {item}
+                    {t(`sections.${section.id}.items.${item}`)}
                   </li>
                 ))}
               </ul>
@@ -195,14 +177,13 @@ export default async function FacilitiesPage() {
         {/* Our Locations */}
         <div id="locations" className="mt-16 scroll-mt-24 sm:scroll-mt-32">
           <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--brand)]">
-            Our Locations
+            {t("locations.eyebrow")}
           </p>
           <h2 className="mt-3 font-display text-4xl text-[color:var(--text-main)] sm:text-5xl">
-            Five Branches Across Phnom Penh
+            {t("locations.title")}
           </h2>
           <p className="mt-4 max-w-2xl text-sm leading-7 text-[color:var(--text-soft)]">
-            Every Roomchang branch delivers the same specialist care and hospital-grade standards —
-            with the same team quality, equipment, and sterilisation protocols.
+            {t("locations.intro")}
           </p>
 
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -247,7 +228,7 @@ export default async function FacilitiesPage() {
                       href={`/about/branches/${branch.slug}`}
                       className="inline-flex items-center gap-1.5 text-sm font-semibold text-[color:var(--brand-deep)] transition hover:text-[color:var(--brand)]"
                     >
-                      Discover This Location <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
+                      {t("locations.discoverCta")} <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
                     </Link>
                   </div>
                 </div>
@@ -261,18 +242,17 @@ export default async function FacilitiesPage() {
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--brand-deep)]">
-                Quality Assurance
+                {t("quality.eyebrow")}
               </p>
               <h2 className="mt-2 font-display text-3xl text-[color:var(--text-main)]">
-                Hospital-Grade Standards
+                {t("quality.title")}
               </h2>
               <p className="mt-3 max-w-lg text-sm leading-7 text-[color:var(--text-soft)]">
-                Roomchang follows strict sterilisation, infection control, and clinical protocols —
-                the same standards expected of leading international dental hospitals.
+                {t("quality.body")}
               </p>
             </div>
             <Link href="/contact" className="btn-primary shrink-0">
-              Book a Tour
+              {t("quality.cta")}
             </Link>
           </div>
         </div>

@@ -1,5 +1,6 @@
 import { Link } from "@/i18n/navigation";
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, Check, Mail, Phone } from "lucide-react";
 import { POSITIONS, getPositionBySlug } from "@/lib/careers";
@@ -32,6 +33,8 @@ export default async function CareerDetailPage({
   const pos = getPositionBySlug(slug);
   if (!pos) notFound();
 
+  const t = await getTranslations("careersDetail");
+
   return (
     <SiteShell>
       {/* Header */}
@@ -41,7 +44,7 @@ export default async function CareerDetailPage({
             href="/about/careers"
             className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--brand)] transition hover:text-[color:var(--brand-deep)]"
           >
-            <ArrowLeft size={13} strokeWidth={2.5} aria-hidden="true" /> All Positions
+            <ArrowLeft size={13} strokeWidth={2.5} aria-hidden="true" /> {t("backLink")}
           </Link>
           <div className="mt-4 flex items-center gap-3">
             <span className="rounded-full bg-[color:var(--brand-soft)] px-3 py-1 text-[0.65rem] font-bold uppercase tracking-[0.2em] text-[color:var(--brand-deep)]">
@@ -63,7 +66,7 @@ export default async function CareerDetailPage({
           <div>
             {/* Requirements */}
             <h2 className="text-xs font-bold uppercase tracking-[0.28em] text-[color:var(--brand)]">
-              Requirements
+              {t("requirementsHeading")}
             </h2>
             <ul className="mt-5 space-y-3">
               {pos.requirements.map((req) => (
@@ -83,7 +86,7 @@ export default async function CareerDetailPage({
             {pos.benefits && (
               <>
                 <h2 className="mt-10 text-xs font-bold uppercase tracking-[0.28em] text-[color:var(--brand)]">
-                  Benefits
+                  {t("benefitsHeading")}
                 </h2>
                 <ul className="mt-5 space-y-3">
                   {pos.benefits.map((b) => (
@@ -105,9 +108,9 @@ export default async function CareerDetailPage({
           {/* Sidebar — How to Apply */}
           <div className="lg:mt-0">
             <div className="sticky top-28 rounded-3xl border border-[color:var(--border-strong)] bg-white p-8 shadow-[0_12px_40px_rgba(57,28,45,0.05)]">
-              <h3 className="font-display text-xl text-[color:var(--text-main)]">How to Apply</h3>
+              <h3 className="font-display text-xl text-[color:var(--text-main)]">{t("howToApplyHeading")}</h3>
               <p className="mt-3 text-sm leading-7 text-[color:var(--text-soft)]">
-                Send your resume with related references and a cover letter to our HR team.
+                {t("howToApplyDescription")}
               </p>
 
               <div className="mt-6 space-y-4">
@@ -117,7 +120,7 @@ export default async function CareerDetailPage({
                   </span>
                   <div>
                     <p className="text-[0.65rem] font-bold uppercase tracking-[0.18em] text-[color:var(--text-soft)]">
-                      Email
+                      {t("emailLabel")}
                     </p>
                     <p className="text-sm font-semibold text-[color:var(--text-main)]">
                       hr@roomchang.com
@@ -130,7 +133,7 @@ export default async function CareerDetailPage({
                   </span>
                   <div>
                     <p className="text-[0.65rem] font-bold uppercase tracking-[0.18em] text-[color:var(--text-soft)]">
-                      Phone
+                      {t("phoneLabel")}
                     </p>
                     <p className="text-sm font-semibold text-[color:var(--text-main)]">
                       098 843 322
@@ -140,7 +143,7 @@ export default async function CareerDetailPage({
               </div>
 
               <Link href="/contact" className="btn-primary mt-6 w-full justify-center">
-                Contact Us
+                {t("contactCta")}
               </Link>
             </div>
           </div>
@@ -149,7 +152,7 @@ export default async function CareerDetailPage({
         {/* Other positions */}
         <div className="mt-16 border-t border-[color:var(--border-strong)] pt-12">
           <h2 className="font-display text-2xl text-[color:var(--text-main)]">
-            Other Positions
+            {t("otherPositionsHeading")}
           </h2>
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {POSITIONS.filter((p) => p.slug !== pos.slug).map((other) => (

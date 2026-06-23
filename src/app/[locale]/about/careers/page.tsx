@@ -2,6 +2,7 @@ import { Link } from "@/i18n/navigation";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, ArrowRight, Briefcase, Mail, Phone } from "lucide-react";
 import { POSITIONS } from "@/lib/careers";
+import { getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -10,7 +11,8 @@ export const metadata: Metadata = {
     "Join Cambodia’s leading dental group. View current job openings at Roomchang Dental Hospital — clinical fellowships, dentists, dental assistants, and customer service positions.",
 };
 
-export default function CareersPage() {
+export default async function CareersPage() {
+  const t = await getTranslations("careers");
   return (
     <SiteShell>
       <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--surface)]">
@@ -19,15 +21,13 @@ export default function CareersPage() {
             href="/about"
             className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--brand)] transition hover:text-[color:var(--brand-deep)]"
           >
-            <ArrowLeft size={13} strokeWidth={2.5} aria-hidden="true" /> About
+            <ArrowLeft size={13} strokeWidth={2.5} aria-hidden="true" /> {t("backLink")}
           </Link>
           <h1 className="mt-4 font-display text-5xl leading-none text-[color:var(--text-main)] sm:text-6xl">
-            Employment Opportunities
+            {t("title")}
           </h1>
           <p className="mt-5 max-w-2xl text-base leading-7 text-[color:var(--text-soft)]">
-            Roomchang Dental Hospital is a state-of-the-art dental hospital with over 3 decades of
-            experience and a strong commitment to providing quality dentistry to everyone. We are
-            always interested in hearing from potential applicants.
+            {t("intro")}
           </p>
         </div>
       </div>
@@ -48,10 +48,11 @@ export default function CareersPage() {
 
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-16 lg:px-8">
         <p className="mb-10 text-sm leading-7 text-[color:var(--text-soft)]">
-          Interested applicants should send their resume with related references and a cover letter
-          to <strong className="text-[color:var(--text-main)]">hr@roomchang.com</strong>. For
-          further information please contact:{" "}
-          <strong className="text-[color:var(--text-main)]">+855 98 843 322</strong>.
+          {t("applyInstructions.before")}{" "}
+          <strong className="text-[color:var(--text-main)]">hr@roomchang.com</strong>
+          {t("applyInstructions.middle")}{" "}
+          <strong className="text-[color:var(--text-main)]">+855 98 843 322</strong>
+          {t("applyInstructions.after")}
         </p>
 
         <div className="grid gap-6 sm:grid-cols-2">
@@ -79,7 +80,7 @@ export default function CareersPage() {
               </p>
 
               <div className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-[color:var(--brand-deep)] transition group-hover:text-[color:var(--brand)]">
-                View Details <ArrowRight size={14} strokeWidth={2} aria-hidden="true" className="transition-transform group-hover:translate-x-1" />
+                {t("viewDetails")} <ArrowRight size={14} strokeWidth={2} aria-hidden="true" className="transition-transform group-hover:translate-x-1" />
               </div>
             </Link>
           ))}
@@ -90,14 +91,14 @@ export default function CareersPage() {
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 className="font-display text-3xl text-[color:var(--text-main)]">
-                Ready to Apply?
+                {t("cta.heading")}
               </h2>
               <p className="mt-2 text-sm leading-7 text-[color:var(--text-soft)]">
-                Send your resume with related references and a cover letter to our HR team.
+                {t("cta.description")}
               </p>
             </div>
             <Link href="/contact" className="btn-primary shrink-0">
-              Contact Us
+              {t("cta.button")}
             </Link>
           </div>
         </div>

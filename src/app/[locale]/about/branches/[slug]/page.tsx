@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, Phone, Clock, MapPin } from "lucide-react";
 import { BRANCHES, getBranchBySlug } from "@/lib/branches";
@@ -33,6 +34,8 @@ export default async function BranchPage({
   const branch = getBranchBySlug(slug);
   if (!branch) notFound();
 
+  const t = await getTranslations("branchDetail");
+
   // Google Maps URLs — show the LOCATION, never a forced directions route
   // (branch feedback: easier to share + smoother for patients to review).
   // Prefer the official place Embed (encodes the place_id → labelled place card,
@@ -59,7 +62,7 @@ export default async function BranchPage({
             href="/about/facilities#locations"
             className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--brand)] transition hover:text-[color:var(--brand-deep)]"
           >
-            <ArrowLeft size={13} strokeWidth={2.5} aria-hidden="true" /> Our Branches
+            <ArrowLeft size={13} strokeWidth={2.5} aria-hidden="true" /> {t("backLink")}
           </Link>
 
           <div className="mt-4 flex flex-wrap items-start justify-between gap-4">
@@ -113,7 +116,7 @@ export default async function BranchPage({
             {/* Google Map embed */}
             <div className="overflow-hidden rounded-3xl border border-[color:var(--border-strong)] shadow-[0_8px_32px_rgba(57,28,45,0.06)]">
               <iframe
-                title={`Map — ${branch.shortName}`}
+                title={t("map.title", { name: branch.shortName })}
                 src={mapEmbedUrl}
                 width="100%"
                 height="380"
@@ -132,7 +135,7 @@ export default async function BranchPage({
               className="btn-primary inline-flex items-center justify-center gap-2"
             >
               <MapPin size={16} strokeWidth={2} aria-hidden="true" />
-              View on Google Maps
+              {t("viewOnGoogleMaps")}
             </a>
           </div>
 
@@ -141,7 +144,7 @@ export default async function BranchPage({
 
             {/* Address card */}
             <div className="rounded-3xl border border-[color:var(--border-strong)] bg-white p-8 shadow-[0_12px_40px_rgba(57,28,45,0.05)]">
-              <h2 className="font-display text-2xl text-[color:var(--text-main)]">Visit Us</h2>
+              <h2 className="font-display text-2xl text-[color:var(--text-main)]">{t("visitUs")}</h2>
 
               <div className="mt-6 flex flex-col gap-5">
                 <div className="flex items-start gap-3">
@@ -149,7 +152,7 @@ export default async function BranchPage({
                     <MapPin size={16} strokeWidth={2} aria-hidden="true" />
                   </span>
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[color:var(--text-soft)]">Address</p>
+                    <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[color:var(--text-soft)]">{t("labels.address")}</p>
                     <p className="mt-1 text-sm font-medium leading-6 text-[color:var(--text-main)]">
                       {branch.address}
                     </p>
@@ -164,7 +167,7 @@ export default async function BranchPage({
                     <Clock size={16} strokeWidth={2} aria-hidden="true" />
                   </span>
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[color:var(--text-soft)]">Opening Hours</p>
+                    <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[color:var(--text-soft)]">{t("labels.openingHours")}</p>
                     <p className="mt-1 text-sm font-medium text-[color:var(--text-main)]">{branch.hours}</p>
                   </div>
                 </div>
@@ -174,7 +177,7 @@ export default async function BranchPage({
                     <Phone size={16} strokeWidth={2} aria-hidden="true" />
                   </span>
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[color:var(--text-soft)]">Phone</p>
+                    <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[color:var(--text-soft)]">{t("labels.phone")}</p>
                     <a
                       href={`tel:${branch.phone.replace(/\s/g, "")}`}
                       className="mt-1 block text-sm font-medium text-[color:var(--brand-deep)] transition hover:text-[color:var(--brand)]"
@@ -187,14 +190,14 @@ export default async function BranchPage({
 
               <div className="mt-8 flex flex-col gap-3">
                 <Link href="/contact" className="btn-primary w-full justify-center">
-                  Book an Appointment
+                  {t("bookAppointment")}
                 </Link>
               </div>
             </div>
 
             {/* Other branches */}
             <div className="rounded-3xl border border-[color:var(--border-strong)] bg-white p-6 shadow-[0_12px_40px_rgba(57,28,45,0.05)]">
-              <h3 className="font-display text-lg text-[color:var(--text-main)]">Other Branches</h3>
+              <h3 className="font-display text-lg text-[color:var(--text-main)]">{t("otherBranches")}</h3>
               <div className="mt-4 flex flex-col gap-2">
                 {otherBranches.map((b) => (
                   <Link

@@ -966,5 +966,327 @@
       "alt": "{title}，第 {index} 张，共 {total} 张",
       "next": "下一张"
     }
+  },
+  "directorMessage": {
+    "backLink": "关于我们",
+    "heading": "院长寄语",
+    "portrait": {
+      "alt": "Tith Hong Yoeu 医生 — Roomchang 牙科医院创始人兼院长",
+      "name": "Tith Hong Yoeu 医生",
+      "credentials": "DDS, MSc.",
+      "role": "创始人兼院长",
+      "degree": "口腔种植学硕士（MSc.）",
+      "institution": "德国法兰克福歌德大学（Goethe University Frankfurt）"
+    },
+    "letter": {
+      "salutation": "尊敬的各位患者：",
+      "paragraph1": "感谢您将口腔健康托付给 Roomchang。在过去的三十年里，我们始终坚定承诺，为每一位患者提供优质的牙科治疗——无论其背景、国籍，或病例的复杂程度如何。",
+      "paragraph2": "1996 年我创立 Roomchang 时，目标很简单：在柬埔寨建立一家能够媲美世界任何地方诊疗水准的牙科医院。这一愿景从未改变。改变的是我们实现它的规模——五家分院、74 张牙椅、一座完整的院内数字化技工室，以及一支由 37 位专科医生组成的团队。",
+      "paragraph3": "我们恪守严格的职业道德准则，并持续投入最先进的设备与诊疗技术。我们与 Prof. Nentwig 及德国法兰克福歌德大学的合作，对塑造 Roomchang 的临床理念起到了关键作用——将欧洲的种植学与口腔外科标准融入我们的日常诊疗之中。",
+      "paragraph4": "我们团队的每一位成员——从专科医生到前台接待人员——都秉持同一个信念：牙科诊疗应当透明、可及，并以真诚的关怀去提供。我们不仅治疗牙齿，更在建立信任。",
+      "paragraph5": "多年来患者给予我们的支持，令我深怀感激。正是您对我们的信任，激励着我们不断改进、不断创新，并始终如一地秉持着创立之初的那份承诺，日复一日地坚守岗位。",
+      "signatureName": "Tith Hong Yoeu 医生",
+      "signatureTitle": "院长，Roomchang 牙科医院"
+    },
+    "cta": {
+      "title": "认识完整团队",
+      "description": "了解 Tith 医生所汇聚的专科牙医团队。",
+      "button": "我们的医生"
+    }
+  },
+  "visionMission": {
+    "backLink": "关于我们",
+    "title": "愿景、使命与价值观",
+    "intro": "自 1996 年以来一直指引 Roomchang 的原则——并持续塑造着每一次问诊、每一份治疗方案以及每一次与患者的互动。",
+    "vision": {
+      "label": "愿景",
+      "statement": "以优质牙科服务丰富人们的生活。",
+      "description": "我们期望柬埔寨的每一个人都能获得世界一流的牙科护理——选择本地服务，并不意味着要在质量上妥协。"
+    },
+    "mission": {
+      "label": "使命",
+      "statement": "我们真心呵护您的牙齿。",
+      "description": "每一份治疗方案都以患者为中心来设计——而非以诊疗程序为中心。我们倾听、讲解，并提供尊重您的时间、预算与目标的护理。"
+    },
+    "values": {
+      "heading": "我们的核心价值观",
+      "intro": "五项原则塑造着 Roomchang 的每一次互动，从我们如何设计治疗方案，到我们如何接听电话。",
+      "items": {
+        "professionalism": {
+          "title": "专业精神",
+          "description": "我们的团队持有国际资质，遵循最高的临床标准，并在严格的内部规程和持续培训的指导下开展工作。"
+        },
+        "honesty": {
+          "title": "诚信",
+          "description": "价格清晰、治疗选项透明，绝无隐藏费用。我们相信，充分知情的患者能做出最佳决定。"
+        },
+        "teamwork": {
+          "title": "团队协作",
+          "description": "在协作的环境中，各专科的专家携手合作，为每一位患者带来最佳的治疗成效。"
+        },
+        "innovation": {
+          "title": "创新",
+          "description": "我们持续投入于技术——从 CAD/CAM 数字化技工室到 3D CBCT 影像——以始终走在牙科领域的前沿。"
+        },
+        "excellence": {
+          "title": "卓越",
+          "description": "从常规检查到复杂的全口重建，我们每一次都以同样卓越的标准要求自己。"
+        }
+      }
+    },
+    "cta": {
+      "heading": "见证我们价值观的实践",
+      "description": "认识每天将这些原则付诸实践的专科团队。",
+      "button": "认识我们的医生"
+    }
+  },
+  "facilities": {
+    "hero": {
+      "backLink": "首页",
+      "title": "我们的设施",
+      "intro": "一座专为牙科打造的 10 层牙科医院，坐落于金边市中心——全院配备来自德国的先进数字化技术，并采用医院级消毒标准。"
+    },
+    "stats": {
+      "building_storeys": "层楼建筑",
+      "dental_chairs": "牙科治疗椅",
+      "surgical_theatres": "手术室",
+      "specialist_dentists": "专科医生"
+    },
+    "sections": {
+      "digital_lab": {
+        "title": "院内数字化技工室",
+        "items": {
+          "scanners": "数字化口内扫描仪",
+          "cad_cam": "来自德国的 CAD/CAM 技术",
+          "printers": "用于精密修复的 3D 打印机",
+          "aligner": "Clear Aligner (CA) 制作"
+        }
+      },
+      "imaging": {
+        "title": "诊断影像",
+        "items": {
+          "cbct": "3D 锥形束 CT 影像（CBCT）",
+          "opg": "数字化全景 X 光（OPG）",
+          "ceph": "头颅侧位测量 X 光摄影",
+          "periapical": "数字化根尖片与咬翼片 X 光"
+        }
+      },
+      "sterilisation": {
+        "title": "消毒与感染控制",
+        "items": {
+          "autoclave": "医院级高压蒸汽灭菌消毒",
+          "steam": "高压饱和蒸汽处理",
+          "all_instruments": "所有器械均经过消毒，适用于侵入性与非侵入性诊疗",
+          "daily_cleaning": "全院每日清洁与消毒",
+          "cross_infection": "严格的交叉感染控制规程"
+        }
+      },
+      "comfort": {
+        "title": "患者舒适与无障碍",
+        "items": {
+          "children": "专设儿童诊疗室",
+          "whitening": "Beyond® 专业美白系统",
+          "emr": "电子病历（EMR）系统",
+          "parking": "可停放 15 辆车的地下停车场",
+          "wheelchair": "全方位轮椅无障碍通行",
+          "multilingual": "多语种员工：高棉语、英语、法语、中文、日语、德语"
+        }
+      }
+    },
+    "gallery": {
+      "abroad": {
+        "alt": "Roomchang 诊疗室——国际患者护理"
+      },
+      "room_a": {
+        "alt": "Roomchang 牙科治疗椅与诊疗室"
+      },
+      "room_b": {
+        "alt": "Roomchang 现代化牙科诊疗室"
+      },
+      "room_c": {
+        "alt": "配备先进设备的专科牙科诊疗室"
+      }
+    },
+    "buildingHero": {
+      "imageAlt": "Roomchang 牙科医院——10 层建筑，西索瓦中学，金边",
+      "eyebrow": "主医院",
+      "title": "10 层建筑",
+      "address": "金边市顿奔区 184 街 4 号"
+    },
+    "locations": {
+      "eyebrow": "我们的分院",
+      "title": "金边五家分院",
+      "intro": "每一家 Roomchang 分院都提供同样的专科护理与医院级标准——拥有同样的团队素质、设备和消毒规程。",
+      "discoverCta": "了解该分院"
+    },
+    "quality": {
+      "eyebrow": "质量保证",
+      "title": "医院级标准",
+      "body": "Roomchang 严格遵循消毒、感染控制及临床规程——与国际一流牙科医院所要求的标准一致。",
+      "cta": "预约参观"
+    }
+  },
+  "partnerships": {
+    "backLink": "关于我们",
+    "hero": {
+      "title": "企业合作伙伴",
+      "subtitle": "Roomchang 与柬埔寨各地的领先机构合作，为其员工、学生和会员提供牙科护理福利。"
+    },
+    "partnerCount": "{count} 家合作伙伴",
+    "visitPartner": "访问 {name}",
+    "categories": {
+      "banks": "银行与金融机构",
+      "schools": "国际学校",
+      "healthcare": "医疗保健",
+      "insurance": "保险",
+      "hotels": "酒店与款待业",
+      "realEstate": "房地产与开发",
+      "associations": "专业协会",
+      "other": "其他"
+    },
+    "cta": {
+      "title": "成为合作伙伴",
+      "description": "让您的员工或会员享有柬埔寨领先牙科医院的服务。联系我们，洽谈合作方案。",
+      "button": "咨询合作伙伴事宜"
+    }
+  },
+  "testimonialsPage": {
+    "backLink": "关于我们",
+    "hero": {
+      "title": "患者评价",
+      "description": "每年有成千上万的患者从澳大利亚、日本、新加坡、美国及世界各地前来 Roomchang。以下是他们对就诊体验的真实分享。"
+    },
+    "written": {
+      "title": "患者怎么说",
+      "description": "来自曾到访 Roomchang 患者的真实认证评价。"
+    },
+    "video": {
+      "title": "视频评价",
+      "description": "观看真实患者分享他们在 Roomchang Dental Hospital 的就诊体验。",
+      "items": {
+        "ryxcCSeH4ZE": {
+          "title": "Robert Backert 先生 — 美国",
+          "description": "从美国到 Roomchang：种植牙手术成功后，Robert Backert 先生的笑容说明了一切。",
+          "treatment": "种植牙"
+        },
+        "RdWGGl0U_p4": {
+          "title": "Kevin 先生 — 澳大利亚",
+          "description": "来自澳大利亚的 Kevin 先生在 Roomchang Dental Hospital 收获了愉快的体验——出色的牙科治疗，加上在柬埔寨的惬意假期。",
+          "treatment": "牙科治疗"
+        },
+        "7ydJxsMTw4k": {
+          "title": "William Morris 先生 — 澳大利亚悉尼",
+          "description": "William Morris 先生从澳大利亚悉尼远道而来，在 Roomchang 完成牙科治疗，并享受了在柬埔寨的假期。",
+          "treatment": "牙科旅游"
+        },
+        "bzfVyEb0Qak": {
+          "title": "Pauline Scott 女士 — 新西兰",
+          "description": "Pauline Scott 女士从新西兰前往柬埔寨，在 Roomchang 接受牙科治疗。",
+          "treatment": "牙科治疗"
+        },
+        "jEnBISKgthw": {
+          "title": "Andrew Smith 先生 — 全口咬合重建",
+          "description": "Andrew Smith 先生分享了他在 Roomchang 种植牙科与全口咬合重建的体验。",
+          "treatment": "全口咬合重建"
+        },
+        "GPI31xSd2TU": {
+          "title": "Jayadevi 女士 — 舌侧矫正",
+          "description": "Jayadevi 女士选择在 Roomchang 采用舌侧矫正（牙齿内侧）来矫正她的不齐牙齿。",
+          "treatment": "牙齿矫正"
+        },
+        "c33gA9XwUgA": {
+          "title": "Jenifer Padget 女士 — 舌侧矫正",
+          "description": "Jenifer Padget 女士分享了她在 Roomchang 首次体验舌侧矫正的感受。",
+          "treatment": "牙齿矫正"
+        },
+        "TXsRqtNesVs": {
+          "title": "Pen Saravuth 先生 — 舌侧矫正",
+          "description": "Pen Saravuth 先生分享了他在正畸医生 Dr. Nicolas Salesse 处接受舌侧矫正的体验。",
+          "treatment": "牙齿矫正"
+        },
+        "VaveFPmQSVA": {
+          "title": "Charley 与 Clem — 澳大利亚",
+          "description": "来自澳大利亚的 Charley 和 Clem 讲述了他们为何选择在 Roomchang 进行种植牙。",
+          "treatment": "种植牙"
+        },
+        "917hvs8COHI": {
+          "title": "Russell 先生 — 澳大利亚",
+          "description": "Russell 讲述了他为何从澳大利亚远赴柬埔寨在 Roomchang 进行牙科治疗。",
+          "treatment": "牙科治疗"
+        },
+        "UVptrgYbvfk": {
+          "title": "Judy Hanson 女士 — 加拿大",
+          "description": "来自加拿大的 Judy Hanson 分享了她在 Roomchang 的就诊体验。",
+          "treatment": "牙科治疗"
+        },
+        "3sWMhXCD5GA": {
+          "title": "Wong Siew Wei 女士",
+          "description": "Wong Siew Wei 女士讲述了她为何选择在 Roomchang 接受牙科治疗——她的家人长期以来都是这里的顾客，以本地价格享受国际品质。",
+          "treatment": "牙科治疗"
+        },
+        "TT1bcfDV4k8": {
+          "title": "Kong Navy 女士 — 柬埔寨",
+          "description": "Kong Navy 女士讲述了她在 Roomchang Dental Hospital 成功的治疗经历。",
+          "treatment": "牙科治疗"
+        },
+        "4u1t_jnGM9k": {
+          "title": "Sharon Wilkinson 女士 — 英国",
+          "description": "来自英国的 Sharon Wilkinson 讲述了她在 Roomchang 由 Dr. Tith Hong Yoeu 完成的成功治疗。",
+          "treatment": "牙科治疗"
+        },
+        "H6oW3rgIkXg": {
+          "title": "Chhan Kimbuoy 女士 — 柬埔寨",
+          "description": "Roomchang 满意的矫正患者 Chhan Kimbuoy 女士分享了她的牙齿矫正之旅。",
+          "treatment": "牙齿矫正"
+        }
+      }
+    },
+    "cta": {
+      "title": "准备好开启您的旅程了吗？",
+      "description": "加入成千上万信赖 Roomchang 世界级牙科护理的患者行列。获取免费咨询及个性化治疗方案。",
+      "button": "预约免费咨询"
+    }
+  },
+  "careers": {
+    "backLink": "关于我们",
+    "title": "招聘职位",
+    "intro": "Roomchang 牙科医院是一家拥有逾30年经验的现代化牙科医院，始终致力于为每一位患者提供优质的牙科诊疗服务。我们随时欢迎有志之士前来应聘。",
+    "applyInstructions": {
+      "before": "有意应聘者请将个人简历连同相关推荐资料及求职信发送至",
+      "middle": "。如需了解更多信息，请联系：",
+      "after": "。"
+    },
+    "viewDetails": "查看详情",
+    "cta": {
+      "heading": "准备好应聘了吗？",
+      "description": "请将您的个人简历连同相关推荐资料及求职信发送给我们的人力资源团队。",
+      "button": "联系我们"
+    }
+  },
+  "careersDetail": {
+    "backLink": "所有职位",
+    "requirementsHeading": "任职要求",
+    "benefitsHeading": "福利待遇",
+    "howToApplyHeading": "申请方式",
+    "howToApplyDescription": "请将您的简历、相关推荐材料及求职信发送至我们的人力资源团队。",
+    "emailLabel": "电子邮箱",
+    "phoneLabel": "电话",
+    "contactCta": "联系我们",
+    "otherPositionsHeading": "其他职位"
+  },
+  "branchDetail": {
+    "backLink": "我们的分院",
+    "map": {
+      "title": "地图 — {name}"
+    },
+    "viewOnGoogleMaps": "在 Google 地图上查看",
+    "visitUs": "到访我们",
+    "labels": {
+      "address": "地址",
+      "openingHours": "营业时间",
+      "phone": "电话"
+    },
+    "bookAppointment": "预约就诊",
+    "otherBranches": "其他分院"
   }
 }
