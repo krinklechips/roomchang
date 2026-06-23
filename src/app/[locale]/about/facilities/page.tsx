@@ -6,6 +6,7 @@ import { ArrowLeft, ArrowRight, Check, MapPin, Clock, Phone as PhoneIcon } from 
 import { supabaseServer } from "@/lib/supabase-server";
 import { cdnUrl } from "@/lib/supabase";
 import { BRANCHES } from "@/lib/branches";
+import { getTranslatedFieldsBatch, mergeTranslation } from "@/lib/i18n-content";
 import { HashScroll } from "@/components/sections/hash-scroll";
 import type { Metadata } from "next";
 
@@ -62,6 +63,10 @@ export default async function FacilitiesPage({
   setRequestLocale(locale);
 
   const t = await getTranslations("facilities");
+
+  // Overlay active-locale branch descriptions (content_translations).
+  const branchTr = await getTranslatedFieldsBatch("branch", BRANCHES.map((b) => b.slug));
+  const branches = BRANCHES.map((b) => mergeTranslation(b, branchTr.get(b.slug) ?? {}));
 
   const { data: statsData, error } = await supabaseServer
     .from("site_stats")
@@ -194,7 +199,7 @@ export default async function FacilitiesPage({
           </p>
 
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {BRANCHES.map((branch) => (
+            {branches.map((branch) => (
               <div
                 key={branch.slug}
                 className="flex flex-col rounded-3xl border border-[color:var(--border-strong)] bg-white shadow-[0_12px_40px_rgba(57,28,45,0.05)] overflow-hidden"

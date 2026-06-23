@@ -5,6 +5,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, Phone, Clock, MapPin } from "lucide-react";
 import { BRANCHES, getBranchBySlug } from "@/lib/branches";
+import { getTranslatedFields, mergeTranslation } from "@/lib/i18n-content";
 import type { Metadata } from "next";
 
 export function generateStaticParams() {
@@ -32,8 +33,10 @@ export default async function BranchPage({
 }) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
-  const branch = getBranchBySlug(slug);
-  if (!branch) notFound();
+  const baseBranch = getBranchBySlug(slug);
+  if (!baseBranch) notFound();
+  // Overlay the active-locale branch description (content_translations).
+  const branch = mergeTranslation(baseBranch, await getTranslatedFields("branch", slug));
 
   const t = await getTranslations("branchDetail");
 
