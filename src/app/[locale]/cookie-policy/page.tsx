@@ -19,7 +19,7 @@ export default async function CookiePolicyPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations("cookiePolicy");
+  const t = await getTranslations({ locale: "en", namespace: "cookiePolicy" });
 
   return (
     <SiteShell>

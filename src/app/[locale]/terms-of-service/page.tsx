@@ -19,7 +19,7 @@ export default async function TermsOfServicePage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations("termsOfService");
+  const t = await getTranslations({ locale: "en", namespace: "termsOfService" });
 
   return (
     <SiteShell>

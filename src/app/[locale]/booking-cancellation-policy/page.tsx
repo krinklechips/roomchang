@@ -20,7 +20,7 @@ export default async function BookingCancellationPolicyPage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const t = await getTranslations("bookingPolicy");
+  const t = await getTranslations({ locale: "en", namespace: "bookingPolicy" });
 
   return (
     <SiteShell>

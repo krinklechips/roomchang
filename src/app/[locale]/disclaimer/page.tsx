@@ -20,7 +20,7 @@ export default async function DisclaimerPage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const t = await getTranslations("disclaimer");
+  const t = await getTranslations({ locale: "en", namespace: "disclaimer" });
 
   return (
     <SiteShell>

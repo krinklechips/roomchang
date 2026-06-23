@@ -19,7 +19,7 @@ export default async function PrivacyPolicyPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations("privacyPolicy");
+  const t = await getTranslations({ locale: "en", namespace: "privacyPolicy" });
 
   return (
     <SiteShell>
