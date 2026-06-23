@@ -5,19 +5,17 @@ import { useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { CaretDown } from "@phosphor-icons/react";
 
-// `enabled: false` keeps the locale's routes live (so /kh and /cn still render
-// for internal QA of in-progress translations) but greys it out in the public
-// switcher so visitors can't land on a half-translated page. Flip to `true`
-// once that language's content is fully translated.
-//
 // `code` is the URL path segment (country-style: kh/cn), which also matches the
-// `display` chip and the flag — what visitors recognise. The ISO 639 language
-// codes (km/zh) live under the hood for messages, content_translations,
-// <html lang>, and hreflang (see LOCALE_TO_LANG in src/i18n/routing.ts).
+// `display` chip — what visitors recognise. The ISO 639 language codes (km/zh)
+// live under the hood for messages, content_translations, <html lang>, and
+// hreflang (see LOCALE_TO_LANG in src/i18n/routing.ts).
+//
+// `enabled: false` greys a locale out in the public switcher (routes stay live
+// by URL) — flip to `true` once its content is ready.
 const LANGUAGES = [
-  { code: "en", label: "English", display: "EN", flag: "🇬🇧", enabled: true },
-  { code: "kh", label: "ខ្មែរ", display: "KH", flag: "🇰🇭", enabled: false },
-  { code: "cn", label: "中文", display: "CN", flag: "🇨🇳", enabled: false },
+  { code: "en", label: "English", display: "EN", enabled: true },
+  { code: "kh", label: "ខ្មែរ", display: "KH", enabled: true },
+  { code: "cn", label: "中文", display: "CN", enabled: true },
 ] as const;
 
 type LocaleCode = (typeof LANGUAGES)[number]["code"];
@@ -77,12 +75,7 @@ export function LanguageSwitcher() {
         disabled={isPending}
         className="flex items-center gap-2 rounded-full border border-[color:var(--border-strong)] bg-white/88 px-3 py-2 text-sm font-semibold text-[color:var(--text-main)] shadow-sm backdrop-blur transition hover:border-[color:var(--brand)] hover:bg-white hover:text-[color:var(--brand-deep)] disabled:opacity-60"
       >
-        <span className="text-base leading-none" aria-hidden="true">
-          {activeLanguage.flag}
-        </span>
-        <span className="hidden sm:inline">
-          {activeLanguage.display}
-        </span>
+        <span>{activeLanguage.display}</span>
         <CaretDown
           size={13}
           weight="bold"
@@ -117,9 +110,6 @@ export function LanguageSwitcher() {
                 }`}
                 onClick={() => switchLocale(language.code)}
               >
-                <span className="text-lg leading-none" aria-hidden="true">
-                  {language.flag}
-                </span>
                 <span className="flex-1 text-left">{language.label}</span>
                 {isDisabled ? (
                   <span className="rounded-full bg-[color:var(--surface-strong)] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-[color:var(--text-soft)]">

@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { supabaseServer } from "@/lib/supabase-server";
+import { getTranslatedFieldsBatch, mergeTranslation } from "@/lib/i18n-content";
 
 type HomepageFeatureCardRow = {
   slug: string;
@@ -57,16 +58,26 @@ export async function HomeFeatured() {
     console.error("[HomeFeatured] homepage_feature_cards fetch failed:", error.message);
   }
 
-  const cards = data?.length
-    ? (data as HomepageFeatureCardRow[]).map((card) => ({
-        id: card.slug,
-        title: card.title,
-        description: card.description,
-        imageSrc: card.image_src,
-        imageAlt: card.image_alt,
-        href: card.href,
-        cta: card.cta,
-      }))
+  const rows = (data ?? []) as HomepageFeatureCardRow[];
+  // Overlay the active-locale translation (content_translations) onto the
+  // English DB rows, falling back to English per field.
+  const tr = await getTranslatedFieldsBatch(
+    "homepage_feature_card",
+    rows.map((r) => r.slug),
+  );
+  const cards = rows.length
+    ? rows.map((row) => {
+        const card = mergeTranslation(row, tr.get(row.slug) ?? {});
+        return {
+          id: card.slug,
+          title: card.title,
+          description: card.description,
+          imageSrc: card.image_src,
+          imageAlt: card.image_alt,
+          href: card.href,
+          cta: card.cta,
+        };
+      })
     : FALLBACK_CARDS;
 
   return (
