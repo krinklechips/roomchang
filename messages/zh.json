@@ -1689,5 +1689,164 @@
       "imageAltFallback": "幻灯片",
       "slideLabel": "第 {number} 张幻灯片"
     }
+  },
+  "privacyPolicy": {
+    "backToHome": "首页",
+    "title": "隐私政策",
+    "lastUpdated": "最后更新：2026年6月",
+    "whoWeAre": {
+      "heading": "关于我们",
+      "intro": "Roomchang Dental Hospital 是一家于1996年在柬埔寨金边创立的牙科医院。我们通过提供英文、中文和高棉文的多语言网站，为本地及国际患者提供服务。",
+      "contact": "我们的主要地址为 {address}。您可以通过 {email}、{phone1} 或 {phone2} 与我们联系，全天24小时均可联系。"
+    },
+    "informationWeCollect": {
+      "heading": "我们收集的信息",
+      "intro": "当您通过本网站提交咨询或预约请求时，我们可能会收集您选择提供的信息，包括：",
+      "items": {
+        "contactDetails": "姓名、电子邮箱地址、电话、WhatsApp、Telegram 或 WeChat 等联系方式。",
+        "preferences": "国家／地区、感兴趣的治疗项目、首选分院、首选医生以及首选日期。",
+        "message": "您随请求附上的任何留言或备注。"
+      },
+      "referral": "如果您通过有效的 Roomchang 推荐链接进入，我们还可能收到第一方推荐码。"
+    },
+    "howWeUse": {
+      "heading": "我们如何使用信息",
+      "purpose": "我们使用所提交的信息来回复咨询、处理预约请求、与相关诊所团队协调，并改进我们在患者就诊前为其提供支持的方式。",
+      "storage": "网站表单提交的信息安全存储于 Supabase，并会向诊所发送通知邮件，以便团队跟进。我们不会将您的个人信息出售给第三方。"
+    },
+    "clinicalRecords": {
+      "heading": "临床记录",
+      "body": "本政策涵盖通过本网站提交的信息。在 Roomchang Dental Hospital 接受诊疗期间创建的临床、牙科及医疗记录，另行依照本医院的病历管理规范进行管理。"
+    },
+    "yourRights": {
+      "heading": "您的权利",
+      "body": "您可以通过联系 {email}，要求访问、更正或删除通过本网站提交的个人信息。在进行更改之前，我们可能需要先核实您的请求。"
+    },
+    "contact": {
+      "heading": "联系我们",
+      "body": "如有隐私相关问题，请通过 {email} 或致电 {phone1} 或 {phone2} 联系 Roomchang Dental Hospital。"
+    }
+  },
+  "termsOfService": {
+    "backLink": "首页",
+    "pageTitle": "服务条款",
+    "lastUpdated": "最后更新：2026年6月",
+    "agreement": {
+      "heading": "同意本条款",
+      "body1": "本服务条款适用于您对 Roomchang Dental Hospital 网站的使用。Roomchang Dental Hospital 成立于1996年，地址位于柬埔寨金边184街4号。",
+      "body2": "使用本网站即表示您同意以合法的方式使用本网站，并且不会干扰本网站、其安全性或其他用户。"
+    },
+    "content": {
+      "heading": "网站内容",
+      "body1": "本网站内容仅供提供有关牙科护理、Roomchang Dental Hospital 及现有服务的一般信息之用，不能替代专业的牙科、医疗或临床建议。",
+      "body2": "浏览本网站、提交表单、发送消息或通过本网站收到一般回复，均不构成医生与患者之间的关系。临床关系仅在经过适当咨询并由医院团队接受后方才建立。"
+    },
+    "appointments": {
+      "heading": "预约请求",
+      "body": "网站表单可供您索取信息或请求预约。提交请求并不保证预约成功、治疗可供性、指定医生或指定的预约时间。Roomchang 团队成员将直接与您确认相关详情。"
+    },
+    "intellectualProperty": {
+      "heading": "知识产权",
+      "body": "除非另有说明，网站的设计、文字、图片、标识、服务说明及其他内容均归 Roomchang Dental Hospital 所有或经其授权使用。您可出于个人和信息用途浏览本网站，但未经许可，不得复制、再利用或分发网站内容。"
+    },
+    "liability": {
+      "heading": "责任限制",
+      "body": "我们致力于保持网站信息的准确性和可用性，但我们不保证网站始终完整、最新、无误或不间断。在法律允许的范围内，对于因使用网站、依赖网站一般内容或我们合理控制之外的技术问题而产生的损失，Roomchang Dental Hospital 概不承担责任。"
+    },
+    "governingLaw": {
+      "heading": "适用法律",
+      "body": "本条款受柬埔寨王国法律管辖。"
+    },
+    "contact": {
+      "heading": "联系我们",
+      "body": "有关本条款的问题，可发送至 contact@roomchang.com，或致电 +855 69 811 338 或 +855 11 811 338。"
+    }
+  },
+  "cookiePolicy": {
+    "backToHome": "首页",
+    "title": "Cookie 政策",
+    "lastUpdated": "最后更新：2026 年 6 月",
+    "usage": {
+      "heading": "本网站如何使用 Cookie",
+      "body": "本政策说明 Roomchang Dental Hospital 网站所使用的 Cookie 及浏览器存储。必要 Cookie 用于确保网站部分功能正常运行。我们不使用任何第三方广告或营销 Cookie。"
+    },
+    "essential": {
+      "heading": "必要 Cookie",
+      "rcRef": "一种第一方、仅限 HTTP（HTTP-only）的推荐 Cookie，当网站 URL 中含有有效的 Roomchang 推荐代码时设置。其有效期约为 30 天，用于将网站咨询与推荐来源相关联。",
+      "rcPreviewSession": "一种第一方、仅限 HTTP（HTTP-only）的 Cookie，用于为授权用户保护 CMS 预览访问权限。该 Cookie 不用于公开广告或营销。"
+    },
+    "analytics": {
+      "heading": "分析与性能",
+      "body": "本网站使用 Vercel Web Analytics 和 Vercel Speed Insights 来了解整体流量与性能。这些工具提供匿名的汇总测量数据，不会通过本网站收集任何可识别个人身份的信息。"
+    },
+    "browserStorage": {
+      "heading": "浏览器存储",
+      "intro": "聊天机器人使用浏览器存储来改善聊天体验。",
+      "bubbleSeen": "这一 sessionStorage 键用于记住聊天提示在当前浏览器会话中是否已显示或已关闭。",
+      "chatbotSession": "这一 localStorage 键会临时保存最近的聊天机器人消息约 30 分钟，以便页面重新加载后对话仍可继续。"
+    },
+    "managing": {
+      "heading": "管理 Cookie",
+      "body": "您可以通过浏览器设置来控制 Cookie 和浏览器存储。屏蔽必要 Cookie 或清除存储可能会影响推荐追踪、预览访问或聊天机器人的便利功能，但公开网站通常仍应可以正常访问。"
+    },
+    "contact": {
+      "heading": "联系方式",
+      "body": "如对本 Cookie 政策有任何疑问，请通过 contact@roomchang.com、+855 69 811 338 或 +855 11 811 338 联系 Roomchang Dental Hospital。"
+    }
+  },
+  "disclaimer": {
+    "backLink": "首页",
+    "title": "免责声明",
+    "lastUpdated": "最后更新：2026年6月",
+    "generalInfo": {
+      "heading": "仅供一般信息参考",
+      "body": "本网站上的信息由 Roomchang 牙科医院提供，仅用于一般教育和信息参考目的。这些信息并非医疗、牙科或临床建议，不应替代由合格医生或其他医疗专业人员进行的面对面咨询。"
+    },
+    "consultation": {
+      "heading": "专业咨询",
+      "body": "每位患者的牙科需求各不相同。在开始、更改或推迟任何牙科或医疗治疗之前，您应咨询合格的医生。如果您出现疼痛、肿胀、外伤、感染症状或其他紧急情况，请及时联系医疗专业人员。"
+    },
+    "treatmentResults": {
+      "heading": "治疗效果",
+      "body1": "治疗效果取决于多种因素，包括口腔健康状况、诊断、治疗方案、患者配合度以及后续护理。效果因人而异，任何网站内容均无法保证特定的治疗结果。",
+      "body2": "本网站上展示的任何治疗前后案例、临床实例、照片或患者故事均仅作示意之用。它们可能无法代表每位患者所能预期的治疗效果。"
+    },
+    "websiteAccuracy": {
+      "heading": "网站准确性",
+      "body": "我们力求保持网站信息清晰且为最新内容，但牙科技术、费用、服务供应情况及服务细节可能会有所变动。请直接联系 Roomchang 牙科医院，以确认可能影响您的护理或预约的相关信息。"
+    },
+    "contact": {
+      "heading": "联系我们",
+      "body": "Roomchang 牙科医院位于 {address}。如有疑问或预约咨询，请联系 {email}、{phone1} 或 {phone2}。"
+    }
+  },
+  "bookingPolicy": {
+    "backToHome": "首页",
+    "title": "预约与取消政策",
+    "lastUpdated": "最后更新：2026年6月",
+    "appointmentRequests": {
+      "heading": "预约申请",
+      "body1": "Roomchang Dental Hospital 网站通过联系与预约表单接受预约申请。在 Roomchang 团队成员与您联系并确认相关信息之前，申请并不等于已确认的预约。",
+      "body2": "我们通常会在大约一个工作日内回复。回复时间可能因诊所工作量、公共假期、您申请的复杂程度以及所提供的联系方式而有所不同。"
+    },
+    "informationNeeded": {
+      "heading": "所需信息",
+      "body": "为便于我们审核您的申请，请提供准确的联系方式及相关偏好，例如您感兴趣的治疗、首选分院、首选医生、首选日期，以及任何关于此次就诊的重要说明。"
+    },
+    "rescheduling": {
+      "heading": "改期与取消",
+      "body": "如您需要改期或取消，请尽快通过电话、WhatsApp、Telegram 或电子邮件联系诊所。提前告知有助于我们将该预约时段提供给其他患者，并为您另行安排时间。",
+      "contactEmail": "电子邮件：contact@roomchang.com",
+      "contactPhone1": "电话：+855 69 811 338",
+      "contactPhone2": "电话：+855 11 811 338，24/7 全天候服务"
+    },
+    "clinicHours": {
+      "heading": "诊所营业时间",
+      "body": "Roomchang Dental Hospital 诊所营业时间为周一至周六，08:00 至 17:30。预约名额可能因分院、医生、治疗项目及临床排班而有所不同。"
+    },
+    "location": {
+      "heading": "地址",
+      "body": "Roomchang Dental Hospital 位于柬埔寨金边184街4号。该医院自1996年以来一直为本地及国际牙科患者提供服务。"
+    }
   }
 }

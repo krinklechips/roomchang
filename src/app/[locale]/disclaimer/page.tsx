@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft } from "lucide-react";
@@ -11,7 +12,9 @@ export const metadata: Metadata = {
     "Understand the medical and informational limits of the Roomchang Dental Hospital website, including dental advice, treatment outcomes, and illustrative cases.",
 };
 
-export default function DisclaimerPage() {
+export default async function DisclaimerPage() {
+  const t = await getTranslations("disclaimer");
+
   return (
     <SiteShell>
       {/* Header */}
@@ -21,10 +24,10 @@ export default function DisclaimerPage() {
             href="/"
             className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--brand)] transition hover:text-[color:var(--brand-deep)]"
           >
-            <ArrowLeft size={13} strokeWidth={2.5} aria-hidden="true" /> Home
+            <ArrowLeft size={13} strokeWidth={2.5} aria-hidden="true" /> {t("backLink")}
           </Link>
           <h1 className="mt-4 font-display text-5xl leading-none text-[color:var(--text-main)] sm:text-6xl">
-            Disclaimer
+            {t("title")}
           </h1>
         </div>
       </div>
@@ -32,70 +35,59 @@ export default function DisclaimerPage() {
       <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 sm:py-20 lg:px-8">
         <div className="space-y-8 text-base leading-8 text-[color:var(--text-soft)]">
           <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[color:var(--brand)]">
-            Last updated: June 2026
+            {t("lastUpdated")}
           </p>
 
           <section className="space-y-4">
             <h2 className="font-display text-3xl leading-tight text-[color:var(--text-main)]">
-              General Information Only
+              {t("generalInfo.heading")}
             </h2>
             <p>
-              The information on this website is provided by Roomchang Dental Hospital
-              for general educational and informational purposes. It is not medical,
-              dental, or clinical advice and should not be used as a substitute for an
-              in-person consultation with a qualified dentist or other healthcare
-              professional.
+              {t("generalInfo.body")}
             </p>
           </section>
 
           <section className="space-y-4">
             <h2 className="font-display text-3xl leading-tight text-[color:var(--text-main)]">
-              Professional Consultation
+              {t("consultation.heading")}
             </h2>
             <p>
-              Dental needs vary from patient to patient. You should consult a qualified
-              dentist before starting, changing, or delaying any dental or medical
-              treatment. If you have pain, swelling, trauma, infection symptoms, or
-              another urgent concern, contact a healthcare professional promptly.
+              {t("consultation.body")}
             </p>
           </section>
 
           <section className="space-y-4">
             <h2 className="font-display text-3xl leading-tight text-[color:var(--text-main)]">
-              Treatment Results
+              {t("treatmentResults.heading")}
             </h2>
             <p>
-              Treatment outcomes depend on many factors, including oral health,
-              diagnosis, treatment plan, patient cooperation, and follow-up care.
-              Results vary, and no website content can guarantee a specific result.
+              {t("treatmentResults.body1")}
             </p>
             <p>
-              Any before-and-after cases, clinical examples, photographs, or patient
-              stories shown on this website are illustrative. They may not represent
-              the outcome that every patient can expect.
+              {t("treatmentResults.body2")}
             </p>
           </section>
 
           <section className="space-y-4">
             <h2 className="font-display text-3xl leading-tight text-[color:var(--text-main)]">
-              Website Accuracy
+              {t("websiteAccuracy.heading")}
             </h2>
             <p>
-              We aim to keep website information clear and current, but dental
-              techniques, fees, availability, and service details may change. Please
-              contact Roomchang Dental Hospital directly to confirm information that
-              may affect your care or appointment.
+              {t("websiteAccuracy.body")}
             </p>
           </section>
 
           <section className="space-y-4">
             <h2 className="font-display text-3xl leading-tight text-[color:var(--text-main)]">
-              Contact
+              {t("contact.heading")}
             </h2>
             <p>
-              Roomchang Dental Hospital is located at No. 4, Street 184, Phnom Penh,
-              Cambodia. For questions or appointment enquiries, contact
-              contact@roomchang.com, +855 69 811 338, or +855 11 811 338.
+              {t("contact.body", {
+                address: "No. 4, Street 184, Phnom Penh, Cambodia",
+                email: "contact@roomchang.com",
+                phone1: "+855 69 811 338",
+                phone2: "+855 11 811 338",
+              })}
             </p>
           </section>
         </div>
