@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { supabaseServer } from "@/lib/supabase-server";
@@ -81,6 +82,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function NewsArticlePage({ params }: Props) {
   const { slug } = await params;
+  const t = await getTranslations("newsDetail");
   const [article, adjacent] = await Promise.all([
     getArticle(slug),
     getAdjacentArticles(slug),
@@ -101,8 +103,7 @@ export default async function NewsArticlePage({ params }: Props) {
             href="/about/news"
             className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--brand)] transition hover:text-[color:var(--brand-deep)]"
           >
-            <ArrowLeft size={13} strokeWidth={2.5} aria-hidden="true" /> News &
-            Events
+            <ArrowLeft size={13} strokeWidth={2.5} aria-hidden="true" /> {t("backLink")}
           </Link>
           <p className="mt-6 text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-[color:var(--brand)]">
             {article.date}
@@ -172,7 +173,7 @@ export default async function NewsArticlePage({ params }: Props) {
             className="inline-flex items-center gap-1.5 text-sm font-semibold text-[color:var(--brand-deep)] transition hover:text-[color:var(--brand)]"
           >
             <ArrowLeft size={14} strokeWidth={2} aria-hidden="true" />
-            Back to News & Events
+            {t("backToNews")}
           </Link>
         </div>
       </div>

@@ -56,14 +56,16 @@
     "ariaLabel": "Roomchang Dental Hospital",
     "homeAriaLabel": "Roomchang Dental Hospital home",
     "logoAlt": "Roomchang Dental Hospital logo",
-    "bookAppointment": "Book Appointment"
+    "bookAppointment": "Book Appointment",
+    "primaryNavAriaLabel": "Primary"
   },
   "mobileNav": {
     "closeMenu": "Close menu",
     "openMenu": "Open menu",
     "brandName": "Roomchang",
     "toggleSubmenu": "Toggle {label} submenu",
-    "bookAppointment": "Book Appointment"
+    "bookAppointment": "Book Appointment",
+    "primaryNavLabel": "Mobile primary"
   },
   "footer": {
     "heading": {
@@ -100,7 +102,15 @@
       "line2": "Khan Daun Penh, Phnom Penh 120203"
     },
     "phoneMobile247": "(Mobile 24/7)",
-    "copyright": "© {year} Roomchang Dental Hospital. Operated by Kravan Healthcare Co., Ltd."
+    "copyright": "© {year} Roomchang Dental Hospital. Operated by Kravan Healthcare Co., Ltd.",
+    "legal": {
+      "ariaLabel": "Legal links",
+      "privacyPolicy": "Privacy Policy",
+      "termsOfService": "Terms of Service",
+      "disclaimer": "Disclaimer",
+      "cookiePolicy": "Cookie Policy",
+      "bookingCancellation": "Booking & Cancellation Policy"
+    }
   },
   "floatingContact": {
     "messenger": "Messenger",
@@ -644,7 +654,96 @@
       "ctaPrimary": "Get a Personalised Quote",
       "ctaHeading": "Worth the trip?",
       "ctaBody": "Send us your X-rays or photos and we'll prepare a detailed treatment plan with exact pricing within two business days — at no charge.",
-      "ctaButton": "Request a Free Quote"
+      "ctaButton": "Request a Free Quote",
+      "free": "Free",
+      "fallbackExchangeRate": "1 USD ≈ 1.40 AUD ≈ 1.35 SGD",
+      "sourceNote": "Australian prices sourced from the Australian Dental Association's 2022 fee survey (charges have since risen ~10–25%). Singapore figures are indicative, based on the Ministry of Health (MOH) fee benchmarks for common procedures and typical private-clinic ranges; actual fees vary and are subject to GST.",
+      "rows": {
+        "111": {
+          "treatment": "Removal of plaque and/or stain"
+        },
+        "114": {
+          "treatment": "Removal of calculus — first visit"
+        },
+        "141": {
+          "treatment": "Oral hygiene instruction"
+        },
+        "161": {
+          "treatment": "Fissure / tooth surface sealing (per tooth)"
+        },
+        "232": {
+          "treatment": "Periodontal flap surgery (per quadrant)"
+        },
+        "311": {
+          "treatment": "Tooth extraction"
+        },
+        "521": {
+          "treatment": "Adhesive restoration — one surface, anterior tooth"
+        },
+        "531": {
+          "treatment": "Adhesive restoration — one surface, posterior tooth"
+        },
+        "582": {
+          "treatment": "Direct composite veneer"
+        },
+        "583": {
+          "treatment": "Indirect porcelain veneer"
+        },
+        "613": {
+          "treatment": "Full crown — non-metallic (E-Max / ceramic)"
+        },
+        "615": {
+          "treatment": "Full crown — veneered (PFM)"
+        },
+        "618": {
+          "treatment": "Full crown — metallic"
+        },
+        "625": {
+          "treatment": "Post and core for crown"
+        },
+        "643": {
+          "treatment": "Bridge pontic (per pontic)"
+        },
+        "651": {
+          "treatment": "Recementing crown or veneer"
+        },
+        "672": {
+          "treatment": "Full crown on implant — veneered"
+        },
+        "688": {
+          "treatment": "Implant insertion (Myplant Two®, per implant)"
+        },
+        "711": {
+          "treatment": "Complete maxillary denture"
+        },
+        "719": {
+          "treatment": "Complete maxillary and mandibular dentures"
+        },
+        "721": {
+          "treatment": "Partial maxillary resin denture"
+        },
+        "727": {
+          "treatment": "Partial denture — cast framework (2 teeth)"
+        },
+        "013": {
+          "treatment": "Oral examination — limited"
+        },
+        "014": {
+          "treatment": "Consultation"
+        },
+        "022": {
+          "treatment": "Intraoral periapical or bitewing X-ray (per exposure)"
+        },
+        "037": {
+          "treatment": "Panoramic X-ray (OPG)"
+        },
+        "071": {
+          "treatment": "Diagnostic model (per model)"
+        },
+        "072": {
+          "treatment": "Photographic records — intraoral"
+        }
+      }
     }
   },
   "clinicalResults": {
@@ -1288,5 +1387,275 @@
     },
     "bookAppointment": "Book an Appointment",
     "otherBranches": "Other Branches"
+  },
+  "blogIndex": {
+    "hero": {
+      "eyebrow": "Learn",
+      "title": "Education Blog",
+      "description": "Dental health education from our specialist team — frequently asked questions, expert talks, and published research."
+    },
+    "sections": {
+      "faq": {
+        "title": "FAQ",
+        "description": "Answers to the most common questions about dental treatments, costs, and what to expect at Roomchang."
+      },
+      "dentistTalks": {
+        "title": "Dentist Talks",
+        "description": "Watch our specialist dentists explain common dental concerns, treatment options, and modern technologies in short, informative videos."
+      },
+      "publications": {
+        "title": "Publications & Research",
+        "description": "Peer-reviewed research papers and clinical studies published by Roomchang dentists, advancing evidence-based care."
+      }
+    },
+    "browse": "Browse"
+  },
+  "faqPage": {
+    "backLink": "Education Blog",
+    "heading": "Frequently Asked Questions",
+    "intro": "Answers to the most common questions about dental care, treatments, costs, and what to expect at Roomchang.",
+    "emptyState": "FAQs are being prepared. Please check back soon.",
+    "cta": {
+      "heading": "Still have questions?",
+      "body": "Our team is happy to help — reach out anytime.",
+      "button": "Contact Us"
+    },
+    "staticFaqs": {
+      "xrayPregnancy": {
+        "category": "Overall Health",
+        "question": "How long should you wait after getting an x-ray before starting preparations for pregnancy?",
+        "answer": "It is not necessary to wait after an x-ray before preparing for pregnancy. Dental x-ray is usually safe, even for emergency treatments during pregnancy. However, it is better if the patient takes it to detect any dental problems before preparing for pregnancy. Should a problem be detected, the treatment should be done in advance of pregnancy."
+      }
+    }
+  },
+  "publications": {
+    "backLink": "Education Blog",
+    "hero": {
+      "title": "Publication & Research",
+      "intro": "Dentists at Roomchang do more than provide clinical care. They are also actively involved in research that helps improve diagnosis, treatment planning, materials, techniques, and long-term patient outcomes. Through education and research, dental professionals continue to advance evidence-based care and bring the latest knowledge into everyday clinical practice."
+    },
+    "peerReviewed": "PEER-REVIEWED",
+    "readFullPaper": "Read full paper",
+    "cta": {
+      "title": "Interested in collaborating?",
+      "body": "Roomchang welcomes research collaborations with universities and dental institutions worldwide.",
+      "button": "Get in Touch"
+    },
+    "items": {
+      "soft-tissue-cephalometric": {
+        "title": "Preliminary orthodontic insights into facial soft tissue thickness measurements using semi-automated cephalometric analysis in a Cambodian cohort"
+      },
+      "maxillary-anterior-tooth": {
+        "title": "Analysis of Maxillary Anterior Tooth Dimensions and Proportions in Young Cambodians: A Cross-Sectional Study"
+      },
+      "sella-turcica-morphology": {
+        "title": "Radiological assessment of Sella Turcica morphology correlates with skeletal classes in an Austrian population: An observational study"
+      },
+      "lactoferrin-oscc-invasion": {
+        "title": "Molecular Mechanisms of Inhibitory Effects of Bovine Lactoferrin on Invasion of Oral Squamous Cell Carcinoma"
+      },
+      "mini-screw-histomorphometric": {
+        "title": "A pilot study to investigate the histomorphometric changes of murine maxillary bone around the site of mini-screw insertion in regenerated bone induced by anabolic reagents"
+      },
+      "lactoferrin-osteosarcoma": {
+        "title": "Molecular mechanisms underlying the inhibitory effects of bovine lactoferrin on osteosarcoma"
+      },
+      "lactoferrin-emt-met": {
+        "title": "Bovine lactoferrin reverses programming of epithelial-to-mesenchymal transition to mesenchymal-to-epithelial transition in oral squamous cell carcinoma"
+      },
+      "lactoferrin-oscc-growth": {
+        "title": "Molecular mechanism of inhibitory effects of bovine lactoferrin on the growth of oral squamous cell carcinoma"
+      }
+    }
+  },
+  "dentistTalks": {
+    "backLink": "Education Blog",
+    "hero": {
+      "title": "Dentist Talks",
+      "intro": "Hear directly from Roomchang's dentists as they explain common dental concerns, treatment options, modern technologies, and how patients can make informed decisions about their oral health."
+    },
+    "intro": {
+      "heading": "Expert Dental Advice from Roomchang",
+      "paragraph1": "At Roomchang Dental Hospital, patient education is part of every treatment journey. In this video series, our dentists share practical insights about dental care, treatment planning, prevention, and advanced procedures available at Roomchang.",
+      "paragraph2": "Whether you are considering implants, braces, veneers, crowns, whitening, or routine care, these talks are designed to help you better understand your options before starting treatment."
+    },
+    "whyMatter": {
+      "heading": "Why These Talks Matter",
+      "paragraph": "Dental treatment should never feel confusing. Our goal is to give patients clear, reliable information from experienced dentists, so they can feel confident about their care. These videos are especially helpful for patients who want to understand their treatment before visiting Roomchang, including local patients, international patients, and families planning dental care in Phnom Penh."
+    },
+    "videos": {
+      "heading": "Watch Our Dentists Explain",
+      "intro": "Learn from Roomchang dentists through short, informative videos covering everyday dental questions and advanced treatment topics.",
+      "cardSource": "Roomchang Dental Hospital",
+      "cardDescription": "Watch this Roomchang Dentist Talks video from the official YouTube playlist.",
+      "playlistLink": "View Full Playlist on YouTube"
+    },
+    "cta": {
+      "heading": "Have more questions?",
+      "body": "Our team is ready to help. Book a free consultation and get personalised advice from our specialist dentists.",
+      "button": "Book a Consultation"
+    },
+    "items": {
+      "Sj212poMjQQ": {
+        "title": "Solutions for Bad Breath",
+        "topic": "Oral Hygiene"
+      },
+      "zajv8AuutfE": {
+        "title": "How to Get Whiter, Brighter Teeth",
+        "topic": "Cosmetic Dentistry"
+      },
+      "cilwCM3Iguc": {
+        "title": "Teeth Cleaning vs. Teeth Whitening: What's the Difference?",
+        "topic": "Cosmetic Dentistry"
+      },
+      "H-57t06LuqE": {
+        "title": "Understanding Gum Disease",
+        "topic": "Periodontal Dentistry"
+      },
+      "xQrmC7xfpis": {
+        "title": "Caring For and Treating Children's Teeth",
+        "topic": "Pediatric Dentistry"
+      },
+      "p7Elqx5UUo4": {
+        "title": "Should You See a Dentist If Your Teeth Don't Hurt?",
+        "topic": "Preventive Dentistry"
+      },
+      "aseJoChyLM8": {
+        "title": "Fissure Sealants for Children's Teeth",
+        "topic": "Pediatric Dentistry"
+      },
+      "X8GvbpfjMAU": {
+        "title": "Protecting Teeth from Grinding and Wear",
+        "topic": "Preventive Dentistry"
+      },
+      "vTLQyPsjEvo": {
+        "title": "Tooth Sensitivity, Explained by Dr. Seun Rathanak",
+        "topic": "General Dentistry"
+      },
+      "8I06e8cQzAo": {
+        "title": "When Should a Child Have Their First Orthodontic Visit?",
+        "topic": "Orthodontics"
+      },
+      "TjCpgw7GDYQ": {
+        "title": "Periodontal Disease, Explained by Dr. Meng Hang",
+        "topic": "Periodontal Dentistry"
+      },
+      "WsaRFqhtULQ": {
+        "title": "Should Pregnant Women See a Dentist? — Dr. Sam Chanphallyka",
+        "topic": "Preventive Dentistry"
+      },
+      "3IeYTNI9hR8": {
+        "title": "Early Childhood Caries (Tooth Decay in Young Children)",
+        "topic": "Pediatric Dentistry"
+      },
+      "7GFKeh5GlSA": {
+        "title": "How to Care for Your Teeth Properly — Dr. Lao Chanvattey",
+        "topic": "Preventive Dentistry"
+      },
+      "FDTUTfFDESI": {
+        "title": "The Effects of Snoring and Sleep Apnea",
+        "topic": "Sleep Apnea"
+      },
+      "ZpQZqMHN4us": {
+        "title": "Oral Health for Babies and Children",
+        "topic": "Pediatric Dentistry"
+      },
+      "sUghKx1CrnA": {
+        "title": "Interview with Dr. Heng Kyhak: Implantology",
+        "topic": "Implantology"
+      },
+      "0dxBq4qkGDY": {
+        "title": "Roomchang Dental Hospital with Dr. Tith Hong Yoeu — Dentistry Uncensored with Howard Farran",
+        "topic": "Interview"
+      },
+      "cWWiy-CxvJI": {
+        "title": "Roomchang in the News — Implants, Crowns & Dentistry",
+        "topic": "News"
+      },
+      "lOlr2xdYjlM": {
+        "title": "Roomchang TVC (English)",
+        "topic": "Roomchang"
+      },
+      "GKftQhBRz4U": {
+        "title": "Roomchang Dental & Aesthetic Hospital",
+        "topic": "Roomchang"
+      },
+      "vesEO_2BoOI": {
+        "title": "Roomchang Dental & Aesthetic Hospital",
+        "topic": "Roomchang"
+      },
+      "LnhaRxo0JRs": {
+        "title": "Roomchang Dental & Aesthetic Hospital",
+        "topic": "Roomchang"
+      },
+      "98xjrKSG2Tg": {
+        "title": "Impacted Wisdom Teeth, Explained by Dr. Dara Narith",
+        "topic": "Oral Surgery"
+      }
+    }
+  },
+  "newsDetail": {
+    "backLink": "News & Events",
+    "backToNews": "Back to News & Events"
+  },
+  "communityDetail": {
+    "backLink": "Roomchang in the Community"
+  },
+  "implantsComparison": {
+    "hero": {
+      "eyebrow": "Why Our Implants Cost Less",
+      "title": "Dental Implants Price Comparison",
+      "body": "Patients often ask how Roomchang can offer dental implants at roughly half the Australian price. The short answer: same materials, lower overheads. Here's the honest breakdown.",
+      "ctaPrimary": "Request an Implant Quote",
+      "ctaSecondary": "About Our Implants"
+    },
+    "costDrivers": {
+      "heading": "Three things drive the price of a dental implant",
+      "intro": "Material quality, lab work, and clinical overheads. Only two of those three vary by country — and that's where the savings come from.",
+      "materials": {
+        "title": "Implant materials",
+        "body": "Every dental implant has three parts — the titanium implant, an abutment, and a crown (E-max, ceramic fused to metal, or zirconium). Roomchang uses Myplant Two® from Germany, internationally recognised as one of the most reliable and stable implant systems on the market. Material cost is the same whether the implant is placed in Phnom Penh or Perth."
+      },
+      "laboratory": {
+        "title": "Laboratory fees",
+        "body": "Roomchang operates an in-house CAD/CAM dental laboratory. Crowns, bridges, and custom abutments are designed and fabricated on-site — we don't pay a third-party lab markup the way Australian clinics do. That single line item accounts for a large share of the price difference on anything involving a crown or bridge."
+      },
+      "overheads": {
+        "title": "Dentist fees & overheads",
+        "body": "The 2022 Australian Dental Association survey put private-practice chair time at AUD $400–$700 per hour. Cost of living and commercial rent in Cambodia are dramatically lower, so our overheads are lower. Our specialists are internationally trained — many of them in Japan, Korea, and Australia — but their practice costs don't compare."
+      }
+    },
+    "material": {
+      "eyebrow": "Material quality is not where we save",
+      "title": "Myplant Two® — the same German implant system used by leading clinics worldwide",
+      "body": "Cheap implants exist. We don't use them. Roomchang's standard implant is Myplant Two®, a German-engineered titanium system with over a decade of clinical outcomes behind it. The implant sitting in a patient's jaw in Phnom Penh is the same part number that would be placed in Munich, Sydney, or London. Where we save money is in the lab and in clinic operating costs — never in the part we leave in your body."
+    },
+    "table": {
+      "heading": "Implant price comparison",
+      "intro": "All Roomchang prices in USD. Australian prices reflect the 2022 ADA fee survey plus typical 10–25% increases through 2026. Final price depends on bone condition, abutment type, and crown material — confirmed after consultation and CT imaging.",
+      "colTreatment": "Treatment",
+      "colAda": "ADA",
+      "colRoomchang": "Roomchang (USD)",
+      "colAustralia": "Australia (AUD)"
+    },
+    "prices": {
+      "single": {
+        "treatment": "Single dental implant (Myplant Two®)"
+      },
+      "crown": {
+        "treatment": "Full ceramic crown on implant"
+      },
+      "emax": {
+        "treatment": "Implant + custom abutment + E-Max crown"
+      },
+      "bridge": {
+        "treatment": "3-crown bridge on 2 implants (E-Max)"
+      }
+    },
+    "cta": {
+      "heading": "Ready to plan your implants?",
+      "body": "Send us your OPG, CT scan, or recent photos. We'll come back within two business days with a full treatment plan and an exact quote — no charge, no obligation.",
+      "button": "Request a Free Quote"
+    }
   }
 }

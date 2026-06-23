@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useTransition } from "react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { CaretDown } from "@phosphor-icons/react";
 
@@ -18,6 +18,7 @@ const LANGUAGES = [
 type LocaleCode = (typeof LANGUAGES)[number]["code"];
 
 export function LanguageSwitcher() {
+  const t = useTranslations("languageSwitcher");
   const [isOpen, setIsOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -64,7 +65,7 @@ export function LanguageSwitcher() {
     <div ref={containerRef} className="relative">
       <button
         type="button"
-        aria-label="Change language"
+        aria-label={t("ariaLabel")}
         aria-expanded={isOpen}
         aria-haspopup="menu"
         onClick={() => setIsOpen((open) => !open)}
@@ -88,7 +89,7 @@ export function LanguageSwitcher() {
       {isOpen ? (
         <div
           role="menu"
-          aria-label="Language options"
+          aria-label={t("menuAriaLabel")}
           className="absolute right-0 top-[calc(100%+0.6rem)] min-w-44 rounded-3xl border border-[color:var(--border-strong)] bg-white/96 p-2 shadow-[0_24px_60px_rgba(61,24,47,0.14)] backdrop-blur"
         >
           {LANGUAGES.map((language) => {
@@ -117,7 +118,7 @@ export function LanguageSwitcher() {
                 <span className="flex-1 text-left">{language.label}</span>
                 {isDisabled ? (
                   <span className="rounded-full bg-[color:var(--surface-strong)] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-[color:var(--text-soft)]">
-                    Soon
+                    {t("soon")}
                   </span>
                 ) : null}
               </button>

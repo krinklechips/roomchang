@@ -2,6 +2,7 @@ import { Link } from "@/i18n/navigation";
 import { SiteShell } from "@/components/site/site-shell";
 import { getFaqItems, type FaqItem } from "@/lib/data";
 import { ArrowLeft } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -12,18 +13,19 @@ export const metadata: Metadata = {
     "Frequently asked questions about dental treatments, costs, and visiting Roomchang Dental Hospital in Phnom Penh.",
 };
 
-const STATIC_FAQS: FaqItem[] = [
-  {
-    id: "static-overall-health-xray-pregnancy-preparation",
-    category: "Overall Health",
-    question: "How long should you wait after getting an x-ray before starting preparations for pregnancy?",
-    answer:
-      "It is not necessary to wait after an x-ray before preparing for pregnancy. Dental x-ray is usually safe, even for emergency treatments during pregnancy. However, it is better if the patient takes it to detect any dental problems before preparing for pregnancy. Should a problem be detected, the treatment should be done in advance of pregnancy.",
-    sort_order: 999,
-  },
-];
-
 export default async function FaqPage() {
+  const t = await getTranslations("faqPage");
+
+  const STATIC_FAQS: FaqItem[] = [
+    {
+      id: "static-overall-health-xray-pregnancy-preparation",
+      category: t("staticFaqs.xrayPregnancy.category"),
+      question: t("staticFaqs.xrayPregnancy.question"),
+      answer: t("staticFaqs.xrayPregnancy.answer"),
+      sort_order: 999,
+    },
+  ];
+
   const fetchedFaqs = await getFaqItems();
   const faqs = [
     ...fetchedFaqs,
@@ -51,13 +53,13 @@ export default async function FaqPage() {
             href="/blog"
             className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--brand)] transition hover:text-[color:var(--brand-deep)]"
           >
-            <ArrowLeft size={13} strokeWidth={2.5} aria-hidden="true" /> Education Blog
+            <ArrowLeft size={13} strokeWidth={2.5} aria-hidden="true" /> {t("backLink")}
           </Link>
           <h1 className="mt-4 font-display text-5xl leading-none text-[color:var(--text-main)] sm:text-6xl">
-            Frequently Asked Questions
+            {t("heading")}
           </h1>
           <p className="mt-5 max-w-2xl text-base leading-7 text-[color:var(--text-soft)]">
-            Answers to the most common questions about dental care, treatments, costs, and what to expect at Roomchang.
+            {t("intro")}
           </p>
         </div>
       </div>
@@ -66,7 +68,7 @@ export default async function FaqPage() {
       <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-16 lg:px-8">
         {faqs.length === 0 ? (
           <p className="text-center text-sm text-[color:var(--text-soft)]">
-            FAQs are being prepared. Please check back soon.
+            {t("emptyState")}
           </p>
         ) : (
           <div className="space-y-14">
@@ -105,12 +107,12 @@ export default async function FaqPage() {
         {/* CTA */}
         <div className="mt-16 rounded-3xl bg-[color:var(--brand-soft)] px-8 py-8 text-center">
           <h3 className="font-display text-2xl text-[color:var(--brand-deep)]">
-            Still have questions?
+            {t("cta.heading")}
           </h3>
           <p className="mt-2 text-sm text-[color:var(--text-soft)]">
-            Our team is happy to help — reach out anytime.
+            {t("cta.body")}
           </p>
-          <Link href="/contact" className="btn-primary mt-5 inline-block">Contact Us</Link>
+          <Link href="/contact" className="btn-primary mt-5 inline-block">{t("cta.button")}</Link>
         </div>
       </div>
     </SiteShell>

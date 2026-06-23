@@ -56,14 +56,16 @@
     "ariaLabel": "Roomchang牙科医院",
     "homeAriaLabel": "Roomchang牙科医院首页",
     "logoAlt": "Roomchang牙科医院标志",
-    "bookAppointment": "预约挂号"
+    "bookAppointment": "预约挂号",
+    "primaryNavAriaLabel": "主导航"
   },
   "mobileNav": {
     "closeMenu": "关闭菜单",
     "openMenu": "打开菜单",
     "brandName": "Roomchang",
     "toggleSubmenu": "展开/收起{label}子菜单",
-    "bookAppointment": "预约挂号"
+    "bookAppointment": "预约挂号",
+    "primaryNavLabel": "主导航"
   },
   "footer": {
     "heading": {
@@ -100,7 +102,15 @@
       "line2": "Khan Daun Penh, 金边 120203"
     },
     "phoneMobile247": "（全天候24/7）",
-    "copyright": "© {year} Roomchang牙科医院。由 Kravan Healthcare Co., Ltd. 运营。"
+    "copyright": "© {year} Roomchang牙科医院。由 Kravan Healthcare Co., Ltd. 运营。",
+    "legal": {
+      "ariaLabel": "法律链接",
+      "privacyPolicy": "隐私政策",
+      "termsOfService": "服务条款",
+      "disclaimer": "免责声明",
+      "cookiePolicy": "Cookie 政策",
+      "bookingCancellation": "预约与取消政策"
+    }
   },
   "floatingContact": {
     "messenger": "Messenger",
@@ -116,7 +126,7 @@
     "english": "English",
     "chinese": "中文",
     "khmer": "ខ្មែរ",
-    "ariaLabel": "切换语言",
+    "ariaLabel": "更改语言",
     "menuAriaLabel": "语言选项",
     "soon": "即将推出"
   },
@@ -644,7 +654,96 @@
       "ctaPrimary": "获取个性化报价",
       "ctaHeading": "值得一趟吗？",
       "ctaBody": "发送您的X光片或照片，我们将在两个工作日内为您准备详细的治疗计划和准确报价——完全免费。",
-      "ctaButton": "申请免费报价"
+      "ctaButton": "申请免费报价",
+      "free": "免费",
+      "fallbackExchangeRate": "1 USD ≈ 1.40 AUD ≈ 1.35 SGD",
+      "sourceNote": "澳大利亚价格来源于澳大利亚牙科协会 2022 年费用调查（此后费用已上涨约 10–25%）。Singapore（新加坡）价格为参考价，依据卫生部 (MOH) 常见项目的费用基准及私立诊所的常见价格区间；实际费用可能有所不同，并需缴纳消费税 (GST)。",
+      "rows": {
+        "111": {
+          "treatment": "去除牙菌斑和/或牙渍"
+        },
+        "114": {
+          "treatment": "去除牙结石 — 首次就诊"
+        },
+        "141": {
+          "treatment": "口腔卫生指导"
+        },
+        "161": {
+          "treatment": "窝沟/牙面封闭（每颗牙）"
+        },
+        "232": {
+          "treatment": "牙周翻瓣手术（每象限）"
+        },
+        "311": {
+          "treatment": "拔牙"
+        },
+        "521": {
+          "treatment": "粘接修复 — 单面，前牙"
+        },
+        "531": {
+          "treatment": "粘接修复 — 单面，后牙"
+        },
+        "582": {
+          "treatment": "直接树脂贴面"
+        },
+        "583": {
+          "treatment": "间接瓷贴面"
+        },
+        "613": {
+          "treatment": "全冠 — 非金属（E-Max / 全瓷）"
+        },
+        "615": {
+          "treatment": "全冠 — 饰面（烤瓷熔附金属 PFM）"
+        },
+        "618": {
+          "treatment": "全冠 — 金属"
+        },
+        "625": {
+          "treatment": "牙冠桩核"
+        },
+        "643": {
+          "treatment": "桥体（每个桥体）"
+        },
+        "651": {
+          "treatment": "重新粘接牙冠或贴面"
+        },
+        "672": {
+          "treatment": "种植体全冠 — 饰面"
+        },
+        "688": {
+          "treatment": "种植体植入（Myplant Two®，每颗）"
+        },
+        "711": {
+          "treatment": "上颌全口义齿"
+        },
+        "719": {
+          "treatment": "上下颌全口义齿"
+        },
+        "721": {
+          "treatment": "上颌局部树脂义齿"
+        },
+        "727": {
+          "treatment": "局部义齿 — 铸造支架（2 颗牙）"
+        },
+        "013": {
+          "treatment": "口腔检查 — 局部"
+        },
+        "014": {
+          "treatment": "咨询"
+        },
+        "022": {
+          "treatment": "口内根尖或咬翼 X 光片（每次曝光）"
+        },
+        "037": {
+          "treatment": "全景 X 光片 (OPG)"
+        },
+        "071": {
+          "treatment": "诊断模型（每个模型）"
+        },
+        "072": {
+          "treatment": "影像记录 — 口内"
+        }
+      }
     }
   },
   "clinicalResults": {
@@ -1288,5 +1387,275 @@
     },
     "bookAppointment": "预约就诊",
     "otherBranches": "其他分院"
+  },
+  "blogIndex": {
+    "hero": {
+      "eyebrow": "学习",
+      "title": "口腔健康科普",
+      "description": "由我们的专科团队提供的口腔健康教育——常见问题、专家访谈与已发表的研究成果。"
+    },
+    "sections": {
+      "faq": {
+        "title": "常见问题",
+        "description": "解答关于牙科治疗、费用以及在 Roomchang 就诊体验的常见问题。"
+      },
+      "dentistTalks": {
+        "title": "医生访谈",
+        "description": "观看我们的专科医生在简短而实用的视频中讲解常见的口腔问题、治疗方案与现代技术。"
+      },
+      "publications": {
+        "title": "学术发表与研究",
+        "description": "由 Roomchang 医生发表的同行评审研究论文与临床研究，推动循证医疗的发展。"
+      }
+    },
+    "browse": "浏览"
+  },
+  "faqPage": {
+    "backLink": "教育博客",
+    "heading": "常见问题",
+    "intro": "关于牙齿护理、治疗、费用以及在 Roomchang 就诊体验等最常见问题的解答。",
+    "emptyState": "常见问题正在整理中，请稍后再来查看。",
+    "cta": {
+      "heading": "还有疑问吗？",
+      "body": "我们的团队乐意为您提供帮助 — 随时与我们联系。",
+      "button": "联系我们"
+    },
+    "staticFaqs": {
+      "xrayPregnancy": {
+        "category": "整体健康",
+        "question": "拍摄 X 光后需要等待多久才能开始备孕？",
+        "answer": "拍摄 X 光后无需等待即可开始备孕。牙科 X 光通常是安全的，即使在孕期接受紧急治疗时也是如此。不过，患者最好在备孕前先拍摄 X 光，以便检查是否存在任何牙齿问题。若发现问题，应在怀孕之前先完成治疗。"
+      }
+    }
+  },
+  "publications": {
+    "backLink": "教育博客",
+    "hero": {
+      "title": "出版与研究",
+      "intro": "Roomchang 的医生不仅提供临床诊疗，还积极参与研究，帮助改进诊断、治疗规划、材料、技术以及患者的长期疗效。通过教育与研究，牙科专业人员持续推进循证医疗，并将最新知识带入日常临床实践。"
+    },
+    "peerReviewed": "同行评审",
+    "readFullPaper": "阅读全文",
+    "cta": {
+      "title": "有意开展合作？",
+      "body": "Roomchang 欢迎与全球各地的大学及牙科机构开展研究合作。",
+      "button": "联系我们"
+    },
+    "items": {
+      "soft-tissue-cephalometric": {
+        "title": "Preliminary orthodontic insights into facial soft tissue thickness measurements using semi-automated cephalometric analysis in a Cambodian cohort"
+      },
+      "maxillary-anterior-tooth": {
+        "title": "Analysis of Maxillary Anterior Tooth Dimensions and Proportions in Young Cambodians: A Cross-Sectional Study"
+      },
+      "sella-turcica-morphology": {
+        "title": "Radiological assessment of Sella Turcica morphology correlates with skeletal classes in an Austrian population: An observational study"
+      },
+      "lactoferrin-oscc-invasion": {
+        "title": "Molecular Mechanisms of Inhibitory Effects of Bovine Lactoferrin on Invasion of Oral Squamous Cell Carcinoma"
+      },
+      "mini-screw-histomorphometric": {
+        "title": "A pilot study to investigate the histomorphometric changes of murine maxillary bone around the site of mini-screw insertion in regenerated bone induced by anabolic reagents"
+      },
+      "lactoferrin-osteosarcoma": {
+        "title": "Molecular mechanisms underlying the inhibitory effects of bovine lactoferrin on osteosarcoma"
+      },
+      "lactoferrin-emt-met": {
+        "title": "Bovine lactoferrin reverses programming of epithelial-to-mesenchymal transition to mesenchymal-to-epithelial transition in oral squamous cell carcinoma"
+      },
+      "lactoferrin-oscc-growth": {
+        "title": "Molecular mechanism of inhibitory effects of bovine lactoferrin on the growth of oral squamous cell carcinoma"
+      }
+    }
+  },
+  "dentistTalks": {
+    "backLink": "教育博客",
+    "hero": {
+      "title": "牙医谈",
+      "intro": "直接聆听 Roomchang 的医生讲解常见的牙齿问题、治疗方案、现代技术，以及患者如何就自身口腔健康做出明智的决定。"
+    },
+    "intro": {
+      "heading": "来自 Roomchang 的专业牙科建议",
+      "paragraph1": "在 Roomchang 牙科医院，患者教育是每一段治疗旅程的一部分。在这个视频系列中，我们的医生分享关于牙齿护理、治疗规划、预防以及 Roomchang 提供的先进诊疗的实用见解。",
+      "paragraph2": "无论您正在考虑种植牙、牙齿矫正、贴面、牙冠、美白还是日常护理，这些谈话都旨在帮助您在开始治疗前更好地了解自己的选择。"
+    },
+    "whyMatter": {
+      "heading": "这些谈话为何重要",
+      "paragraph": "牙科治疗不应让人感到困惑。我们的目标是为患者提供来自资深医生的清晰、可靠的信息，让他们对自己的诊疗充满信心。这些视频对希望在前往 Roomchang 之前了解治疗的患者尤其有帮助，包括本地患者、国际患者，以及计划在金边接受牙科护理的家庭。"
+    },
+    "videos": {
+      "heading": "观看我们的医生讲解",
+      "intro": "通过 Roomchang 医生的简短信息视频学习，内容涵盖日常牙科问题和先进治疗主题。",
+      "cardSource": "Roomchang 牙科医院",
+      "cardDescription": "观看这段来自 Roomchang 官方 YouTube 播放列表的牙医谈视频。",
+      "playlistLink": "在 YouTube 上查看完整播放列表"
+    },
+    "cta": {
+      "heading": "还有更多疑问吗？",
+      "body": "我们的团队随时为您提供帮助。预约免费咨询，从我们的专科医生处获得个性化建议。",
+      "button": "预约咨询"
+    },
+    "items": {
+      "Sj212poMjQQ": {
+        "title": "口臭的解决方案",
+        "topic": "口腔卫生"
+      },
+      "zajv8AuutfE": {
+        "title": "如何让牙齿更白、更亮",
+        "topic": "美容牙科"
+      },
+      "cilwCM3Iguc": {
+        "title": "洗牙与牙齿美白：有何区别？",
+        "topic": "美容牙科"
+      },
+      "H-57t06LuqE": {
+        "title": "了解牙龈疾病",
+        "topic": "牙周牙科"
+      },
+      "xQrmC7xfpis": {
+        "title": "儿童牙齿的护理与治疗",
+        "topic": "儿童牙科"
+      },
+      "p7Elqx5UUo4": {
+        "title": "牙齿不痛还需要看牙医吗？",
+        "topic": "预防牙科"
+      },
+      "aseJoChyLM8": {
+        "title": "儿童牙齿的窝沟封闭",
+        "topic": "儿童牙科"
+      },
+      "X8GvbpfjMAU": {
+        "title": "保护牙齿免受磨损",
+        "topic": "预防牙科"
+      },
+      "vTLQyPsjEvo": {
+        "title": "牙齿敏感，由 Dr. Seun Rathanak 讲解",
+        "topic": "普通牙科"
+      },
+      "8I06e8cQzAo": {
+        "title": "孩子应在何时首次进行正畸检查？",
+        "topic": "牙齿矫正"
+      },
+      "TjCpgw7GDYQ": {
+        "title": "牙周疾病，由 Dr. Meng Hang 讲解",
+        "topic": "牙周牙科"
+      },
+      "WsaRFqhtULQ": {
+        "title": "孕妇应该看牙医吗？ — Dr. Sam Chanphallyka",
+        "topic": "预防牙科"
+      },
+      "3IeYTNI9hR8": {
+        "title": "幼儿龋齿（低龄儿童的蛀牙）",
+        "topic": "儿童牙科"
+      },
+      "7GFKeh5GlSA": {
+        "title": "如何正确护理牙齿 — Dr. Lao Chanvattey",
+        "topic": "预防牙科"
+      },
+      "FDTUTfFDESI": {
+        "title": "打鼾与睡眠呼吸暂停的影响",
+        "topic": "睡眠呼吸暂停"
+      },
+      "ZpQZqMHN4us": {
+        "title": "婴幼儿与儿童的口腔健康",
+        "topic": "儿童牙科"
+      },
+      "sUghKx1CrnA": {
+        "title": "专访 Dr. Heng Kyhak：种植牙学",
+        "topic": "种植牙学"
+      },
+      "0dxBq4qkGDY": {
+        "title": "Roomchang 牙科医院与 Dr. Tith Hong Yoeu — Dentistry Uncensored with Howard Farran",
+        "topic": "访谈"
+      },
+      "cWWiy-CxvJI": {
+        "title": "Roomchang 新闻报道 — 种植牙、牙冠与牙科",
+        "topic": "新闻"
+      },
+      "lOlr2xdYjlM": {
+        "title": "Roomchang TVC（英文）",
+        "topic": "Roomchang"
+      },
+      "GKftQhBRz4U": {
+        "title": "Roomchang Dental & Aesthetic Hospital",
+        "topic": "Roomchang"
+      },
+      "vesEO_2BoOI": {
+        "title": "Roomchang Dental & Aesthetic Hospital",
+        "topic": "Roomchang"
+      },
+      "LnhaRxo0JRs": {
+        "title": "Roomchang Dental & Aesthetic Hospital",
+        "topic": "Roomchang"
+      },
+      "98xjrKSG2Tg": {
+        "title": "阻生智齿，由 Dr. Dara Narith 讲解",
+        "topic": "口腔外科"
+      }
+    }
+  },
+  "newsDetail": {
+    "backLink": "新闻与活动",
+    "backToNews": "返回新闻与活动"
+  },
+  "communityDetail": {
+    "backLink": "Roomchang 与社区"
+  },
+  "implantsComparison": {
+    "hero": {
+      "eyebrow": "为何我们的种植牙费用更低",
+      "title": "种植牙价格对比",
+      "body": "患者常常问，为什么 Roomchang 的种植牙价格大约只有澳大利亚的一半。简单来说：材料相同，运营成本更低。以下是诚实的费用拆解。",
+      "ctaPrimary": "索取种植牙报价",
+      "ctaSecondary": "关于我们的种植牙"
+    },
+    "costDrivers": {
+      "heading": "决定种植牙价格的三大因素",
+      "intro": "材料质量、技工室加工和临床运营成本。这三项中只有两项会因国家而异——而节省正来自于此。",
+      "materials": {
+        "title": "种植体材料",
+        "body": "每颗种植牙都由三部分组成——钛种植体、基台和牙冠（E-max、烤瓷或氧化锆）。Roomchang 采用来自德国的 Myplant Two®，它被国际公认为市场上最可靠、最稳定的种植系统之一。无论种植体是在金边还是珀斯植入，材料成本都是相同的。"
+      },
+      "laboratory": {
+        "title": "技工室费用",
+        "body": "Roomchang 设有自己的 CAD/CAM 牙科技工室。牙冠、牙桥和定制基台均在院内设计和制作——我们无需像澳大利亚诊所那样支付第三方技工室的加价。仅这一项就占了涉及牙冠或牙桥的治疗中价格差异的很大一部分。"
+      },
+      "overheads": {
+        "title": "医生费用与运营成本",
+        "body": "2022 年澳大利亚牙科协会（Australian Dental Association）的调查显示，私人诊所的椅旁时间费用为每小时 AUD $400–$700。柬埔寨的生活成本和商业租金大幅更低，因此我们的运营成本也更低。我们的专科医生接受过国际化培训——许多人曾在日本、韩国和澳大利亚深造——但他们的执业成本无法相提并论。"
+      }
+    },
+    "material": {
+      "eyebrow": "材料质量绝非我们节省成本之处",
+      "title": "Myplant Two® — 与全球领先诊所所用相同的德国种植系统",
+      "body": "廉价种植体确实存在，但我们不使用它们。Roomchang 的标准种植体是 Myplant Two®，这是一套由德国工艺打造的钛种植系统，拥有十多年的临床成果。植入金边患者颌骨内的种植体，与植入慕尼黑、悉尼或伦敦的产品型号完全相同。我们节省成本的地方在于技工室和诊所运营成本——绝不会在留在您体内的那部分上节省。"
+    },
+    "table": {
+      "heading": "种植牙价格对比",
+      "intro": "Roomchang 所有价格均以美元计。澳大利亚价格依据 2022 年 ADA 费用调查，并计入截至 2026 年通常 10–25% 的涨幅。最终价格取决于骨质状况、基台类型和牙冠材料——在咨询和 CT 影像检查后确认。",
+      "colTreatment": "治疗项目",
+      "colAda": "ADA",
+      "colRoomchang": "Roomchang（美元）",
+      "colAustralia": "澳大利亚（澳元）"
+    },
+    "prices": {
+      "single": {
+        "treatment": "单颗种植牙（Myplant Two®）"
+      },
+      "crown": {
+        "treatment": "种植体全瓷牙冠"
+      },
+      "emax": {
+        "treatment": "种植体 + 定制基台 + E-Max 牙冠"
+      },
+      "bridge": {
+        "treatment": "2 颗种植体支持的 3 单位牙桥（E-Max）"
+      }
+    },
+    "cta": {
+      "heading": "准备好规划您的种植牙了吗？",
+      "body": "将您的 OPG、CT 扫描或近期照片发给我们。我们将在两个工作日内回复，提供完整的治疗方案和精确报价——免费且无任何义务。",
+      "button": "申请免费报价"
+    }
   }
 }

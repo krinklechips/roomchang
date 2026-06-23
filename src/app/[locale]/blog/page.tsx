@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowRight, HelpCircle, Mic, BookOpen } from "lucide-react";
@@ -11,43 +12,38 @@ export const metadata: Metadata = {
 
 const BLOG_SECTIONS = [
   {
-    title: "FAQ",
-    description:
-      "Answers to the most common questions about dental treatments, costs, and what to expect at Roomchang.",
+    id: "faq",
     href: "/blog/faq",
     icon: HelpCircle,
   },
   {
-    title: "Dentist Talks",
-    description:
-      "Watch our specialist dentists explain common dental concerns, treatment options, and modern technologies in short, informative videos.",
+    id: "dentistTalks",
     href: "/blog/dentist-talks",
     icon: Mic,
   },
   {
-    title: "Publications & Research",
-    description:
-      "Peer-reviewed research papers and clinical studies published by Roomchang dentists, advancing evidence-based care.",
+    id: "publications",
     href: "/blog/publications",
     icon: BookOpen,
   },
 ];
 
-export default function BlogPage() {
+export default async function BlogPage() {
+  const t = await getTranslations("blogIndex");
+
   return (
     <SiteShell>
       {/* Hero */}
       <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--surface)]">
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-20 lg:px-8">
           <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--brand)]">
-            Learn
+            {t("hero.eyebrow")}
           </p>
           <h1 className="mt-3 font-display text-5xl leading-none text-[color:var(--text-main)] sm:text-6xl">
-            Education Blog
+            {t("hero.title")}
           </h1>
           <p className="mt-5 max-w-2xl text-base leading-7 text-[color:var(--text-soft)]">
-            Dental health education from our specialist team — frequently asked questions,
-            expert talks, and published research.
+            {t("hero.description")}
           </p>
         </div>
       </div>
@@ -65,13 +61,13 @@ export default function BlogPage() {
                 <section.icon size={24} strokeWidth={1.75} aria-hidden="true" />
               </span>
               <h2 className="mt-5 font-display text-2xl text-[color:var(--text-main)] group-hover:text-[color:var(--brand-deep)]">
-                {section.title}
+                {t(`sections.${section.id}.title`)}
               </h2>
               <p className="mt-3 flex-1 text-sm leading-7 text-[color:var(--text-soft)]">
-                {section.description}
+                {t(`sections.${section.id}.description`)}
               </p>
               <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-[color:var(--brand-deep)] transition group-hover:text-[color:var(--brand)]">
-                Browse <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
+                {t("browse")} <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
               </span>
             </Link>
           ))}

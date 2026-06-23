@@ -6,6 +6,7 @@ import { supabaseServer } from "@/lib/supabase-server";
 import { getTranslatedFields, mergeTranslation } from "@/lib/i18n-content";
 import { CommunityGallery } from "@/components/sections/community-gallery";
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -71,6 +72,7 @@ export default async function CommunityArticlePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  const t = await getTranslations("communityDetail");
   const [article, adjacent] = await Promise.all([
     getArticle(slug),
     getAdjacentArticles(slug),
@@ -87,7 +89,7 @@ export default async function CommunityArticlePage({
             href="/about/community"
             className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--brand)] transition hover:text-[color:var(--brand-deep)]"
           >
-            <ArrowLeft size={13} weight="bold" aria-hidden="true" /> Roomchang in the Community
+            <ArrowLeft size={13} weight="bold" aria-hidden="true" /> {t("backLink")}
           </Link>
           <p className="mt-6 text-xs font-semibold uppercase tracking-[0.22em] text-[color:var(--brand)]">
             {article.date}

@@ -140,7 +140,7 @@ export function SiteHeader() {
 
         {/* Desktop nav */}
         <div className="hidden items-center gap-3 xl:gap-4 2xl:gap-6 lg:flex">
-          <nav ref={navRef} aria-label="Primary" className="flex items-center gap-px xl:gap-0.5 2xl:gap-1">
+          <nav ref={navRef} aria-label={tHeader("primaryNavAriaLabel")} className="flex items-center gap-px xl:gap-0.5 2xl:gap-1">
             {NAV_ITEMS.map((item) =>
               item.children ? (
                 <div key={item.tKey} className="group relative">

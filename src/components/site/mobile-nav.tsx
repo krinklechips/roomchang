@@ -164,7 +164,7 @@ export function MobileNav() {
           </div>
 
           {/* Scrollable nav body */}
-          <nav aria-label="Mobile primary" className="flex-1 overflow-y-auto px-4 pb-2 sm:px-6">
+          <nav aria-label={tMobile("primaryNavLabel")} className="flex-1 overflow-y-auto px-4 pb-2 sm:px-6">
             <div className="flex flex-col gap-0.5">
               {NAV_ITEMS.map((item) =>
                 item.children ? (

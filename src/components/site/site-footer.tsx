@@ -67,11 +67,11 @@ const SOCIAL = [
 ];
 
 const LEGAL_LINKS = [
-  { label: "Privacy Policy", href: "/privacy-policy" },
-  { label: "Terms of Service", href: "/terms-of-service" },
-  { label: "Disclaimer", href: "/disclaimer" },
-  { label: "Cookie Policy", href: "/cookie-policy" },
-  { label: "Booking & Cancellation Policy", href: "/booking-cancellation-policy" },
+  { tKey: "privacyPolicy", href: "/privacy-policy" },
+  { tKey: "termsOfService", href: "/terms-of-service" },
+  { tKey: "disclaimer", href: "/disclaimer" },
+  { tKey: "cookiePolicy", href: "/cookie-policy" },
+  { tKey: "bookingCancellation", href: "/booking-cancellation-policy" },
 ];
 
 export async function SiteFooter() {
@@ -178,14 +178,14 @@ export async function SiteFooter() {
             <p className="text-xs text-[color:var(--text-soft)]">
               {tFooter("copyright", { year: new Date().getFullYear() })}
             </p>
-            <nav aria-label="Legal links" className="flex flex-wrap items-center gap-x-4 gap-y-2">
+            <nav aria-label={tFooter("legal.ariaLabel")} className="flex flex-wrap items-center gap-x-4 gap-y-2">
               {LEGAL_LINKS.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   className="text-xs text-[color:var(--text-soft)] transition-colors hover:text-[color:var(--brand)]"
                 >
-                  {link.label}
+                  {tFooter(`legal.${link.tKey}`)}
                 </Link>
               ))}
             </nav>

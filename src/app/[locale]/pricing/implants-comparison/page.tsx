@@ -1,4 +1,5 @@
 import { Link } from "@/i18n/navigation";
+import { getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
 import { Package, FlaskConical, Building2 } from "lucide-react";
 import { SiteShell } from "@/components/site/site-shell";
@@ -13,31 +14,16 @@ export const metadata: Metadata = {
 };
 
 const COST_DRIVERS = [
-  {
-    icon: Package,
-    title: "Implant materials",
-    body:
-      "Every dental implant has three parts — the titanium implant, an abutment, and a crown (E-max, ceramic fused to metal, or zirconium). Roomchang uses Myplant Two® from Germany, internationally recognised as one of the most reliable and stable implant systems on the market. Material cost is the same whether the implant is placed in Phnom Penh or Perth.",
-  },
-  {
-    icon: FlaskConical,
-    title: "Laboratory fees",
-    body:
-      "Roomchang operates an in-house CAD/CAM dental laboratory. Crowns, bridges, and custom abutments are designed and fabricated on-site — we don't pay a third-party lab markup the way Australian clinics do. That single line item accounts for a large share of the price difference on anything involving a crown or bridge.",
-  },
-  {
-    icon: Building2,
-    title: "Dentist fees & overheads",
-    body:
-      "The 2022 Australian Dental Association survey put private-practice chair time at AUD $400–$700 per hour. Cost of living and commercial rent in Cambodia are dramatically lower, so our overheads are lower. Our specialists are internationally trained — many of them in Japan, Korea, and Australia — but their practice costs don't compare.",
-  },
+  { id: "materials", icon: Package },
+  { id: "laboratory", icon: FlaskConical },
+  { id: "overheads", icon: Building2 },
 ];
 
 const IMPLANT_PRICES = [
-  { ada: "688", treatment: "Single dental implant (Myplant Two®)",             roomchang: "$1,200",    australia: "AUD $2,277" },
-  { ada: "672", treatment: "Full ceramic crown on implant",                    roomchang: "$550–600",  australia: "AUD $1,734" },
-  { ada: "",    treatment: "Implant + custom abutment + E-Max crown",          roomchang: "$2,400",    australia: "AUD $4,200+" },
-  { ada: "",    treatment: "3-crown bridge on 2 implants (E-Max)",             roomchang: "$5,000–5,400", australia: "AUD $9,500+" },
+  { id: "single",     ada: "688", roomchang: "$1,200",       australia: "AUD $2,277" },
+  { id: "crown",      ada: "672", roomchang: "$550–600",     australia: "AUD $1,734" },
+  { id: "emax",       ada: "",    roomchang: "$2,400",       australia: "AUD $4,200+" },
+  { id: "bridge",     ada: "",    roomchang: "$5,000–5,400", australia: "AUD $9,500+" },
 ];
 
 type PricingComparisonRow = {
@@ -49,6 +35,8 @@ type PricingComparisonRow = {
 };
 
 export default async function ImplantsComparisonPage() {
+  const t = await getTranslations("implantsComparison");
+
   const { data, error } = await supabaseServer
     .from("pricing_comparison_sets")
     .select("pricing_comparison_rows(ada, treatment, roomchang_price, australia_price, sort_order)")
@@ -68,7 +56,13 @@ export default async function ImplantsComparisonPage() {
       roomchang: row.roomchang_price,
       australia: row.australia_price,
     }));
-  const implantPrices = rows.length ? rows : IMPLANT_PRICES;
+  const fallbackPrices = IMPLANT_PRICES.map((row) => ({
+    ada: row.ada,
+    treatment: t(`prices.${row.id}.treatment`),
+    roomchang: row.roomchang,
+    australia: row.australia,
+  }));
+  const implantPrices = rows.length ? rows : fallbackPrices;
 
   return (
     <SiteShell>
@@ -76,18 +70,17 @@ export default async function ImplantsComparisonPage() {
       <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--surface)]">
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-20 lg:px-8">
           <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--brand)]">
-            Why Our Implants Cost Less
+            {t("hero.eyebrow")}
           </p>
           <h1 className="mt-3 font-display text-5xl leading-none text-[color:var(--text-main)] sm:text-6xl">
-            Dental Implants Price Comparison
+            {t("hero.title")}
           </h1>
           <p className="mt-5 max-w-2xl text-base leading-7 text-[color:var(--text-soft)]">
-            Patients often ask how Roomchang can offer dental implants at roughly half the Australian
-            price. The short answer: same materials, lower overheads. Here&apos;s the honest breakdown.
+            {t("hero.body")}
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
-            <Link href="/contact" className="btn-primary">Request an Implant Quote</Link>
-            <Link href="/services/dental-implants" className="btn-secondary">About Our Implants</Link>
+            <Link href="/contact" className="btn-primary">{t("hero.ctaPrimary")}</Link>
+            <Link href="/services/dental-implants" className="btn-secondary">{t("hero.ctaSecondary")}</Link>
           </div>
         </div>
       </div>
@@ -97,24 +90,23 @@ export default async function ImplantsComparisonPage() {
         {/* Cost drivers */}
         <section>
           <h2 className="font-display text-3xl text-[color:var(--text-main)]">
-            Three things drive the price of a dental implant
+            {t("costDrivers.heading")}
           </h2>
           <p className="mt-3 max-w-2xl text-sm leading-7 text-[color:var(--text-soft)]">
-            Material quality, lab work, and clinical overheads. Only two of those three vary by country —
-            and that&apos;s where the savings come from.
+            {t("costDrivers.intro")}
           </p>
 
           <div className="mt-10 grid gap-6 md:grid-cols-3">
-            {COST_DRIVERS.map(({ icon: Icon, title, body }) => (
+            {COST_DRIVERS.map(({ icon: Icon, id }) => (
               <article
-                key={title}
+                key={id}
                 className="rounded-3xl border border-[color:var(--border-strong)] bg-white p-7 shadow-[0_16px_48px_rgba(57,28,45,0.06)]"
               >
                 <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[color:var(--brand-soft)] text-[color:var(--brand-deep)]">
                   <Icon size={22} strokeWidth={1.75} aria-hidden="true" />
                 </div>
-                <h3 className="mt-5 font-display text-xl text-[color:var(--text-main)]">{title}</h3>
-                <p className="mt-3 text-sm leading-7 text-[color:var(--text-soft)]">{body}</p>
+                <h3 className="mt-5 font-display text-xl text-[color:var(--text-main)]">{t(`costDrivers.${id}.title`)}</h3>
+                <p className="mt-3 text-sm leading-7 text-[color:var(--text-soft)]">{t(`costDrivers.${id}.body`)}</p>
               </article>
             ))}
           </div>
@@ -125,17 +117,13 @@ export default async function ImplantsComparisonPage() {
           <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--brand)]">
-                Material quality is not where we save
+                {t("material.eyebrow")}
               </p>
               <h2 className="mt-3 font-display text-3xl leading-tight text-[color:var(--text-main)]">
-                Myplant Two® — the same German implant system used by leading clinics worldwide
+                {t("material.title")}
               </h2>
               <p className="mt-4 max-w-3xl text-sm leading-7 text-[color:var(--text-soft)]">
-                Cheap implants exist. We don&apos;t use them. Roomchang&apos;s standard implant is Myplant Two®,
-                a German-engineered titanium system with over a decade of clinical outcomes behind it.
-                The implant sitting in a patient&apos;s jaw in Phnom Penh is the same part number that
-                would be placed in Munich, Sydney, or London. Where we save money is in the lab and
-                in clinic operating costs — never in the part we leave in your body.
+                {t("material.body")}
               </p>
             </div>
           </div>
@@ -144,12 +132,10 @@ export default async function ImplantsComparisonPage() {
         {/* Price table */}
         <section>
           <h2 className="font-display text-3xl text-[color:var(--text-main)]">
-            Implant price comparison
+            {t("table.heading")}
           </h2>
           <p className="mt-3 max-w-2xl text-sm leading-7 text-[color:var(--text-soft)]">
-            All Roomchang prices in USD. Australian prices reflect the 2022 ADA fee survey plus
-            typical 10–25% increases through 2026. Final price depends on bone condition, abutment
-            type, and crown material — confirmed after consultation and CT imaging.
+            {t("table.intro")}
           </p>
 
           <div className="mt-8 overflow-hidden rounded-3xl border border-[color:var(--brand-soft)] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)]">
@@ -158,16 +144,16 @@ export default async function ImplantsComparisonPage() {
                 <thead>
                   <tr className="border-b border-[color:var(--brand-soft)] bg-[color:var(--surface)]">
                     <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
-                      Treatment
+                      {t("table.colTreatment")}
                     </th>
                     <th className="px-6 py-4 text-center text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
-                      ADA
+                      {t("table.colAda")}
                     </th>
                     <th className="px-6 py-4 text-right text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--brand-deep)]">
-                      Roomchang (USD)
+                      {t("table.colRoomchang")}
                     </th>
                     <th className="px-6 py-4 text-right text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
-                      Australia (AUD)
+                      {t("table.colAustralia")}
                     </th>
                   </tr>
                 </thead>
@@ -190,17 +176,16 @@ export default async function ImplantsComparisonPage() {
         <section className="rounded-3xl bg-[color:var(--brand)] p-10 text-white sm:p-14">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h2 className="font-display text-4xl">Ready to plan your implants?</h2>
+              <h2 className="font-display text-4xl">{t("cta.heading")}</h2>
               <p className="mt-2 max-w-md text-sm leading-7 text-white/80">
-                Send us your OPG, CT scan, or recent photos. We&apos;ll come back within two business
-                days with a full treatment plan and an exact quote — no charge, no obligation.
+                {t("cta.body")}
               </p>
             </div>
             <Link
               href="/contact"
               className="shrink-0 rounded-full border border-white/30 bg-white px-7 py-4 text-sm font-bold text-[color:var(--brand)] transition hover:bg-white/90"
             >
-              Request a Free Quote
+              {t("cta.button")}
             </Link>
           </div>
         </section>
