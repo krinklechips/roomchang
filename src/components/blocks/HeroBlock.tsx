@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 
 interface HeroBlockProps {
@@ -14,7 +15,7 @@ interface HeroBlockProps {
   ctaUrl?: string;
 }
 
-export function HeroBlock({
+export async function HeroBlock({
   heroTitle,
   heroSubtitle,
   heroEyebrow,
@@ -25,6 +26,7 @@ export function HeroBlock({
   ctaText,
   ctaUrl,
 }: HeroBlockProps) {
+  const t = await getTranslations("blocks.hero");
   const hasBg = !!heroImage;
   const objectPos = heroImagePosition
     ? heroImagePosition.replace("center ", "").replace(" center", "") || "center"
@@ -38,7 +40,7 @@ export function HeroBlock({
         <>
           <Image
             src={heroImage!}
-            alt={heroImageAlt || heroTitle || "Hero"}
+            alt={heroImageAlt || heroTitle || t("imageAltFallback")}
             fill
             priority
             className={`object-${heroPreserveFullImage ? "contain" : "cover"} object-${objectPos}`}

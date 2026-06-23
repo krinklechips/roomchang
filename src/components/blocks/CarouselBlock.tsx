@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 interface Slide {
@@ -13,6 +14,7 @@ interface Slide {
 }
 
 export function CarouselBlock({ slides }: { slides?: Slide[] }) {
+  const t = useTranslations("blocks.carousel");
   const [current, setCurrent] = useState(0);
   const items = slides?.filter((s) => s.image) ?? [];
   if (items.length === 0) return null;
@@ -24,7 +26,7 @@ export function CarouselBlock({ slides }: { slides?: Slide[] }) {
       {/* Background image */}
       <Image
         src={slide.image}
-        alt={slide.title || "Slide"}
+        alt={slide.title || t("imageAltFallback")}
         fill
         className="object-cover"
         sizes="100vw"
@@ -56,7 +58,7 @@ export function CarouselBlock({ slides }: { slides?: Slide[] }) {
             <button
               key={i}
               onClick={() => setCurrent(i)}
-              aria-label={`Slide ${i + 1}`}
+              aria-label={t("slideLabel", { number: i + 1 })}
               className={`h-2 rounded-full transition-all ${
                 i === current ? "w-6 bg-white" : "w-2 bg-white/40"
               }`}

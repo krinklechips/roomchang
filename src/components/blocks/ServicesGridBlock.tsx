@@ -1,3 +1,5 @@
+import { getTranslations } from "next-intl/server";
+
 import { Link } from "@/i18n/navigation";
 import { getServices } from "@/lib/data";
 
@@ -10,6 +12,7 @@ export async function ServicesGridBlock({
   filter?: string;
   limit?: number;
 }) {
+  const t = await getTranslations("blocks.servicesGrid");
   const take = limit || 6;
   const normalizedFilter = filter?.trim().toLowerCase();
   const services = await getServices();
@@ -32,7 +35,7 @@ export async function ServicesGridBlock({
           </h2>
         )}
         {items.length === 0 ? (
-          <p className="text-center text-sm text-[color:var(--text-soft)]">No services published yet.</p>
+          <p className="text-center text-sm text-[color:var(--text-soft)]">{t("emptyState")}</p>
         ) : (
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {items.map((service) => (
@@ -56,7 +59,7 @@ export async function ServicesGridBlock({
                     href={`/services/${service.slug}`}
                     className="mt-auto text-xs font-medium text-[color:var(--brand)] hover:underline"
                   >
-                    Learn more →
+                    {t("learnMore")}
                   </Link>
                 )}
               </div>

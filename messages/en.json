@@ -1657,5 +1657,37 @@
       "body": "Send us your OPG, CT scan, or recent photos. We'll come back within two business days with a full treatment plan and an exact quote — no charge, no obligation.",
       "button": "Request a Free Quote"
     }
+  },
+  "blocks": {
+    "articleCardGrid": {
+      "readMore": "Read more"
+    },
+    "servicesGrid": {
+      "emptyState": "No services published yet.",
+      "learnMore": "Learn more →"
+    },
+    "teamGrid": {
+      "emptyState": "No team members published yet.",
+      "bookAppointment": "Book appointment"
+    },
+    "testimonials": {
+      "defaultHeading": "What Our Patients Say",
+      "empty": "No testimonials published yet.",
+      "ratingStars": "{count} stars"
+    },
+    "pricing": {
+      "defaultTitle": "Our Services",
+      "emptyState": "No pricing categories published yet.",
+      "freeLabel": "Free",
+      "adaCode": "ADA {code}",
+      "viewFullPricing": "View full pricing"
+    },
+    "hero": {
+      "imageAltFallback": "Hero"
+    },
+    "carousel": {
+      "imageAltFallback": "Slide",
+      "slideLabel": "Slide {number}"
+    }
   }
 }

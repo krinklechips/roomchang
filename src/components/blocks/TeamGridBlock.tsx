@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { getDoctors } from "@/lib/data";
 
@@ -11,6 +12,7 @@ export async function TeamGridBlock({
   filter?: string;
   limit?: number;
 }) {
+  const t = await getTranslations("blocks.teamGrid");
   const take = limit || 8;
   const normalizedFilter = filter?.trim().toLowerCase();
   const doctors = await getDoctors();
@@ -34,7 +36,7 @@ export async function TeamGridBlock({
           </h2>
         )}
         {items.length === 0 ? (
-          <p className="text-center text-sm text-[color:var(--text-soft)]">No team members published yet.</p>
+          <p className="text-center text-sm text-[color:var(--text-soft)]">{t("emptyState")}</p>
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {items.map((doc) => (
@@ -69,7 +71,7 @@ export async function TeamGridBlock({
                     href={`/contact?doctor=${encodeURIComponent(doc.name)}`}
                     className="mt-2 inline-block text-xs font-medium text-[color:var(--brand)] hover:underline"
                   >
-                    Book appointment
+                    {t("bookAppointment")}
                   </Link>
                 </div>
               </div>

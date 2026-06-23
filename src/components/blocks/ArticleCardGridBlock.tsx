@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 
 interface ArticleCardItem {
@@ -14,10 +15,11 @@ interface ArticleCardGridBlockProps {
   articleItems?: ArticleCardItem[];
 }
 
-export function ArticleCardGridBlock({
+export async function ArticleCardGridBlock({
   articleTitle,
   articleItems,
 }: ArticleCardGridBlockProps) {
+  const t = await getTranslations("blocks.articleCardGrid");
   const items = articleItems?.filter((item) => item.title && item.description) ?? [];
 
   if (items.length === 0) return null;
@@ -59,7 +61,7 @@ export function ArticleCardGridBlock({
                     href={item.href}
                     className="mt-5 text-sm font-semibold text-[color:var(--brand)] hover:underline"
                   >
-                    Read more
+                    {t("readMore")}
                   </Link>
                 )}
               </div>

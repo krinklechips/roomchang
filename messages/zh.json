@@ -1657,5 +1657,37 @@
       "body": "将您的 OPG、CT 扫描或近期照片发给我们。我们将在两个工作日内回复，提供完整的治疗方案和精确报价——免费且无任何义务。",
       "button": "申请免费报价"
     }
+  },
+  "blocks": {
+    "articleCardGrid": {
+      "readMore": "阅读更多"
+    },
+    "servicesGrid": {
+      "emptyState": "暂无已发布的服务。",
+      "learnMore": "了解更多 →"
+    },
+    "teamGrid": {
+      "emptyState": "暂未发布团队成员。",
+      "bookAppointment": "预约就诊"
+    },
+    "testimonials": {
+      "defaultHeading": "患者怎么说",
+      "empty": "暂无已发布的患者评价。",
+      "ratingStars": "{count} 颗星"
+    },
+    "pricing": {
+      "defaultTitle": "我们的服务",
+      "emptyState": "暂未发布任何价格类别。",
+      "freeLabel": "免费",
+      "adaCode": "ADA {code}",
+      "viewFullPricing": "查看完整价格表"
+    },
+    "hero": {
+      "imageAltFallback": "主图"
+    },
+    "carousel": {
+      "imageAltFallback": "幻灯片",
+      "slideLabel": "第 {number} 张幻灯片"
+    }
   }
 }

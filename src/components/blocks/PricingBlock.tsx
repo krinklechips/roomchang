@@ -1,3 +1,5 @@
+import { getTranslations } from "next-intl/server";
+
 import { Link } from "@/i18n/navigation";
 import { getPricingCategories } from "@/lib/data";
 
@@ -8,6 +10,7 @@ export async function PricingBlock({
   title?: string;
   category?: string;
 }) {
+  const t = await getTranslations("blocks.pricing");
   const allCategories = await getPricingCategories();
   const filter = category?.trim().toLowerCase();
   const categories = filter
@@ -15,18 +18,18 @@ export async function PricingBlock({
     : allCategories;
 
   function formatPrice(price: string) {
-    return price.toLowerCase() === "free" ? "Free" : `$${price}`;
+    return price.toLowerCase() === "free" ? t("freeLabel") : `$${price}`;
   }
 
   return (
     <section className="px-6 py-8 sm:py-16 lg:px-8 lg:py-20">
       <div className="mx-auto max-w-5xl">
         <h2 className="mb-10 text-center font-display text-4xl text-[color:var(--text-main)] lg:text-5xl">
-          {title || "Our Services"}
+          {title || t("defaultTitle")}
         </h2>
         {categories.length === 0 ? (
           <p className="text-center text-sm text-[color:var(--text-soft)]">
-            No pricing categories published yet.
+            {t("emptyState")}
           </p>
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -39,7 +42,7 @@ export async function PricingBlock({
                   <p className="font-semibold text-[color:var(--text-main)]">{item.name}</p>
                   {item.ada && (
                     <p className="text-xs leading-6 text-[color:var(--text-soft)]">
-                      ADA {item.ada}
+                      {t("adaCode", { code: item.ada })}
                     </p>
                   )}
                   <p className="mt-auto pt-2 text-sm font-semibold text-[color:var(--brand-deep)]">
@@ -49,7 +52,7 @@ export async function PricingBlock({
                     href="/pricing"
                     className="text-xs font-medium text-[color:var(--brand)] hover:underline"
                   >
-                    View full pricing
+                    {t("viewFullPricing")}
                   </Link>
                 </div>
               )),
