@@ -175,6 +175,9 @@ export default async function PricingPage({
                       <li key={i} className="flex items-start justify-between gap-4 px-5 py-3.5 sm:px-6 sm:pl-20">
                         <div className="min-w-0">
                           <span className="block text-sm text-[color:var(--text-main)]">{item.name}</span>
+                          {item.note && (
+                            <span className="block text-xs text-[color:var(--text-soft)]">{item.note}</span>
+                          )}
                         </div>
                         <span className="shrink-0 text-sm font-bold text-[color:var(--brand-deep)]">
                           {item.price.toLowerCase() === "free" ? t("free") : `$${item.price}`}

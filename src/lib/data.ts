@@ -47,6 +47,7 @@ export type PricingItem = {
   id: string;
   name: string;
   price: string;
+  note: string | null;
   ada: string | null;
   aus: string | null;
   order: number;
