@@ -106,6 +106,10 @@ a {
    stacked subscripts aren't clipped. */
 :lang(km) {
   font-family: var(--font-khmer), var(--font-manrope), sans-serif;
+  /* Khmer stacks vowels/subscripts above and below the consonant, so it needs
+     more vertical room than Latin — a comfortable default keeps body text from
+     looking cramped. Elements with their own leading-* class still override. */
+  line-height: 1.7;
 }
 :lang(km) .font-display {
   font-family: var(--font-khmer), var(--font-gotham), sans-serif;
@@ -113,8 +117,16 @@ a {
 :lang(km) * {
   letter-spacing: normal !important;
 }
-:lang(km) :is(h1, h2, h3, h4) {
-  line-height: 1.35;
+:lang(km) :is(h1, h2, h3, h4, h5, h6) {
+  line-height: 1.45;
+}
+/* The design's ultra-tight display leading (leading-none/tight) clips Khmer
+   stacked glyphs into a cluttered smear — relax just those utilities for Khmer. */
+:lang(km) .leading-none {
+  line-height: 1.25 !important;
+}
+:lang(km) .leading-tight {
+  line-height: 1.4 !important;
 }
 
 /* Chinese (lang=zh, served at /cn). The Latin fonts don't cover CJK, so use
