@@ -42,7 +42,7 @@ export const BRANCHES: Branch[] = [
     hours: "Mon–Sat 08:00–17:30",
     phone: "+855 69 811 338",
     description:
-      "Our flagship 10-storey hospital with 46 dental chairs, 9 operation rooms, an in-house CAD/CAM digital laboratory, and the full specialist team.",
+      "Our flagship 10-storey hospital with 46 dental chairs, 4 operation rooms, an in-house CAD/CAM digital laboratory, and the full specialist team.",
     imageSrc: "/about/facilities/DJI_0387.jpg",
     imageAlt: "Roomchang Dental Hospital main building — Sisowath High School",
     coords: "11.5631748,104.9255864",
