@@ -98,6 +98,25 @@ a {
   font-family: var(--font-gotham), sans-serif;
 }
 
+/* Khmer (lang=km, served at /kh). The Latin display/body fonts don't support
+   Khmer, so use the Battambang webfont — Latin glyphs fall through to
+   Manrope/Gotham via the font stack. Crucially, reset letter-spacing: the
+   design's `tracking-*` utilities shatter Khmer clusters into detached glyphs
+   (the gaps seen on headings/eyebrows/labels). Also relax tight line-heights so
+   stacked subscripts aren't clipped. */
+:lang(km) {
+  font-family: var(--font-khmer), var(--font-manrope), sans-serif;
+}
+:lang(km) .font-display {
+  font-family: var(--font-khmer), var(--font-gotham), sans-serif;
+}
+:lang(km) * {
+  letter-spacing: normal !important;
+}
+:lang(km) :is(h1, h2, h3, h4) {
+  line-height: 1.35;
+}
+
 .btn-primary,
 .btn-secondary {
   display: inline-flex;

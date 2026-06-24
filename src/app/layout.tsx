@@ -1,7 +1,19 @@
 import type { Metadata, Viewport } from "next";
+import { Battambang } from "next/font/google";
 import { getLocale } from "next-intl/server";
 import { LOCALE_TO_LANG } from "@/i18n/routing";
 import { Analytics } from "@vercel/analytics/next";
+
+// Khmer webfont (the web version of Khmer OS Battambang). Self-hosted by
+// next/font; preload disabled so it only downloads on Khmer (/kh) pages.
+// Exposed as --font-khmer and applied to :lang(km) in globals.css.
+const battambang = Battambang({
+  subsets: ["khmer"],
+  weight: ["400", "700"],
+  variable: "--font-khmer",
+  display: "swap",
+  preload: false,
+});
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { CmsPreviewInteractionGuard } from "@/components/site/cms-preview-interaction-guard";
 import { BRANCHES } from "@/lib/branches";
@@ -167,7 +179,7 @@ export default async function RootLayout({
   return (
     <html
       lang={LOCALE_TO_LANG[locale] ?? locale}
-      className="h-full scroll-smooth antialiased"
+      className={`h-full scroll-smooth antialiased ${battambang.variable}`}
     >
       <body className="min-h-full flex flex-col">
         <script
