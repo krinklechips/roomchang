@@ -269,6 +269,6 @@ export const config = {
   // Run on all pages except Next.js internals, static files, and the root
   // metadata routes (robots.txt / sitemap.xml must NOT be locale-prefixed).
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|.*\\.(?:png|jpg|jpeg|gif|svg|ico|webp|css|js|woff2?)).*)",
+    "/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|.*\\.(?:png|jpg|jpeg|gif|svg|ico|webp|css|js|woff2?|otf|ttf|eot|mp4|webm)).*)",
   ],
 };
