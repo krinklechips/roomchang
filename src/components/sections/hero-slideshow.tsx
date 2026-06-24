@@ -2,6 +2,7 @@
 
 import type { CSSProperties } from "react";
 import { startTransition, useEffect, useState } from "react";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -68,32 +69,12 @@ export function HeroSlideshow({
 
   const activeSlide = slides[activeIndex];
   const shouldPreserveFullImage = Boolean(activeSlide.preserveFullImage);
+  // object-position is responsive: mobile var by default, desktop var at sm+.
   const mobileImagePosition = activeSlide.mobileImagePosition ?? activeSlide.imagePosition ?? "center center";
   const imagePosition = activeSlide.imagePosition ?? "center center";
-  const mobileImageSize = activeSlide.mobileImageSize ?? activeSlide.imageSize ?? "contain";
-  const imageSize = activeSlide.imageSize ?? "cover";
-  const preserveImageStyle = shouldPreserveFullImage
-    ? ({
-        backgroundImage: `url(${activeSlide.imageSrc})`,
-        backgroundRepeat: "no-repeat",
-        "--hero-mobile-image-position": mobileImagePosition,
-        "--hero-image-position": imagePosition,
-        "--hero-mobile-image-size": mobileImageSize,
-        "--hero-image-size": activeSlide.imageSize ?? "contain",
-      } as CSSProperties)
-    : undefined;
-  const stageStyle = {
-    backgroundColor: shouldPreserveFullImage ? "white" : undefined,
-    backgroundImage: shouldPreserveFullImage
-      ? "none"
-      : `linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(44, 26, 40, 0.18)), url(${activeSlide.imageSrc})`,
-    backgroundPosition: shouldPreserveFullImage ? "center" : undefined,
-    backgroundSize: shouldPreserveFullImage ? "cover" : undefined,
-    backgroundRepeat: shouldPreserveFullImage ? "no-repeat" : undefined,
+  const imagePositionStyle = {
     "--hero-mobile-image-position": mobileImagePosition,
     "--hero-image-position": imagePosition,
-    "--hero-mobile-image-size": mobileImageSize,
-    "--hero-image-size": imageSize,
   } as CSSProperties;
 
   const dots = (
@@ -140,27 +121,35 @@ export function HeroSlideshow({
     >
       <div
         data-testid="hero-stage"
-        role="img"
-        aria-label={activeSlide.imageAlt}
         // preserveFullImage slides are panoramic (~2.4:1). At lg (small-laptop
         // ~1024-1280px) the 16/9 stage left big top/bottom gaps — switch to a
         // matching ~2.4:1 box ONLY at lg. Mobile/tablet keep the natural 16/9
-        // hero (Aliza feedback round 2).
-        className={`relative min-h-0 overflow-hidden rounded-[1.6rem] bg-[color:var(--surface-strong)] bg-no-repeat [background-position:var(--hero-mobile-image-position)] [background-size:var(--hero-mobile-image-size)] sm:min-h-[28rem] sm:[background-position:var(--hero-image-position)] sm:[background-size:var(--hero-image-size)] ${shouldPreserveFullImage ? "lg:!aspect-[12/5] lg:!min-h-0" : ""} xl:min-h-[31rem] xl:!aspect-auto ${mediaClassName}`}
-        style={stageStyle}
+        // hero (Aliza feedback round 2). No role="img" — the nested <Image>
+        // carries the alt text, so a wrapper label would double-announce.
+        className={`relative min-h-0 overflow-hidden rounded-[1.6rem] sm:min-h-[28rem] ${shouldPreserveFullImage ? "bg-white lg:!aspect-[12/5] lg:!min-h-0" : "bg-[color:var(--surface-strong)]"} xl:min-h-[31rem] xl:!aspect-auto ${mediaClassName}`}
       >
-        {/* Foreground image layer for preserve mode — rendered first so overlays sit on top */}
-        {shouldPreserveFullImage && (
-          <div
-            data-testid="hero-foreground-image"
-            className="absolute inset-0 bg-no-repeat [background-position:var(--hero-mobile-image-position)] [background-size:var(--hero-mobile-image-size)] sm:[background-position:var(--hero-image-position)] sm:[background-size:var(--hero-image-size)]"
-            style={preserveImageStyle}
-          />
-        )}
+        {/* Slide image via next/image (resized + WebP/AVIF instead of a raw R2
+            background download). preserveFullImage → object-contain on the white
+            stage: the panorama is anchored by object-position with light margins
+            that blend into the page, reproducing the old background-size:100%/
+            contain. Photo slides → cover (contain on mobile to avoid hard crops),
+            matching the previous responsive size vars. */}
+        <Image
+          key={activeSlide.id}
+          data-testid="hero-foreground-image"
+          src={activeSlide.imageSrc}
+          alt={activeSlide.imageAlt}
+          fill
+          sizes="100vw"
+          priority={activeIndex === 0}
+          style={imagePositionStyle}
+          className={`select-none [object-position:var(--hero-mobile-image-position)] sm:[object-position:var(--hero-image-position)] ${shouldPreserveFullImage ? "object-contain" : "object-contain sm:object-cover"}`}
+          draggable={false}
+        />
 
         {/* Depth overlay — only on photo slides for text readability */}
         {!shouldPreserveFullImage && (
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(255,255,255,0.35),_transparent_34%),linear-gradient(180deg,_rgba(255,249,250,0.04)_0%,_rgba(44,26,40,0.22)_100%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(255,255,255,0.35),_transparent_34%),linear-gradient(180deg,_rgba(255,249,250,0.04)_0%,_rgba(44,26,40,0.22)_100%)]" />
         )}
 
         {showCaption && (

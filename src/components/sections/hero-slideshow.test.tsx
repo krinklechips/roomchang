@@ -1,6 +1,25 @@
 import { act, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { NextIntlClientProvider } from "next-intl";
 import { HeroSlideshow, type HeroSlide } from "./hero-slideshow";
+
+const messages = {
+  heroSlideshow: {
+    ariaLabel: "Roomchang hero slideshow",
+    showSlide: "Show slide {title}",
+    previousAriaLabel: "Show previous slide",
+    nextAriaLabel: "Show next slide",
+    swipeHint: "Swipe to explore",
+  },
+};
+
+function renderHero(ui: React.ReactElement) {
+  return render(
+    <NextIntlClientProvider locale="en" messages={messages}>
+      {ui}
+    </NextIntlClientProvider>,
+  );
+}
 
 const slides: HeroSlide[] = [
   {
@@ -34,7 +53,7 @@ describe("HeroSlideshow", () => {
   });
 
   it("auto-rotates slides and supports manual navigation", async () => {
-    render(<HeroSlideshow slides={slides} autoRotateMs={3000} />);
+    renderHero(<HeroSlideshow slides={slides} autoRotateMs={3000} />);
 
     expect(screen.getByText("Specialist Team")).toBeInTheDocument();
 
@@ -52,60 +71,40 @@ describe("HeroSlideshow", () => {
   });
 
   it("can render without the default framed card shell for full-bleed hero use", () => {
-    render(<HeroSlideshow slides={slides} flush />);
+    renderHero(<HeroSlideshow slides={slides} flush />);
 
     expect(screen.getByRole("region", { name: /roomchang hero slideshow/i })).not.toHaveClass(
       "panel-card",
     );
   });
 
-  it("respects per-slide image fitting overrides", () => {
-    render(<HeroSlideshow slides={slides} />);
+  it("renders the slide through next/image with a responsive object-position", () => {
+    renderHero(<HeroSlideshow slides={slides} />);
 
-    expect(screen.getByTestId("hero-foreground-image")).toHaveStyle({
-      "--hero-image-position": "center bottom",
-      "--hero-image-size": "contain",
-    });
+    const image = screen.getByTestId("hero-foreground-image");
+    expect(image.tagName).toBe("IMG");
+    expect(image).toHaveAttribute("src");
+    expect(image).toHaveStyle({ "--hero-image-position": "center bottom" });
   });
 
-  it("can preserve a full image over a blurred background for wide hero photos", () => {
-    render(<HeroSlideshow slides={slides} />);
+  it("shows the full panorama (object-contain) for preserveFullImage slides", () => {
+    renderHero(<HeroSlideshow slides={slides} />);
 
-    expect(screen.getByTestId("hero-foreground-image")).toHaveStyle({
-      backgroundImage: 'url("/hero/placeholder-team.svg")',
-      "--hero-image-size": "contain",
-    });
+    const image = screen.getByTestId("hero-foreground-image");
+    // Preserve mode fits the whole image so its light margins blend into the
+    // page — never cropped to cover.
+    expect(image.className).toContain("object-contain");
+    expect(image.className).not.toContain("sm:object-cover");
   });
 
-  it("supports mobile-specific image framing for preserved hero slides", () => {
-    render(
-      <HeroSlideshow
-        slides={[
-          {
-            ...slides[0],
-            mobileImagePosition: "center 34%",
-            mobileImageSize: "auto 72%",
-          },
-          slides[1],
-        ]}
-      />,
-    );
-
-    expect(screen.getByTestId("hero-foreground-image")).toHaveStyle({
-      "--hero-mobile-image-position": "center 34%",
-      "--hero-mobile-image-size": "auto 72%",
-    });
-  });
-
-  it("supports mobile-specific image framing for standard photo slides too", () => {
-    render(
+  it("covers the frame for standard photo slides (contain on mobile to avoid hard crops)", () => {
+    renderHero(
       <HeroSlideshow
         slides={[
           slides[0],
           {
             ...slides[1],
             mobileImagePosition: "center top",
-            mobileImageSize: "contain",
           },
         ]}
       />,
@@ -115,15 +114,32 @@ describe("HeroSlideshow", () => {
       screen.getByRole("button", { name: /show next slide/i }).click();
     });
 
-    expect(screen.getByTestId("hero-stage")).toHaveStyle({
-      "--hero-mobile-image-position": "center top",
-      "--hero-mobile-image-size": "contain",
-      "--hero-image-size": "cover",
+    const image = screen.getByTestId("hero-foreground-image");
+    expect(image).toHaveStyle({ "--hero-mobile-image-position": "center top" });
+    expect(image.className).toContain("object-contain");
+    expect(image.className).toContain("sm:object-cover");
+  });
+
+  it("supports mobile-specific image positioning for preserved hero slides", () => {
+    renderHero(
+      <HeroSlideshow
+        slides={[
+          {
+            ...slides[0],
+            mobileImagePosition: "center 34%",
+          },
+          slides[1],
+        ]}
+      />,
+    );
+
+    expect(screen.getByTestId("hero-foreground-image")).toHaveStyle({
+      "--hero-mobile-image-position": "center 34%",
     });
   });
 
   it("uses side chevrons for desktop navigation while keeping mobile swipe-first", () => {
-    render(<HeroSlideshow slides={slides} flush />);
+    renderHero(<HeroSlideshow slides={slides} flush />);
 
     const previousButton = screen.getByRole("button", { name: /show previous slide/i });
     const nextButton = screen.getByRole("button", { name: /show next slide/i });
@@ -131,11 +147,11 @@ describe("HeroSlideshow", () => {
     expect(previousButton.className).toContain("hidden");
     expect(previousButton.className).toContain("sm:flex");
     expect(previousButton.className).toContain("left-4");
-    expect(previousButton.textContent).toContain("‹");
+    expect(previousButton.querySelector("svg")).toBeTruthy();
 
     expect(nextButton.className).toContain("hidden");
     expect(nextButton.className).toContain("sm:flex");
     expect(nextButton.className).toContain("right-4");
-    expect(nextButton.textContent).toContain("›");
+    expect(nextButton.querySelector("svg")).toBeTruthy();
   });
 });
