@@ -117,6 +117,16 @@ a {
   line-height: 1.35;
 }
 
+/* Chinese (lang=zh, served at /cn). The Latin fonts don't cover CJK, so use
+   Noto Sans SC for a consistent look across devices; Latin glyphs fall through
+   to Manrope/Gotham via the font stack. */
+:lang(zh) {
+  font-family: var(--font-chinese), var(--font-manrope), sans-serif;
+}
+:lang(zh) .font-display {
+  font-family: var(--font-chinese), var(--font-gotham), sans-serif;
+}
+
 .btn-primary,
 .btn-secondary {
   display: inline-flex;

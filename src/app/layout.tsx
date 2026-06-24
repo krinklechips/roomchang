@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Battambang } from "next/font/google";
+import { Battambang, Noto_Sans_SC } from "next/font/google";
 import { getLocale } from "next-intl/server";
 import { LOCALE_TO_LANG } from "@/i18n/routing";
 import { Analytics } from "@vercel/analytics/next";
@@ -11,6 +11,17 @@ const battambang = Battambang({
   subsets: ["khmer"],
   weight: ["400", "700"],
   variable: "--font-khmer",
+  display: "swap",
+  preload: false,
+});
+
+// Simplified-Chinese webfont (Noto Sans SC). Self-hosted by next/font; preload
+// disabled so it only downloads on Chinese (/cn) pages. Exposed as
+// --font-chinese and applied to :lang(zh) in globals.css.
+const notoSansSC = Noto_Sans_SC({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-chinese",
   display: "swap",
   preload: false,
 });
@@ -179,7 +190,7 @@ export default async function RootLayout({
   return (
     <html
       lang={LOCALE_TO_LANG[locale] ?? locale}
-      className={`h-full scroll-smooth antialiased ${battambang.variable}`}
+      className={`h-full scroll-smooth antialiased ${battambang.variable} ${notoSansSC.variable}`}
     >
       <body className="min-h-full flex flex-col">
         <script
