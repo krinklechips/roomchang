@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 
 const shortcuts = [
@@ -31,7 +32,7 @@ const shortcuts = [
 const featuredCards = [
   {
     id: "international",
-    imageSrc: "/hero/hero-customer-service.jpg?v=2",
+    imageSrc: "/hero/hero-customer-service.jpg",
     href: "/international",
     bgSize: "cover",
     bgPosition: "center",
@@ -91,10 +92,12 @@ export async function HomeHighlights() {
             className="overflow-hidden rounded-3xl border border-[color:var(--border-strong)] bg-white shadow-[0_20px_60px_rgba(57,28,45,0.08)]"
           >
             <div className="relative h-60 bg-[color:var(--brand-soft)] overflow-hidden">
-              <img
+              <Image
                 src={card.imageSrc}
                 alt={t(`card.${card.id}.alt`)}
-                className="absolute inset-0 h-full w-full"
+                fill
+                sizes="(min-width: 1024px) 400px, 100vw"
+                className="absolute inset-0"
                 style={{
                   objectFit: card.bgSize as "cover" | "contain",
                   objectPosition: card.bgPosition,

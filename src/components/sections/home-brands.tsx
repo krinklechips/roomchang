@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { supabaseServer } from "@/lib/supabase-server";
 
 export async function HomeBrands() {
@@ -23,13 +24,16 @@ export async function HomeBrands() {
             key={`${brand.slug}-${i}`}
             className="flex w-44 shrink-0 select-none items-center justify-center opacity-40 grayscale transition hover:opacity-60"
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={brand.logo_src}
-              alt={brand.name}
-              className="h-10 w-auto max-w-[160px] object-contain"
-              draggable={false}
-            />
+            <div className="relative h-10 w-[160px]">
+              <Image
+                src={brand.logo_src}
+                alt={brand.name}
+                fill
+                sizes="160px"
+                className="object-contain"
+                draggable={false}
+              />
+            </div>
           </div>
         ))}
       </div>
