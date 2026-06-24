@@ -1848,5 +1848,12 @@
       "heading": "地址",
       "body": "Roomchang Dental Hospital 位于柬埔寨金边184街4号。该医院自1996年以来一直为本地及国际牙科患者提供服务。"
     }
+  },
+  "consent": {
+    "title": "Cookie 与隐私",
+    "message": "我们使用 Cookie 来了解网站的使用情况并改善您的体验。您可以接受或拒绝分析类 Cookie——必要的 Cookie 将始终保持启用。",
+    "accept": "接受",
+    "decline": "拒绝",
+    "learnMore": "Cookie 政策"
   }
 }

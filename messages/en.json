@@ -1848,5 +1848,12 @@
       "heading": "Location",
       "body": "Roomchang Dental Hospital is located at No. 4, Street 184, Phnom Penh, Cambodia. The hospital has served local and international dental patients since 1996."
     }
+  },
+  "consent": {
+    "title": "Cookies & privacy",
+    "message": "We use cookies to understand how our site is used and to improve your experience. Accept analytics cookies, or decline — essential cookies always stay on.",
+    "accept": "Accept",
+    "decline": "Decline",
+    "learnMore": "Cookie Policy"
   }
 }
