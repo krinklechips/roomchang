@@ -9,10 +9,11 @@
  * exist, or the page is not published.
  */
 
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { getCmsPage } from "@/lib/cms";
+import { resolveLegacyPath } from "@/lib/legacy-redirects";
 import { CmsPageContent } from "@/components/pages/CmsPageContent";
 
 interface Props {
@@ -52,7 +53,13 @@ export default async function CmsPage({ params }: Props) {
     notFound();
   }
 
-  if (!page) notFound();
+  if (!page) {
+    // Not a CMS page — maybe an old WordPress postname URL. 301/308 it to the
+    // new article if the slug matches; otherwise 404.
+    const target = await resolveLegacyPath([slug]);
+    if (target) permanentRedirect(`/${locale}${target}`);
+    notFound();
+  }
 
   return <CmsPageContent page={page} />;
 }
