@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import { Battambang, Noto_Sans_SC } from "next/font/google";
 import { getLocale } from "next-intl/server";
 import { LOCALE_TO_LANG } from "@/i18n/routing";
@@ -29,6 +30,9 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { CmsPreviewInteractionGuard } from "@/components/site/cms-preview-interaction-guard";
 import { BRANCHES } from "@/lib/branches";
 import "./globals.css";
+
+// Google Tag Manager container ID (public — appears in page source).
+const GTM_ID = "GTM-MV7MVXLR";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -193,6 +197,20 @@ export default async function RootLayout({
       className={`h-full scroll-smooth antialiased ${battambang.variable} ${notoSansSC.variable}`}
     >
       <body className="min-h-full flex flex-col">
+        {/* Google Tag Manager (noscript) — must be first inside <body> */}
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+            title="Google Tag Manager"
+          />
+        </noscript>
+        {/* Google Tag Manager */}
+        <Script id="gtm-base" strategy="afterInteractive">
+          {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${GTM_ID}');`}
+        </Script>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
