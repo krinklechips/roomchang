@@ -34,6 +34,10 @@ import "./globals.css";
 // Google Tag Manager container ID (public — appears in page source).
 const GTM_ID = "GTM-MV7MVXLR";
 
+// Google Ads tag (conversion tracking + remarketing). Shares the dataLayer /
+// gtag + Consent Mode set up below, so ad_storage consent gates it.
+const GOOGLE_ADS_ID = "AW-829072157";
+
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -217,6 +221,18 @@ export default async function RootLayout({
         {/* Google Tag Manager */}
         <Script id="gtm-base" strategy="afterInteractive">
           {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${GTM_ID}');`}
+        </Script>
+        {/* Google Ads (gtag) — for the Australia campaign's conversion tracking
+            + remarketing. gtag()/dataLayer + consent defaults already exist from
+            the consent-default script above; here we just load the tag library
+            and configure the Ads account. */}
+        <Script
+          id="google-ads-loader"
+          src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ADS_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-ads-config" strategy="afterInteractive">
+          {`gtag('js', new Date());gtag('config', '${GOOGLE_ADS_ID}');`}
         </Script>
         <script
           type="application/ld+json"
