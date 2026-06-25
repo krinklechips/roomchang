@@ -3,12 +3,15 @@
 import { useEffect, useState, useCallback } from "react";
 import { Check, ExternalLink, ArrowUp, ArrowDown, X } from "lucide-react";
 
-type PriceItem = { ada: string; name: string; price: string; aus: string };
+// `id` is present on rows loaded from the DB and absent on freshly-added rows
+// (the API assigns a UUID on save). `note` is the per-item caption shown under
+// the price on the public page.
+type PriceItem = { id?: string; ada: string; name: string; price: string; aus: string; note: string };
 type Category = { id: string; title: string; icon: string; items: PriceItem[] };
-type PricingData = { categories: Category[]; comparisons: unknown[]; lastUpdated: string };
+type PricingData = { categories: Category[]; lastUpdated?: string | null };
 
 function newItem(): PriceItem {
-  return { ada: "", name: "", price: "", aus: "" };
+  return { ada: "", name: "", price: "", aus: "", note: "" };
 }
 
 // ── Immutable category/item helpers (module-level, to keep the handlers flat) ──
@@ -65,10 +68,15 @@ export default function AdminPricingPage() {
     if (res.ok) {
       const json = await res.json();
       setData((d) => d ? { ...d, lastUpdated: json.lastUpdated } : d);
+      setError("");
       setSaved(true);
       setTimeout(() => setSaved(false), 3000);
+      // Pull the canonical rows back so newly-added items pick up their DB ids
+      // (otherwise a second save would insert duplicates instead of updating).
+      load();
     } else {
-      setError("Save failed. In production, connect to a database.");
+      const json = await res.json().catch(() => null);
+      setError(json?.error ?? "Save failed.");
     }
   }
 
@@ -166,6 +174,7 @@ export default function AdminPricingPage() {
                   <th className="w-8 px-3 py-3 text-center">#</th>
                   <th className="px-4 py-3 text-left w-20">ADA Code</th>
                   <th className="px-4 py-3 text-left">Description</th>
+                  <th className="px-4 py-3 text-left">Note</th>
                   <th className="px-4 py-3 text-left w-44">Roomchang Price (USD)</th>
                   <th className="px-4 py-3 text-left w-44">Avg. Price in Australia</th>
                   <th className="px-4 py-3 text-center w-28">Actions</th>
@@ -189,6 +198,14 @@ export default function AdminPricingPage() {
                         onChange={(e) => updateItem(activeTab, ri, "name", e.target.value)}
                         className="w-full rounded border border-transparent bg-transparent px-1 py-0.5 text-gray-800 focus:border-pink-300 focus:bg-white focus:outline-none focus:ring-1 focus:ring-pink-200"
                         placeholder="Treatment name…"
+                      />
+                    </td>
+                    <td className="px-4 py-2">
+                      <input
+                        value={item.note}
+                        onChange={(e) => updateItem(activeTab, ri, "note", e.target.value)}
+                        className="w-full rounded border border-transparent bg-transparent px-1 py-0.5 text-xs text-gray-500 focus:border-pink-300 focus:bg-white focus:outline-none focus:ring-1 focus:ring-pink-200"
+                        placeholder="e.g. per arch · optional"
                       />
                     </td>
                     <td className="px-4 py-2">
@@ -238,7 +255,7 @@ export default function AdminPricingPage() {
                 ))}
                 {cat.items.length === 0 && (
                   <tr>
-                    <td colSpan={6} className="py-12 text-center text-sm text-gray-400">
+                    <td colSpan={7} className="py-12 text-center text-sm text-gray-400">
                       No items yet — click &ldquo;Add Row&rdquo; to add pricing.
                     </td>
                   </tr>
@@ -264,7 +281,7 @@ export default function AdminPricingPage() {
         {/* Note */}
         <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-5 py-3">
           <p className="text-xs text-amber-700">
-            <strong>Note:</strong> &quot;Save Changes&quot; writes directly to the data file in development. In production on Vercel, connect this to the Prisma database to persist changes permanently.
+            <strong>Note:</strong> &quot;Save Changes&quot; writes directly to the live pricing database (Supabase). Updates appear on the public pricing page within about a minute.
           </p>
         </div>
       </div>
