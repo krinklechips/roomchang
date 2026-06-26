@@ -1851,9 +1851,9 @@
   },
   "consent": {
     "title": "Cookies & privacy",
-    "message": "We use cookies to understand how our site is used and to improve your experience. Accept analytics cookies, or decline — essential cookies always stay on.",
-    "accept": "Accept",
-    "decline": "Decline",
+    "message": "We use cookies to understand how our site is used and to improve your experience. Essential cookies always stay on.",
+    "accept": "Accept All",
+    "decline": "Only Necessary",
     "learnMore": "Cookie Policy"
   }
 }

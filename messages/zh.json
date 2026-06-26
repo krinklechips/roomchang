@@ -1851,9 +1851,9 @@
   },
   "consent": {
     "title": "Cookie 与隐私",
-    "message": "我们使用 Cookie 来了解网站的使用情况并改善您的体验。您可以接受或拒绝分析类 Cookie——必要的 Cookie 将始终保持启用。",
-    "accept": "接受",
-    "decline": "拒绝",
+    "message": "我们使用 Cookie 来了解网站的使用情况并改善您的体验。必要的 Cookie 始终启用。",
+    "accept": "全部接受",
+    "decline": "仅必要",
     "learnMore": "Cookie 政策"
   }
 }
