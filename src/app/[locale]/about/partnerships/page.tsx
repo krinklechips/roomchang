@@ -190,13 +190,17 @@ export default async function PartnershipsPage({
     console.error("[PartnershipsPage] partners fetch failed:", error.message);
   }
 
+  // DB partner-category names match the fallback titles; translate via their key.
+  const categoryKeyByTitle = new Map(PARTNER_CATEGORIES.map((c) => [c.title, c.id]));
   const categoryMap = new Map<string, PartnerCategory & { sortOrder: number }>();
   ((data as PartnerRow[] | null) ?? []).forEach((row) => {
     const category = row.partner_categories;
     if (!category) return;
     const existing = categoryMap.get(category.name) ?? {
       id: category.name,
-      title: category.name,
+      title: categoryKeyByTitle.has(category.name)
+        ? t(`categories.${categoryKeyByTitle.get(category.name)}`)
+        : category.name,
       partners: [],
       sortOrder: category.sort_order ?? 0,
     };

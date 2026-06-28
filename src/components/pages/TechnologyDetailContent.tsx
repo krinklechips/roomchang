@@ -254,6 +254,15 @@ const CATEGORY_COLORS: Record<string, string> = {
   "Diagnostics":       "bg-[linear-gradient(135deg,#6cab18,#5a9514)]",
 };
 
+/** English category → translation key (under the `technology.category` namespace). */
+const CATEGORY_KEYS: Record<string, string> = {
+  "Orthodontics": "orthodontics",
+  "Lab & Restoration": "labRestoration",
+  "Cosmetic": "cosmetic",
+  "Infection Control": "infectionControl",
+  "Diagnostics": "diagnostics",
+};
+
 // ─── Shared content component ────────────────────────────────────────────────
 
 export type TechnologyDetailTranslations = {
@@ -271,6 +280,7 @@ export type TechnologyDetailTranslations = {
 export async function TechnologyDetailContent({ tech, translations: i18n }: { tech: TechnologyItem; translations?: TechnologyDetailTranslations }) {
   const sections = tech.content?.sections ?? [];
   const t = await getTranslations("technologyDetail");
+  const tTech = await getTranslations("technology");
 
   return (
     <SiteShell>
@@ -286,7 +296,7 @@ export async function TechnologyDetailContent({ tech, translations: i18n }: { te
             </Link>
             <div className="mt-4">
               <span className={`inline-block rounded-full px-3 py-1 text-[0.68rem] font-bold uppercase tracking-[0.22em] text-white ${CATEGORY_COLORS[tech.category] ?? "bg-[color:var(--brand)]"}`}>
-                {tech.category}
+                {CATEGORY_KEYS[tech.category] ? tTech(`category.${CATEGORY_KEYS[tech.category]}`) : tech.category}
               </span>
             </div>
             <h1 className="mt-3 font-display text-5xl leading-none text-[color:var(--text-main)] sm:text-6xl">

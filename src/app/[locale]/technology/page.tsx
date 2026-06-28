@@ -24,6 +24,15 @@ const CATEGORY_COLORS: Record<string, string> = {
   "Diagnostics":       "bg-[color:var(--brand)]",
 };
 
+/** English category → translation key (under the `technology.category` namespace). */
+const CATEGORY_KEYS: Record<string, string> = {
+  "Orthodontics": "orthodontics",
+  "Lab & Restoration": "labRestoration",
+  "Cosmetic": "cosmetic",
+  "Infection Control": "infectionControl",
+  "Diagnostics": "diagnostics",
+};
+
 export default async function TechnologyPage({
   params,
 }: {
@@ -105,7 +114,7 @@ export default async function TechnologyPage({
                   <span
                     className={`inline-block rounded-full px-3 py-1 text-[0.68rem] font-bold uppercase tracking-[0.22em] text-white ${CATEGORY_COLORS[tech.category] ?? "bg-[color:var(--brand)]"}`}
                   >
-                    {tech.category}
+                    {CATEGORY_KEYS[tech.category] ? t(`category.${CATEGORY_KEYS[tech.category]}`) : tech.category}
                   </span>
                 </div>
                 <h2 className="font-display text-3xl leading-tight text-[color:var(--text-main)] sm:text-4xl">

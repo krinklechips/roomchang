@@ -78,7 +78,7 @@ export default async function CareersPage({
                   <Briefcase size={18} strokeWidth={2} aria-hidden="true" />
                 </span>
                 <span className="rounded-full bg-[color:var(--surface)] px-2.5 py-0.5 text-[0.65rem] font-bold uppercase tracking-[0.18em] text-[color:var(--text-soft)]">
-                  {pos.category}
+                  {t(`category.${pos.category.toLowerCase()}`)}
                 </span>
               </div>
 
