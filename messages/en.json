@@ -1223,6 +1223,9 @@
       "title": "Hospital-Grade Standards",
       "body": "Roomchang follows strict sterilisation, infection control, and clinical protocols — the same standards expected of leading international dental hospitals.",
       "cta": "Book a Tour"
+    },
+    "meta": {
+      "description": "Explore Roomchang's 10-storey hospital with 46 dental chairs, 4 operation rooms, in-house CAD/CAM lab, and hospital-grade sterilisation."
     }
   },
   "partnerships": {
@@ -1360,6 +1363,10 @@
       "heading": "Ready to Apply?",
       "description": "Send your resume with related references and a cover letter to our HR team.",
       "button": "Contact Us"
+    },
+    "category": {
+      "clinical": "Clinical",
+      "support": "Support"
     }
   },
   "careersDetail": {
@@ -1855,5 +1862,19 @@
     "accept": "Accept All",
     "decline": "Only Necessary",
     "learnMore": "Cookie Policy"
+  },
+  "branches": {
+    "badges": {
+      "mainHospital": "Main Hospital",
+      "branch": "Branch",
+      "mallBranch": "Mall Branch"
+    },
+    "descriptions": {
+      "sisowathHighSchool": "Our flagship 10-storey hospital with 46 dental chairs, 4 operation rooms, an in-house CAD/CAM digital laboratory, and the full specialist team.",
+      "roseCondo": "Serving the Bassac and BKK residential communities, this branch offers specialist consultations and treatments in a quiet, accessible setting.",
+      "aeonMall": "Conveniently located on the 1st floor of AEON Mall Sen Sok — offering the full range of Roomchang dental services, 7 days a week.",
+      "phEuroPark": "Located within the Euro Park development in Borey Peng Huoth — serving residents on the eastern side of Phnom Penh along National Road 1.",
+      "funMall": "Inside Fun Mall on TK Avenue in Toul Kork — our most recently opened branch, serving one of Phnom Penh's fastest-growing residential and commercial areas."
+    }
   }
 }

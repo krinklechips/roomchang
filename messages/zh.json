@@ -1223,6 +1223,9 @@
       "title": "医院级标准",
       "body": "Roomchang 严格遵循消毒、感染控制及临床规程——与国际一流牙科医院所要求的标准一致。",
       "cta": "预约参观"
+    },
+    "meta": {
+      "description": "探索Roomchang的10层医院，拥有46个牙科椅、4间手术室、内部CAD/CAM实验室和医院级消毒。"
     }
   },
   "partnerships": {
@@ -1360,6 +1363,10 @@
       "heading": "准备好应聘了吗？",
       "description": "请将您的个人简历连同相关推荐资料及求职信发送给我们的人力资源团队。",
       "button": "联系我们"
+    },
+    "category": {
+      "clinical": "临床岗位",
+      "support": "支持岗位"
     }
   },
   "careersDetail": {
@@ -1855,5 +1862,19 @@
     "accept": "全部接受",
     "decline": "仅必要",
     "learnMore": "Cookie 政策"
+  },
+  "branches": {
+    "badges": {
+      "mainHospital": "主医院",
+      "branch": "分院",
+      "mallBranch": "商场分院"
+    },
+    "descriptions": {
+      "sisowathHighSchool": "我们的旗舰10层牙科医院，拥有46把牙科椅、4间手术室、内部CAD/CAM数字实验室和完整的专家团队。",
+      "roseCondo": "服务于Bassac和BKK住宅社区，该分院在安静、易抵达的环境中提供专业咨询和治疗。",
+      "aeonMall": "便利地位于AEON Mall Sen Sok一楼——提供Roomchang全面牙科服务，每周7天开放。",
+      "phEuroPark": "位于Borey Peng Huoth的Euro Park开发项目内——服务于国家1号公路沿线金边东部的居民。",
+      "funMall": "位于Toul Kork的TK Avenue上的Fun Mall内——我们最新开设的分院，服务于金边发展最快的住宅和商业区之一。"
+    }
   }
 }
