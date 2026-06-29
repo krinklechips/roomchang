@@ -118,15 +118,26 @@ async function collectDbRows() {
     }
     const sectionLabel = SECTION[entityType] ?? entityType;
 
+    const str = (v) => (typeof v === "string" ? v : "");
+    const isStrArray = (v) => Array.isArray(v) && v.length > 0 && v.every((x) => typeof x === "string");
     for (const [id, row] of enById) {
       for (const field of translatableFields) {
-        const en = row[field];
-        if (typeof en !== "string" || !en.trim()) continue; // scalar text only
+        const enVal = row[field];
         const t = trBy.get(`${id}|${field}`) || {};
-        rows.push({
-          tab, section: sectionLabel, store: "db", ref: `${entityType}:${id}`, field,
-          en, km: typeof t.km === "string" ? t.km : "", zh: typeof t.zh === "string" ? t.zh : "",
-        });
+        const base = { tab, section: sectionLabel, ref: `${entityType}:${id}`, field };
+        if (typeof enVal === "string" && enVal.trim()) {
+          // scalar text
+          rows.push({ ...base, store: "db", en: enVal, km: str(t.km), zh: str(t.zh) });
+        } else if (isStrArray(enVal)) {
+          // list of strings → one row, items on separate lines (round-trips as an array)
+          rows.push({
+            ...base, store: "db-array",
+            en: enVal.join("\n"),
+            km: isStrArray(t.km) ? t.km.join("\n") : "",
+            zh: isStrArray(t.zh) ? t.zh.join("\n") : "",
+          });
+        }
+        // objects / arrays-of-blocks (rich long-form) are intentionally skipped
       }
     }
   }
@@ -171,6 +182,8 @@ async function run() {
     ["", "• Don't touch the English column. The 'Section' column just shows where on"],
     ["", "  the page the text appears."],
     ["", "• Keep {placeholders} like {phone} {count} exactly as-is."],
+    ["", "• Some cells are LISTS (e.g. service features, doctor specialties): one"],
+    ["", "  item per line — keep the same number of lines as the English."],
     ["", "• Brand names (Roomchang, Invisalign, WhatsApp…) stay in English on purpose."],
     ["", "• When done: File → Download → Microsoft Excel (.xlsx) and send it back."],
     ["", ""],
@@ -205,10 +218,11 @@ async function run() {
   fs.mkdirSync(outDir, { recursive: true });
   const outPath = path.join(outDir, "roomchang-translations.xlsx");
   await wb.xlsx.writeFile(outPath);
-  const dbN = all.filter((r) => r.store === "db").length;
+  const dbN = all.filter((r) => r.store === "db" || r.store === "db-array").length;
+  const listN = all.filter((r) => r.store === "db-array").length;
   const filled = all.filter((r) => r.km && r.zh).length;
   console.log(`Wrote ${all.length} rows across ${tabs.length} tabs → ${path.relative(ROOT, outPath)}`);
-  console.log(`  UI: ${all.length - dbN} · DB content: ${dbN} · already-translated (km+zh): ${filled}`);
+  console.log(`  UI: ${all.length - dbN} · DB content: ${dbN} (incl. ${listN} list fields) · already-translated (km+zh): ${filled}`);
 }
 
 run().catch((e) => { console.error(e); process.exit(1); });

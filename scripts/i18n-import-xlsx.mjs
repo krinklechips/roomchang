@@ -77,7 +77,10 @@ async function run() {
         .range(from, from + PAGE - 1);
       if (error) { console.warn("⚠ could not load current DB translations:", error.message); break; }
       for (const r of data) {
-        if (typeof r.value === "string") dbCurrent.set(`${r.entity_type}:${r.entity_id}|${r.field}|${r.locale}`, r.value);
+        const k = `${r.entity_type}:${r.entity_id}|${r.field}|${r.locale}`;
+        if (typeof r.value === "string") dbCurrent.set(k, r.value);
+        // list fields are stored as JSON arrays; compare against the newline-joined cell
+        else if (Array.isArray(r.value) && r.value.every((x) => typeof x === "string")) dbCurrent.set(k, r.value.join("\n"));
       }
       if (data.length < PAGE) break;
     }
@@ -117,12 +120,16 @@ async function run() {
         if (store === "ui") {
           setDeep(locale === "km" ? kmJson : zhJson, ref, newVal);
           uiChanged++;
-        } else if (store === "db") {
+        } else if (store === "db" || store === "db-array") {
           const ci = ref.indexOf(":");
           const entity_type = ref.slice(0, ci);
           const entity_id = ref.slice(ci + 1);
           if (norm(dbCurrent.get(`${entity_type}:${entity_id}|${field}|${locale}`)) === newVal) continue; // no-op
-          dbUpserts.push({ entity_type, entity_id, locale, field, value: newVal });
+          // db-array: each line is one list item → store as a JSON array
+          const value = store === "db-array"
+            ? newVal.split("\n").map((s) => s.trim()).filter(Boolean)
+            : newVal;
+          dbUpserts.push({ entity_type, entity_id, locale, field, value });
           dbChanged++;
         }
       }
