@@ -77,6 +77,16 @@ const SECTION = {
   international_step: "Steps", international_popular_treatment: "Popular treatments",
 };
 
+// Translatable fields that have NO existing translation yet, so they don't show
+// up via the "fields that have any translation" heuristic. These are rendered
+// raw from the DB and pass through the generic content_translations overlay, so
+// surfacing them as blank rows lets the reviewer fill Khmer/Chinese.
+const EXTRA_TRANSLATABLE = {
+  doctor: ["note", "languages"],
+  pricing_item: ["note"],
+  branch: ["hours", "address", "addressLine2"],
+};
+
 // DB entity type → source table (id column is "id").
 const DB_TABLE = {
   service: "services", technology: "technology", doctor: "doctors", faq: "faq_items",
@@ -108,7 +118,7 @@ async function collectDbRows() {
 
     // Translatable fields = exactly the fields that have ANY translation for this
     // type. That cleanly excludes names, codes, credentials, prices, slugs, urls.
-    const translatableFields = new Set();
+    const translatableFields = new Set(EXTRA_TRANSLATABLE[entityType] ?? []);
     const trBy = new Map(); // `${id}|${field}` -> {km, zh}
     for (const t of tr ?? []) {
       translatableFields.add(t.field);
