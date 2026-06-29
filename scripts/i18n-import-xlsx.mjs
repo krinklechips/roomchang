@@ -91,12 +91,13 @@ async function run() {
     if (ws.name.startsWith("➀")) return; // README tab
     ws.eachRow((row, n) => {
       if (n === 1) return; // header
+      // Columns: 1 store · 2 ref · 3 field · 4 Section · 5 English · 6 Khmer · 7 Chinese
       const store = cellText(row.getCell(1)).trim();
       const ref = cellText(row.getCell(2)).trim();
       const field = cellText(row.getCell(3)).trim();
-      const en = cellText(row.getCell(4));
-      const editKm = cellText(row.getCell(5));
-      const editZh = cellText(row.getCell(6));
+      const en = cellText(row.getCell(5));
+      const editKm = cellText(row.getCell(6));
+      const editZh = cellText(row.getCell(7));
       if (!store || !ref) return;
 
       for (const [locale, edited] of [["km", editKm], ["zh", editZh]]) {
