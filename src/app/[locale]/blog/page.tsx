@@ -4,11 +4,18 @@ import { SiteShell } from "@/components/site/site-shell";
 import { ArrowRight, HelpCircle, Mic, BookOpen } from "lucide-react";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Education Blog | Roomchang Dental Hospital",
-  description:
-    "Dental health education from Roomchang — FAQs, dentist talks, and published research by our specialist team.",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "blogIndex" });
+  return {
+    title: t("meta.title"),
+    description: t("meta.description"),
+  };
+}
 
 const BLOG_SECTIONS = [
   {

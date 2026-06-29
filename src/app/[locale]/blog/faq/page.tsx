@@ -7,11 +7,18 @@ import type { Metadata } from "next";
 
 export const revalidate = 60;
 
-export const metadata: Metadata = {
-  title: "FAQ | Roomchang Dental Hospital",
-  description:
-    "Frequently asked questions about dental treatments, costs, and visiting Roomchang Dental Hospital in Phnom Penh.",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "faqPage" });
+  return {
+    title: t("meta.title"),
+    description: t("meta.description"),
+  };
+}
 
 export default async function FaqPage({
   params,
@@ -43,7 +50,7 @@ export default async function FaqPage({
 
   // Group by category
   const grouped = faqs.reduce<Record<string, typeof faqs>>((acc, faq) => {
-    const cat = faq.category ?? "General";
+    const cat = faq.category ?? t("defaultCategory");
     if (!acc[cat]) acc[cat] = [];
     acc[cat].push(faq);
     return acc;

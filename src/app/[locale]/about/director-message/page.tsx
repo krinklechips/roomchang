@@ -7,11 +7,18 @@ import type { Metadata } from "next";
 
 export const revalidate = 60;
 
-export const metadata: Metadata = {
-  title: "Message from Our Director | Roomchang Dental Hospital",
-  description:
-    "A message from Dr. Tith Hong Yoeu, DDS, MSc. — Founder & Director of Roomchang Dental Hospital, on the hospital's commitment to quality dentistry in Cambodia.",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "directorMessage" });
+  return {
+    title: t("meta.title"),
+    description: t("meta.description"),
+  };
+}
 
 export default async function DirectorMessagePage({
   params,

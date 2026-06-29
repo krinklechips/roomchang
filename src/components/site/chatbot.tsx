@@ -123,9 +123,7 @@ function renderMarkdown(
                   {onItemClick ? (
                     <button
                       type="button"
-                      onClick={() =>
-                        onItemClick(`Tell me more about ${plainText}`)
-                      }
+                      onClick={() => onItemClick(plainText)}
                       className="text-left underline decoration-[color:var(--brand-light)] decoration-1 underline-offset-2 transition hover:text-[color:var(--brand)] hover:decoration-2"
                     >
                       {renderInline(itemText)}
@@ -1099,9 +1097,9 @@ export function Chatbot() {
   }
 
   // Clickable list items in assistant messages trigger follow-up questions
-  function handleListItemClick(text: string) {
+  function handleListItemClick(topic: string) {
     if (isStreaming) return;
-    sendMessage(text);
+    sendMessage(t("tellMeMore", { topic }));
   }
 
   async function handleSend(e: React.FormEvent) {

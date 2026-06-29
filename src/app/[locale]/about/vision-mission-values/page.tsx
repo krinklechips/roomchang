@@ -6,11 +6,18 @@ import type { Metadata } from "next";
 
 export const revalidate = 60;
 
-export const metadata: Metadata = {
-  title: "Vision, Mission & Values | Roomchang Dental Hospital",
-  description:
-    "Roomchang's vision: enriching lives with quality dentistry. Five core values guide everything we do — professionalism, honesty, teamwork, innovation, and excellence.",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "visionMission" });
+  return {
+    title: t("meta.title"),
+    description: t("meta.description"),
+  };
+}
 
 const VALUES: { id: string; Icon: LucideIcon }[] = [
   { id: "professionalism", Icon: GraduationCap },

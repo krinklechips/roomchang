@@ -5,11 +5,18 @@ import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Publications & Research | Roomchang Dental Hospital",
-  description:
-    "Peer-reviewed research papers and clinical studies published by Roomchang's specialist dentists, advancing evidence-based dental care.",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "publications" });
+  return {
+    title: t("meta.title"),
+    description: t("meta.description"),
+  };
+}
 
 type Publication = {
   id: string;

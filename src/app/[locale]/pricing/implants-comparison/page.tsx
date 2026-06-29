@@ -7,11 +7,18 @@ import { supabaseServer } from "@/lib/supabase-server";
 
 export const revalidate = 60;
 
-export const metadata: Metadata = {
-  title: "Dental Implants Price Comparison | Roomchang Dental Hospital",
-  description:
-    "Why Roomchang's dental implants cost a fraction of Australian prices without compromising material quality — a breakdown of implant costs and the Myplant Two® system.",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "implantsComparison" });
+  return {
+    title: t("meta.title"),
+    description: t("meta.description"),
+  };
+}
 
 const COST_DRIVERS = [
   { id: "materials", icon: Package },

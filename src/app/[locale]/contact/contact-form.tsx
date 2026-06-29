@@ -229,7 +229,7 @@ export function ContactForm({ branches, doctors }: { branches: Branch[]; doctors
                         type="text"
                         inputMode="tel"
                         autoComplete="off"
-                        aria-label="Country calling code"
+                        aria-label={t("aria.countryCode")}
                         value={codeQuery}
                         onFocus={() => setCodeOpen(true)}
                         onChange={(e) => {

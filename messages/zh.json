@@ -535,6 +535,9 @@
       "whatsapp": "WhatsApp",
       "telegram": "Telegram",
       "wechat": "微信"
+    },
+    "aria": {
+      "countryCode": "国家区号"
     }
   },
   "international": {
@@ -544,7 +547,8 @@
     },
     "stat": {
       "savings": "节省费用",
-      "experience": "临床经验"
+      "experience": "临床经验",
+      "experienceValue": "30 年"
     },
     "hero": {
       "eyebrow": "牙科旅游",
@@ -592,7 +596,8 @@
       "inhouseLab": "院内实验室",
       "cbctImaging": "CBCT影像",
       "clearAligners": "Clear Aligners® 隐形矫治",
-      "sterilisation": "消毒灭菌"
+      "sterilisation": "消毒灭菌",
+      "clearAlignersValue": "院内自制"
     },
     "hero": {
       "eyebrow": "精准与创新",
@@ -616,7 +621,8 @@
     },
     "stat": {
       "vsAusUk": "对比澳/英",
-      "hiddenFees": "隐藏费用"
+      "hiddenFees": "隐藏费用",
+      "hiddenFeesValue": "无"
     },
     "hero": {
       "eyebrow": "透明定价",
@@ -950,7 +956,8 @@
       "october": "十月",
       "november": "十一月",
       "december": "十二月"
-    }
+    },
+    "tellMeMore": "请告诉我更多关于 {topic} 的信息"
   },
   "technologyDetail": {
     "backLink": "医疗技术",
@@ -1091,6 +1098,10 @@
       "title": "认识完整团队",
       "description": "了解 Tith 医生所汇聚的专科牙医团队。",
       "button": "我们的医生"
+    },
+    "meta": {
+      "title": "院长寄语 | Roomchang Dental Hospital",
+      "description": "来自 Roomchang Dental Hospital 创始人兼院长 Dr. Tith Hong Yoeu, DDS, MSc. 的寄语，讲述医院致力于在柬埔寨提供优质牙科服务的承诺。"
     }
   },
   "visionMission": {
@@ -1137,6 +1148,10 @@
       "heading": "见证我们价值观的实践",
       "description": "认识每天将这些原则付诸实践的专科团队。",
       "button": "认识我们的医生"
+    },
+    "meta": {
+      "title": "愿景、使命与价值观 | Roomchang Dental Hospital",
+      "description": "Roomchang 的愿景：以优质牙科服务丰盈生命。五大核心价值观指引我们的一切——专业、诚信、团队协作、创新与卓越。"
     }
   },
   "facilities": {
@@ -1225,7 +1240,8 @@
       "cta": "预约参观"
     },
     "meta": {
-      "description": "探索Roomchang的10层医院，拥有46个牙科椅、4间手术室、内部CAD/CAM实验室和医院级消毒。"
+      "description": "探索 Roomchang 的 10 层医院，配备 46 张牙科治疗椅、4 间手术室、院内 CAD/CAM 实验室以及医院级消毒系统。",
+      "title": "院内设施 | Roomchang Dental Hospital"
     }
   },
   "partnerships": {
@@ -1250,6 +1266,10 @@
       "title": "成为合作伙伴",
       "description": "让您的员工或会员享有柬埔寨领先牙科医院的服务。联系我们，洽谈合作方案。",
       "button": "咨询合作伙伴事宜"
+    },
+    "meta": {
+      "title": "企业合作 | Roomchang Dental Hospital",
+      "description": "Roomchang 与柬埔寨各地领先的银行、学校、保险公司、酒店及机构合作，为员工和会员提供牙科福利。"
     }
   },
   "testimonialsPage": {
@@ -1347,6 +1367,10 @@
       "title": "准备好开启您的旅程了吗？",
       "description": "加入成千上万信赖 Roomchang 世界级牙科护理的患者行列。获取免费咨询及个性化治疗方案。",
       "button": "预约免费咨询"
+    },
+    "meta": {
+      "title": "患者评价 | Roomchang Dental Hospital",
+      "description": "来自世界各地患者的真实故事——聆听他们在柬埔寨金边 Roomchang Dental Hospital 的就诊体验。"
     }
   },
   "careers": {
@@ -1367,6 +1391,10 @@
     "category": {
       "clinical": "临床岗位",
       "support": "支持岗位"
+    },
+    "meta": {
+      "title": "招聘机会 | Roomchang Dental Hospital",
+      "description": "加入柬埔寨领先的牙科集团。查看 Roomchang Dental Hospital 当前的招聘职位——临床研修、牙医、牙科助理及客户服务岗位。"
     }
   },
   "careersDetail": {
@@ -1415,7 +1443,11 @@
         "description": "由 Roomchang 医生发表的同行评审研究论文与临床研究，推动循证医疗的发展。"
       }
     },
-    "browse": "浏览"
+    "browse": "浏览",
+    "meta": {
+      "title": "科普博客 | Roomchang Dental Hospital",
+      "description": "Roomchang 的口腔健康科普——常见问题、牙医讲解，以及由我们专科团队发表的研究成果。"
+    }
   },
   "faqPage": {
     "backLink": "教育博客",
@@ -1433,6 +1465,11 @@
         "question": "拍摄 X 光后需要等待多久才能开始备孕？",
         "answer": "拍摄 X 光后无需等待即可开始备孕。牙科 X 光通常是安全的，即使在孕期接受紧急治疗时也是如此。不过，患者最好在备孕前先拍摄 X 光，以便检查是否存在任何牙齿问题。若发现问题，应在怀孕之前先完成治疗。"
       }
+    },
+    "defaultCategory": "常见问题",
+    "meta": {
+      "title": "常见问题 | Roomchang Dental Hospital",
+      "description": "关于牙科治疗、费用以及到访金边 Roomchang Dental Hospital 的常见问题解答。"
     }
   },
   "publications": {
@@ -1473,6 +1510,10 @@
       "lactoferrin-oscc-growth": {
         "title": "Molecular mechanism of inhibitory effects of bovine lactoferrin on the growth of oral squamous cell carcinoma"
       }
+    },
+    "meta": {
+      "title": "学术发表与研究 | Roomchang Dental Hospital",
+      "description": "由 Roomchang 专科牙医发表的同行评审论文与临床研究，推动循证口腔医疗的发展。"
     }
   },
   "dentistTalks": {
@@ -1599,6 +1640,10 @@
         "title": "阻生智齿，由 Dr. Dara Narith 讲解",
         "topic": "口腔外科"
       }
+    },
+    "meta": {
+      "title": "牙医讲堂 | Roomchang Dental Hospital",
+      "description": "观看 Roomchang 牙医通过简短而实用的视频，讲解常见口腔问题、治疗方案与现代技术。"
     }
   },
   "newsDetail": {
@@ -1663,6 +1708,10 @@
       "heading": "准备好规划您的种植牙了吗？",
       "body": "将您的 OPG、CT 扫描或近期照片发给我们。我们将在两个工作日内回复，提供完整的治疗方案和精确报价——免费且无任何义务。",
       "button": "申请免费报价"
+    },
+    "meta": {
+      "title": "种植牙价格对比 | Roomchang Dental Hospital",
+      "description": "为何 Roomchang 的种植牙价格仅为澳大利亚的一小部分，却毫不妥协材料品质——种植费用明细及 Myplant Two® 系统解析。"
     }
   },
   "blocks": {

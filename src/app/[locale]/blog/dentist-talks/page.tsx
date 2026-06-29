@@ -4,11 +4,18 @@ import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
-export const metadata: Metadata = {
-  title: "Dentist Talks | Roomchang Dental Hospital",
-  description:
-    "Watch Roomchang dentists explain common dental concerns, treatment options, and modern technologies in short, informative videos.",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "dentistTalks" });
+  return {
+    title: t("meta.title"),
+    description: t("meta.description"),
+  };
+}
 
 const YOUTUBE_PLAYLIST_ID = "PL2Dq5LzBKy4wi9hCaXPEoFhY1xY-LoN46";
 

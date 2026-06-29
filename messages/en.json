@@ -535,6 +535,9 @@
       "whatsapp": "WhatsApp",
       "telegram": "Telegram",
       "wechat": "WeChat"
+    },
+    "aria": {
+      "countryCode": "Country calling code"
     }
   },
   "international": {
@@ -544,7 +547,8 @@
     },
     "stat": {
       "savings": "Savings",
-      "experience": "Experience"
+      "experience": "Experience",
+      "experienceValue": "30 yrs"
     },
     "hero": {
       "eyebrow": "Dental Tourism",
@@ -592,7 +596,8 @@
       "inhouseLab": "In-house Lab",
       "cbctImaging": "CBCT Imaging",
       "clearAligners": "Clear Aligners®",
-      "sterilisation": "Sterilisation"
+      "sterilisation": "Sterilisation",
+      "clearAlignersValue": "In-House"
     },
     "hero": {
       "eyebrow": "Precision & Innovation",
@@ -616,7 +621,8 @@
     },
     "stat": {
       "vsAusUk": "vs. Aus/UK",
-      "hiddenFees": "Hidden Fees"
+      "hiddenFees": "Hidden Fees",
+      "hiddenFeesValue": "No"
     },
     "hero": {
       "eyebrow": "Transparent Pricing",
@@ -950,7 +956,8 @@
       "october": "October",
       "november": "November",
       "december": "December"
-    }
+    },
+    "tellMeMore": "Tell me more about {topic}"
   },
   "technologyDetail": {
     "backLink": "Technology",
@@ -1091,6 +1098,10 @@
       "title": "Meet the full team",
       "description": "Get to know the specialist dentists Dr. Tith has assembled.",
       "button": "Our Doctors"
+    },
+    "meta": {
+      "title": "Message from Our Director | Roomchang Dental Hospital",
+      "description": "A message from Dr. Tith Hong Yoeu, DDS, MSc. — Founder & Director of Roomchang Dental Hospital, on the hospital's commitment to quality dentistry in Cambodia."
     }
   },
   "visionMission": {
@@ -1137,6 +1148,10 @@
       "heading": "See our values in action",
       "description": "Meet the specialist team that brings these principles to life every day.",
       "button": "Meet Our Doctors"
+    },
+    "meta": {
+      "title": "Vision, Mission & Values | Roomchang Dental Hospital",
+      "description": "Roomchang's vision: enriching lives with quality dentistry. Five core values guide everything we do — professionalism, honesty, teamwork, innovation, and excellence."
     }
   },
   "facilities": {
@@ -1225,7 +1240,8 @@
       "cta": "Book a Tour"
     },
     "meta": {
-      "description": "Explore Roomchang's 10-storey hospital with 46 dental chairs, 4 operation rooms, in-house CAD/CAM lab, and hospital-grade sterilisation."
+      "description": "Explore Roomchang's 10-storey hospital with 46 dental chairs, 4 operation rooms, in-house CAD/CAM lab, and hospital-grade sterilisation.",
+      "title": "Our Facilities | Roomchang Dental Hospital"
     }
   },
   "partnerships": {
@@ -1250,6 +1266,10 @@
       "title": "Become a Partner",
       "description": "Offer your employees or members access to Cambodia's leading dental hospital. Contact us to discuss partnership options.",
       "button": "Enquire About Partnerships"
+    },
+    "meta": {
+      "title": "Corporate Partnerships | Roomchang Dental Hospital",
+      "description": "Roomchang partners with leading banks, schools, insurers, hotels, and organisations across Cambodia to provide dental benefits for employees and members."
     }
   },
   "testimonialsPage": {
@@ -1347,6 +1367,10 @@
       "title": "Ready to start your journey?",
       "description": "Join thousands of patients who have trusted Roomchang for world-class dental care. Get a free consultation and personalised treatment plan.",
       "button": "Book a Free Consultation"
+    },
+    "meta": {
+      "title": "Patient Testimonials | Roomchang Dental Hospital",
+      "description": "Real patient stories from around the world — hear what our patients say about their experience at Roomchang Dental Hospital in Phnom Penh, Cambodia."
     }
   },
   "careers": {
@@ -1367,6 +1391,10 @@
     "category": {
       "clinical": "Clinical",
       "support": "Support"
+    },
+    "meta": {
+      "title": "Employment Opportunities | Roomchang Dental Hospital",
+      "description": "Join Cambodia’s leading dental group. View current job openings at Roomchang Dental Hospital — clinical fellowships, dentists, dental assistants, and customer service positions."
     }
   },
   "careersDetail": {
@@ -1415,7 +1443,11 @@
         "description": "Peer-reviewed research papers and clinical studies published by Roomchang dentists, advancing evidence-based care."
       }
     },
-    "browse": "Browse"
+    "browse": "Browse",
+    "meta": {
+      "title": "Education Blog | Roomchang Dental Hospital",
+      "description": "Dental health education from Roomchang — FAQs, dentist talks, and published research by our specialist team."
+    }
   },
   "faqPage": {
     "backLink": "Education Blog",
@@ -1433,6 +1465,11 @@
         "question": "How long should you wait after getting an x-ray before starting preparations for pregnancy?",
         "answer": "It is not necessary to wait after an x-ray before preparing for pregnancy. Dental x-ray is usually safe, even for emergency treatments during pregnancy. However, it is better if the patient takes it to detect any dental problems before preparing for pregnancy. Should a problem be detected, the treatment should be done in advance of pregnancy."
       }
+    },
+    "defaultCategory": "General",
+    "meta": {
+      "title": "FAQ | Roomchang Dental Hospital",
+      "description": "Frequently asked questions about dental treatments, costs, and visiting Roomchang Dental Hospital in Phnom Penh."
     }
   },
   "publications": {
@@ -1473,6 +1510,10 @@
       "lactoferrin-oscc-growth": {
         "title": "Molecular mechanism of inhibitory effects of bovine lactoferrin on the growth of oral squamous cell carcinoma"
       }
+    },
+    "meta": {
+      "title": "Publications & Research | Roomchang Dental Hospital",
+      "description": "Peer-reviewed research papers and clinical studies published by Roomchang's specialist dentists, advancing evidence-based dental care."
     }
   },
   "dentistTalks": {
@@ -1599,6 +1640,10 @@
         "title": "Impacted Wisdom Teeth, Explained by Dr. Dara Narith",
         "topic": "Oral Surgery"
       }
+    },
+    "meta": {
+      "title": "Dentist Talks | Roomchang Dental Hospital",
+      "description": "Watch Roomchang dentists explain common dental concerns, treatment options, and modern technologies in short, informative videos."
     }
   },
   "newsDetail": {
@@ -1663,6 +1708,10 @@
       "heading": "Ready to plan your implants?",
       "body": "Send us your OPG, CT scan, or recent photos. We'll come back within two business days with a full treatment plan and an exact quote — no charge, no obligation.",
       "button": "Request a Free Quote"
+    },
+    "meta": {
+      "title": "Dental Implants Price Comparison | Roomchang Dental Hospital",
+      "description": "Why Roomchang's dental implants cost a fraction of Australian prices without compromising material quality — a breakdown of implant costs and the Myplant Two® system."
     }
   },
   "blocks": {

@@ -6,11 +6,18 @@ import { getTranslatedFieldsBatch, mergeTranslation } from "@/lib/i18n-content";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Employment Opportunities | Roomchang Dental Hospital",
-  description:
-    "Join Cambodia’s leading dental group. View current job openings at Roomchang Dental Hospital — clinical fellowships, dentists, dental assistants, and customer service positions.",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "careers" });
+  return {
+    title: t("meta.title"),
+    description: t("meta.description"),
+  };
+}
 
 export default async function CareersPage({
   params,

@@ -46,7 +46,7 @@ export default async function TechnologyPage({
   const HERO_TRUST = [
     { value: "CAD/CAM", label: t("stat.inhouseLab") },
     { value: "3D",      label: t("stat.cbctImaging") },
-    { value: "In-House", label: t("stat.clearAligners") },
+    { value: t("stat.clearAlignersValue"), label: t("stat.clearAligners") },
   ];
 
   return (

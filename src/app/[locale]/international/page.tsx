@@ -75,7 +75,7 @@ export default async function InternationalPage({
 
   const HERO_TRUST = [
     { value: "35–60%", label: t("stat.savings") },
-    { value: "30 yrs", label: t("stat.experience") },
+    { value: t("stat.experienceValue"), label: t("stat.experience") },
   ];
 
   return (

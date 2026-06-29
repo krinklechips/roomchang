@@ -7,11 +7,18 @@ import type { Metadata } from "next";
 
 export const revalidate = 60;
 
-export const metadata: Metadata = {
-  title: "Corporate Partnerships | Roomchang Dental Hospital",
-  description:
-    "Roomchang partners with leading banks, schools, insurers, hotels, and organisations across Cambodia to provide dental benefits for employees and members.",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "partnerships" });
+  return {
+    title: t("meta.title"),
+    description: t("meta.description"),
+  };
+}
 
 type Partner = { name: string; logo?: string; website?: string };
 type PartnerCategory = { id: string; title: string; partners: Partner[] };

@@ -8,11 +8,18 @@ import type { Metadata } from "next";
 
 export const revalidate = 60;
 
-export const metadata: Metadata = {
-  title: "Patient Testimonials | Roomchang Dental Hospital",
-  description:
-    "Real patient stories from around the world — hear what our patients say about their experience at Roomchang Dental Hospital in Phnom Penh, Cambodia.",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "testimonialsPage" });
+  return {
+    title: t("meta.title"),
+    description: t("meta.description"),
+  };
+}
 
 function parseOriginAndTreatment(authorTitle: string | null): { origin: string; treatment: string } {
   if (!authorTitle) return { origin: "", treatment: "" };

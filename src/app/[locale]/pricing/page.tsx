@@ -81,7 +81,7 @@ export default async function PricingPage({
 
   const HERO_TRUST = [
     { value: "40–70%", label: t("stat.vsAusUk") },
-    { value: "No",     label: t("stat.hiddenFees") },
+    { value: t("stat.hiddenFeesValue"), label: t("stat.hiddenFees") },
   ];
 
   return (

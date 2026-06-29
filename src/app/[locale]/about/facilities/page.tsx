@@ -12,11 +12,18 @@ import type { Metadata } from "next";
 
 export const revalidate = 60;
 
-export const metadata: Metadata = {
-  title: "Our Facilities | Roomchang Dental Hospital",
-  description:
-    "Explore Roomchang's 10-storey hospital with 46 dental chairs, 4 operation rooms, in-house CAD/CAM lab, and hospital-grade sterilisation.",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "facilities" });
+  return {
+    title: t("meta.title"),
+    description: t("meta.description"),
+  };
+}
 
 type DisplayStat = { display_value: string; label: string };
 
