@@ -2,7 +2,7 @@
  * BlockRenderer — dispatches CMS blocks to their React components.
  *
  * Each block type maps to a styled component that uses the Roomchang
- * design system (CSS variables, Cormorant Garamond display font, Manrope body).
+ * design system (CSS variables, Gotham display font, Manrope body).
  */
 
 import { CmsBlock } from "@/lib/cms";
