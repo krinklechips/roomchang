@@ -159,9 +159,9 @@ export function ContactForm({ branches, doctors }: { branches: Branch[]; doctors
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-16 lg:px-8">
-      <div className="grid gap-12 lg:grid-cols-[1fr_380px]">
-        {/* Form */}
-        <div>
+      <div className="flex flex-col gap-12">
+        {/* Appointment form — moved below the locations (customer service shares this page for locations) */}
+        <div className="order-2 max-w-3xl border-t border-[color:var(--border-strong)] pt-10 sm:pt-12">
           {submitted ? (
             <div className="flex flex-col items-start gap-4 rounded-3xl border border-[color:var(--border-strong)] bg-[color:var(--surface)] p-10">
               <CheckCircle2 size={48} strokeWidth={1.5} className="text-[color:var(--brand)]" aria-hidden="true" />
@@ -465,9 +465,10 @@ export function ContactForm({ branches, doctors }: { branches: Branch[]; doctors
           )}
         </div>
 
-        {/* Branch info */}
-        <div id="branches" className="space-y-4">
+        {/* Branch info — primary content, shown first */}
+        <div id="branches" className="order-1 space-y-6">
           <h2 className="font-display text-2xl text-[color:var(--text-main)]">{t("branches.heading")}</h2>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {branches.map((branch) => (
             <div
               key={branch.id}
@@ -494,9 +495,10 @@ export function ContactForm({ branches, doctors }: { branches: Branch[]; doctors
               </a>
             </div>
           ))}
+          </div>
 
           {/* Messaging links */}
-          <div className="rounded-2xl border border-[color:var(--border-strong)] bg-[color:var(--brand-soft)] p-5">
+          <div className="rounded-2xl border border-[color:var(--border-strong)] bg-[color:var(--brand-soft)] p-5 sm:max-w-sm">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--brand-deep)]">
               {t("messaging.heading")}
             </p>
