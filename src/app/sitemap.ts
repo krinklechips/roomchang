@@ -18,9 +18,12 @@ type RouteEntry = { path: string; changeFrequency: ChangeFreq; priority: number 
  */
 function localized(path: string, changeFrequency: ChangeFreq, priority: number): MetadataRoute.Sitemap[number] {
   const languages: Record<string, string> = {};
+  // The site serves locale roots without a trailing slash (/en, not /en/), so
+  // normalise the home path ("/") to "" — otherwise the entry 308-redirects.
+  const seg = path === "/" ? "" : path;
   // hreflang key = ISO language code (en/km/zh); URL = country-style segment (/en, /kh, /cn).
-  for (const locale of LOCALES) languages[LOCALE_TO_LANG[locale] ?? locale] = `${BASE_URL}/${locale}${path}`;
-  const canonical = `${BASE_URL}/${DEFAULT_LOCALE}${path}`;
+  for (const locale of LOCALES) languages[LOCALE_TO_LANG[locale] ?? locale] = `${BASE_URL}/${locale}${seg}`;
+  const canonical = `${BASE_URL}/${DEFAULT_LOCALE}${seg}`;
   return {
     url: canonical,
     changeFrequency,
