@@ -120,7 +120,7 @@ function buildHtml(name: string): string {
         <!-- CTA -->
         <tr>
           <td style="padding:8px 24px 28px;" align="center">
-            <a href="https://roomchang.com/contact" style="display:inline-block;background:#cc3771;color:#ffffff;text-decoration:none;padding:14px 32px;border-radius:999px;font-size:14px;font-weight:700;box-shadow:0 8px 24px rgba(204,55,113,0.25);">
+            <a href="https://www.roomchang.com/contact" style="display:inline-block;background:#cc3771;color:#ffffff;text-decoration:none;padding:14px 32px;border-radius:999px;font-size:14px;font-weight:700;box-shadow:0 8px 24px rgba(204,55,113,0.25);">
               Start Your Treatment Plan
             </a>
           </td>
@@ -131,7 +131,7 @@ function buildHtml(name: string): string {
           <td style="padding:20px 24px;border-top:1px solid #f0e8ef;background:#faf7f9;">
             <p style="margin:0;font-size:12px;line-height:1.6;color:#705569;">
               Roomchang Dental Hospital &bull; Established 1996<br>
-              Phnom Penh, Cambodia &bull; <a href="https://roomchang.com" style="color:#cc3771;">roomchang.com</a><br><br>
+              Phnom Penh, Cambodia &bull; <a href="https://www.roomchang.com" style="color:#cc3771;">roomchang.com</a><br><br>
               WhatsApp: <a href="https://api.whatsapp.com/send/?phone=85569811338" style="color:#cc3771;">+855 69 811 338</a>
               &bull; Email: <a href="mailto:contact@roomchang.com" style="color:#cc3771;">contact@roomchang.com</a>
             </p>

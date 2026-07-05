@@ -44,7 +44,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://roomchang.com"),
+  metadataBase: new URL("https://www.roomchang.com"),
   title: "Roomchang Dental Hospital",
   description: "Premium multilingual dental care in Phnom Penh.",
   openGraph: {
@@ -66,7 +66,7 @@ export const metadata: Metadata = {
   },
 };
 
-const SITE = "https://roomchang.com";
+const SITE = "https://www.roomchang.com";
 const DAY: Record<string, string> = {
   Mon: "Mo", Tue: "Tu", Wed: "We", Thu: "Th", Fri: "Fr", Sat: "Sa", Sun: "Su",
 };

@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/admin", "/tenant-dashboard", "/api"],
     },
-    sitemap: "https://roomchang.com/sitemap.xml",
+    sitemap: "https://www.roomchang.com/sitemap.xml",
   };
 }

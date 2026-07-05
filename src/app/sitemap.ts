@@ -4,7 +4,7 @@ import { CLINICAL_CATEGORIES } from "@/lib/clinical-categories";
 import { supabaseServer } from "@/lib/supabase-server";
 import { routing, LOCALE_TO_LANG } from "@/i18n/routing";
 
-const BASE_URL = "https://roomchang.com";
+const BASE_URL = "https://www.roomchang.com";
 const LOCALES = routing.locales; // URL segments: ["en", "kh", "cn"]
 const DEFAULT_LOCALE = routing.defaultLocale; // "en"
 
