@@ -1,5 +1,6 @@
 import "server-only";
 
+import { cache } from "react";
 import { getLocale } from "next-intl/server";
 import type {
   Branch,
@@ -184,7 +185,9 @@ type PayloadInternationalTreatment = PayloadDocBase & {
   order?: number | null;
 };
 
-type PayloadHeroSlide = PayloadDocBase & {
+type PayloadHeroSlide = {
+  id?: string | null;
+  image?: PayloadRelation<PayloadMedia>;
   eyebrow?: string | null;
   title?: string | null;
   description?: string | null;
@@ -195,6 +198,22 @@ type PayloadHeroSlide = PayloadDocBase & {
   preserveFullImage?: boolean | null;
   order?: number | null;
   published?: boolean | null;
+};
+
+type PayloadMedia = PayloadDocBase & {
+  url?: string | null;
+  alt?: string | null;
+};
+
+type PayloadHomepage = PayloadDocBase & {
+  heroPill?: string | null;
+  heroButtons?: { label?: string | null; url?: string | null }[] | null;
+  slides?: PayloadHeroSlide[] | null;
+};
+
+export type PayloadHomepageSettings = {
+  heroPill: string | null;
+  heroButtons: { label: string; url: string }[];
 };
 
 type PayloadFaqItem = PayloadDocBase & {
@@ -430,6 +449,17 @@ const relationSourceId = <T extends PayloadDocBase>(relation: PayloadRelation<T>
   return String(relation);
 };
 
+const populatedMedia = (relation: PayloadRelation<PayloadMedia>): PayloadMedia | null =>
+  relation != null && typeof relation === "object" ? relation : null;
+
+const getPayloadHomepageDoc = cache(async (): Promise<PayloadHomepage | null> => {
+  const docs = await payloadFind<PayloadHomepage>("homepage", {
+    limit: "1",
+    depth: "1",
+  });
+  return docs[0] ?? null;
+});
+
 const mapService = (p: PayloadService): Service => ({
   id: sourceId(p),
   name: p.name,
@@ -558,19 +588,22 @@ const mapInternationalTreatment = (p: PayloadInternationalTreatment): Internatio
   sort_order: p.order ?? 0,
 });
 
-const mapHeroSlide = (p: PayloadHeroSlide): HeroSlideDb => ({
-  id: sourceId(p),
-  eyebrow: p.eyebrow ?? null,
-  title: p.title ?? null,
-  description: p.description ?? null,
-  imageSrc: p.imageUrl ?? "",
-  imageAlt: p.imageAlt ?? null,
-  imagePosition: p.imagePosition ?? null,
-  imageSize: p.imageSize ?? null,
-  preserveFullImage: p.preserveFullImage ?? false,
-  order: p.order ?? 0,
-  published: p.published ?? true,
-});
+const mapHeroSlide = (p: PayloadHeroSlide, index: number): HeroSlideDb => {
+  const image = populatedMedia(p.image);
+  return {
+    id: `slide-${index + 1}`,
+    eyebrow: p.eyebrow ?? null,
+    title: p.title ?? null,
+    description: p.description ?? null,
+    imageSrc: image?.url ?? p.imageUrl ?? "",
+    imageAlt: image?.alt ?? p.imageAlt ?? p.title ?? null,
+    imagePosition: p.imagePosition ?? null,
+    imageSize: p.imageSize ?? null,
+    preserveFullImage: p.preserveFullImage ?? false,
+    order: index + 1,
+    published: true,
+  };
+};
 
 const mapFaqItem = (p: PayloadFaqItem): FaqItem => ({
   id: sourceId(p),
@@ -804,11 +837,20 @@ export async function getPayloadInternationalPopularTreatments(): Promise<Intern
 }
 
 export async function getPayloadHeroSlides(): Promise<HeroSlideDb[]> {
-  const docs = await payloadFind<PayloadHeroSlide>("hero-slides", {
-    "where[published][equals]": "true",
-    sort: "order",
-  });
-  return docs.map(mapHeroSlide);
+  const doc = await getPayloadHomepageDoc();
+  return (doc?.slides ?? []).map(mapHeroSlide);
+}
+
+export async function getPayloadHomepageSettings(): Promise<PayloadHomepageSettings | null> {
+  const doc = await getPayloadHomepageDoc();
+  if (!doc) return null;
+
+  return {
+    heroPill: doc.heroPill ?? null,
+    heroButtons: (doc.heroButtons ?? []).flatMap((button) =>
+      button.label && button.url ? [{ label: button.label, url: button.url }] : [],
+    ),
+  };
 }
 
 export async function getPayloadFaqItems(): Promise<FaqItem[]> {

@@ -2,10 +2,26 @@ import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { HeroSlideshow, type HeroSlide } from "./hero-slideshow";
 import { getHeroSlides } from "@/lib/data";
+import { getPayloadHomepageSettings, isPayloadSource } from "@/lib/payload-source";
 
-export async function HomeHero() {
-  const t = await getTranslations("homeHero");
-  const dbSlides = await getHeroSlides();
+type HeroButton = {
+  label: string;
+  url: string;
+};
+
+type HomeHeroProps = {
+  heroPill?: string | null;
+  heroButtons?: HeroButton[] | null;
+};
+
+export async function HomeHero({ heroPill: heroPillOverride, heroButtons: heroButtonOverrides }: HomeHeroProps = {}) {
+  const shouldFetchHomepageSettings =
+    isPayloadSource() && heroPillOverride === undefined && heroButtonOverrides === undefined;
+  const [t, dbSlides, homepageSettings] = await Promise.all([
+    getTranslations("homeHero"),
+    getHeroSlides(),
+    shouldFetchHomepageSettings ? getPayloadHomepageSettings() : Promise.resolve(null),
+  ]);
 
   // Fallback slides use translation keys; DB slides use their own text
   const fallbackSlides: HeroSlide[] = [
@@ -64,13 +80,24 @@ export async function HomeHero() {
         }))
       : fallbackSlides;
 
+  const fallbackButtons: HeroButton[] = [
+    { label: t("ctaPrimary"), url: "/contact" },
+    { label: t("ctaSecondary"), url: "/services" },
+    { label: t("ctaTertiary"), url: "/team" },
+  ];
+  const cmsButtons = heroButtonOverrides ?? homepageSettings?.heroButtons ?? [];
+  const heroButtons = cmsButtons.length > 0 ? cmsButtons : fallbackButtons;
+  const heroPill = heroPillOverride ?? homepageSettings?.heroPill ?? t("trustPill");
+  const primaryButtonClassName = "btn-primary justify-center whitespace-nowrap !px-4 !py-2.5 !text-[0.7rem] xl:!px-5 xl:!py-3 xl:!text-xs";
+  const secondaryButtonClassName = "inline-flex items-center justify-center whitespace-nowrap rounded-full border border-[rgba(33,23,31,0.12)] bg-[rgba(255,255,255,0.72)] px-4 py-2.5 text-[0.7rem] font-semibold text-[color:var(--text-main)] transition hover:-translate-y-px hover:bg-[rgba(255,255,255,0.92)] xl:border-white/22 xl:bg-[color:rgba(255,255,255,0.12)] xl:px-5 xl:py-3 xl:text-xs xl:text-white xl:hover:bg-[color:rgba(255,255,255,0.22)]";
+
   return (
     <section className="relative overflow-hidden xl:min-h-[calc(100svh-7.25rem)]">
 
       {/* Trust pill — always overlaid on the image */}
       <div className="absolute left-3 top-3 z-20 sm:left-7 sm:top-7">
         <p className="inline-flex rounded-full border border-[rgba(33,23,31,0.2)] bg-white/96 px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-[0.24em] text-[color:var(--text-main)] shadow-[0_10px_28px_rgba(29,19,27,0.08)] backdrop-blur-sm sm:px-3.5 sm:py-1.5 sm:text-[0.7rem]">
-          {t("trustPill")}
+          {heroPill}
         </p>
       </div>
 
@@ -102,24 +129,15 @@ export async function HomeHero() {
       {/* CTA dock — in flow below image until xl, absolute overlay at xl+ */}
       <div className="relative z-20 flex justify-center px-4 pb-3 pt-2 xl:absolute xl:inset-x-0 xl:bottom-10 xl:pb-0 xl:pt-0">
         <div className="flex w-full max-w-xs flex-col gap-1.5 xl:w-auto xl:max-w-none xl:flex-row xl:gap-2 xl:rounded-full xl:border xl:border-white/18 xl:bg-[color:rgba(20,10,18,0.16)] xl:p-1.5 xl:shadow-[0_10px_30px_rgba(20,10,18,0.14)] xl:backdrop-blur-md">
-          <Link
-            href="/contact"
-            className="btn-primary justify-center whitespace-nowrap !px-4 !py-2.5 !text-[0.7rem] xl:!px-5 xl:!py-3 xl:!text-xs"
-          >
-            {t("ctaPrimary")}
-          </Link>
-          <Link
-            href="/services"
-            className="inline-flex items-center justify-center whitespace-nowrap rounded-full border border-[rgba(33,23,31,0.12)] bg-[rgba(255,255,255,0.72)] px-4 py-2.5 text-[0.7rem] font-semibold text-[color:var(--text-main)] transition hover:-translate-y-px hover:bg-[rgba(255,255,255,0.92)] xl:border-white/22 xl:bg-[color:rgba(255,255,255,0.12)] xl:px-5 xl:py-3 xl:text-xs xl:text-white xl:hover:bg-[color:rgba(255,255,255,0.22)]"
-          >
-            {t("ctaSecondary")}
-          </Link>
-          <Link
-            href="/team"
-            className="inline-flex items-center justify-center whitespace-nowrap rounded-full border border-[rgba(33,23,31,0.12)] bg-[rgba(255,255,255,0.72)] px-4 py-2.5 text-[0.7rem] font-semibold text-[color:var(--text-main)] transition hover:-translate-y-px hover:bg-[rgba(255,255,255,0.92)] xl:border-white/22 xl:bg-[color:rgba(255,255,255,0.12)] xl:px-5 xl:py-3 xl:text-xs xl:text-white xl:hover:bg-[color:rgba(255,255,255,0.22)]"
-          >
-            {t("ctaTertiary")}
-          </Link>
+          {heroButtons.map((button, index) => (
+            <Link
+              key={`${button.url}-${button.label}`}
+              href={button.url}
+              className={index === 0 ? primaryButtonClassName : secondaryButtonClassName}
+            >
+              {button.label}
+            </Link>
+          ))}
         </div>
       </div>
 
