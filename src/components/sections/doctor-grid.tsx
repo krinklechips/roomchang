@@ -28,6 +28,15 @@ const DEPARTMENT_GROUPS: { key: string; depts: string[] }[] = [
   { key: "seniorConsultant",  depts: ["SENIOR_CONSULTANT"] },
 ];
 
+// Human-readable department label from the raw DB enum
+// (e.g. "SENIOR_CONSULTANT" -> "Senior Consultant", "ORTHODONTICS" -> "Orthodontics")
+function formatDepartment(raw: string): string {
+  return raw
+    .replace(/[_-]+/g, " ")
+    .toLowerCase()
+    .replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
 // Sanitise credentials — replace any stray Cyrillic chars with ASCII equivalents
 function cleanCredentials(raw: string): string {
   return raw
@@ -110,7 +119,7 @@ function DoctorModal({ doctor, onClose }: { doctor: Doctor; onClose: () => void 
               {doctor.role}
             </p>
             {doctor.department && (
-              <p className="mt-0.5 text-xs text-[color:var(--text-soft)]">{doctor.department}</p>
+              <p className="mt-0.5 text-xs text-[color:var(--text-soft)]">{formatDepartment(doctor.department)}</p>
             )}
           </div>
         </div>
