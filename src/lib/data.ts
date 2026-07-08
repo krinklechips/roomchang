@@ -2,6 +2,12 @@ import { cache } from "react";
 import { supabase } from "./supabase";
 import { supabaseServer } from "./supabase-server";
 import { getTranslatedFields, getTranslatedFieldsBatch, mergeTranslation } from "./i18n-content";
+import {
+  isPayloadSource,
+  getPayloadDoctors,
+  getPayloadServiceBySlug,
+  getPayloadServices,
+} from "./payload-source";
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -166,6 +172,8 @@ export type SeoPageMeta = {
 // ─── Queries ────────────────────────────────────────────────────────────────
 
 export async function getDoctors(): Promise<Doctor[]> {
+  // Dummy-site mode: content comes from the Payload CMS (live → CMS → dummy).
+  if (isPayloadSource()) return getPayloadDoctors();
   const { data, error } = await supabase
     .from("doctors")
     .select("*")
@@ -236,6 +244,7 @@ export async function getPricingCategories(): Promise<PricingCategory[]> {
 }
 
 export async function getServices(): Promise<Service[]> {
+  if (isPayloadSource()) return getPayloadServices();
   const { data, error } = await supabase
     .from("services")
     .select("*")
@@ -253,6 +262,7 @@ export async function getServices(): Promise<Service[]> {
 }
 
 export const getServiceBySlug = cache(async function getServiceBySlug(slug: string): Promise<Service | null> {
+  if (isPayloadSource()) return getPayloadServiceBySlug(slug);
   const { data, error } = await supabase
     .from("services")
     .select("*")

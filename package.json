@@ -8,11 +8,13 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "dev:payload": "CONTENT_SOURCE=payload PAYLOAD_API_URL=http://localhost:3100 next dev -p 3200"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1042.0",
     "@aws-sdk/s3-request-presigner": "^3.1042.0",
+    "@payloadcms/live-preview-react": "^3.85.2",
     "@phosphor-icons/react": "^2.1.10",
     "@prisma/client": "^7.5.0",
     "@supabase/supabase-js": "^2.100.1",

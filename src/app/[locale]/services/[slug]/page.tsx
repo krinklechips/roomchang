@@ -48,5 +48,17 @@ export default async function ServiceDetailPage({
   const service = await getServiceBySlug(slug);
   if (!service) notFound();
 
+  // Dummy-site mode: refresh this page when the doc is saved in the Payload
+  // admin (Live Preview). Never rendered on the live deployment.
+  if (process.env.CONTENT_SOURCE === "payload") {
+    const { PayloadLiveRefresh } = await import("@/components/site/payload-live-refresh");
+    return (
+      <>
+        <PayloadLiveRefresh serverURL={process.env.PAYLOAD_API_URL || "http://localhost:3100"} />
+        <ServiceDetailContent service={service} />
+      </>
+    );
+  }
+
   return <ServiceDetailContent service={service} />;
 }
