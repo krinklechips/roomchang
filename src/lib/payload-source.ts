@@ -1,7 +1,6 @@
 import "server-only";
 
 import { getLocale } from "next-intl/server";
-import { LOCALE_TO_LANG } from "@/i18n/routing";
 import type { Doctor, Service } from "./data";
 
 /**
@@ -10,19 +9,19 @@ import type { Doctor, Service } from "./data";
  * (see `npm run dev:payload`). The LIVE deployment never sets this, so
  * production keeps reading Supabase — structure: live ─▶ CMS ─▶ dummy.
  *
- * Localization is native in Payload: we pass ?locale=km|zh and get merged
- * documents back — no content_translations overlay needed here.
+ * Localization is native in Payload, and its locale codes match the site's
+ * URL segments (en/kh/cn — Enoch's convention), so the request locale passes
+ * straight through. No content_translations overlay, no code mapping.
  */
 
 export const isPayloadSource = () => process.env.CONTENT_SOURCE === "payload";
 
 const API = () => process.env.PAYLOAD_API_URL || "http://localhost:3100";
 
-/** Current request's language (en/km/zh) from the URL locale (en/kh/cn). */
+/** Current request's locale segment (en/kh/cn) — Payload uses the same codes. */
 async function payloadLocale(): Promise<string> {
   try {
-    const locale = await getLocale();
-    return LOCALE_TO_LANG[locale] ?? locale;
+    return await getLocale();
   } catch {
     return "en"; // outside a request (build-time)
   }
