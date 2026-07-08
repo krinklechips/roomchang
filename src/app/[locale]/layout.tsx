@@ -18,9 +18,17 @@ export default async function LocaleLayout({
 
   setRequestLocale(locale);
   const messages = await getMessages();
+  const payloadLiveRefresh =
+    process.env.CONTENT_SOURCE === "payload"
+      ? await import("@/components/site/payload-live-refresh")
+      : null;
+  const PayloadLiveRefresh = payloadLiveRefresh?.PayloadLiveRefresh;
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
+      {PayloadLiveRefresh ? (
+        <PayloadLiveRefresh serverURL={process.env.PAYLOAD_API_URL || "http://localhost:3100"} />
+      ) : null}
       {children}
     </NextIntlClientProvider>
   );

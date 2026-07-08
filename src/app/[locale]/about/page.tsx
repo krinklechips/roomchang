@@ -4,6 +4,7 @@ import { SiteShell } from "@/components/site/site-shell";
 import { AboutTimeline } from "@/components/sections/about-timeline";
 import { Building2, Star, Mail, Stethoscope, Heart, Handshake, ImagePlay, Cpu, Briefcase, ArrowRight, type LucideIcon } from "lucide-react";
 import { supabaseServer } from "@/lib/supabase-server";
+import { getPayloadSiteStats, isPayloadSource } from "@/lib/payload-source";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -50,10 +51,12 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
 
   const t = await getTranslations("about");
 
-  const { data: statsData, error } = await supabaseServer
-    .from("site_stats")
-    .select("key, display_value, label")
-    .order("sort_order");
+  const { data: statsData, error } = isPayloadSource()
+    ? { data: await getPayloadSiteStats(), error: null }
+    : await supabaseServer
+        .from("site_stats")
+        .select("key, display_value, label")
+        .order("sort_order");
 
   if (error) {
     console.error("[AboutPage] site_stats fetch failed:", error.message);

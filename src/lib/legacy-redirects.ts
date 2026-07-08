@@ -1,4 +1,9 @@
 import { supabaseServer } from "./supabase-server";
+import {
+  getPayloadCommunityArticleBySlug,
+  getPayloadNewsArticleBySlug,
+  isPayloadSource,
+} from "./payload-source";
 
 // Old WordPress URLs whose slug does NOT 1:1 match a current article slug,
 // mapped to their new home (locale-relative path). Extend this from the old
@@ -28,6 +33,16 @@ export async function resolveLegacyPath(segments: string[]): Promise<string | nu
   if (!slug || slug.length > 120 || !/^[a-z0-9][a-z0-9-]*$/.test(slug)) return null;
 
   if (MANUAL_REDIRECTS[slug]) return MANUAL_REDIRECTS[slug];
+
+  if (isPayloadSource()) {
+    const [news, community] = await Promise.all([
+      getPayloadNewsArticleBySlug(slug),
+      getPayloadCommunityArticleBySlug(slug),
+    ]);
+    if (news) return `/about/news/${slug}`;
+    if (community) return `/about/community/${slug}`;
+    return null;
+  }
 
   const [news, community] = await Promise.all([
     supabaseServer

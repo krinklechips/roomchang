@@ -4,6 +4,7 @@ import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { supabaseServer } from "@/lib/supabase-server";
 import { getTranslatedFieldsBatch, mergeTranslation } from "@/lib/i18n-content";
+import { getPayloadNewsArticles, isPayloadSource } from "@/lib/payload-source";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { NEWS_ARTICLES_SORTED } from "@/lib/news";
 import type { Metadata } from "next";
@@ -36,11 +37,13 @@ export default async function NewsPage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const { data, error } = await supabaseServer
-    .from("news_articles")
-    .select("id, slug, date, title, description, image, imageAlt")
-    .eq("published", true)
-    .order("order", { ascending: true });
+  const { data, error } = isPayloadSource()
+    ? { data: await getPayloadNewsArticles(), error: null }
+    : await supabaseServer
+        .from("news_articles")
+        .select("id, slug, date, title, description, image, imageAlt")
+        .eq("published", true)
+        .order("order", { ascending: true });
 
   if (error) {
     console.error("[NewsPage] news_articles fetch failed:", error.message);
@@ -56,10 +59,12 @@ export default async function NewsPage({
       image: a.image,
       imageAlt: a.imageAlt,
     }));
-  const newsTr = await getTranslatedFieldsBatch(
-    "news_article",
-    baseArticles.map((a) => a.id).filter((id): id is string => Boolean(id)),
-  );
+  const newsTr = isPayloadSource()
+    ? new Map<string, Record<string, unknown>>()
+    : await getTranslatedFieldsBatch(
+        "news_article",
+        baseArticles.map((a) => a.id).filter((id): id is string => Boolean(id)),
+      );
   const articles: Article[] = baseArticles.map((a) =>
     a.id ? mergeTranslation(a, newsTr.get(a.id) ?? {}) : a,
   );

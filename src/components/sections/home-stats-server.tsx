@@ -2,6 +2,7 @@ import { getTranslations } from "next-intl/server";
 import { supabaseServer } from "@/lib/supabase-server";
 import { HomeStats } from "./home-stats";
 import { getHomepageStats, HOMEPAGE_STAT_KEYS, type HomeStatRow } from "./home-stats-data";
+import { getPayloadSiteStats, isPayloadSource } from "@/lib/payload-source";
 
 /** Map known English fallback labels to translation keys */
 const STAT_LABEL_KEYS: Record<string, string> = {
@@ -14,11 +15,13 @@ const STAT_LABEL_KEYS: Record<string, string> = {
 export async function HomeStatsServer() {
   const t = await getTranslations("homeStats");
 
-  const { data, error } = await supabaseServer
-    .from("site_stats")
-    .select("key, numeric_value, suffix, label")
-    .in("key", [...HOMEPAGE_STAT_KEYS])
-    .order("sort_order");
+  const { data, error } = isPayloadSource()
+    ? { data: await getPayloadSiteStats(HOMEPAGE_STAT_KEYS), error: null }
+    : await supabaseServer
+        .from("site_stats")
+        .select("key, numeric_value, suffix, label")
+        .in("key", [...HOMEPAGE_STAT_KEYS])
+        .order("sort_order");
 
   if (error) {
     console.error("[HomeStatsServer] fetch failed:", error.message);

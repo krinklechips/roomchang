@@ -3,10 +3,28 @@ import { supabase } from "./supabase";
 import { supabaseServer } from "./supabase-server";
 import { getTranslatedFields, getTranslatedFieldsBatch, mergeTranslation } from "./i18n-content";
 import {
-  isPayloadSource,
+  getPayloadBranches,
+  getPayloadCareerPositionBySlug,
+  getPayloadCareerPositions,
+  getPayloadClinicalCaseBySlug,
+  getPayloadClinicalCases,
+  getPayloadCommunityArticles,
   getPayloadDoctors,
+  getPayloadFaqItems,
+  getPayloadHeroSlides,
+  getPayloadInternationalPopularTreatments,
+  getPayloadInternationalSteps,
+  getPayloadInternationalWhyItems,
+  getPayloadPricingCategories,
+  getPayloadPublications,
   getPayloadServiceBySlug,
   getPayloadServices,
+  getPayloadTechnology,
+  getPayloadTechnologyBySlug,
+  getPayloadTestimonials,
+  getPayloadTimelineEvents,
+  getPayloadVideos,
+  isPayloadSource,
 } from "./payload-source";
 
 // ─── Types ──────────────────────────────────────────────────────────────────
@@ -190,6 +208,7 @@ export async function getDoctors(): Promise<Doctor[]> {
 }
 
 export async function getBranches(): Promise<Branch[]> {
+  if (isPayloadSource()) return getPayloadBranches();
   const { data, error } = await supabase
     .from("branches")
     .select("*")
@@ -204,6 +223,7 @@ export async function getBranches(): Promise<Branch[]> {
 }
 
 export async function getPricingCategories(): Promise<PricingCategory[]> {
+  if (isPayloadSource()) return getPayloadPricingCategories();
   const { data: categories, error: catErr } = await supabase
     .from("pricing_categories")
     .select("*")
@@ -280,6 +300,7 @@ export const getServiceBySlug = cache(async function getServiceBySlug(slug: stri
 });
 
 export async function getTestimonials(): Promise<Testimonial[]> {
+  if (isPayloadSource()) return getPayloadTestimonials();
   const { data, error } = await supabase
     .from("testimonials")
     .select("*")
@@ -296,6 +317,7 @@ export async function getTestimonials(): Promise<Testimonial[]> {
 }
 
 export async function getTechnology(): Promise<TechnologyItem[]> {
+  if (isPayloadSource()) return getPayloadTechnology();
   const { data, error } = await supabase
     .from("technology")
     .select("*")
@@ -312,6 +334,7 @@ export async function getTechnology(): Promise<TechnologyItem[]> {
 }
 
 export const getTechnologyBySlug = cache(async function getTechnologyBySlug(slug: string): Promise<TechnologyItem | null> {
+  if (isPayloadSource()) return getPayloadTechnologyBySlug(slug);
   const { data, error } = await supabase
     .from("technology")
     .select("*")
@@ -328,6 +351,7 @@ export const getTechnologyBySlug = cache(async function getTechnologyBySlug(slug
 });
 
 export async function getClinicalCases(): Promise<ClinicalCase[]> {
+  if (isPayloadSource()) return getPayloadClinicalCases();
   const { data, error } = await supabase
     .from("clinical_cases")
     .select("id, slug, title, category, treatment, duration, description, tag, imageUrl, fullText, images, order, published")
@@ -348,6 +372,7 @@ export async function getClinicalCases(): Promise<ClinicalCase[]> {
 }
 
 export const getClinicalCaseBySlug = cache(async function getClinicalCaseBySlug(slug: string): Promise<ClinicalCase | null> {
+  if (isPayloadSource()) return getPayloadClinicalCaseBySlug(slug);
   const { data, error } = await supabase
     .from("clinical_cases")
     .select("id, slug, title, category, treatment, duration, description, tag, imageUrl, fullText, images, order, published")
@@ -387,6 +412,7 @@ export type InternationalPopularTreatment = {
 };
 
 export async function getInternationalSteps(): Promise<InternationalStep[]> {
+  if (isPayloadSource()) return getPayloadInternationalSteps();
   const { data, error } = await supabaseServer
     .from("international_steps")
     .select("*")
@@ -397,6 +423,7 @@ export async function getInternationalSteps(): Promise<InternationalStep[]> {
 }
 
 export async function getInternationalWhyItems(): Promise<InternationalWhyItem[]> {
+  if (isPayloadSource()) return getPayloadInternationalWhyItems();
   const { data, error } = await supabaseServer
     .from("international_why_items")
     .select("*")
@@ -407,6 +434,7 @@ export async function getInternationalWhyItems(): Promise<InternationalWhyItem[]
 }
 
 export async function getInternationalPopularTreatments(): Promise<InternationalPopularTreatment[]> {
+  if (isPayloadSource()) return getPayloadInternationalPopularTreatments();
   const { data, error } = await supabaseServer
     .from("international_popular_treatments")
     .select("*")
@@ -417,6 +445,7 @@ export async function getInternationalPopularTreatments(): Promise<International
 }
 
 export async function getHeroSlides(): Promise<HeroSlideDb[]> {
+  if (isPayloadSource()) return getPayloadHeroSlides();
   const { data, error } = await supabase
     .from("hero_slides")
     .select("*")
@@ -502,6 +531,7 @@ export type BlogPost = {
 // ─── Blog & FAQ Queries ───────────────────────────────────────────────────
 
 export async function getFaqItems(): Promise<FaqItem[]> {
+  if (isPayloadSource()) return getPayloadFaqItems();
   const { data, error } = await supabase
     .from("faq_items")
     .select("id, question, answer, category, sort_order")
@@ -567,6 +597,7 @@ export type Video = {
 };
 
 export async function getVideos(category?: string): Promise<Video[]> {
+  if (isPayloadSource()) return getPayloadVideos(category);
   let query = supabase
     .from("videos")
     .select("*")
@@ -597,6 +628,7 @@ export type CareerPosition = {
 };
 
 export async function getCareerPositions(): Promise<CareerPosition[]> {
+  if (isPayloadSource()) return getPayloadCareerPositions();
   const { data, error } = await supabase
     .from("career_positions")
     .select("*")
@@ -610,6 +642,7 @@ export async function getCareerPositions(): Promise<CareerPosition[]> {
 }
 
 export async function getCareerPositionBySlug(slug: string): Promise<CareerPosition | null> {
+  if (isPayloadSource()) return getPayloadCareerPositionBySlug(slug);
   const { data, error } = await supabase
     .from("career_positions")
     .select("*")
@@ -636,6 +669,7 @@ export type CommunityArticle = {
 };
 
 export async function getCommunityArticles(): Promise<CommunityArticle[]> {
+  if (isPayloadSource()) return getPayloadCommunityArticles();
   const { data, error } = await supabase
     .from("community_articles")
     .select("*")
@@ -663,6 +697,7 @@ export type TimelineEvent = {
 };
 
 export async function getTimelineEvents(): Promise<TimelineEvent[]> {
+  if (isPayloadSource()) return getPayloadTimelineEvents();
   const { data, error } = await supabase
     .from("timeline_events")
     .select("*")
@@ -690,6 +725,7 @@ export type Publication = {
 };
 
 export async function getPublications(): Promise<Publication[]> {
+  if (isPayloadSource()) return getPayloadPublications();
   const { data, error } = await supabase
     .from("publications")
     .select("*")

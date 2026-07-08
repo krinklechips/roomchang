@@ -6,6 +6,7 @@ import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { supabaseServer } from "@/lib/supabase-server";
 import { getTranslatedFields, mergeTranslation } from "@/lib/i18n-content";
+import { getPayloadNewsArticleBySlug, getPayloadNewsArticles, isPayloadSource } from "@/lib/payload-source";
 import { getArticleBySlug as getFallbackArticle } from "@/lib/news";
 import type { Metadata } from "next";
 
@@ -26,6 +27,8 @@ type Article = {
 };
 
 async function getArticle(slug: string): Promise<Article | null> {
+  if (isPayloadSource()) return getPayloadNewsArticleBySlug(slug);
+
   const { data, error } = await supabaseServer
     .from("news_articles")
     .select("*")
@@ -46,6 +49,15 @@ async function getArticle(slug: string): Promise<Article | null> {
 }
 
 async function getAdjacentArticles(slug: string) {
+  if (isPayloadSource()) {
+    const articles = await getPayloadNewsArticles();
+    const idx = articles.findIndex((a) => a.slug === slug);
+    return {
+      newer: idx > 0 ? articles[idx - 1] : null,
+      older: idx < articles.length - 1 ? articles[idx + 1] : null,
+    };
+  }
+
   const { data } = await supabaseServer
     .from("news_articles")
     .select("slug, title")

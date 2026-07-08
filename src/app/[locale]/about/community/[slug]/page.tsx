@@ -4,6 +4,11 @@ import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import { supabaseServer } from "@/lib/supabase-server";
 import { getTranslatedFields, mergeTranslation } from "@/lib/i18n-content";
+import {
+  getPayloadCommunityArticleBySlug,
+  getPayloadCommunityArticleDetails,
+  isPayloadSource,
+} from "@/lib/payload-source";
 import { CommunityGallery } from "@/components/sections/community-gallery";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
@@ -24,6 +29,8 @@ type Article = {
 };
 
 async function getArticle(slug: string): Promise<Article | null> {
+  if (isPayloadSource()) return getPayloadCommunityArticleBySlug(slug);
+
   const { data, error } = await supabaseServer
     .from("community_articles")
     .select("*")
@@ -36,6 +43,15 @@ async function getArticle(slug: string): Promise<Article | null> {
 }
 
 async function getAdjacentArticles(currentSlug: string) {
+  if (isPayloadSource()) {
+    const articles = await getPayloadCommunityArticleDetails();
+    const idx = articles.findIndex((a) => a.slug === currentSlug);
+    return {
+      prev: idx > 0 ? articles[idx - 1] : null,
+      next: idx < articles.length - 1 ? articles[idx + 1] : null,
+    };
+  }
+
   const { data } = await supabaseServer
     .from("community_articles")
     .select("slug, title")

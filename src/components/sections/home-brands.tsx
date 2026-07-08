@@ -1,11 +1,14 @@
 import Image from "next/image";
 import { supabaseServer } from "@/lib/supabase-server";
+import { getPayloadBrandLogos, isPayloadSource } from "@/lib/payload-source";
 
 export async function HomeBrands() {
-  const { data, error } = await supabaseServer
-    .from("brand_logos")
-    .select("slug, name, logo_src")
-    .order("sort_order");
+  const { data, error } = isPayloadSource()
+    ? { data: await getPayloadBrandLogos(), error: null }
+    : await supabaseServer
+        .from("brand_logos")
+        .select("slug, name, logo_src")
+        .order("sort_order");
 
   if (error) {
     console.error("[HomeBrands] brand_logos fetch failed:", error.message);

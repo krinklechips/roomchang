@@ -2,6 +2,7 @@ import { Link } from "@/i18n/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { SiteShell } from "@/components/site/site-shell";
 import { supabaseServer } from "@/lib/supabase-server";
+import { getPayloadPricingComparisonSet, isPayloadSource } from "@/lib/payload-source";
 import type { Metadata } from "next";
 
 // Re-fetch comparison rows from Supabase at most every 60s so CMS edits go live.
@@ -35,11 +36,13 @@ export default async function PriceComparisonPage({
   setRequestLocale(locale);
 
   const [comparisonResult, tComp] = await Promise.all([
-    supabaseServer
-      .from("pricing_comparison_sets")
-      .select("exchange_rate, source_note, pricing_comparison_rows(ada, treatment, roomchang_price, australia_price, singapore_price, sort_order)")
-      .eq("slug", "full-comparison")
-      .maybeSingle(),
+    isPayloadSource()
+      ? Promise.resolve({ data: await getPayloadPricingComparisonSet("full-comparison"), error: null })
+      : supabaseServer
+          .from("pricing_comparison_sets")
+          .select("exchange_rate, source_note, pricing_comparison_rows(ada, treatment, roomchang_price, australia_price, singapore_price, sort_order)")
+          .eq("slug", "full-comparison")
+          .maybeSingle(),
     getTranslations("pricing.comparison"),
   ]);
 

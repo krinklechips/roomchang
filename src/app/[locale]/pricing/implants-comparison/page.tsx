@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Package, FlaskConical, Building2 } from "lucide-react";
 import { SiteShell } from "@/components/site/site-shell";
 import { supabaseServer } from "@/lib/supabase-server";
+import { getPayloadPricingComparisonSet, isPayloadSource } from "@/lib/payload-source";
 
 export const revalidate = 60;
 
@@ -50,11 +51,13 @@ export default async function ImplantsComparisonPage({
   setRequestLocale(locale);
   const t = await getTranslations("implantsComparison");
 
-  const { data, error } = await supabaseServer
-    .from("pricing_comparison_sets")
-    .select("pricing_comparison_rows(ada, treatment, roomchang_price, australia_price, sort_order)")
-    .eq("slug", "implants-comparison")
-    .maybeSingle();
+  const { data, error } = isPayloadSource()
+    ? { data: await getPayloadPricingComparisonSet("implants-comparison"), error: null }
+    : await supabaseServer
+        .from("pricing_comparison_sets")
+        .select("pricing_comparison_rows(ada, treatment, roomchang_price, australia_price, sort_order)")
+        .eq("slug", "implants-comparison")
+        .maybeSingle();
 
   if (error) {
     console.error("[ImplantsComparisonPage] pricing comparison fetch failed:", error.message);

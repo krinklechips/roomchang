@@ -4,6 +4,7 @@ import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import { supabaseServer } from "@/lib/supabase-server";
 import { getTranslatedFieldsBatch, mergeTranslation } from "@/lib/i18n-content";
+import { getPayloadCommunityArticleDetails, isPayloadSource } from "@/lib/payload-source";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 
@@ -59,18 +60,22 @@ export default async function CommunityPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const { data, error } = await supabaseServer
-    .from("community_articles")
-    .select("id, slug, title, date, description, image, imageAlt")
-    .eq("published", true)
-    .order("order", { ascending: true });
+  const { data, error } = isPayloadSource()
+    ? { data: await getPayloadCommunityArticleDetails(), error: null }
+    : await supabaseServer
+        .from("community_articles")
+        .select("id, slug, title, date, description, image, imageAlt")
+        .eq("published", true)
+        .order("order", { ascending: true });
 
   if (error) {
     console.error("[CommunityPage] fetch failed:", error.message);
   }
 
   const baseArticles: Article[] = (data as Article[] | null)?.filter(a => a.slug) ?? FALLBACK_ARTICLES;
-  const articleTr = await getTranslatedFieldsBatch("community_article", baseArticles.map((a) => a.id));
+  const articleTr = isPayloadSource()
+    ? new Map<string, Record<string, unknown>>()
+    : await getTranslatedFieldsBatch("community_article", baseArticles.map((a) => a.id));
   const articles: Article[] = baseArticles.map((a) => mergeTranslation(a, articleTr.get(a.id) ?? {}));
 
   const t = await getTranslations("communityPage");

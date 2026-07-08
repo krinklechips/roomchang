@@ -2,6 +2,7 @@ import { Link } from "@/i18n/navigation";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft } from "lucide-react";
 import { supabaseServer } from "@/lib/supabase-server";
+import { getPayloadPartnerGroups, isPayloadSource } from "@/lib/payload-source";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 
@@ -188,10 +189,12 @@ export default async function PartnershipsPage({
 
   const t = await getTranslations("partnerships");
 
-  const { data, error } = await supabaseServer
-    .from("partners")
-    .select("*, partner_categories(name, sort_order)")
-    .order("sort_order");
+  const { data, error } = isPayloadSource()
+    ? { data: await getPayloadPartnerGroups(), error: null }
+    : await supabaseServer
+        .from("partners")
+        .select("*, partner_categories(name, sort_order)")
+        .order("sort_order");
 
   if (error) {
     console.error("[PartnershipsPage] partners fetch failed:", error.message);
@@ -200,28 +203,41 @@ export default async function PartnershipsPage({
   // DB partner-category names match the fallback titles; translate via their key.
   const categoryKeyByTitle = new Map(PARTNER_CATEGORIES.map((c) => [c.title, c.id]));
   const categoryMap = new Map<string, PartnerCategory & { sortOrder: number }>();
-  ((data as PartnerRow[] | null) ?? []).forEach((row) => {
-    const category = row.partner_categories;
-    if (!category) return;
-    const existing = categoryMap.get(category.name) ?? {
-      id: category.name,
-      title: categoryKeyByTitle.has(category.name)
-        ? t(`categories.${categoryKeyByTitle.get(category.name)}`)
-        : category.name,
-      partners: [],
-      sortOrder: category.sort_order ?? 0,
-    };
-    existing.partners.push({
-      name: row.name,
-      ...(row.logo_src ? { logo: row.logo_src } : {}),
-      ...(row.website ? { website: row.website } : {}),
+  if (isPayloadSource()) {
+    ((data as Awaited<ReturnType<typeof getPayloadPartnerGroups>> | null) ?? []).forEach((category) => {
+      const title = categoryKeyByTitle.has(category.title)
+        ? t(`categories.${categoryKeyByTitle.get(category.title)}`)
+        : category.title;
+      categoryMap.set(category.title, { ...category, title });
     });
-    categoryMap.set(category.name, existing);
-  });
+  } else {
+    ((data as PartnerRow[] | null) ?? []).forEach((row) => {
+      const category = row.partner_categories;
+      if (!category) return;
+      const existing = categoryMap.get(category.name) ?? {
+        id: category.name,
+        title: categoryKeyByTitle.has(category.name)
+          ? t(`categories.${categoryKeyByTitle.get(category.name)}`)
+          : category.name,
+        partners: [],
+        sortOrder: category.sort_order ?? 0,
+      };
+      existing.partners.push({
+        name: row.name,
+        ...(row.logo_src ? { logo: row.logo_src } : {}),
+        ...(row.website ? { website: row.website } : {}),
+      });
+      categoryMap.set(category.name, existing);
+    });
+  }
   const partnerCategories = categoryMap.size
     ? Array.from(categoryMap.values())
         .sort((a, b) => a.sortOrder - b.sortOrder)
-        .map(({ sortOrder, ...category }) => category)
+        .map((category) => ({
+          id: category.id,
+          title: category.title,
+          partners: category.partners,
+        }))
     : PARTNER_CATEGORIES.map((category) => ({
         ...category,
         title: t(`categories.${category.id}`),

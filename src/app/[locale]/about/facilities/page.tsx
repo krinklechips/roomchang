@@ -7,6 +7,7 @@ import { supabaseServer } from "@/lib/supabase-server";
 import { cdnUrl } from "@/lib/supabase";
 import { BRANCHES } from "@/lib/branches";
 import { getTranslatedFieldsBatch, mergeTranslation } from "@/lib/i18n-content";
+import { getPayloadSiteStats, isPayloadSource } from "@/lib/payload-source";
 import { HashScroll } from "@/components/sections/hash-scroll";
 import type { Metadata } from "next";
 
@@ -75,10 +76,12 @@ export default async function FacilitiesPage({
   const branchTr = await getTranslatedFieldsBatch("branch", BRANCHES.map((b) => b.slug));
   const branches = BRANCHES.map((b) => mergeTranslation(b, branchTr.get(b.slug) ?? {}));
 
-  const { data: statsData, error } = await supabaseServer
-    .from("site_stats")
-    .select("key, display_value, label")
-    .order("sort_order");
+  const { data: statsData, error } = isPayloadSource()
+    ? { data: await getPayloadSiteStats(), error: null }
+    : await supabaseServer
+        .from("site_stats")
+        .select("key, display_value, label")
+        .order("sort_order");
 
   if (error) {
     console.error("[FacilitiesPage] site_stats fetch failed:", error.message);

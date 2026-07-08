@@ -4,6 +4,7 @@ import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { supabaseServer } from "@/lib/supabase-server";
 import { getTranslatedFieldsBatch, mergeTranslation } from "@/lib/i18n-content";
+import { getPayloadFeatureCards, isPayloadSource } from "@/lib/payload-source";
 
 type HomepageFeatureCardRow = {
   slug: string;
@@ -49,22 +50,24 @@ export async function HomeFeatured() {
     },
   ];
 
-  const { data, error } = await supabaseServer
-    .from("homepage_feature_cards")
-    .select("slug, title, description, image_src, image_alt, href, cta")
-    .order("sort_order");
+  const { data, error } = isPayloadSource()
+    ? { data: await getPayloadFeatureCards(), error: null }
+    : await supabaseServer
+        .from("homepage_feature_cards")
+        .select("slug, title, description, image_src, image_alt, href, cta")
+        .order("sort_order");
 
   if (error) {
     console.error("[HomeFeatured] homepage_feature_cards fetch failed:", error.message);
   }
 
   const rows = (data ?? []) as HomepageFeatureCardRow[];
-  // Overlay the active-locale translation (content_translations) onto the
-  // English DB rows, falling back to English per field.
-  const tr = await getTranslatedFieldsBatch(
-    "homepage_feature_card",
-    rows.map((r) => r.slug),
-  );
+  const tr = isPayloadSource()
+    ? new Map<string, Record<string, unknown>>()
+    : await getTranslatedFieldsBatch(
+        "homepage_feature_card",
+        rows.map((r) => r.slug),
+      );
   const cards = rows.length
     ? rows.map((row) => {
         const card = mergeTranslation(row, tr.get(row.slug) ?? {});

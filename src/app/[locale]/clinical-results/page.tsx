@@ -2,6 +2,7 @@ import { SiteShell } from "@/components/site/site-shell";
 import { ClinicalResultsGrid } from "@/components/sections/clinical-results-grid";
 import { getClinicalCases } from "@/lib/data";
 import { supabaseServer } from "@/lib/supabase-server";
+import { getPayloadSiteStats, isPayloadSource } from "@/lib/payload-source";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 
@@ -34,10 +35,12 @@ export default async function ClinicalResultsPage({
     patients_treated: { display_value: "100,000+", label: tStat("patientsTreated") },
   };
 
-  const { data: statsData, error } = await supabaseServer
-    .from("site_stats")
-    .select("key, display_value, label")
-    .order("sort_order");
+  const { data: statsData, error } = isPayloadSource()
+    ? { data: await getPayloadSiteStats(), error: null }
+    : await supabaseServer
+        .from("site_stats")
+        .select("key, display_value, label")
+        .order("sort_order");
 
   if (error) {
     console.error("[ClinicalResultsPage] site_stats fetch failed:", error.message);
