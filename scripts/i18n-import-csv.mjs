@@ -37,7 +37,7 @@ function parseCSV(text) {
   return rows;
 }
 
-const placeholders = (s) => [...String(s ?? "").matchAll(/\{[a-zA-Z0-9_]+\}/g)].map((m) => m[0]).sort().join(",");
+const placeholders = (s) => [...String(s ?? "").matchAll(/\{[a-zA-Z0-9_]+\}/g)].map((m) => m[0]).sort((a, b) => a.localeCompare(b)).join(",");
 
 const read = (l) => JSON.parse(fs.readFileSync(path.join(ROOT, `messages/${l}.json`), "utf8"));
 const km = read("km"), zh = read("zh"), en = read("en");

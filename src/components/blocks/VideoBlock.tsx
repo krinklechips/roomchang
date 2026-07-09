@@ -58,7 +58,9 @@ export function VideoBlock({
             poster={thumbnail}
             controls
             className="w-full rounded-xl"
-          />
+          >
+            <track kind="captions" />
+          </video>
         ) : (
           // Unrecognised URL — show thumbnail with link
           <a

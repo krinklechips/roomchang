@@ -105,7 +105,7 @@ export default async function PriceComparisonPage({
   // Split the combined source note into numbered footnotes: ¹ Australia, ² Singapore.
   // Anchored on the Latin proper noun "Singapore" (kept untranslated across locales)
   // so the boundary is found in every language. Falls back to a single note if absent.
-  const sourceParts = comparisonMeta.sourceNote.split(/\s*(?=Singapore)/i);
+  const sourceParts = comparisonMeta.sourceNote.split(/(?=Singapore)/i);
   const australiaNote = sourceParts[0]?.trim() ?? comparisonMeta.sourceNote;
   const singaporeNote = sourceParts[1]?.trim() ?? "";
 

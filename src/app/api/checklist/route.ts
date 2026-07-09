@@ -3,11 +3,11 @@ import { sendMail } from "@/lib/mailer";
 
 function escHtml(str: string): string {
   return str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#x27;");
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#x27;");
 }
 
 function trunc(str: unknown, maxLen: number): string {
@@ -156,7 +156,7 @@ export async function POST(request: NextRequest) {
     if (!cleanName) {
       return NextResponse.json({ error: "Name is required" }, { status: 400 });
     }
-    if (!cleanEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail)) {
+    if (!cleanEmail || !/^[^\s@]+@[^\s@.]+(?:\.[^\s@.]+)+$/.test(cleanEmail)) {
       return NextResponse.json({ error: "Valid email is required" }, { status: 400 });
     }
 

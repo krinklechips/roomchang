@@ -18,11 +18,11 @@ function buildSlotTimes(): Set<string> {
 
 function escHtml(str: string): string {
   return str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#x27;");
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#x27;");
 }
 
 function trunc(str: unknown, maxLen: number): string {
@@ -70,7 +70,7 @@ function buildEmailHtml({
   notes: string;
 }): string {
   const tableRows = buildRows(rows);
-  const safeNotes = escHtml(notes).replace(/\n/g, "<br>");
+  const safeNotes = escHtml(notes).replaceAll("\n", "<br>");
 
   return `<!DOCTYPE html>
 <html>
@@ -138,7 +138,7 @@ function validateBooking(
 
   if (!cleanName) return { error: "Name is required", status: 400 };
   if (!cleanEmail && !cleanPhone) return { error: "Email or phone is required", status: 400 };
-  if (cleanEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail))
+  if (cleanEmail && !/^[^\s@]+@[^\s@.]+(?:\.[^\s@.]+)+$/.test(cleanEmail))
     return { error: "Invalid email address", status: 400 };
   if (!cleanTreatment) return { error: "Treatment is required", status: 400 };
   if (!isValidDate(cleanDate) || isSunday(cleanDate))

@@ -26,9 +26,9 @@ function useCountUp(target: number, active: boolean, duration = 1200) {
 
 function StatCard({ item, active }: { item: StatItem; active: boolean }) {
   // Extract numeric prefix for count-up animation, keep suffix
-  const match = item.value.match(/^(\d+)(.*)$/);
-  const numericPart = match ? parseInt(match[1], 10) : null;
-  const suffix = match ? match[2] : "";
+  const digits = item.value.match(/^\d+/);
+  const numericPart = digits ? Number.parseInt(digits[0], 10) : null;
+  const suffix = digits ? item.value.slice(digits[0].length) : "";
   const count = useCountUp(numericPart ?? 0, active && numericPart !== null);
   const displayValue = numericPart !== null ? `${count}${suffix}` : item.value;
 
@@ -55,7 +55,6 @@ export function StatsBlock({
   const [active, setActive] = useState(false);
   const ref = useRef<HTMLElement>(null);
   const stats = items?.filter((it) => it.value && it.label) ?? [];
-  if (stats.length === 0) return null;
 
   useEffect(() => {
     const obs = new IntersectionObserver(
@@ -65,6 +64,8 @@ export function StatsBlock({
     if (ref.current) obs.observe(ref.current);
     return () => obs.disconnect();
   }, []);
+
+  if (stats.length === 0) return null;
 
   return (
     <section

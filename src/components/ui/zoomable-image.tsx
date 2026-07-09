@@ -77,24 +77,27 @@ export function ZoomableImage({
       </button>
 
       {open && (
-        // Backdrop closes on click; keyboard users dismiss with Escape (handled
-        // by the keydown listener above).
-        // eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events
         <div
           role="dialog"
           aria-modal="true"
           aria-label={alt || t("dialog.label")}
-          onClick={(e) => {
-            if (e.target === e.currentTarget) setOpen(false);
-          }}
           className="fixed inset-0 z-[120] flex flex-col items-center justify-center bg-black/85 p-4 backdrop-blur-sm sm:p-8"
         >
+          {/* Backdrop — a real button so click-to-close is keyboard-accessible
+              (Escape also closes via the keydown listener above). */}
+          <button
+            type="button"
+            onClick={() => setOpen(false)}
+            aria-label={t("close")}
+            className="absolute inset-0 cursor-zoom-out"
+          />
+
           <button
             ref={closeRef}
             type="button"
             onClick={() => setOpen(false)}
             aria-label={t("close")}
-            className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-white transition hover:bg-white/30"
+            className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-white transition hover:bg-white/30"
           >
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
               <line x1="4" y1="4" x2="16" y2="16" />
@@ -106,10 +109,10 @@ export function ZoomableImage({
           <img
             src={src}
             alt={alt}
-            className="max-h-[86vh] max-w-full rounded-lg object-contain shadow-2xl"
+            className="relative z-10 max-h-[86vh] max-w-full rounded-lg object-contain shadow-2xl"
           />
           {caption && (
-            <p className="mt-3 max-w-2xl text-center text-sm text-white/80">{caption}</p>
+            <p className="relative z-10 mt-3 max-w-2xl text-center text-sm text-white/80">{caption}</p>
           )}
         </div>
       )}

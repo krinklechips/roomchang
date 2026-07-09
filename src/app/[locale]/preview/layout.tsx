@@ -16,7 +16,7 @@ export default function PreviewLayout({
         <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-black text-[0.6rem] text-amber-500">
           P
         </span>
-        Preview Mode — This is a draft. Changes are not visible on the live site.
+        <span>Preview Mode — This is a draft. Changes are not visible on the live site.</span>
       </div>
       {/* Push content below the banner */}
       <div className="pt-9">{children}</div>

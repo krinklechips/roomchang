@@ -5,11 +5,11 @@ import { supabaseAdmin } from "@/lib/supabase-admin";
 /** Escape user-supplied strings before interpolating into HTML email. */
 function escHtml(str: string): string {
   return str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#x27;");
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#x27;");
 }
 
 /** Truncate a string to maxLen characters. */
@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
     const cleanMsg     = trunc(message, 2000).trim();
 
     // Validate email format if provided
-    if (cleanEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail)) {
+    if (cleanEmail && !/^[^\s@]+@[^\s@.]+(?:\.[^\s@.]+)+$/.test(cleanEmail)) {
       return NextResponse.json({ error: "Invalid email address" }, { status: 400 });
     }
 
@@ -115,7 +115,7 @@ export async function POST(request: NextRequest) {
       .join("");
 
     const safeEmail = escHtml(cleanEmail);
-    const safeMsg   = escHtml(cleanMsg).replace(/\n/g, "<br>");
+    const safeMsg   = escHtml(cleanMsg).replaceAll("\n", "<br>");
 
     const html = `
 <!DOCTYPE html>

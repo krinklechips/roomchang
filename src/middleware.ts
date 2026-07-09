@@ -131,13 +131,13 @@ async function verifyPreviewCookie(cookie: string, token: string): Promise<boole
   if (sig.length !== expected.length) return false;
   let match = 0;
   for (let i = 0; i < sig.length; i++) {
-    match |= sig.charCodeAt(i) ^ expected.charCodeAt(i);
+    match |= (sig.codePointAt(i) ?? 0) ^ (expected.codePointAt(i) ?? 0);
   }
   if (match !== 0) return false;
 
   // Check expiry
-  const expiry = parseInt(expiryStr, 10);
-  if (isNaN(expiry) || expiry < Math.floor(Date.now() / 1000)) return false;
+  const expiry = Number.parseInt(expiryStr, 10);
+  if (Number.isNaN(expiry) || expiry < Math.floor(Date.now() / 1000)) return false;
 
   return true;
 }
@@ -238,8 +238,8 @@ export async function middleware(request: NextRequest) {
   // Also add a self-referencing canonical (seo_page_meta is empty, so no conflict).
   if (!isApi) {
     const linkHeader = (response.headers.get("link") ?? "")
-      .replace(/hreflang="kh"/g, 'hreflang="km"')
-      .replace(/hreflang="cn"/g, 'hreflang="zh"');
+      .replaceAll('hreflang="kh"', 'hreflang="km"')
+      .replaceAll('hreflang="cn"', 'hreflang="zh"');
     const canonical = `<https://www.roomchang.com${pathname}>; rel="canonical"`;
     response.headers.set("link", linkHeader ? `${linkHeader}, ${canonical}` : canonical);
   }

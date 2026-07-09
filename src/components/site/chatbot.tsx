@@ -63,8 +63,8 @@ function extractBooking(text: string): BookingData | null {
 function stripBookingBlock(text: string): string {
   return text
     .replace(/<<<BOOKING_DATA>>>[\s\S]*?<<<END_BOOKING>>>/, "")
-    .replace(/<<<SHOW_DATE_PICKER>>>/g, "")
-    .replace(/<<<SHOW_TIME_PICKER>>>/g, "")
+    .replaceAll("<<<SHOW_DATE_PICKER>>>", "")
+    .replaceAll("<<<SHOW_TIME_PICKER>>>", "")
     .trim();
 }
 
@@ -72,10 +72,12 @@ function stripBookingBlock(text: string): string {
  *  asterisks, bullet dashes, headings, or raw URLs). */
 function stripMarkdownForSpeech(text: string): string {
   return text
-    .replace(/\[([^\]]+)\]\((?:[^)]+)\)/g, "$1") // [label](url) → label
-    .replace(/`{1,3}([^`]*)`{1,3}/g, "$1")        // `code` → code
-    .replace(/(\*\*|__)(.*?)\1/g, "$2")            // **bold** / __bold__ → bold
-    .replace(/(\*|_)(.*?)\1/g, "$2")               // *italic* / _italic_ → italic
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")       // [label](url) → label
+    .replace(/`{1,3}([^`]*)`{1,3}/g, "$1")          // `code` → code
+    .replace(/\*\*([^*]+)\*\*/g, "$1")              // **bold** → bold
+    .replace(/__([^_]+)__/g, "$1")                  // __bold__ → bold
+    .replace(/\*([^*]+)\*/g, "$1")                  // *italic* → italic
+    .replace(/_([^_]+)_/g, "$1")                    // _italic_ → italic
     .replace(/^\s{0,3}#{1,6}\s+/gm, "")            // # headings
     .replace(/^\s*[-*•]\s+/gm, "")                  // bullet markers
     .replace(/\n{2,}/g, ". ")                        // paragraph breaks → pause
@@ -114,7 +116,7 @@ function renderMarkdown(
           {lines.map((line, li) => {
             const itemText = line.replace(/^\s*[-*]\s+/, "");
             // Strip bold markers for the click text
-            const plainText = itemText.replace(/\*\*/g, "");
+            const plainText = itemText.replaceAll("**", "");
 
             return (
               <li key={li} className="flex items-start gap-2 text-sm leading-relaxed">
@@ -188,7 +190,7 @@ function renderInline(text: string): ReactNode {
 
   while (remaining.length > 0) {
     // Match either **bold** or [link text](url)
-    const boldMatch = remaining.match(/\*\*(.+?)\*\*/);
+    const boldMatch = remaining.match(/\*\*([^*]+)\*\*/);
     const linkMatch = remaining.match(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/);
 
     // Pick whichever comes first
@@ -1442,11 +1444,8 @@ export function Chatbot() {
       const url = `https://api.whatsapp.com/send/?phone=${CLINIC_WHATSAPP_PHONE}&text=${encodeURIComponent(summary)}`;
       window.open(url, "_blank", "noopener,noreferrer");
     } else {
-      try {
-        navigator.clipboard?.writeText(summary);
-      } catch {
-        /* clipboard blocked — patient can still type their request */
-      }
+      // Fire-and-forget: clipboard may be blocked — patient can still type their request.
+      void navigator.clipboard?.writeText(summary)?.catch(() => {});
       window.open(CLINIC_TELEGRAM_URL, "_blank", "noopener,noreferrer");
     }
 

@@ -40,9 +40,9 @@ function formatDepartment(raw: string): string {
 // Sanitise credentials — replace any stray Cyrillic chars with ASCII equivalents
 function cleanCredentials(raw: string): string {
   return raw
-    .replace(/Д/g, "D")
-    .replace(/С/g, "C")
-    .replace(/В/g, "B");
+    .replaceAll("Д", "D")
+    .replaceAll("С", "C")
+    .replaceAll("В", "B");
 }
 
 function DoctorModal({ doctor, onClose }: { doctor: Doctor; onClose: () => void }) {
@@ -68,17 +68,21 @@ function DoctorModal({ doctor, onClose }: { doctor: Doctor; onClose: () => void 
       aria-modal="true"
       aria-labelledby="doctor-modal-title"
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      onClick={onClose}
     >
-      {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/60" />
+      {/* Backdrop — a real button so click-to-close is keyboard-accessible
+          (Escape also closes via the keydown listener above). */}
+      <button
+        type="button"
+        aria-label={t("close")}
+        onClick={onClose}
+        className="absolute inset-0 cursor-default bg-black/60"
+      />
 
       {/* Panel */}
       <div
         ref={panelRef}
         tabIndex={-1}
         className="relative z-10 max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-3xl bg-white shadow-2xl outline-none"
-        onClick={(e) => e.stopPropagation()}
       >
         {/* Close button */}
         <button

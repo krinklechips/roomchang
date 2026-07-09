@@ -86,7 +86,9 @@ export function VideoGridBlock({
                       poster={item.thumbnail}
                       controls
                       className="h-full w-full object-cover"
-                    />
+                    >
+                      <track kind="captions" />
+                    </video>
                   ) : (
                     <a
                       href={item.url}

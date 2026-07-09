@@ -21,7 +21,7 @@ const dry = process.argv.includes("--dry");
 const xlsxPath = process.argv.find((a, i) => i >= 2 && !a.startsWith("--")) ||
   path.join(ROOT, "docs/translations/roomchang-translations.xlsx");
 
-const placeholders = (s) => [...String(s ?? "").matchAll(/\{[a-zA-Z0-9_]+\}/g)].map((m) => m[0]).sort().join(",");
+const placeholders = (s) => [...String(s ?? "").matchAll(/\{[a-zA-Z0-9_]+\}/g)].map((m) => m[0]).sort((a, b) => a.localeCompare(b)).join(",");
 // Normalize for comparison: Excel/Sheets round-trips newlines as \r\n; collapse
 // to \n and trim so an untouched multi-line cell isn't seen as an edit.
 const norm = (s) => String(s ?? "").replace(/\r\n?/g, "\n").trim();

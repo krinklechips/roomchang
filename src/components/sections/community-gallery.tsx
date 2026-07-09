@@ -90,11 +90,19 @@ export function CommunityGallery({
       {isOpen && (
         <div
           className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 p-4 backdrop-blur-sm"
-          onClick={close}
           role="dialog"
           aria-modal="true"
           aria-label={t("lightbox.dialogLabel", { title })}
         >
+          {/* Backdrop — a real button so click-to-close is keyboard-accessible
+              (Escape/arrows are also handled by the keydown listener above). */}
+          <button
+            type="button"
+            onClick={close}
+            aria-label={t("lightbox.close")}
+            className="absolute inset-0 cursor-zoom-out"
+          />
+
           {/* Close */}
           <button
             type="button"
@@ -121,10 +129,7 @@ export function CommunityGallery({
           )}
 
           {/* Image */}
-          <div
-            className="relative flex max-h-[88vh] max-w-[92vw] flex-col items-center"
-            onClick={(e) => e.stopPropagation()}
-          >
+          <div className="relative flex max-h-[88vh] max-w-[92vw] flex-col items-center">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={images[openIndex]}

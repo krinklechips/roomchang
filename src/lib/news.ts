@@ -204,10 +204,11 @@ const MONTHS: Record<string, number> = {
 
 /** Parse a "Month YYYY" string into a sortable timestamp (0 if unparseable). */
 function parseNewsDate(date: string): number {
-  const m = date.trim().toLowerCase().match(/([a-z]+)\s+(\d{4})/);
-  if (!m) return 0;
-  const month = MONTHS[m[1]] ?? 0;
-  return new Date(Number(m[2]), month, 1).getTime();
+  // Split on whitespace instead of an ambiguous regex: "Month YYYY" → [month, year].
+  const [monStr, yrStr] = date.trim().toLowerCase().split(/\s+/);
+  if (!monStr || !/^\d{4}$/.test(yrStr ?? "")) return 0;
+  const month = MONTHS[monStr] ?? 0;
+  return new Date(Number(yrStr), month, 1).getTime();
 }
 
 /**

@@ -55,7 +55,7 @@ const isInvariant = (e, k, z) => e === k && e === z;
 
 const csvCell = (s) => {
   const v = String(s ?? "");
-  return `"${v.replace(/"/g, '""')}"`;
+  return `"${v.replaceAll('"', '""')}"`;
 };
 
 const rows = [

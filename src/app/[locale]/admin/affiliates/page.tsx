@@ -153,10 +153,11 @@ export default function AffiliatesPage() {
             <h2 className="mb-4 font-serif text-xl text-[#2c1a28]">New Referral Agent</h2>
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.2em] text-[#705569]">
+                <label htmlFor="affiliate-name" className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.2em] text-[#705569]">
                   Agent Name *
                 </label>
                 <input
+                  id="affiliate-name"
                   type="text"
                   required
                   placeholder="e.g. Dr. Somchai"
@@ -173,10 +174,11 @@ export default function AffiliatesPage() {
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.2em] text-[#705569]">
+                <label htmlFor="affiliate-code" className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.2em] text-[#705569]">
                   Referral Code *
                 </label>
                 <input
+                  id="affiliate-code"
                   type="text"
                   required
                   placeholder="e.g. SOMCHAI01"
@@ -188,10 +190,11 @@ export default function AffiliatesPage() {
                 />
               </div>
               <div className="sm:col-span-2">
-                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.2em] text-[#705569]">
+                <label htmlFor="affiliate-notes" className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.2em] text-[#705569]">
                   Notes (optional)
                 </label>
                 <input
+                  id="affiliate-notes"
                   type="text"
                   placeholder="e.g. Instagram influencer — dental niche"
                   value={form.notes}
