@@ -11,8 +11,7 @@ import {
   UserCircle,
   Stethoscope,
   ArrowLeft,
-  Phone,
-  Globe,
+  EnvelopeSimple,
 } from "@phosphor-icons/react/dist/ssr";
 import { SiteShell } from "@/components/site/site-shell";
 import { getWarrantyTerms } from "@/lib/data";
@@ -256,18 +255,13 @@ export default async function WarrantyPage({
                 Our team is happy to explain your coverage and help with any warranty claim.
               </p>
               <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm">
-                {warranty.contactPhone && (
+                {warranty.contactEmail && (
                   <a
-                    href={`tel:${warranty.contactPhone.replaceAll(/\s+/g, "")}`}
+                    href={`mailto:${warranty.contactEmail}`}
                     className="inline-flex items-center gap-2 font-semibold hover:text-white/90"
                   >
-                    <Phone size={16} weight="fill" aria-hidden="true" /> {warranty.contactPhone}
+                    <EnvelopeSimple size={16} weight="fill" aria-hidden="true" /> {warranty.contactEmail}
                   </a>
-                )}
-                {warranty.contactWebsite && (
-                  <span className="inline-flex items-center gap-2 text-white/90">
-                    <Globe size={16} weight="fill" aria-hidden="true" /> {warranty.contactWebsite}
-                  </span>
                 )}
                 <Link
                   href="/contact"

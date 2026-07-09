@@ -206,6 +206,7 @@ export type WarrantyTerms = {
   limitationOfLiability: string | null;
   nonTransferability: string | null;
   clinicalAssessment: string | null;
+  contactEmail: string | null;
   contactWebsite: string | null;
   contactPhone: string | null;
   discrepancyNote: string | null;
@@ -790,6 +791,7 @@ export async function getWarrantyTerms(): Promise<WarrantyTerms | null> {
     limitationOfLiability: data.limitation_of_liability ?? null,
     nonTransferability: data.non_transferability ?? null,
     clinicalAssessment: data.clinical_assessment ?? null,
+    contactEmail: data.contact_email ?? null,
     contactWebsite: data.contact_website ?? null,
     contactPhone: data.contact_phone ?? null,
     discrepancyNote: data.discrepancy_note ?? null,
