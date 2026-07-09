@@ -189,11 +189,9 @@ function renderInline(text: string): ReactNode {
   let key = 0;
 
   while (remaining.length > 0) {
-    // Match either **bold** or [link text](url)
+    // Match either **bold** or [link text](url); handle whichever comes first.
     const boldMatch = remaining.match(/\*\*([^*]+)\*\*/);
     const linkMatch = remaining.match(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/);
-
-    // Pick whichever comes first
     const boldIdx = boldMatch?.index ?? Infinity;
     const linkIdx = linkMatch?.index ?? Infinity;
 
@@ -202,35 +200,29 @@ function renderInline(text: string): ReactNode {
       break;
     }
 
-    if (linkIdx < boldIdx && linkMatch && linkMatch.index !== undefined) {
-      // Link comes first
-      if (linkMatch.index > 0) {
-        parts.push(remaining.slice(0, linkMatch.index));
-      }
-      parts.push(
+    const linkFirst = linkIdx < boldIdx;
+    const m = (linkFirst ? linkMatch : boldMatch)!;
+    const idx = m.index ?? 0;
+
+    if (idx > 0) parts.push(remaining.slice(0, idx)); // plain text before the match
+    parts.push(
+      linkFirst ? (
         <a
           key={key++}
-          href={linkMatch[2]}
+          href={m[2]}
           target="_blank"
           rel="noopener noreferrer"
           className="font-semibold text-[color:var(--brand)] underline decoration-1 underline-offset-2 transition hover:text-[color:var(--brand-deep)]"
         >
-          {linkMatch[1]}
-        </a>,
-      );
-      remaining = remaining.slice(linkMatch.index + linkMatch[0].length);
-    } else if (boldMatch && boldMatch.index !== undefined) {
-      // Bold comes first
-      if (boldMatch.index > 0) {
-        parts.push(remaining.slice(0, boldMatch.index));
-      }
-      parts.push(
+          {m[1]}
+        </a>
+      ) : (
         <strong key={key++} className="font-semibold">
-          {boldMatch[1]}
-        </strong>,
-      );
-      remaining = remaining.slice(boldMatch.index + boldMatch[0].length);
-    }
+          {m[1]}
+        </strong>
+      ),
+    );
+    remaining = remaining.slice(idx + m[0].length);
   }
 
   return parts.length === 1 ? parts[0] : <>{parts}</>;
@@ -1255,6 +1247,55 @@ export function Chatbot() {
     );
   }, []);
 
+  // Read the SSE stream, appending each chunk to the assistant message and
+  // revealing the date/time picker the instant its marker streams in (rather
+  // than waiting for the whole reply). Returns the full raw reply text.
+  async function consumeChatStream(res: Response, assistantId: string): Promise<string> {
+    const reader = res.body!.getReader();
+    const decoder = new TextDecoder();
+    let fullContent = "";
+    let buffer = "";
+    let dateShown = false;
+    let timeShown = false;
+
+    const applyChunk = (chunk: string) => {
+      fullContent += chunk;
+      setMessages((prev) =>
+        prev.map((m) => (m.id === assistantId ? { ...m, content: stripBookingBlock(fullContent) } : m)),
+      );
+      if (!dateShown && hasDatePickerMarker(fullContent)) {
+        dateShown = true;
+        setShowDatePicker(true);
+      }
+      if (!timeShown && hasTimePickerMarker(fullContent)) {
+        timeShown = true;
+        const d = extractIsoDate(fullContent);
+        if (d) setSelectedDate(d);
+        setShowTimePicker(true);
+      }
+    };
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split("\n");
+      buffer = lines.pop() ?? "";
+      for (const line of lines) {
+        if (!line.startsWith("data: ")) continue;
+        const data = line.slice(6).trim();
+        if (data === "[DONE]") break;
+        try {
+          const parsed = JSON.parse(data);
+          if (parsed.content) applyChunk(parsed.content);
+        } catch {
+          // skip malformed SSE line
+        }
+      }
+    }
+    return fullContent;
+  }
+
   async function sendMessage(text: string) {
     if (!text || isStreaming) return;
     if (!started) setStarted(true);
@@ -1290,56 +1331,7 @@ export function Chatbot() {
         throw new Error(`HTTP ${res.status}`);
       }
 
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-      let fullContent = "";
-      let buffer = "";
-      // Reveal the date/time picker the instant its marker streams in, rather
-      // than waiting for the whole reply to finish — removes the calendar lag.
-      let dateShown = false;
-      let timeShown = false;
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split("\n");
-        buffer = lines.pop() ?? "";
-
-        for (const line of lines) {
-          if (!line.startsWith("data: ")) continue;
-          const data = line.slice(6).trim();
-          if (data === "[DONE]") break;
-
-          try {
-            const parsed = JSON.parse(data);
-            if (parsed.content) {
-              fullContent += parsed.content;
-              setMessages((prev) =>
-                prev.map((m) =>
-                  m.id === assistantMsg.id
-                    ? { ...m, content: stripBookingBlock(fullContent) }
-                    : m,
-                ),
-              );
-
-              if (!dateShown && hasDatePickerMarker(fullContent)) {
-                dateShown = true;
-                setShowDatePicker(true);
-              }
-              if (!timeShown && hasTimePickerMarker(fullContent)) {
-                timeShown = true;
-                const d = extractIsoDate(fullContent);
-                if (d) setSelectedDate(d);
-                setShowTimePicker(true);
-              }
-            }
-          } catch {
-            // skip malformed SSE line
-          }
-        }
-      }
+      const fullContent = await consumeChatStream(res, assistantMsg.id);
 
       // Check for booking data
       const booking = extractBooking(fullContent);

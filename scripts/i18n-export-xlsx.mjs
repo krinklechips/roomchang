@@ -97,89 +97,94 @@ const DB_TABLE = {
   international_popular_treatment: "international_popular_treatments",
 };
 
-async function collectDbRows() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !key) { console.warn("⚠ No Supabase creds — UI strings only."); return []; }
-  const supabase = createClient(url, key);
+const isStrArray = (v) => Array.isArray(v) && v.length > 0 && v.every((x) => typeof x === "string");
+
+// Build a single review row for one DB field, or null for non-translatable
+// shapes (objects / arrays-of-blocks are intentionally skipped).
+function buildDbRow(base, enVal, t) {
+  const str = (v) => (typeof v === "string" ? v : "");
+  if (typeof enVal === "string" && enVal.trim()) {
+    return { ...base, store: "db", en: enVal, km: str(t.km), zh: str(t.zh) };
+  }
+  if (isStrArray(enVal)) {
+    // list of strings → one row, items on separate lines (round-trips as an array)
+    return {
+      ...base, store: "db-array",
+      en: enVal.join("\n"),
+      km: isStrArray(t.km) ? t.km.join("\n") : "",
+      zh: isStrArray(t.zh) ? t.zh.join("\n") : "",
+    };
+  }
+  return null;
+}
+
+// All review rows for one entity type (source table + its translations).
+async function collectEntityRows(supabase, entityType, table) {
+  const { data: src, error } = await supabase.from(table).select("*");
+  if (error) { console.warn(`  ⚠ ${table}: ${error.message}`); return []; }
+  const enById = new Map(src.map((r) => [String(r.id), r]));
+
+  const { data: tr } = await supabase
+    .from("content_translations")
+    .select("entity_id, locale, field, value")
+    .eq("entity_type", entityType);
+
+  // Translatable fields = exactly the fields that have ANY translation for this
+  // type. That cleanly excludes names, codes, credentials, prices, slugs, urls.
+  const translatableFields = new Set(EXTRA_TRANSLATABLE[entityType] ?? []);
+  const trBy = new Map(); // `${id}|${field}` -> {km, zh}
+  for (const t of tr ?? []) {
+    translatableFields.add(t.field);
+    const k = `${t.entity_id}|${t.field}`;
+    if (!trBy.has(k)) trBy.set(k, {});
+    trBy.get(k)[t.locale] = t.value;
+  }
+  const sectionLabel = SECTION[entityType] ?? entityType;
+  const tab = dbToTab[entityType];
+
   const rows = [];
-
-  for (const [entityType, table] of Object.entries(DB_TABLE)) {
-    const tab = dbToTab[entityType];
-    if (!tab) continue;
-    const { data: src, error } = await supabase.from(table).select("*");
-    if (error) { console.warn(`  ⚠ ${table}: ${error.message}`); continue; }
-    const enById = new Map(src.map((r) => [String(r.id), r]));
-
-    const { data: tr } = await supabase
-      .from("content_translations")
-      .select("entity_id, locale, field, value")
-      .eq("entity_type", entityType);
-
-    // Translatable fields = exactly the fields that have ANY translation for this
-    // type. That cleanly excludes names, codes, credentials, prices, slugs, urls.
-    const translatableFields = new Set(EXTRA_TRANSLATABLE[entityType] ?? []);
-    const trBy = new Map(); // `${id}|${field}` -> {km, zh}
-    for (const t of tr ?? []) {
-      translatableFields.add(t.field);
-      const k = `${t.entity_id}|${t.field}`;
-      if (!trBy.has(k)) trBy.set(k, {});
-      trBy.get(k)[t.locale] = t.value;
-    }
-    const sectionLabel = SECTION[entityType] ?? entityType;
-
-    const str = (v) => (typeof v === "string" ? v : "");
-    const isStrArray = (v) => Array.isArray(v) && v.length > 0 && v.every((x) => typeof x === "string");
-    for (const [id, row] of enById) {
-      for (const field of translatableFields) {
-        const enVal = row[field];
-        const t = trBy.get(`${id}|${field}`) || {};
-        const base = { tab, section: sectionLabel, ref: `${entityType}:${id}`, field };
-        if (typeof enVal === "string" && enVal.trim()) {
-          // scalar text
-          rows.push({ ...base, store: "db", en: enVal, km: str(t.km), zh: str(t.zh) });
-        } else if (isStrArray(enVal)) {
-          // list of strings → one row, items on separate lines (round-trips as an array)
-          rows.push({
-            ...base, store: "db-array",
-            en: enVal.join("\n"),
-            km: isStrArray(t.km) ? t.km.join("\n") : "",
-            zh: isStrArray(t.zh) ? t.zh.join("\n") : "",
-          });
-        }
-        // objects / arrays-of-blocks (rich long-form) are intentionally skipped
-      }
+  for (const [id, row] of enById) {
+    for (const field of translatableFields) {
+      const base = { tab, section: sectionLabel, ref: `${entityType}:${id}`, field };
+      const dbRow = buildDbRow(base, row[field], trBy.get(`${id}|${field}`) || {});
+      if (dbRow) rows.push(dbRow);
     }
   }
   return rows;
 }
 
-async function run() {
-  const en = flat(read("en")), km = flat(read("km")), zh = flat(read("zh"));
-  const all = [];
+async function collectDbRows() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !key) { console.warn("⚠ No Supabase creds — UI strings only."); return []; }
+  const supabase = createClient(url, key);
 
-  // UI strings — skip invariants (identical across all three = brand/number)
+  const rows = [];
+  for (const [entityType, table] of Object.entries(DB_TABLE)) {
+    if (!dbToTab[entityType]) continue;
+    rows.push(...await collectEntityRows(supabase, entityType, table));
+  }
+  return rows;
+}
+
+// UI strings — skip invariants (identical across all three = brand/number).
+function collectUiRows(en, km, zh) {
+  const rows = [];
   for (const key of Object.keys(en)) {
     const e = en[key];
     if (typeof e !== "string") continue;
     const k = km[key], z = zh[key];
     if (e === k && e === z) continue;
     const top = key.split(".")[0];
-    all.push({
+    rows.push({
       tab: nsToTab[top] ?? "Other", section: SECTION[top] ?? top, store: "ui", ref: key, field: "",
       en: e, km: typeof k === "string" ? k : "", zh: typeof z === "string" ? z : "",
     });
   }
-  all.push(...(await collectDbRows()));
+  return rows;
+}
 
-  // Group by tab
-  const byTab = new Map();
-  for (const r of all) { if (!byTab.has(r.tab)) byTab.set(r.tab, []); byTab.get(r.tab).push(r); }
-  const tabs = tabOrder.filter((t) => byTab.has(t));
-
-  const wb = new ExcelJS.Workbook();
-  wb.creator = "Roomchang i18n export";
-
+function addReadmeSheet(wb, tabCount, stringCount) {
   const idx = wb.addWorksheet("➀ READ ME", { properties: { tabColor: { argb: "FFCC3771" } } });
   idx.columns = [{ width: 3 }, { width: 64 }];
   [
@@ -197,32 +202,49 @@ async function run() {
     ["", "• Brand names (Roomchang, Invisalign, WhatsApp…) stay in English on purpose."],
     ["", "• When done: File → Download → Microsoft Excel (.xlsx) and send it back."],
     ["", ""],
-    ["", `Generated: ${process.env.EXPORT_STAMP || "(stamped on commit)"} · ${tabs.length} tabs · ${all.length} strings`],
+    ["", `Generated: ${process.env.EXPORT_STAMP || "(stamped on commit)"} · ${tabCount} tabs · ${stringCount} strings`],
   ].forEach((r) => idx.addRow(r));
   idx.getRow(1).font = { bold: true, size: 14 };
+}
 
-  for (const tab of tabs) {
-    const ws = wb.addWorksheet(tab.replace(/[:\\/?*\[\]]/g, "-").slice(0, 31));
-    ws.columns = [
-      { header: "store", key: "store", width: 6 },
-      { header: "ref", key: "ref", width: 20 },
-      { header: "field", key: "field", width: 12 },
-      { header: "Section", key: "section", width: 18 },
-      { header: "English (reference — do not edit)", key: "en", width: 52 },
-      { header: "Khmer (edit here)", key: "km", width: 48 },
-      { header: "Chinese (edit here)", key: "zh", width: 48 },
-      { header: "Notes for Claude", key: "notes", width: 22 },
-    ];
-    byTab.get(tab)
-      .sort((a, b) => (a.section === b.section ? 0 : a.section.localeCompare(b.section)))
-      .forEach((r) => ws.addRow({ store: r.store, ref: r.ref, field: r.field, section: r.section, en: r.en, km: r.km, zh: r.zh, notes: "" }));
-    const head = ws.getRow(1);
-    head.font = { bold: true };
-    head.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFF7D6E2" } };
-    ws.views = [{ state: "frozen", ySplit: 1, xSplit: 0 }];
-    for (const c of ["store", "ref", "field"]) ws.getColumn(c).hidden = true;
-    for (const c of ["en", "km", "zh"]) ws.getColumn(c).alignment = { wrapText: true, vertical: "top" };
-  }
+function addTabSheet(wb, tab, rows) {
+  const ws = wb.addWorksheet(tab.replace(/[:\\/?*\[\]]/g, "-").slice(0, 31));
+  ws.columns = [
+    { header: "store", key: "store", width: 6 },
+    { header: "ref", key: "ref", width: 20 },
+    { header: "field", key: "field", width: 12 },
+    { header: "Section", key: "section", width: 18 },
+    { header: "English (reference — do not edit)", key: "en", width: 52 },
+    { header: "Khmer (edit here)", key: "km", width: 48 },
+    { header: "Chinese (edit here)", key: "zh", width: 48 },
+    { header: "Notes for Claude", key: "notes", width: 22 },
+  ];
+  rows
+    .sort((a, b) => (a.section === b.section ? 0 : a.section.localeCompare(b.section)))
+    .forEach((r) => ws.addRow({ store: r.store, ref: r.ref, field: r.field, section: r.section, en: r.en, km: r.km, zh: r.zh, notes: "" }));
+  const head = ws.getRow(1);
+  head.font = { bold: true };
+  head.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFF7D6E2" } };
+  ws.views = [{ state: "frozen", ySplit: 1, xSplit: 0 }];
+  for (const c of ["store", "ref", "field"]) ws.getColumn(c).hidden = true;
+  for (const c of ["en", "km", "zh"]) ws.getColumn(c).alignment = { wrapText: true, vertical: "top" };
+}
+
+async function run() {
+  const all = [
+    ...collectUiRows(flat(read("en")), flat(read("km")), flat(read("zh"))),
+    ...(await collectDbRows()),
+  ];
+
+  // Group by tab
+  const byTab = new Map();
+  for (const r of all) { if (!byTab.has(r.tab)) byTab.set(r.tab, []); byTab.get(r.tab).push(r); }
+  const tabs = tabOrder.filter((t) => byTab.has(t));
+
+  const wb = new ExcelJS.Workbook();
+  wb.creator = "Roomchang i18n export";
+  addReadmeSheet(wb, tabs.length, all.length);
+  for (const tab of tabs) addTabSheet(wb, tab, byTab.get(tab));
 
   const outDir = path.join(ROOT, "docs/translations");
   fs.mkdirSync(outDir, { recursive: true });

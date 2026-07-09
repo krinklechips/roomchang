@@ -16,24 +16,36 @@ const csvPath = process.argv.find((a, i) => i >= 2 && !a.startsWith("--")) ||
   path.join(ROOT, "docs/translations/roomchang-translations.csv");
 
 // --- minimal RFC-4180 CSV parser (quoted fields, doubled quotes, newlines) ---
-function parseCSV(text) {
-  text = text.replace(/^﻿/, "");
-  const rows = [];
-  let row = [], field = "", inQuotes = false;
-  for (let i = 0; i < text.length; i++) {
-    const c = text[i];
-    if (inQuotes) {
-      if (c === '"') {
-        if (text[i + 1] === '"') { field += '"'; i++; }
-        else inQuotes = false;
-      } else field += c;
-    } else if (c === '"') inQuotes = true;
-    else if (c === ",") { row.push(field); field = ""; }
-    else if (c === "\r") { /* skip */ }
-    else if (c === "\n") { row.push(field); rows.push(row); row = []; field = ""; }
-    else field += c;
+// Process a single character. Returns the number of extra characters to skip
+// (1 when consuming an escaped "" quote pair, otherwise 0).
+function stepCSV(state, c, next, endField, endRow) {
+  if (state.inQuotes) {
+    if (c === '"') {
+      if (next === '"') { state.field += '"'; return 1; }
+      state.inQuotes = false;
+      return 0;
+    }
+    state.field += c;
+    return 0;
   }
-  if (field.length || row.length) { row.push(field); rows.push(row); }
+  if (c === '"') state.inQuotes = true;
+  else if (c === ",") endField();
+  else if (c === "\n") endRow();
+  else if (c !== "\r") state.field += c; // bare \r is dropped
+  return 0;
+}
+
+function parseCSV(text) {
+  const src = text.replace(/^﻿/, ""); // strip BOM
+  const rows = [];
+  const state = { row: [], field: "", inQuotes: false };
+  const endField = () => { state.row.push(state.field); state.field = ""; };
+  const endRow = () => { endField(); rows.push(state.row); state.row = []; };
+
+  for (let i = 0; i < src.length; i++) {
+    i += stepCSV(state, src[i], src[i + 1], endField, endRow);
+  }
+  if (state.field.length || state.row.length) endRow();
   return rows;
 }
 

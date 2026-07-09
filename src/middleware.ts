@@ -180,9 +180,12 @@ async function previewAuth(request: NextRequest): Promise<NextResponse | null> {
 
 // ─── Main middleware ───────────────────────────────────────────────────────
 
-export async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-
+/**
+ * Special routes handled before locale routing: the Outlook autodiscover XML,
+ * the old ISO-locale → country-code redirects (km→kh, zh→cn), and the /webmail
+ * shortcut. Returns a response to short-circuit, or null to continue.
+ */
+function handleSpecialRoutes(request: NextRequest, pathname: string): NextResponse | null {
   if (pathname.toLowerCase() === "/autodiscover/autodiscover.xml") {
     return new NextResponse(AUTODISCOVER_XML, {
       status: 200,
@@ -190,9 +193,6 @@ export async function middleware(request: NextRequest) {
     });
   }
 
-  // Locale URLs moved from the ISO language codes to country-style codes
-  // (km → kh, zh → cn). Permanently redirect the old paths so any existing
-  // links keep working.
   const oldLocale = pathname.match(/^\/(km|zh)(\/|$)/);
   if (oldLocale) {
     const renamed: Record<string, string> = { km: "kh", zh: "cn" };
@@ -201,17 +201,62 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url, 308);
   }
 
-  // Webmail shortcut → SiteGround webmail. The old SiteGround "/webmail" domain
-  // redirect stopped firing once the apex moved to Vercel, so recreate it here.
-  // Handle it before locale routing so it isn't rewritten to /en/webmail (500).
+  // Handle /webmail before locale routing so it isn't rewritten to /en/webmail (500).
   const noLocale = pathname.replace(/^\/(en|kh|cn)(?=\/|$)/, "");
   if (noLocale === "/webmail" || noLocale.startsWith("/webmail/")) {
     return NextResponse.redirect("https://sm12.siteground.biz/webmail/mail/", 307);
   }
 
-  // Skip locale routing for API routes (auth checks below use cleanPath)
-  const isApi = pathname.startsWith("/api");
+  return null;
+}
 
+/**
+ * SEO: fix hreflang + add canonical (as HTTP Link headers — Google-supported).
+ * next-intl emits the URL segment as the hreflang value (kh/cn), but those are
+ * COUNTRY codes; hreflang needs ISO language codes, so Khmer→km, Chinese→zh.
+ * Also add a self-referencing canonical (seo_page_meta is empty, so no conflict).
+ */
+function applySeoLinkHeaders(response: NextResponse, pathname: string): void {
+  const linkHeader = (response.headers.get("link") ?? "")
+    .replaceAll('hreflang="kh"', 'hreflang="km"')
+    .replaceAll('hreflang="cn"', 'hreflang="zh"');
+  const canonical = `<https://www.roomchang.com${pathname}>; rel="canonical"`;
+  response.headers.set("link", linkHeader ? `${linkHeader}, ${canonical}` : canonical);
+}
+
+/** Persist a valid ?ref= referral code as a cookie and log the visit (fire-and-forget). */
+function applyReferralCookie(request: NextRequest, response: NextResponse, cleanPath: string): void {
+  const ref = request.nextUrl.searchParams.get("ref");
+  if (!ref || !/^[a-zA-Z0-9_-]{2,40}$/.test(ref)) return;
+
+  response.cookies.set(COOKIE_NAME, ref.toUpperCase(), {
+    httpOnly: true,
+    sameSite: "lax",
+    path: "/",
+    maxAge: COOKIE_MAX_AGE,
+  });
+
+  const logUrl = new URL("/api/referral/visit", request.url);
+  const internalHeaders: Record<string, string> = { "Content-Type": "application/json" };
+  if (process.env.INTERNAL_SECRET) {
+    internalHeaders["x-internal-secret"] = process.env.INTERNAL_SECRET;
+  }
+  fetch(logUrl.toString(), {
+    method: "POST",
+    headers: internalHeaders,
+    body: JSON.stringify({ agent_code: ref.toUpperCase(), page: cleanPath }),
+  }).catch(() => {
+    // Non-critical — ignore errors
+  });
+}
+
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  const special = handleSpecialRoutes(request, pathname);
+  if (special) return special;
+
+  const isApi = pathname.startsWith("/api");
   // Strip locale prefix for auth checks
   const cleanPath = pathname.replace(/^\/(en|kh|cn)/, "") || "/";
 
@@ -228,51 +273,10 @@ export async function middleware(request: NextRequest) {
   }
 
   // Run next-intl middleware for locale routing (skip for API routes)
-  const response = isApi
-    ? NextResponse.next()
-    : intlMiddleware(request);
+  const response = isApi ? NextResponse.next() : intlMiddleware(request);
 
-  // SEO: fix hreflang + add canonical (as HTTP Link headers — Google-supported).
-  // next-intl emits the URL segment as the hreflang value (kh/cn), but those are
-  // COUNTRY codes; hreflang needs ISO language codes, so Khmer→km, Chinese→zh.
-  // Also add a self-referencing canonical (seo_page_meta is empty, so no conflict).
-  if (!isApi) {
-    const linkHeader = (response.headers.get("link") ?? "")
-      .replaceAll('hreflang="kh"', 'hreflang="km"')
-      .replaceAll('hreflang="cn"', 'hreflang="zh"');
-    const canonical = `<https://www.roomchang.com${pathname}>; rel="canonical"`;
-    response.headers.set("link", linkHeader ? `${linkHeader}, ${canonical}` : canonical);
-  }
-
-  // Handle referral cookies
-  const { searchParams } = request.nextUrl;
-  const ref = searchParams.get("ref");
-
-  if (ref && /^[a-zA-Z0-9_-]{2,40}$/.test(ref)) {
-    response.cookies.set(COOKIE_NAME, ref.toUpperCase(), {
-      httpOnly: true,
-      sameSite: "lax",
-      path: "/",
-      maxAge: COOKIE_MAX_AGE,
-    });
-
-    // Log the visit via an internal API route (fire-and-forget)
-    const logUrl = new URL("/api/referral/visit", request.url);
-    const internalHeaders: Record<string, string> = { "Content-Type": "application/json" };
-    if (process.env.INTERNAL_SECRET) {
-      internalHeaders["x-internal-secret"] = process.env.INTERNAL_SECRET;
-    }
-    fetch(logUrl.toString(), {
-      method: "POST",
-      headers: internalHeaders,
-      body: JSON.stringify({
-        agent_code: ref.toUpperCase(),
-        page: cleanPath,
-      }),
-    }).catch(() => {
-      // Non-critical — ignore errors
-    });
-  }
+  if (!isApi) applySeoLinkHeaders(response, pathname);
+  applyReferralCookie(request, response, cleanPath);
 
   return response;
 }
