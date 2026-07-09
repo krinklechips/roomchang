@@ -41,6 +41,7 @@ const FOOTER_STRUCTURE: FooterColumn[] = [
       { tKey: "treatmentCosts", href: "/pricing" },
       { tKey: "priceComparison", href: "/international/price-comparison" },
       { tKey: "implantsComparison", href: "/pricing/implants-comparison" },
+      { tKey: "warranty", href: "/pricing/warranty" },
       { tKey: "clinicalResults", href: "/clinical-results" },
     ],
   },

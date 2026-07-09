@@ -83,7 +83,8 @@
       "treatmentCosts": "Treatment Costs",
       "bookAppointment": "Book Appointment",
       "branches": "Branches",
-      "implantsComparison": "Implants Price Comparison"
+      "implantsComparison": "Implants Price Comparison",
+      "warranty": "Treatment Warranty"
     },
     "social": {
       "whatsapp": "WhatsApp",
@@ -750,7 +751,9 @@
           "treatment": "Photographic records — intraoral"
         }
       }
-    }
+    },
+    "warrantyNote": "Selected treatments — dental implants, crowns, veneers and composite restorations — are covered by our Dental Services Warranty Program.",
+    "warrantyLink": "View warranty terms"
   },
   "clinicalResults": {
     "meta": {

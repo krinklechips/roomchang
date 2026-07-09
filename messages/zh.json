@@ -84,7 +84,8 @@
       "treatmentCosts": "治疗费用",
       "bookAppointment": "预约挂号",
       "branches": "分院地址",
-      "implantsComparison": "种植牙价格对比"
+      "implantsComparison": "种植牙价格对比",
+      "warranty": "治疗保修"
     },
     "social": {
       "whatsapp": "WhatsApp",
@@ -751,7 +752,9 @@
           "treatment": "影像记录 — 口内"
         }
       }
-    }
+    },
+    "warrantyNote": "特定治疗项目 — 种植牙、牙冠、贴面及复合树脂修复 — 均在我们的牙科服务保修计划涵盖范围内。",
+    "warrantyLink": "查看保修条款"
   },
   "clinicalResults": {
     "meta": {

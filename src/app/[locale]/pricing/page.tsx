@@ -212,6 +212,19 @@ export default async function PricingPage({
           </Link>
         </section>
 
+        {/* Warranty link */}
+        <section className="rounded-3xl border border-[color:var(--brand-soft)] bg-[color:var(--surface)] px-6 py-5 sm:flex sm:items-center sm:justify-between sm:gap-4">
+          <p className="text-sm leading-7 text-[color:var(--text-soft)]">
+            {t("warrantyNote")}
+          </p>
+          <Link
+            href="/pricing/warranty"
+            className="mt-3 inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold text-[color:var(--brand)] hover:text-[color:var(--brand-deep)] sm:mt-0"
+          >
+            {t("warrantyLink")} →
+          </Link>
+        </section>
+
         {/* CTA */}
         <section className="rounded-3xl bg-[color:var(--brand)] p-10 text-white sm:p-14">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">

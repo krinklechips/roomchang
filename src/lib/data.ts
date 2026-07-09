@@ -187,6 +187,30 @@ export type SeoPageMeta = {
   noIndex: boolean;
 };
 
+export type WarrantyCoverageRow = {
+  treatment: string;
+  coverage: string;
+  period: string;
+};
+
+export type WarrantyTerms = {
+  intro: string | null;
+  coverageRows: WarrantyCoverageRow[];
+  covered: string[];
+  notCovered: string[];
+  validityConditions: string[];
+  validityNote: string | null;
+  postWarrantyIntro: string | null;
+  postWarrantyBenefit: string | null;
+  postWarrantyTerms: string[];
+  limitationOfLiability: string | null;
+  nonTransferability: string | null;
+  clinicalAssessment: string | null;
+  contactWebsite: string | null;
+  contactPhone: string | null;
+  discrepancyNote: string | null;
+};
+
 // ─── Queries ────────────────────────────────────────────────────────────────
 
 export async function getDoctors(): Promise<Doctor[]> {
@@ -723,6 +747,54 @@ export type Publication = {
   order: number;
   published: boolean;
 };
+
+// ── Warranty Terms ──
+// Single-doc content for /pricing/warranty. Stored in Supabase (`warranty_terms`)
+// so the clinic can edit the legal text without a redeploy. Legal/medical copy is
+// English-only for now (translations held for sign-off), so no i18n overlay here.
+// Fail-loud: returns null on error/missing so the page shows a visible fallback
+// notice rather than blank or fabricated terms.
+export async function getWarrantyTerms(): Promise<WarrantyTerms | null> {
+  const { data, error } = await supabase
+    .from("warranty_terms")
+    .select("*")
+    .eq("published", true)
+    .order("updated_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (error) {
+    console.error("Failed to fetch warranty terms:", error.message);
+    return null;
+  }
+  if (!data) {
+    console.warn("No published warranty_terms row found.");
+    return null;
+  }
+
+  const asStrings = (v: unknown): string[] =>
+    Array.isArray(v) ? v.filter((x): x is string => typeof x === "string") : [];
+
+  return {
+    intro: data.intro ?? null,
+    coverageRows: Array.isArray(data.coverage_rows)
+      ? (data.coverage_rows as WarrantyCoverageRow[])
+      : [],
+    covered: asStrings(data.covered),
+    notCovered: asStrings(data.not_covered),
+    validityConditions: asStrings(data.validity_conditions),
+    validityNote: data.validity_note ?? null,
+    postWarrantyIntro: data.post_warranty_intro ?? null,
+    postWarrantyBenefit: data.post_warranty_benefit ?? null,
+    postWarrantyTerms: asStrings(data.post_warranty_terms),
+    limitationOfLiability: data.limitation_of_liability ?? null,
+    nonTransferability: data.non_transferability ?? null,
+    clinicalAssessment: data.clinical_assessment ?? null,
+    contactWebsite: data.contact_website ?? null,
+    contactPhone: data.contact_phone ?? null,
+    discrepancyNote: data.discrepancy_note ?? null,
+  };
+}
 
 export async function getPublications(): Promise<Publication[]> {
   if (isPayloadSource()) return getPayloadPublications();
