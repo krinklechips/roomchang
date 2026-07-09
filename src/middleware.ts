@@ -232,6 +232,18 @@ export async function middleware(request: NextRequest) {
     ? NextResponse.next()
     : intlMiddleware(request);
 
+  // SEO: fix hreflang + add canonical (as HTTP Link headers — Google-supported).
+  // next-intl emits the URL segment as the hreflang value (kh/cn), but those are
+  // COUNTRY codes; hreflang needs ISO language codes, so Khmer→km, Chinese→zh.
+  // Also add a self-referencing canonical (seo_page_meta is empty, so no conflict).
+  if (!isApi) {
+    const linkHeader = (response.headers.get("link") ?? "")
+      .replace(/hreflang="kh"/g, 'hreflang="km"')
+      .replace(/hreflang="cn"/g, 'hreflang="zh"');
+    const canonical = `<https://www.roomchang.com${pathname}>; rel="canonical"`;
+    response.headers.set("link", linkHeader ? `${linkHeader}, ${canonical}` : canonical);
+  }
+
   // Handle referral cookies
   const { searchParams } = request.nextUrl;
   const ref = searchParams.get("ref");
@@ -269,6 +281,6 @@ export const config = {
   // Run on all pages except Next.js internals, static files, and the root
   // metadata routes (robots.txt / sitemap.xml must NOT be locale-prefixed).
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|.*\\.(?:png|jpg|jpeg|gif|svg|ico|webp|css|js|woff2?|otf|ttf|eot|mp4|webm)).*)",
+    "/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|llms.txt|llms-full.txt|.*\\.(?:png|jpg|jpeg|gif|svg|ico|webp|css|js|woff2?|otf|ttf|eot|mp4|webm)).*)",
   ],
 };

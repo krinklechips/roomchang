@@ -184,6 +184,44 @@ const siteJsonLd = {
       publisher: { "@id": `${SITE}/#organization` },
       inLanguage: ["en", "km", "zh"],
     },
+    {
+      "@type": "FAQPage",
+      "@id": `${SITE}/#faq`,
+      mainEntity: [
+        {
+          q: "Where is Roomchang Dental Hospital located?",
+          a: "Roomchang Dental Hospital is in Phnom Penh, Cambodia, with five branches. The main hospital is at No. 4, Street 184, Sangkat Phsar Thmey 3, Khan Daun Penh, Phnom Penh.",
+        },
+        {
+          q: "How much can international patients save on dental treatment at Roomchang?",
+          a: "International patients typically save 60–80% compared with prices in the US, Australia, and Europe, while receiving care from internationally trained dentists using internationally sourced implants and materials.",
+        },
+        {
+          q: "Is Roomchang Dental Hospital accredited?",
+          a: "Yes. Roomchang was the first dental clinic in Cambodia to earn ISO 9001 certification and currently holds ISO 9001:2015 (UKAS accreditation via Bureau Veritas), re-certified six times. It is also a member of EuroCham Cambodia.",
+        },
+        {
+          q: "What languages does the Roomchang team speak?",
+          a: "The multilingual team serves patients in English, Khmer, Chinese, Japanese, and Malay.",
+        },
+        {
+          q: "Does Roomchang offer dental implants and All-on-4?",
+          a: "Yes. Roomchang provides single and multiple dental implants, All-on-4 and All-on-6 full-arch reconstruction, and full-mouth reconstruction, performed by internationally trained implantologists.",
+        },
+        {
+          q: "How do I book an appointment or get a free treatment plan?",
+          a: "Email contact@roomchang.com, call +855 23 211 338, or use the contact page at roomchang.com/en/contact. International patients can request a free preliminary treatment plan by sending dental records, X-rays, or photos.",
+        },
+        {
+          q: "Does Roomchang have emergency dental services?",
+          a: "Yes. A 24/7 dental emergency line is available at +855 11 811 338.",
+        },
+      ].map(({ q, a }) => ({
+        "@type": "Question",
+        name: q,
+        acceptedAnswer: { "@type": "Answer", text: a },
+      })),
+    },
     ...branchNodes,
   ],
 };
