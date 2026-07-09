@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { useState, useRef, useEffect, useCallback, type ReactNode } from "react";
+import { useState, useRef, useEffect, useCallback, type ReactNode, type RefObject } from "react";
 import {
   CalendarDots,
   ChatCircleDots,
@@ -91,6 +91,19 @@ function hasDatePickerMarker(text: string): boolean {
 
 function hasTimePickerMarker(text: string): boolean {
   return text.includes("<<<SHOW_TIME_PICKER>>>");
+}
+
+// Accumulator threaded through the SSE read loop (see consumeChatStream).
+type SseState = { full: string; shownDate: boolean; shownTime: boolean; done: boolean };
+
+// Extract the text delta from one `data: {...}` SSE line, or null to skip it.
+function parseSseData(data: string): string | null {
+  try {
+    const parsed = JSON.parse(data);
+    return parsed.content ? String(parsed.content) : null;
+  } catch {
+    return null; // malformed SSE line
+  }
 }
 
 // ─── Markdown renderer ─────────────────────────────────────────────────────
@@ -918,6 +931,271 @@ function loadPersistedMessages(): Message[] | null {
   }
 }
 
+// ─── Presentational sub-components ───────────────────────────────────────────
+// Extracted from Chatbot so each owns its own conditional rendering (keeps the
+// parent component's cognitive complexity low). Each re-reads the `chatbot`
+// namespace rather than prop-drilling `t`.
+
+function ChatHeader({
+  voiceMode,
+  voiceState,
+  onClose,
+}: {
+  voiceMode: boolean;
+  voiceState: string;
+  onClose: () => void;
+}) {
+  const t = useTranslations("chatbot");
+  let subtitle = t("panelSubtitle");
+  if (voiceMode) {
+    if (voiceState === "thinking") subtitle = t("voice.thinking");
+    else if (voiceState === "speaking") subtitle = t("voice.speaking");
+    else subtitle = t("voice.listening");
+  }
+  return (
+    <div className="flex shrink-0 items-center justify-between bg-[color:var(--brand)] px-5 py-4">
+      <div className="flex items-center gap-3">
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.15)]">
+          <Image src={ROOMY_AVATAR} alt="Roomy" width={40} height={40} className="h-full w-full object-cover" />
+        </span>
+        <div>
+          <p className="font-display text-lg text-white">{t("panelBrand")}</p>
+          <p className="text-[11px] text-white/70">{subtitle}</p>
+        </div>
+      </div>
+      <div className="flex items-center gap-1">
+        {voiceMode && (
+          <span className="mr-1 flex items-center gap-1.5 rounded-full bg-white/15 px-2.5 py-1 text-[11px] font-medium text-white">
+            <Microphone size={13} weight="fill" className="animate-pulse" />
+            {t("voice.badge")}
+          </span>
+        )}
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label={t("closeAriaLabel")}
+          className="flex h-8 w-8 items-center justify-center rounded-full text-white/70 transition hover:bg-white/20 hover:text-white"
+        >
+          <X size={18} weight="bold" />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function MessageList({
+  started,
+  messages,
+  greetingTyping,
+  scrollRef,
+  onListItemClick,
+}: {
+  started: boolean;
+  messages: Message[];
+  greetingTyping: boolean;
+  scrollRef: RefObject<HTMLDivElement | null>;
+  onListItemClick: (item: string) => void;
+}) {
+  const t = useTranslations("chatbot");
+  return (
+    <div
+      ref={scrollRef}
+      className={`flex-1 overflow-y-auto overscroll-contain px-4 py-4 [touch-action:pan-y] ${
+        started ? "space-y-3" : "flex flex-col items-center justify-center text-center"
+      }`}
+      role="log"
+      aria-live="polite"
+    >
+      {!started ? (
+        <div className="flex max-w-[18rem] flex-col items-center gap-4">
+          <Image
+            src={ROOMY_AVATAR}
+            alt="Roomy"
+            width={96}
+            height={96}
+            className="h-24 w-24 rounded-full bg-white object-cover shadow-[0_8px_28px_rgba(204,55,113,0.25)]"
+            priority
+          />
+          <p className="font-display text-2xl text-[color:var(--text-main)]">{t("welcome.greeting")}</p>
+          <p className="text-sm leading-relaxed text-[color:var(--text-soft)]">{t("welcome.intro")}</p>
+        </div>
+      ) : (
+        messages.map((msg) =>
+          msg.role === "assistant" ? (
+            <div key={msg.id} className="flex gap-2.5">
+              <span className="flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white shadow-[0_1px_4px_rgba(0,0,0,0.12)]">
+                <Image src={ROOMY_AVATAR} alt="Roomy" width={28} height={28} className="h-full w-full object-cover" />
+              </span>
+              <div className="max-w-[85%] rounded-2xl rounded-tl-md bg-[color:var(--surface)] px-4 py-2.5 text-sm leading-relaxed text-[color:var(--text-main)]">
+                {msg.content && !(msg.id === "greeting" && greetingTyping) ? (
+                  renderMarkdown(msg.content, onListItemClick)
+                ) : (
+                  <TypingDots />
+                )}
+              </div>
+            </div>
+          ) : (
+            <div key={msg.id} className="flex justify-end">
+              <div className="max-w-[85%] rounded-2xl rounded-tr-md bg-[color:var(--brand)] px-4 py-2.5 text-sm leading-relaxed text-white">
+                {msg.content}
+              </div>
+            </div>
+          ),
+        )
+      )}
+    </div>
+  );
+}
+
+function ChatComposer({
+  started,
+  voiceMode,
+  voiceState,
+  voiceSupported,
+  input,
+  isStreaming,
+  inputRef,
+  onStart,
+  onToggleVoice,
+  onSend,
+  onInputChange,
+}: {
+  started: boolean;
+  voiceMode: boolean;
+  voiceState: string;
+  voiceSupported: boolean;
+  input: string;
+  isStreaming: boolean;
+  inputRef: RefObject<HTMLInputElement | null>;
+  onStart: () => void;
+  onToggleVoice: () => void;
+  onSend: (e: React.FormEvent) => void;
+  onInputChange: (value: string) => void;
+}) {
+  const t = useTranslations("chatbot");
+
+  if (!started) {
+    return (
+      <div className="shrink-0 border-t border-[color:var(--border-strong)] px-4 py-3">
+        <button
+          type="button"
+          onClick={onStart}
+          className="flex w-full items-center justify-center gap-2 rounded-full bg-[color:var(--brand)] px-6 py-3 text-sm font-bold text-white shadow-[0_4px_16px_rgba(204,55,113,0.3)] transition hover:bg-[color:var(--brand-deep)]"
+        >
+          <ChatCircleDots size={18} weight="fill" /> {t("welcome.start")}
+        </button>
+      </div>
+    );
+  }
+
+  if (voiceMode) {
+    const voiceLabel =
+      voiceState === "thinking"
+        ? t("voice.thinking")
+        : voiceState === "speaking"
+          ? t("voice.speaking")
+          : t("voice.listening");
+    return (
+      <div className="flex shrink-0 items-center gap-3 border-t border-[color:var(--border-strong)] px-4 py-3">
+        <div className="flex flex-1 items-center gap-3 rounded-xl bg-[color:var(--brand-soft)] px-4 py-2.5">
+          <span className="relative flex h-3 w-3 shrink-0">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[color:var(--brand)] opacity-60" />
+            <span className="relative inline-flex h-3 w-3 rounded-full bg-[color:var(--brand)]" />
+          </span>
+          <span className="text-sm font-medium text-[color:var(--brand-deep)]">{voiceLabel}</span>
+        </div>
+        <button
+          type="button"
+          onClick={onToggleVoice}
+          aria-label={t("voice.stopAriaLabel")}
+          className="flex h-10 shrink-0 items-center gap-1.5 rounded-full bg-[color:var(--brand)] px-4 text-sm font-bold text-white transition hover:bg-[color:var(--brand-deep)]"
+        >
+          <X size={16} weight="bold" /> {t("voice.stop")}
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <form
+      onSubmit={onSend}
+      autoComplete="off"
+      data-form-type="other"
+      className="flex shrink-0 items-center gap-2 border-t border-[color:var(--border-strong)] px-4 py-3"
+    >
+      <input
+        ref={inputRef}
+        type="text"
+        name="chatbot-msg"
+        value={input}
+        onChange={(e) => onInputChange(e.target.value)}
+        placeholder={t("inputPlaceholder")}
+        disabled={isStreaming}
+        autoComplete="off"
+        autoCorrect="on"
+        autoCapitalize="sentences"
+        spellCheck
+        enterKeyHint="send"
+        inputMode="text"
+        data-form-type="other"
+        data-lpignore="true"
+        data-1p-ignore
+        className="min-w-0 flex-1 rounded-xl border border-[color:var(--border-strong)] bg-[color:var(--surface)] px-4 py-2.5 text-base text-[color:var(--text-main)] placeholder:text-[color:var(--text-soft)]/50 outline-none transition focus:border-[color:var(--brand-light)] focus:ring-2 focus:ring-[color:var(--brand-soft)] disabled:opacity-50 sm:text-sm"
+      />
+      {voiceSupported && !input.trim() && (
+        <button
+          type="button"
+          onClick={onToggleVoice}
+          disabled={isStreaming}
+          aria-label={t("voice.startAriaLabel")}
+          title={t("voice.startTitle")}
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[color:var(--border-strong)] bg-[color:var(--surface)] text-[color:var(--brand-deep)] transition hover:border-[color:var(--brand-light)] disabled:opacity-40"
+        >
+          <Microphone size={18} />
+        </button>
+      )}
+      <button
+        type="submit"
+        disabled={isStreaming || !input.trim()}
+        aria-label={t("sendAriaLabel")}
+        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[color:var(--brand)] text-white transition hover:bg-[color:var(--brand-deep)] disabled:opacity-40"
+      >
+        {isStreaming ? (
+          <SpinnerGap size={18} className="animate-spin" />
+        ) : (
+          <PaperPlaneTilt size={18} weight="fill" />
+        )}
+      </button>
+    </form>
+  );
+}
+
+function LauncherButton({ open, onToggle }: { open: boolean; onToggle: () => void }) {
+  const t = useTranslations("chatbot");
+  return (
+    <button
+      type="button"
+      onClick={onToggle}
+      aria-label={open ? t("closeAriaLabel") : t("openAriaLabel")}
+      className={`fixed bottom-4 right-4 z-[60] h-12 w-12 items-center justify-center overflow-hidden rounded-full shadow-[0_8px_28px_rgba(204,55,113,0.45)] transition hover:scale-105 active:scale-95 sm:bottom-6 sm:right-6 sm:h-14 sm:w-14 ${
+        open ? "hidden bg-[color:var(--brand-deep)] sm:flex" : "flex bg-white"
+      }`}
+    >
+      {open ? (
+        <X size={22} weight="bold" className="text-white" />
+      ) : (
+        <Image
+          src={ROOMY_AVATAR}
+          alt={t("openAriaLabel")}
+          width={56}
+          height={56}
+          className="h-full w-full object-cover"
+        />
+      )}
+    </button>
+  );
+}
+
 export function Chatbot() {
   const t = useTranslations("chatbot");
   const [open, setOpen] = useState(false);
@@ -1247,53 +1525,50 @@ export function Chatbot() {
     );
   }, []);
 
-  // Read the SSE stream, appending each chunk to the assistant message and
-  // revealing the date/time picker the instant its marker streams in (rather
-  // than waiting for the whole reply). Returns the full raw reply text.
+  // Apply one SSE line to the streaming state: append its delta to the assistant
+  // message and reveal the date/time picker the instant its marker appears.
+  function applySseLine(line: string, assistantId: string, st: SseState): void {
+    if (st.done || !line.startsWith("data: ")) return;
+    const data = line.slice(6).trim();
+    if (data === "[DONE]") {
+      st.done = true;
+      return;
+    }
+    const chunk = parseSseData(data);
+    if (chunk === null) return;
+
+    st.full += chunk;
+    setMessages((prev) =>
+      prev.map((m) => (m.id === assistantId ? { ...m, content: stripBookingBlock(st.full) } : m)),
+    );
+    if (!st.shownDate && hasDatePickerMarker(st.full)) {
+      st.shownDate = true;
+      setShowDatePicker(true);
+    }
+    if (!st.shownTime && hasTimePickerMarker(st.full)) {
+      st.shownTime = true;
+      const d = extractIsoDate(st.full);
+      if (d) setSelectedDate(d);
+      setShowTimePicker(true);
+    }
+  }
+
+  // Read the SSE stream to completion, returning the full raw reply text.
   async function consumeChatStream(res: Response, assistantId: string): Promise<string> {
     const reader = res.body!.getReader();
     const decoder = new TextDecoder();
-    let fullContent = "";
+    const st: SseState = { full: "", shownDate: false, shownTime: false, done: false };
     let buffer = "";
-    let dateShown = false;
-    let timeShown = false;
 
-    const applyChunk = (chunk: string) => {
-      fullContent += chunk;
-      setMessages((prev) =>
-        prev.map((m) => (m.id === assistantId ? { ...m, content: stripBookingBlock(fullContent) } : m)),
-      );
-      if (!dateShown && hasDatePickerMarker(fullContent)) {
-        dateShown = true;
-        setShowDatePicker(true);
-      }
-      if (!timeShown && hasTimePickerMarker(fullContent)) {
-        timeShown = true;
-        const d = extractIsoDate(fullContent);
-        if (d) setSelectedDate(d);
-        setShowTimePicker(true);
-      }
-    };
-
-    while (true) {
+    while (!st.done) {
       const { done, value } = await reader.read();
       if (done) break;
       buffer += decoder.decode(value, { stream: true });
       const lines = buffer.split("\n");
       buffer = lines.pop() ?? "";
-      for (const line of lines) {
-        if (!line.startsWith("data: ")) continue;
-        const data = line.slice(6).trim();
-        if (data === "[DONE]") break;
-        try {
-          const parsed = JSON.parse(data);
-          if (parsed.content) applyChunk(parsed.content);
-        } catch {
-          // skip malformed SSE line
-        }
-      }
+      for (const line of lines) applySseLine(line, assistantId, st);
     }
-    return fullContent;
+    return st.full;
   }
 
   async function sendMessage(text: string) {
@@ -1464,43 +1739,7 @@ export function Chatbot() {
       {open && (
         <div className="fixed inset-x-0 bottom-0 top-[30vh] z-[60] flex flex-col overflow-hidden rounded-t-3xl border-t border-x border-[color:var(--border-strong)] bg-white shadow-[0_-10px_40px_rgba(36,20,31,0.18)] sm:inset-auto sm:bottom-24 sm:right-6 sm:h-[560px] sm:w-[400px] sm:rounded-3xl sm:border sm:shadow-[0_20px_60px_rgba(36,20,31,0.18)] animate-[fadeSlideUp_0.2s_ease-out]">
           {/* Header */}
-          <div className="flex shrink-0 items-center justify-between bg-[color:var(--brand)] px-5 py-4">
-            <div className="flex items-center gap-3">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.15)]">
-                <Image src={ROOMY_AVATAR} alt="Roomy" width={40} height={40} className="h-full w-full object-cover" />
-              </span>
-              <div>
-                <p className="font-display text-lg text-white">{t("panelBrand")}</p>
-                <p className="text-[11px] text-white/70">
-                  {voiceMode
-                    ? voiceState === "recording"
-                      ? t("voice.listening")
-                      : voiceState === "thinking"
-                        ? t("voice.thinking")
-                        : voiceState === "speaking"
-                          ? t("voice.speaking")
-                          : t("voice.listening")
-                    : t("panelSubtitle")}
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center gap-1">
-              {voiceMode && (
-                <span className="mr-1 flex items-center gap-1.5 rounded-full bg-white/15 px-2.5 py-1 text-[11px] font-medium text-white">
-                  <Microphone size={13} weight="fill" className="animate-pulse" />
-                  {t("voice.badge")}
-                </span>
-              )}
-              <button
-                type="button"
-                onClick={() => setOpen(false)}
-                aria-label={t("closeAriaLabel")}
-                className="flex h-8 w-8 items-center justify-center rounded-full text-white/70 transition hover:bg-white/20 hover:text-white"
-              >
-                <X size={18} weight="bold" />
-              </button>
-            </div>
-          </div>
+          <ChatHeader voiceMode={voiceMode} voiceState={voiceState} onClose={() => setOpen(false)} />
 
           {/* Talk to a human — always reachable, at any point in the chat */}
           <div className="flex shrink-0 items-center justify-between gap-2 border-b border-[color:var(--border-strong)] bg-[color:var(--surface)] px-4 py-2">
@@ -1525,54 +1764,13 @@ export function Chatbot() {
           </div>
 
           {/* Messages — or the welcome / Start gate before the chat begins */}
-          <div
-            ref={scrollRef}
-            className={`flex-1 overflow-y-auto overscroll-contain px-4 py-4 [touch-action:pan-y] ${
-              started ? "space-y-3" : "flex flex-col items-center justify-center text-center"
-            }`}
-            role="log"
-            aria-live="polite"
-          >
-            {!started ? (
-              <div className="flex max-w-[18rem] flex-col items-center gap-4">
-                <Image
-                  src={ROOMY_AVATAR}
-                  alt="Roomy"
-                  width={96}
-                  height={96}
-                  className="h-24 w-24 rounded-full bg-white object-cover shadow-[0_8px_28px_rgba(204,55,113,0.25)]"
-                  priority
-                />
-                <p className="font-display text-2xl text-[color:var(--text-main)]">{t("welcome.greeting")}</p>
-                <p className="text-sm leading-relaxed text-[color:var(--text-soft)]">
-                  {t("welcome.intro")}
-                </p>
-              </div>
-            ) : (
-              messages.map((msg) =>
-              msg.role === "assistant" ? (
-                <div key={msg.id} className="flex gap-2.5">
-                  <span className="flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white shadow-[0_1px_4px_rgba(0,0,0,0.12)]">
-                    <Image src={ROOMY_AVATAR} alt="Roomy" width={28} height={28} className="h-full w-full object-cover" />
-                  </span>
-                  <div className="max-w-[85%] rounded-2xl rounded-tl-md bg-[color:var(--surface)] px-4 py-2.5 text-sm leading-relaxed text-[color:var(--text-main)]">
-                    {msg.content && !(msg.id === "greeting" && greetingTyping) ? (
-                      renderMarkdown(msg.content, handleListItemClick)
-                    ) : (
-                      <TypingDots />
-                    )}
-                  </div>
-                </div>
-              ) : (
-                <div key={msg.id} className="flex justify-end">
-                  <div className="max-w-[85%] rounded-2xl rounded-tr-md bg-[color:var(--brand)] px-4 py-2.5 text-sm leading-relaxed text-white">
-                    {msg.content}
-                  </div>
-                </div>
-              ),
-              )
-            )}
-          </div>
+          <MessageList
+            started={started}
+            messages={messages}
+            greetingTyping={greetingTyping}
+            scrollRef={scrollRef}
+            onListItemClick={handleListItemClick}
+          />
 
           {/* Date picker — appears the moment the AI asks for a preferred date */}
           {showDatePicker && (
@@ -1617,94 +1815,21 @@ export function Chatbot() {
             />
           )}
 
-          {/* Start gate — before the chat begins, a single deliberate entry point
-              (no OpenAI call fires until the user starts) */}
-          {!started ? (
-            <div className="shrink-0 border-t border-[color:var(--border-strong)] px-4 py-3">
-              <button
-                type="button"
-                onClick={handleStart}
-                className="flex w-full items-center justify-center gap-2 rounded-full bg-[color:var(--brand)] px-6 py-3 text-sm font-bold text-white shadow-[0_4px_16px_rgba(204,55,113,0.3)] transition hover:bg-[color:var(--brand-deep)]"
-              >
-                <ChatCircleDots size={18} weight="fill" /> {t("welcome.start")}
-              </button>
-            </div>
-          ) : voiceMode ? (
-            <div className="flex shrink-0 items-center gap-3 border-t border-[color:var(--border-strong)] px-4 py-3">
-              <div className="flex flex-1 items-center gap-3 rounded-xl bg-[color:var(--brand-soft)] px-4 py-2.5">
-                <span className="relative flex h-3 w-3 shrink-0">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[color:var(--brand)] opacity-60" />
-                  <span className="relative inline-flex h-3 w-3 rounded-full bg-[color:var(--brand)]" />
-                </span>
-                <span className="text-sm font-medium text-[color:var(--brand-deep)]">
-                  {voiceState === "thinking"
-                    ? t("voice.thinking")
-                    : voiceState === "speaking"
-                      ? t("voice.speaking")
-                      : t("voice.listening")}
-                </span>
-              </div>
-              <button
-                type="button"
-                onClick={toggleVoiceMode}
-                aria-label={t("voice.stopAriaLabel")}
-                className="flex h-10 shrink-0 items-center gap-1.5 rounded-full bg-[color:var(--brand)] px-4 text-sm font-bold text-white transition hover:bg-[color:var(--brand-deep)]"
-              >
-                <X size={16} weight="bold" /> {t("voice.stop")}
-              </button>
-            </div>
-          ) : (
-            <form
-              onSubmit={handleSend}
-              autoComplete="off"
-              data-form-type="other"
-              className="flex shrink-0 items-center gap-2 border-t border-[color:var(--border-strong)] px-4 py-3"
-            >
-              <input
-                ref={inputRef}
-                type="text"
-                name="chatbot-msg"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder={t("inputPlaceholder")}
-                disabled={isStreaming}
-                autoComplete="off"
-                autoCorrect="on"
-                autoCapitalize="sentences"
-                spellCheck
-                enterKeyHint="send"
-                inputMode="text"
-                data-form-type="other"
-                data-lpignore="true"
-                data-1p-ignore
-                className="min-w-0 flex-1 rounded-xl border border-[color:var(--border-strong)] bg-[color:var(--surface)] px-4 py-2.5 text-base text-[color:var(--text-main)] placeholder:text-[color:var(--text-soft)]/50 outline-none transition focus:border-[color:var(--brand-light)] focus:ring-2 focus:ring-[color:var(--brand-soft)] disabled:opacity-50 sm:text-sm"
-              />
-              {voiceSupported && !input.trim() && (
-                <button
-                  type="button"
-                  onClick={toggleVoiceMode}
-                  disabled={isStreaming}
-                  aria-label={t("voice.startAriaLabel")}
-                  title={t("voice.startTitle")}
-                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[color:var(--border-strong)] bg-[color:var(--surface)] text-[color:var(--brand-deep)] transition hover:border-[color:var(--brand-light)] disabled:opacity-40"
-                >
-                  <Microphone size={18} />
-                </button>
-              )}
-              <button
-                type="submit"
-                disabled={isStreaming || !input.trim()}
-                aria-label={t("sendAriaLabel")}
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[color:var(--brand)] text-white transition hover:bg-[color:var(--brand-deep)] disabled:opacity-40"
-              >
-                {isStreaming ? (
-                  <SpinnerGap size={18} className="animate-spin" />
-                ) : (
-                  <PaperPlaneTilt size={18} weight="fill" />
-                )}
-              </button>
-            </form>
-          )}
+          {/* Footer: Start gate → voice controls → text composer (no OpenAI call
+              fires until the user starts) */}
+          <ChatComposer
+            started={started}
+            voiceMode={voiceMode}
+            voiceState={voiceState}
+            voiceSupported={voiceSupported}
+            input={input}
+            isStreaming={isStreaming}
+            inputRef={inputRef}
+            onStart={handleStart}
+            onToggleVoice={toggleVoiceMode}
+            onSend={handleSend}
+            onInputChange={setInput}
+          />
         </div>
       )}
 
@@ -1746,27 +1871,8 @@ export function Chatbot() {
         </div>
       )}
 
-      {/* Chat bubble */}
-      <button
-        type="button"
-        onClick={() => setOpen((o) => !o)}
-        aria-label={open ? t("closeAriaLabel") : t("openAriaLabel")}
-        className={`fixed bottom-4 right-4 z-[60] h-12 w-12 items-center justify-center overflow-hidden rounded-full shadow-[0_8px_28px_rgba(204,55,113,0.45)] transition hover:scale-105 active:scale-95 sm:bottom-6 sm:right-6 sm:h-14 sm:w-14 ${
-          open ? "hidden bg-[color:var(--brand-deep)] sm:flex" : "flex bg-white"
-        }`}
-      >
-        {open ? (
-          <X size={22} weight="bold" className="text-white" />
-        ) : (
-          <Image
-            src={ROOMY_AVATAR}
-            alt={t("openAriaLabel")}
-            width={56}
-            height={56}
-            className="h-full w-full object-cover"
-          />
-        )}
-      </button>
+      {/* Chat bubble launcher */}
+      <LauncherButton open={open} onToggle={() => setOpen((o) => !o)} />
     </>
   );
 }
