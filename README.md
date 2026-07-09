@@ -2,7 +2,9 @@
 
 Official website for Roomchang Dental Hospital — Cambodia's leading dental group since 1996, with five locations across Phnom Penh.
 
-**Production:** [roomchang.vercel.app](https://roomchang.vercel.app)
+**Production:** [roomchang.com](https://www.roomchang.com) (hosted on Vercel)
+
+Available in three languages — English (`/en`), Khmer (`/kh`), and Chinese (`/cn`).
 
 ## Tech Stack
 
@@ -11,6 +13,7 @@ Official website for Roomchang Dental Hospital — Cambodia's leading dental gro
 | Framework | Next.js 16 (App Router, Turbopack) |
 | Language | TypeScript 5 |
 | UI | React 19, Tailwind CSS 4, Lucide icons |
+| i18n | next-intl (English / Khmer / Chinese) |
 | Database | Supabase (PostgreSQL) |
 | ORM | Prisma 7 |
 | Email | Resend |
@@ -89,7 +92,9 @@ src/
 - **Enquiry system** — form submissions saved to Supabase + email notifications via Resend
 - **Referral tracking** — agent referral codes via cookie-based attribution
 - **CMS preview** — draft content preview at `/preview/*` routes with ISR revalidation
-- **SEO** — dynamic metadata, sitemap generation, Open Graph tags
+- **Multilingual** — English / Khmer / Chinese routing via next-intl, locale-prefixed URLs (`/en`, `/kh`, `/cn`), old `/km` and `/zh` paths 308-redirected
+- **SEO** — dynamic metadata, sitemap generation, Open Graph tags, `hreflang` alternates (ISO language codes) and self-referencing canonicals emitted as HTTP `Link` headers, and rich JSON-LD (`Dentist`/`MedicalOrganization` with per-branch nodes, `WebSite`, `FAQPage`)
+- **AEO / AI discoverability** — `llms.txt` (site map, [llmstxt.org](https://llmstxt.org)) and `llms-full.txt` (extended knowledge file) so answer engines cite the site accurately
 - **Responsive design** — mobile-first with tailored layouts across breakpoints
 
 ## Data Architecture
