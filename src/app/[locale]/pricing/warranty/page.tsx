@@ -11,6 +11,7 @@ import {
   UserCircle,
   Stethoscope,
   ArrowLeft,
+  ArrowRight,
   EnvelopeSimple,
 } from "@phosphor-icons/react/dist/ssr";
 import { SiteShell } from "@/components/site/site-shell";
@@ -254,20 +255,20 @@ export default async function WarrantyPage({
               <p className="mt-2 max-w-xl text-sm leading-7 text-white/80">
                 Our team is happy to explain your coverage and help with any warranty claim.
               </p>
-              <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm">
+              <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 {warranty.contactEmail && (
                   <a
                     href={`mailto:${warranty.contactEmail}`}
-                    className="inline-flex items-center gap-2 font-semibold hover:text-white/90"
+                    className="inline-flex items-center gap-2 text-sm font-semibold text-white transition hover:text-white/80"
                   >
-                    <EnvelopeSimple size={16} weight="fill" aria-hidden="true" /> {warranty.contactEmail}
+                    <EnvelopeSimple size={18} weight="fill" aria-hidden="true" /> {warranty.contactEmail}
                   </a>
                 )}
                 <Link
                   href="/contact"
-                  className="inline-flex shrink-0 items-center rounded-full bg-white px-6 py-3 text-sm font-bold text-[color:var(--brand)] transition hover:bg-white/90"
+                  className="inline-flex shrink-0 items-center justify-center gap-1.5 self-start rounded-full bg-white px-6 py-3 text-sm font-bold text-[color:var(--brand)] shadow-sm transition hover:bg-white/90 sm:self-auto"
                 >
-                  Contact Us
+                  Contact Us <ArrowRight size={15} weight="bold" aria-hidden="true" />
                 </Link>
               </div>
             </section>

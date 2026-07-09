@@ -16,6 +16,9 @@ import {
   Syringe,
   Heart,
   CaretDown,
+  Scales,
+  ShieldCheck,
+  ArrowRight,
 } from "@phosphor-icons/react/dist/ssr";
 import type { Icon } from "@phosphor-icons/react/dist/lib/types";
 import { SiteShell } from "@/components/site/site-shell";
@@ -199,29 +202,44 @@ export default async function PricingPage({
           </div>
         </section>
 
-        {/* International comparison link */}
-        <section className="rounded-3xl border border-[color:var(--brand-soft)] bg-[color:var(--surface)] px-6 py-5 sm:flex sm:items-center sm:justify-between sm:gap-4">
-          <p className="text-sm leading-7 text-[color:var(--text-soft)]">
-            {t("internationalCompareNote")}
-          </p>
+        {/* Quick links — international comparison + warranty */}
+        <section className="grid gap-4 sm:grid-cols-2">
           <Link
             href="/international/price-comparison"
-            className="mt-3 inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold text-[color:var(--brand)] hover:text-[color:var(--brand-deep)] sm:mt-0"
+            className="group flex flex-col gap-4 rounded-3xl border border-[color:var(--brand-soft)] bg-white p-6 shadow-[0_8px_24px_rgba(57,28,45,0.05)] transition hover:border-[color:var(--brand-light)] hover:shadow-[0_14px_36px_rgba(57,28,45,0.10)]"
           >
-            {t("internationalCompareLink")} →
+            <span
+              className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[color:var(--surface-strong)] text-[color:var(--brand-deep)]"
+              aria-hidden="true"
+            >
+              <Scales size={24} weight="duotone" />
+            </span>
+            <p className="text-sm leading-6 text-[color:var(--text-soft)]">
+              {t("internationalCompareNote")}
+            </p>
+            <span className="mt-auto inline-flex items-center gap-1.5 text-sm font-semibold text-[color:var(--brand)] transition group-hover:text-[color:var(--brand-deep)]">
+              {t("internationalCompareLink")}
+              <ArrowRight size={15} weight="bold" className="transition-transform group-hover:translate-x-0.5" />
+            </span>
           </Link>
-        </section>
 
-        {/* Warranty link */}
-        <section className="rounded-3xl border border-[color:var(--brand-soft)] bg-[color:var(--surface)] px-6 py-5 sm:flex sm:items-center sm:justify-between sm:gap-4">
-          <p className="text-sm leading-7 text-[color:var(--text-soft)]">
-            {t("warrantyNote")}
-          </p>
           <Link
             href="/pricing/warranty"
-            className="mt-3 inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold text-[color:var(--brand)] hover:text-[color:var(--brand-deep)] sm:mt-0"
+            className="group flex flex-col gap-4 rounded-3xl border border-[color:var(--brand-soft)] bg-white p-6 shadow-[0_8px_24px_rgba(57,28,45,0.05)] transition hover:border-[color:var(--brand-light)] hover:shadow-[0_14px_36px_rgba(57,28,45,0.10)]"
           >
-            {t("warrantyLink")} →
+            <span
+              className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[color:var(--surface-strong)] text-[color:var(--brand-deep)]"
+              aria-hidden="true"
+            >
+              <ShieldCheck size={24} weight="duotone" />
+            </span>
+            <p className="text-sm leading-6 text-[color:var(--text-soft)]">
+              {t("warrantyNote")}
+            </p>
+            <span className="mt-auto inline-flex items-center gap-1.5 text-sm font-semibold text-[color:var(--brand)] transition group-hover:text-[color:var(--brand-deep)]">
+              {t("warrantyLink")}
+              <ArrowRight size={15} weight="bold" className="transition-transform group-hover:translate-x-0.5" />
+            </span>
           </Link>
         </section>
 

@@ -268,8 +268,17 @@ function extractIsoDate(text: string): string | null {
   return match ? match[0] : null;
 }
 
+// Generate a message id (React key + a handle to update the streaming reply).
+// Not security-sensitive, but we use the Web Crypto RNG so there are no id
+// collisions and no weak-PRNG warnings.
 function uid() {
-  return Math.random().toString(36).slice(2, 9);
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return crypto.randomUUID();
+  }
+  // Fallback for non-secure contexts where randomUUID is unavailable.
+  const buf = new Uint32Array(2);
+  crypto.getRandomValues(buf);
+  return buf[0].toString(36) + buf[1].toString(36);
 }
 
 // ─── Typing dots ─────────────────────────────────────────────────────────────
