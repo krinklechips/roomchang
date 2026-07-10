@@ -268,6 +268,32 @@ function extractIsoDate(text: string): string | null {
   return match ? match[0] : null;
 }
 
+// Bookable window on the client (mirrors the /api/book server guard): tomorrow
+// through ~1 year out, in the visitor's local time. YYYY-MM-DD strings compare
+// lexicographically.
+function clientBookableWindow(): { min: string; max: string } {
+  const now = new Date();
+  const min = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  min.setDate(min.getDate() + 1); // tomorrow
+  const max = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  max.setFullYear(max.getFullYear() + 1);
+  return { min: formatDateForApi(min), max: formatDateForApi(max) };
+}
+
+function isBookableClientDate(value: string | null | undefined): boolean {
+  if (!value || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const { min, max } = clientBookableWindow();
+  return value >= min && value <= max;
+}
+
+// Like extractIsoDate but only returns a date inside the bookable window, so a
+// past/hallucinated date in the user's or the AI's text never becomes the
+// selected date.
+function extractBookableIsoDate(text: string): string | null {
+  const iso = extractIsoDate(text);
+  return iso && isBookableClientDate(iso) ? iso : null;
+}
+
 // Generate a message id (React key + a handle to update the streaming reply).
 // Not security-sensitive, but we use the Web Crypto RNG so there are no id
 // collisions and no weak-PRNG warnings.
@@ -639,6 +665,7 @@ function DatePicker({ onSelect }: { onSelect: (date: string) => void }) {
       <div className="grid grid-cols-6 gap-1">
         {daysInMonth.map((date) => {
           if (!date) return null;
+          if (date < today) return null; // don't render past days (only occurs in the current month)
           const dow = date.getDay(); // Mon=1 ... Sat=6
           const col = dow === 0 ? 6 : dow; // shouldn't happen (Sundays skipped) but just in case
           const selectable = isDateSelectable(date);
@@ -1556,7 +1583,7 @@ export function Chatbot() {
     }
     if (!st.shownTime && hasTimePickerMarker(st.full)) {
       st.shownTime = true;
-      const d = extractIsoDate(st.full);
+      const d = extractBookableIsoDate(st.full);
       if (d) setSelectedDate(d);
       setShowTimePicker(true);
     }
@@ -1584,7 +1611,7 @@ export function Chatbot() {
     if (!text || isStreaming) return;
     if (!started) setStarted(true);
 
-    const isoDate = extractIsoDate(text);
+    const isoDate = extractBookableIsoDate(text);
     if (isoDate) {
       setSelectedDate(isoDate);
     }
@@ -1617,9 +1644,18 @@ export function Chatbot() {
 
       const fullContent = await consumeChatStream(res, assistantMsg.id);
 
-      // Check for booking data
+      // Check for booking data. Guard the date: if the model produced a past /
+      // out-of-range date, don't show the confirm card — reopen the date picker
+      // and ask the patient to choose a valid date (the server rejects it too).
       const booking = extractBooking(fullContent);
-      if (booking) {
+      if (booking && !isBookableClientDate(booking.date)) {
+        setSelectedDate(null);
+        setShowDatePicker(true);
+        setMessages((prev) => [
+          ...prev,
+          { id: uid(), role: "assistant", content: t("booking.invalidDate") },
+        ]);
+      } else if (booking) {
         setPendingBooking(booking);
       }
     } catch (err) {

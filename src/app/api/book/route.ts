@@ -40,6 +40,29 @@ function isSunday(value: string): boolean {
   return new Date(`${value}T00:00:00.000Z`).getUTCDay() === 0;
 }
 
+const CLINIC_TZ = "Asia/Phnom_Penh";
+
+// The bookable window in clinic-local time: tomorrow through ~1 year out.
+// YYYY-MM-DD strings compare correctly with lexicographic ordering.
+function bookableWindow(): { min: string; max: string } {
+  const todayLocal = new Intl.DateTimeFormat("en-CA", {
+    timeZone: CLINIC_TZ, year: "numeric", month: "2-digit", day: "2-digit",
+  }).format(new Date());
+  const [y, m, d] = todayLocal.split("-").map(Number);
+  const base = Date.UTC(y, m - 1, d);
+  const min = new Date(base + 86_400_000).toISOString().slice(0, 10); // tomorrow
+  const maxDate = new Date(base);
+  maxDate.setUTCFullYear(maxDate.getUTCFullYear() + 1);
+  return { min, max: maxDate.toISOString().slice(0, 10) };
+}
+
+/** Reject bookings for the past (or > ~1 year out) even if the date string is
+ *  otherwise valid — the authoritative guard against stale/hallucinated dates. */
+function isBookableDate(value: string): boolean {
+  const { min, max } = bookableWindow();
+  return value >= min && value <= max;
+}
+
 function normalizeTime(value: string): string {
   const match = value.match(/^(\d{2}):(\d{2})(?::\d{2})?$/);
   if (!match) return "";
@@ -143,6 +166,8 @@ function validateBooking(
   if (!cleanTreatment) return { error: "Treatment is required", status: 400 };
   if (!isValidDate(cleanDate) || isSunday(cleanDate))
     return { error: "Valid Monday-Saturday date is required", status: 400 };
+  if (!isBookableDate(cleanDate))
+    return { error: "Please choose a future date within the next year", status: 400 };
   if (!SLOT_TIMES.has(cleanTime)) return { error: "Valid appointment time is required", status: 400 };
 
   return {

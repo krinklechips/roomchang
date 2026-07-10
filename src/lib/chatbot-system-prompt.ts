@@ -1,6 +1,20 @@
 import type { ChatbotContext } from "./chatbot-context";
 
+const CLINIC_TZ = "Asia/Phnom_Penh";
+
 export function buildSystemPrompt(ctx: ChatbotContext): string {
+  // Anchor the model to the clinic's current date so it never defaults booking
+  // dates to a training-era year (e.g. 2023). Computed in Phnom Penh time.
+  const now = new Date();
+  const todayIso = new Intl.DateTimeFormat("en-CA", {
+    timeZone: CLINIC_TZ, year: "numeric", month: "2-digit", day: "2-digit",
+  }).format(now);
+  const todayHuman = new Intl.DateTimeFormat("en-US", {
+    timeZone: CLINIC_TZ, weekday: "long", year: "numeric", month: "long", day: "numeric",
+  }).format(now);
+  const [ty, tm, td] = todayIso.split("-").map(Number);
+  const tomorrowIso = new Date(Date.UTC(ty, tm - 1, td) + 86_400_000).toISOString().slice(0, 10);
+
   const serviceList = ctx.services.map((s) => `- ${s}`).join("\n");
   const doctorList = ctx.doctors
     .map((d) => {
@@ -162,7 +176,7 @@ When a patient wants to book an appointment, collect the following information c
 
 IMPORTANT: Only output <<<SHOW_DATE_PICKER>>> ONCE during the booking flow, when you first ask for the date. Do NOT repeat it if the patient has already selected a date.
 IMPORTANT: Only output <<<SHOW_TIME_PICKER>>> ONCE during the booking flow, after the patient has selected or provided a date. Do NOT repeat it if the patient has already selected a time.
-IMPORTANT: The booking date must be recorded as YYYY-MM-DD and the booking time as HH:MM.
+IMPORTANT: Today's date is ${todayHuman} (${todayIso}) in Phnom Penh, Cambodia. The booking date must be recorded as YYYY-MM-DD and the booking time as HH:MM. The date must ALWAYS be in the future — ${tomorrowIso} (tomorrow) or later, and within the next 12 months. NEVER record today or any past date, and never a past year. If the patient gives a day or month without a year, use the NEXT upcoming occurrence. The clinic is closed on Sundays, so never book a Sunday.
 
 Once you have the required fields (name, contact, treatment, date, time), confirm the details with the patient. Then output a booking block in EXACTLY this format:
 

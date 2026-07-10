@@ -63,6 +63,24 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Invalid email address" }, { status: 400 });
     }
 
+    // Data hygiene: if the preferred date is a full calendar date, reject a past
+    // or far-future one (free-text like "next week" is left untouched). Enquiries
+    // allow "today"; only bookings require a strictly-future slot.
+    if (/^\d{4}-\d{2}-\d{2}$/.test(cleanDate)) {
+      const todayPP = new Intl.DateTimeFormat("en-CA", {
+        timeZone: "Asia/Phnom_Penh", year: "numeric", month: "2-digit", day: "2-digit",
+      }).format(new Date());
+      const [y, m, d] = todayPP.split("-").map(Number);
+      const maxDate = new Date(Date.UTC(y, m - 1, d));
+      maxDate.setUTCFullYear(maxDate.getUTCFullYear() + 1);
+      if (cleanDate < todayPP || cleanDate > maxDate.toISOString().slice(0, 10)) {
+        return NextResponse.json(
+          { error: "Please choose a preferred date that isn't in the past." },
+          { status: 400 },
+        );
+      }
+    }
+
     // Read referral cookie if present
     const agent_code = request.cookies.get("rc_ref")?.value ?? null;
 

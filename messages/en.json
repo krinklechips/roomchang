@@ -904,7 +904,8 @@
         "time": "Time",
         "branch": "Branch",
         "doctor": "Doctor"
-      }
+      },
+      "invalidDate": "That date isn't available to book. Please pick an upcoming date from the calendar. 📅"
     },
     "datePicker": {
       "heading": "Pick a date",

@@ -905,7 +905,8 @@
         "time": "时间",
         "branch": "分院",
         "doctor": "医生"
-      }
+      },
+      "invalidDate": "该日期无法预约。请从日历中选择一个未来的日期。📅"
     },
     "datePicker": {
       "heading": "选择日期",
