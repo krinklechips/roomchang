@@ -60,7 +60,7 @@ export const BRANCHES: Branch[] = [
     address: "No. 10, Block 252, Bassac Garden City",
     addressLine2: "Chamkarmorn, Phnom Penh, Cambodia",
     hours: "Mon–Sat 08:00–17:30",
-    phone: "+855 78 911 338",
+    phone: "+855 78 811 338",
     description:
       "Serving the Bassac and BKK residential communities, this branch offers specialist consultations and treatments in a quiet, accessible setting.",
     imageSrc: "/about/facilities/2014.jpg",
