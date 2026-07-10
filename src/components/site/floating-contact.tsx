@@ -52,7 +52,7 @@ const CONTACTS = [
   {
     id: "enquiry",
     tKey: "enquiry",
-    href: "/contact",
+    href: "/contact#enquiry-form",
     iconBg: "bg-[color:var(--brand-soft)]",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-[color:var(--brand-deep)]">

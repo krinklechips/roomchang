@@ -139,7 +139,7 @@ export default async function NewsPage({
                 {t("stayConnectedBody")}
               </p>
             </div>
-            <Link href="/contact" className="btn-primary shrink-0">
+            <Link href="/contact#enquiry-form" className="btn-primary shrink-0">
               {t("contactUs")}
             </Link>
           </div>

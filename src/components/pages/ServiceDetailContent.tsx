@@ -394,7 +394,7 @@ export async function ServiceDetailContent({ service }: { service: Service }) {
               {service.heroDescription ?? service.description}
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
-              <Link href="/contact" className="btn-primary">{t("bookConsultation")}</Link>
+              <Link href="/contact#enquiry-form" className="btn-primary">{t("bookConsultation")}</Link>
               <Link href="/services" className="btn-secondary">{t("allServices")}</Link>
             </div>
           </div>
@@ -431,7 +431,7 @@ export async function ServiceDetailContent({ service }: { service: Service }) {
               {t("ctaBody", { phone: "+855 69 811 338" })}
             </p>
           </div>
-          <Link href="/contact" className="btn-primary shrink-0">{t("ctaButton")}</Link>
+          <Link href="/contact#enquiry-form" className="btn-primary shrink-0">{t("ctaButton")}</Link>
         </div>
       </div>
     </SiteShell>

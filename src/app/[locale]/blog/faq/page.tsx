@@ -126,7 +126,7 @@ export default async function FaqPage({
           <p className="mt-2 text-sm text-[color:var(--text-soft)]">
             {t("cta.body")}
           </p>
-          <Link href="/contact" className="btn-primary mt-5 inline-block">{t("cta.button")}</Link>
+          <Link href="/contact#enquiry-form" className="btn-primary mt-5 inline-block">{t("cta.button")}</Link>
         </div>
       </div>
     </SiteShell>

@@ -94,7 +94,7 @@ export default async function InternationalPage({
               {t("hero.body")}
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
-              <Link href="/contact" className="btn-primary">
+              <Link href="/contact#enquiry-form" className="btn-primary">
                 {t("hero.ctaPrimary")}
               </Link>
               <Link href="/services" className="btn-secondary">
@@ -196,7 +196,7 @@ export default async function InternationalPage({
               </p>
             </div>
             <Link
-              href="/contact"
+              href="/contact#enquiry-form"
               className="shrink-0 rounded-full border border-white/30 bg-white px-7 py-4 text-sm font-bold text-[color:var(--brand)] transition hover:bg-white/90"
             >
               {t("cta.button")}

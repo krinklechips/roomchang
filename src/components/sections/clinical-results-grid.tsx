@@ -194,7 +194,7 @@ export function ClinicalResultsGrid({
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
-            <Link href="/contact" className="btn-primary shrink-0">{t("cta.bookButton")}</Link>
+            <Link href="/contact#enquiry-form" className="btn-primary shrink-0">{t("cta.bookButton")}</Link>
             <Link href="/pricing" className="btn-secondary shrink-0">{t("cta.pricingButton")}</Link>
           </div>
         </div>

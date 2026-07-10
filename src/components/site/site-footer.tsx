@@ -48,7 +48,7 @@ const FOOTER_STRUCTURE: FooterColumn[] = [
   {
     headingKey: "contact",
     links: [
-      { tKey: "bookAppointment", href: "/contact" },
+      { tKey: "bookAppointment", href: "/contact#enquiry-form" },
       { tKey: "branches", href: "/contact#branches" },
       { tKey: "whatsapp", href: "https://wa.me/85569811338", external: true },
       { tKey: "wechat", href: "weixin://dl/chat?viliyanpink", external: true },

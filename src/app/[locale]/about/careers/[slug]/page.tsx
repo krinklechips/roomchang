@@ -146,7 +146,7 @@ export default async function CareerDetailPage({
                 </div>
               </div>
 
-              <Link href="/contact" className="btn-primary mt-6 w-full justify-center">
+              <Link href="/contact#enquiry-form" className="btn-primary mt-6 w-full justify-center">
                 {t("contactCta")}
               </Link>
             </div>

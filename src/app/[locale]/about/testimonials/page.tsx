@@ -184,7 +184,7 @@ export default async function TestimonialsPage({
               </p>
             </div>
             <Link
-              href="/contact"
+              href="/contact#enquiry-form"
               className="shrink-0 rounded-full border border-white/30 bg-white px-7 py-4 text-sm font-bold text-[color:var(--brand)] transition hover:bg-white/90"
             >
               {t("cta.button")}

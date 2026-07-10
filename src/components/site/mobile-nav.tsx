@@ -226,7 +226,7 @@ export function MobileNav() {
           {/* Fixed footer CTA */}
           <div className="shrink-0 border-t border-[color:var(--border-strong)] px-4 pb-6 pt-4 sm:px-6">
             <Link
-              href="/contact"
+              href="/contact#enquiry-form"
               onClick={close}
               className="btn-primary w-full justify-center"
             >

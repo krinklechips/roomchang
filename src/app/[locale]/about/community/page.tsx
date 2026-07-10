@@ -147,7 +147,7 @@ export default async function CommunityPage({
                 {t("partnerBody")}
               </p>
             </div>
-            <Link href="/contact" className="btn-primary shrink-0">
+            <Link href="/contact#enquiry-form" className="btn-primary shrink-0">
               {t("getInTouch")}
             </Link>
           </div>

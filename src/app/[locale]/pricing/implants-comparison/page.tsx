@@ -95,7 +95,7 @@ export default async function ImplantsComparisonPage({
             {t("hero.body")}
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
-            <Link href="/contact" className="btn-primary">{t("hero.ctaPrimary")}</Link>
+            <Link href="/contact#enquiry-form" className="btn-primary">{t("hero.ctaPrimary")}</Link>
             <Link href="/services/dental-implants" className="btn-secondary">{t("hero.ctaSecondary")}</Link>
           </div>
         </div>
@@ -198,7 +198,7 @@ export default async function ImplantsComparisonPage({
               </p>
             </div>
             <Link
-              href="/contact"
+              href="/contact#enquiry-form"
               className="shrink-0 rounded-full border border-white/30 bg-white px-7 py-4 text-sm font-bold text-[color:var(--brand)] transition hover:bg-white/90"
             >
               {t("cta.button")}

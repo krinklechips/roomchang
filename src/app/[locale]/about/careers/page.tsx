@@ -115,7 +115,7 @@ export default async function CareersPage({
                 {t("cta.description")}
               </p>
             </div>
-            <Link href="/contact" className="btn-primary shrink-0">
+            <Link href="/contact#enquiry-form" className="btn-primary shrink-0">
               {t("cta.button")}
             </Link>
           </div>

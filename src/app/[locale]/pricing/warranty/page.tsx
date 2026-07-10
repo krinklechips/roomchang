@@ -76,7 +76,7 @@ export default async function WarrantyPage({
           <div className="rounded-2xl border border-[color:var(--brand-soft)] bg-[color:var(--surface)] px-6 py-8 text-center">
             <p className="text-base text-[color:var(--text-main)]">
               Our warranty terms are being updated. Please{" "}
-              <Link href="/contact" className="font-semibold text-[color:var(--brand)] hover:text-[color:var(--brand-deep)]">
+              <Link href="/contact#enquiry-form" className="font-semibold text-[color:var(--brand)] hover:text-[color:var(--brand-deep)]">
                 contact us
               </Link>{" "}
               and our team will be glad to walk you through your warranty coverage.
@@ -265,7 +265,7 @@ export default async function WarrantyPage({
                   </a>
                 )}
                 <Link
-                  href="/contact"
+                  href="/contact#enquiry-form"
                   className="inline-flex shrink-0 items-center justify-center gap-1.5 self-start rounded-full bg-white px-6 py-3 text-sm font-bold text-[color:var(--brand)] shadow-sm transition hover:bg-white/90 sm:self-auto"
                 >
                   Contact Us <ArrowRight size={15} weight="bold" aria-hidden="true" />

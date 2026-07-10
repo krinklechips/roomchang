@@ -206,7 +206,7 @@ export function SiteHeader() {
             )}
           </nav>
           <LanguageSwitcher />
-          <Link href="/contact" className="btn-primary btn-primary-sm whitespace-nowrap">
+          <Link href="/contact#enquiry-form" className="btn-primary btn-primary-sm whitespace-nowrap">
             {tHeader("bookAppointment")}
           </Link>
         </div>

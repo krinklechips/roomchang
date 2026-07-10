@@ -81,7 +81,7 @@ export async function HomeHero({ heroPill: heroPillOverride, heroButtons: heroBu
       : fallbackSlides;
 
   const fallbackButtons: HeroButton[] = [
-    { label: t("ctaPrimary"), url: "/contact" },
+    { label: t("ctaPrimary"), url: "/contact#enquiry-form" },
     { label: t("ctaSecondary"), url: "/services" },
     { label: t("ctaTertiary"), url: "/team" },
   ];

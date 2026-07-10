@@ -306,7 +306,7 @@ export async function TechnologyDetailContent({ tech, translations: i18n }: { te
               {tech.description}
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
-              <Link href="/contact" className="btn-primary">{i18n?.bookConsultation ?? t("bookConsultation")}</Link>
+              <Link href="/contact#enquiry-form" className="btn-primary">{i18n?.bookConsultation ?? t("bookConsultation")}</Link>
               <Link href="/technology" className="btn-secondary">{i18n?.allTechnology ?? t("allTechnology")}</Link>
             </div>
           </div>
@@ -363,7 +363,7 @@ export async function TechnologyDetailContent({ tech, translations: i18n }: { te
               {i18n?.ctaBody ?? t("ctaBody")}
             </p>
           </div>
-          <Link href="/contact" className="btn-primary shrink-0">{i18n?.bookConsultation ?? t("bookConsultation")}</Link>
+          <Link href="/contact#enquiry-form" className="btn-primary shrink-0">{i18n?.bookConsultation ?? t("bookConsultation")}</Link>
         </div>
       </div>
     </SiteShell>

@@ -352,7 +352,7 @@ export function DoctorGrid({ doctors }: { doctors: Doctor[] }) {
                 {t("cta.body")}
               </p>
             </div>
-            <Link href="/contact" className="btn-primary shrink-0">
+            <Link href="/contact#enquiry-form" className="btn-primary shrink-0">
               {t("cta.button")}
             </Link>
           </div>

@@ -65,9 +65,15 @@ export default async function ContactPage({
         </div>
       </div>
 
-      <Suspense fallback={<div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 animate-pulse h-96" />}>
-        <ContactForm branches={branches} doctors={doctors} />
-      </Suspense>
+      {/* CTA anchor target. Lives here (server-rendered, always in the initial
+          HTML) so the browser's native #enquiry-form scroll works — the form
+          itself hydrates behind Suspense and can't be a reliable anchor. On
+          mobile the form is first inside ContactForm, so this lands on it. */}
+      <div id="enquiry-form" className="scroll-mt-24 sm:scroll-mt-28">
+        <Suspense fallback={<div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 animate-pulse h-96" />}>
+          <ContactForm branches={branches} doctors={doctors} />
+        </Suspense>
+      </div>
     </SiteShell>
   );
 }

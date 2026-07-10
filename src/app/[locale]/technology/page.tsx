@@ -143,7 +143,7 @@ export default async function TechnologyPage({
                   </Link>
                 ) : (
                   <Link
-                    href="/contact"
+                    href="/contact#enquiry-form"
                     className="inline-flex items-center gap-2 text-sm font-semibold text-[color:var(--brand-deep)] transition hover:text-[color:var(--brand)]"
                   >
                     {t("card.askAbout")} <ArrowRight size={14} weight="bold" aria-hidden="true" />
@@ -162,7 +162,7 @@ export default async function TechnologyPage({
               {t("cta.body")}
             </p>
           </div>
-          <Link href="/contact" className="btn-primary shrink-0">
+          <Link href="/contact#enquiry-form" className="btn-primary shrink-0">
             {t("cta.button")}
           </Link>
         </div>

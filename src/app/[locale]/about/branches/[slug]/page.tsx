@@ -193,7 +193,7 @@ export default async function BranchPage({
               </div>
 
               <div className="mt-8 flex flex-col gap-3">
-                <Link href="/contact" className="btn-primary w-full justify-center">
+                <Link href="/contact#enquiry-form" className="btn-primary w-full justify-center">
                   {t("bookAppointment")}
                 </Link>
               </div>
