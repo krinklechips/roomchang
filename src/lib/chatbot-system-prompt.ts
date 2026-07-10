@@ -15,6 +15,23 @@ export function buildSystemPrompt(ctx: ChatbotContext): string {
   const [ty, tm, td] = todayIso.split("-").map(Number);
   const tomorrowIso = new Date(Date.UTC(ty, tm - 1, td) + 86_400_000).toISOString().slice(0, 10);
 
+  // Pre-compute the next open booking days (Mon–Sat, starting tomorrow) so the
+  // model never has to work out weekdays itself — it just picks from this list.
+  // This prevents date-reasoning slips (e.g. claiming a weekday is "Sunday").
+  const openDays: string[] = [];
+  const cursor = new Date(Date.UTC(ty, tm - 1, td));
+  while (openDays.length < 12) {
+    cursor.setUTCDate(cursor.getUTCDate() + 1);
+    if (cursor.getUTCDay() === 0) continue; // skip Sundays (clinic closed)
+    const iso = cursor.toISOString().slice(0, 10);
+    const label = new Intl.DateTimeFormat("en-US", {
+      timeZone: "UTC", weekday: "long", month: "long", day: "numeric",
+    }).format(cursor);
+    openDays.push(`${label} (${iso})`);
+  }
+  const openDaysList = openDays.map((d) => `  - ${d}`).join("\n");
+  const firstOpen = openDays[0];
+
   const serviceList = ctx.services.map((s) => `- ${s}`).join("\n");
   const doctorList = ctx.doctors
     .map((d) => {
@@ -176,7 +193,16 @@ When a patient wants to book an appointment, collect the following information c
 
 IMPORTANT: Only output <<<SHOW_DATE_PICKER>>> ONCE during the booking flow, when you first ask for the date. Do NOT repeat it if the patient has already selected a date.
 IMPORTANT: Only output <<<SHOW_TIME_PICKER>>> ONCE during the booking flow, after the patient has selected or provided a date. Do NOT repeat it if the patient has already selected a time.
-IMPORTANT: Today's date is ${todayHuman} (${todayIso}) in Phnom Penh, Cambodia. The booking date must be recorded as YYYY-MM-DD and the booking time as HH:MM. The date must ALWAYS be in the future — ${tomorrowIso} (tomorrow) or later, and within the next 12 months. NEVER record today or any past date, and never a past year. If the patient gives a day or month without a year, use the NEXT upcoming occurrence. The clinic is closed on Sundays, so never book a Sunday.
+IMPORTANT — DATES. Today is ${todayHuman} (${todayIso}) in Phnom Penh, Cambodia. Online booking is for FUTURE dates only — never today, never a past date, never a past year — and within the next 12 months. The clinic is open Monday–Saturday and CLOSED on Sundays. Record the booking date as YYYY-MM-DD and the time as HH:MM.
+
+Do NOT work out weekdays yourself. Use ONLY these actual next available booking dates:
+${openDaysList}
+
+When the patient names a date:
+- Map it to one of the dates in the list above and record that YYYY-MM-DD value.
+- If they say "today", or ask for a Sunday or a past date, do NOT claim the clinic is closed unless the SPECIFIC date they asked for is genuinely a Sunday. Instead, briefly explain that online booking starts from the next available day and offer the earliest date(s) from the list (e.g. "${firstOpen}").
+- If a month/day is given without a year, choose the next upcoming occurrence from the list.
+- If you are unsure of the date, show the calendar by ending your message with <<<SHOW_DATE_PICKER>>>.
 
 Once you have the required fields (name, contact, treatment, date, time), confirm the details with the patient. Then output a booking block in EXACTLY this format:
 
