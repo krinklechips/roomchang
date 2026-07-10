@@ -1,20 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sendMail } from "@/lib/mailer";
 import { supabaseAdmin } from "@/lib/supabase-admin";
-
-const SLOT_TIMES = buildSlotTimes();
-
-function buildSlotTimes(): Set<string> {
-  const slots = new Set<string>();
-  for (let hour = 8; hour <= 17; hour++) {
-    for (const minute of [0, 30]) {
-      if (hour === 17 && minute === 30) continue;
-      slots.add(`${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`);
-    }
-  }
-  return slots;
-}
-
+import {
+  SLOT_TIMES,
+  isValidDate,
+  isSunday,
+  isBookableDate,
+  normalizeTime,
+  sanitizeBranch,
+  sanitizeDoctor,
+} from "@/lib/booking-validation";
 
 function escHtml(str: string): string {
   return str
@@ -30,43 +25,21 @@ function trunc(str: unknown, maxLen: number): string {
   return str.slice(0, maxLen);
 }
 
-function isValidDate(value: string): boolean {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
-  const date = new Date(`${value}T00:00:00.000Z`);
-  return !Number.isNaN(date.getTime()) && value === date.toISOString().slice(0, 10);
-}
-
-function isSunday(value: string): boolean {
-  return new Date(`${value}T00:00:00.000Z`).getUTCDay() === 0;
-}
-
-const CLINIC_TZ = "Asia/Phnom_Penh";
-
-// The bookable window in clinic-local time: tomorrow through ~1 year out.
-// YYYY-MM-DD strings compare correctly with lexicographic ordering.
-function bookableWindow(): { min: string; max: string } {
-  const todayLocal = new Intl.DateTimeFormat("en-CA", {
-    timeZone: CLINIC_TZ, year: "numeric", month: "2-digit", day: "2-digit",
-  }).format(new Date());
-  const [y, m, d] = todayLocal.split("-").map(Number);
-  const base = Date.UTC(y, m - 1, d);
-  const min = new Date(base + 86_400_000).toISOString().slice(0, 10); // tomorrow
-  const maxDate = new Date(base);
-  maxDate.setUTCFullYear(maxDate.getUTCFullYear() + 1);
-  return { min, max: maxDate.toISOString().slice(0, 10) };
-}
-
-/** Reject bookings for the past (or > ~1 year out) even if the date string is
- *  otherwise valid — the authoritative guard against stale/hallucinated dates. */
-function isBookableDate(value: string): boolean {
-  const { min, max } = bookableWindow();
-  return value >= min && value <= max;
-}
-
-function normalizeTime(value: string): string {
-  const match = value.match(/^(\d{2}):(\d{2})(?::\d{2})?$/);
-  if (!match) return "";
-  return `${match[1]}:${match[2]}`;
+/** Published resident dentists' names (excludes visiting consultants, whose
+ *  department is SENIOR_CONSULTANT) — the allow-list for a booked doctor. */
+async function fetchResidentDoctorNames(): Promise<string[]> {
+  const { data, error } = await supabaseAdmin
+    .from("doctors")
+    .select("name, department")
+    .eq("published", true);
+  if (error) {
+    console.error("[book] Could not load doctors for validation:", error.message);
+    return [];
+  }
+  return (data ?? [])
+    .filter((d) => d.department !== "SENIOR_CONSULTANT")
+    .map((d) => d.name as string)
+    .filter(Boolean);
 }
 
 function buildRows(rows: [string, string][]): string {
@@ -232,6 +205,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: result.error }, { status: result.status });
     }
     const booking = result.data;
+
+    // Sanitize the optional preferred branch/doctor against ground truth: a
+    // hallucinated branch or a visiting consultant is dropped (not recorded)
+    // rather than blocking the booking, which still proceeds.
+    const residentNames = await fetchResidentDoctorNames();
+    booking.cleanBranch = sanitizeBranch(booking.cleanBranch);
+    booking.cleanDoctor = sanitizeDoctor(booking.cleanDoctor, residentNames);
 
     const { data: bookingId, error: bookingError } = await supabaseAdmin.rpc(
       "book_appointment_slot",
