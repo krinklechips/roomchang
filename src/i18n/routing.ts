@@ -8,6 +8,13 @@ import { defineRouting } from "next-intl/routing";
 export const routing = defineRouting({
   locales: ["en", "kh", "cn"],
   defaultLocale: "en",
+  // No NEXT_LOCALE cookie: a Set-Cookie header on every page made Vercel treat
+  // ALL responses as uncacheable (cache-control: no-store, x-vercel-cache: MISS
+  // on every request), defeating ISR — every visitor paid a full server render
+  // (~2s TTFB). The locale is always in the URL (localePrefix "always"), so the
+  // cookie only ever influenced the bare "/" redirect; accept-language handles
+  // that case fine.
+  localeCookie: false,
 });
 
 export const LOCALE_TO_LANG: Record<string, string> = {

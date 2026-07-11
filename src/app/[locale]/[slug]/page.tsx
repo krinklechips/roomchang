@@ -64,6 +64,8 @@ export default async function CmsPage({ params }: Props) {
   return <CmsPageContent page={page} />;
 }
 
-// Static params are not pre-generated because CMS pages are dynamic by
-// nature. ISR (revalidate: 60 in getCmsPage) handles caching.
-export const dynamic = "force-dynamic";
+// Static params are not pre-generated because CMS pages are created at
+// runtime. ISR (revalidate 60) renders each slug on first hit and caches it at
+// the edge — including the legacy-WordPress 308 redirects, which previously
+// invoked a serverless function on every hit under force-dynamic.
+export const revalidate = 60;

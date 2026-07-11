@@ -9,6 +9,7 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import type { Icon as PhosphorIcon } from "@phosphor-icons/react/dist/lib/types";
 import { InteractiveSteps } from "@/components/sections/interactive-steps";
+import { LazyVideo } from "@/components/ui/lazy-video";
 import { SiteShell } from "@/components/site/site-shell";
 import type { TechnologyItem, TechSection } from "@/lib/data";
 
@@ -144,13 +145,8 @@ function ImagePair({ s }: { s: Extract<TechSection, { type: "image_pair" }> }) {
           <figure key={img.src}>
             {isVideo(img.src) ? (
               <div className={mediaWrap}>
-                {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-                <video
+                <LazyVideo
                   src={img.src}
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
                   className="absolute inset-0 h-full w-full object-cover"
                 />
               </div>
@@ -182,15 +178,7 @@ function SelfVideo({ s }: { s: Extract<TechSection, { type: "self_video" }> }) {
     <figure>
       {s.heading && <h2 className="mb-6 font-display text-3xl text-[color:var(--text-main)]">{s.heading}</h2>}
       <div className="overflow-hidden rounded-2xl border border-[color:var(--border-strong)] shadow-[0_16px_48px_rgba(57,28,45,0.08)]">
-        {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-        <video
-          src={s.src}
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-auto"
-        />
+        <LazyVideo src={s.src} className="w-full h-auto" />
       </div>
       {s.caption && (
         <figcaption className="mt-3 text-center text-xs text-[color:var(--text-soft)]">{s.caption}</figcaption>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { CaretLeft, CaretRight, X } from "@phosphor-icons/react";
 
@@ -19,6 +20,12 @@ export function CommunityGallery({
     columns === 5 ? "sm:grid-cols-4 lg:grid-cols-5" :
     columns === 4 ? "sm:grid-cols-3 lg:grid-cols-4" :
     "sm:grid-cols-3";
+  // Tell next/image the rendered width per breakpoint so thumbnails download
+  // as small resized WebP/AVIF variants instead of the full R2 originals.
+  const thumbSizes =
+    columns === 5 ? "(min-width: 1024px) 20vw, (min-width: 640px) 25vw, 50vw" :
+    columns === 4 ? "(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw" :
+    "(min-width: 640px) 33vw, 50vw";
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const isOpen = openIndex !== null;
   const triggerRef = useRef<HTMLButtonElement | null>(null);
@@ -74,12 +81,15 @@ export function CommunityGallery({
             className="group relative aspect-[4/3] cursor-zoom-in overflow-hidden rounded-2xl bg-[color:var(--surface)] shadow-[0_8px_24px_rgba(57,28,45,0.06)]"
             aria-label={t("thumbnail.viewPhoto", { index: i + 1, total: images.length })}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            {/* next/image so thumbnails go through /_next/image (resized +
+                AVIF) instead of downloading full-size R2 originals per tile.
+                The lightbox below keeps a raw <img> for the full photo. */}
+            <Image
               src={src}
               alt={t("thumbnail.alt", { title, index: i + 1, total: images.length })}
-              loading="lazy"
-              className="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-[1.04]"
+              fill
+              sizes={thumbSizes}
+              className="object-cover transition duration-300 group-hover:scale-[1.04]"
             />
             <span className="absolute inset-0 bg-black/0 transition group-hover:bg-black/10" />
           </button>

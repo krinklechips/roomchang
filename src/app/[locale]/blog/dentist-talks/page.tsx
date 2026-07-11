@@ -4,6 +4,9 @@ import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
+// ISR: re-render at most every 60s so Supabase content edits go live without a deploy.
+export const revalidate = 60;
+
 export async function generateMetadata({
   params,
 }: {

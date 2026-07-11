@@ -6,6 +6,9 @@ import { getTranslatedFieldsBatch, mergeTranslation } from "@/lib/i18n-content";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 
+// ISR: re-render at most every 60s so Supabase content edits go live without a deploy.
+export const revalidate = 60;
+
 export async function generateMetadata({
   params,
 }: {

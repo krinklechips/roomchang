@@ -5,6 +5,9 @@ import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import type { Metadata } from "next";
 
+// ISR: re-render at most every 60s so Supabase content edits go live without a deploy.
+export const revalidate = 60;
+
 export async function generateMetadata({
   params,
 }: {

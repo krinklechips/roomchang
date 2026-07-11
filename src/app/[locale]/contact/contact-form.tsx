@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useMemo } from "react";
+import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { DatePicker } from "@/components/ui/date-picker";
@@ -410,10 +411,14 @@ export function ContactForm({ branches, doctors }: { branches: Branch[]; doctors
                         className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm transition-colors hover:bg-[color:var(--brand-soft)]"
                       >
                         {doc.photoUrl ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img
+                          // next/image so the 32px avatar goes through
+                          // /_next/image (~4KB WebP) — the raw R2 originals are
+                          // 6–16MB portraits, and all 40 rows mount on focus.
+                          <Image
                             src={doc.photoUrl}
                             alt=""
+                            width={32}
+                            height={32}
                             className="h-8 w-8 shrink-0 rounded-full object-cover"
                           />
                         ) : (

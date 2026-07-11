@@ -146,6 +146,10 @@ export default async function FacilitiesPage({
                 alt={t("buildingHero.imageAlt")}
                 width={3000}
                 height={1999}
+                // Renders in a 340px column on desktop / full width on mobile.
+                // Without sizes, next/image preloaded the w=3840 variant
+                // (~584KB) for every visitor.
+                sizes="(min-width: 1024px) 340px, 100vw"
                 className="h-full w-full object-cover object-center"
                 priority
               />

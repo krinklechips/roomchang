@@ -21,6 +21,9 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import type { Icon as PhosphorIcon } from "@phosphor-icons/react/dist/lib/types";
 
+// ISR: re-render at most every 60s so Supabase content edits go live without a deploy.
+export const revalidate = 60;
+
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("services");
   return {
