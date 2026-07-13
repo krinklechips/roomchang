@@ -7,7 +7,7 @@ import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { routing, LOCALE_TO_LANG } from "@/i18n/routing";
+import { routing, LOCALE_TO_LANG, UNLISTED_LOCALES } from "@/i18n/routing";
 import { CmsPreviewInteractionGuard } from "@/components/site/cms-preview-interaction-guard";
 import { BRANCHES } from "@/lib/branches";
 import "../globals.css";
@@ -56,7 +56,7 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export const metadata: Metadata = {
+const BASE_METADATA: Metadata = {
   metadataBase: new URL("https://www.roomchang.com"),
   title: "Roomchang Dental Hospital",
   description: "Premium multilingual dental care in Phnom Penh.",
@@ -78,6 +78,24 @@ export const metadata: Metadata = {
     site: "@roomchangdental",
   },
 };
+
+/**
+ * Unlisted locales (content under review, e.g. /kh) are noindexed so search
+ * engines don't surface half-reviewed pages — but the routes stay live for
+ * the private review link. Page-level generateMetadata (titles etc.) merges
+ * on top; robots comes from here.
+ */
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  if (UNLISTED_LOCALES.includes(locale)) {
+    return { ...BASE_METADATA, robots: { index: false, follow: false } };
+  }
+  return BASE_METADATA;
+}
 
 const SITE = "https://www.roomchang.com";
 const DAY: Record<string, string> = {

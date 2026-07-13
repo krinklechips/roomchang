@@ -57,30 +57,32 @@ describe("sitemap", () => {
     const entries = await sitemap();
     const urls = entries.map((entry) => entry.url);
 
-    // URLs are now locale-prefixed (default locale = en)
-    expect(urls).toContain("https://roomchang.com/en/");
-    expect(urls).toContain("https://roomchang.com/en/services");
-    expect(urls).toContain("https://roomchang.com/en/about/vision-mission-values");
-    expect(urls).toContain("https://roomchang.com/en/services/dental-implants");
-    expect(urls).toContain("https://roomchang.com/en/services/veneers");
-    expect(urls).toContain("https://roomchang.com/en/technology/cbct");
-    expect(urls).toContain("https://roomchang.com/en/clinical-results/all-on-4");
-    expect(urls).toContain("https://roomchang.com/en/about/branches/sisowath-high-school");
-    expect(urls).toContain("https://roomchang.com/en/privacy-policy");
-    expect(urls).not.toContain("https://roomchang.com/en/services/draft-service");
-    expect(urls).not.toContain("https://roomchang.com/en/technology/draft-tech");
-    expect(urls).not.toContain("https://roomchang.com/en/clinical-results/draft-case");
+    // URLs are locale-prefixed (default locale = en), on www, no trailing slash
+    expect(urls).toContain("https://www.roomchang.com/en");
+    expect(urls).toContain("https://www.roomchang.com/en/services");
+    expect(urls).toContain("https://www.roomchang.com/en/about/vision-mission-values");
+    expect(urls).toContain("https://www.roomchang.com/en/services/dental-implants");
+    expect(urls).toContain("https://www.roomchang.com/en/services/veneers");
+    expect(urls).toContain("https://www.roomchang.com/en/technology/cbct");
+    expect(urls).toContain("https://www.roomchang.com/en/clinical-results/all-on-4");
+    expect(urls).toContain("https://www.roomchang.com/en/about/branches/sisowath-high-school");
+    expect(urls).toContain("https://www.roomchang.com/en/privacy-policy");
+    expect(urls).not.toContain("https://www.roomchang.com/en/services/draft-service");
+    expect(urls).not.toContain("https://www.roomchang.com/en/technology/draft-tech");
+    expect(urls).not.toContain("https://www.roomchang.com/en/clinical-results/draft-case");
 
-    expect(entries.find((entry) => entry.url === "https://roomchang.com/en/")?.priority).toBe(1);
+    expect(entries.find((entry) => entry.url === "https://www.roomchang.com/en")?.priority).toBe(1);
 
-    const services = entries.find((entry) => entry.url === "https://roomchang.com/en/services");
+    const services = entries.find((entry) => entry.url === "https://www.roomchang.com/en/services");
     expect(services?.changeFrequency).toBe("weekly");
-    // hreflang alternates for all three languages + x-default
+    // hreflang alternates: listed locales only + x-default. Khmer (/kh) is
+    // UNLISTED while its content is under review — it must NOT appear here.
     expect(services?.alternates?.languages).toMatchObject({
-      en: "https://roomchang.com/en/services",
-      zh: "https://roomchang.com/zh/services",
-      km: "https://roomchang.com/km/services",
-      "x-default": "https://roomchang.com/en/services",
+      en: "https://www.roomchang.com/en/services",
+      zh: "https://www.roomchang.com/cn/services",
+      "x-default": "https://www.roomchang.com/en/services",
     });
+    expect(services?.alternates?.languages).not.toHaveProperty("km");
+    expect(JSON.stringify(entries)).not.toContain("roomchang.com/kh");
   });
 });

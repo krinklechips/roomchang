@@ -4,21 +4,27 @@ import { useEffect, useRef, useState, useTransition } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { CaretDown } from "@phosphor-icons/react";
+import { UNLISTED_LOCALES } from "@/i18n/routing";
 
 // `code` is the URL path segment (country-style: kh/cn), which also matches the
 // `display` chip — what visitors recognise. The ISO 639 language codes (km/zh)
 // live under the hood for messages, content_translations, <html lang>, and
 // hreflang (see LOCALE_TO_LANG in src/i18n/routing.ts).
 //
-// `enabled: false` greys a locale out in the public switcher (routes stay live
-// by URL) — flip to `true` once its content is ready.
-const LANGUAGES = [
-  { code: "en", label: "English", display: "EN", enabled: true },
-  { code: "kh", label: "ខ្មែរ", display: "KH", enabled: true },
-  { code: "cn", label: "中文", display: "CN", enabled: true },
+// A locale in UNLISTED_LOCALES (routing.ts) is greyed out here ("Soon") but
+// stays live by direct URL — the private-review state.
+const LANGUAGE_BASE = [
+  { code: "en", label: "English", display: "EN" },
+  { code: "kh", label: "ខ្មែរ", display: "KH" },
+  { code: "cn", label: "中文", display: "CN" },
 ] as const;
 
-type LocaleCode = (typeof LANGUAGES)[number]["code"];
+const LANGUAGES = LANGUAGE_BASE.map((l) => ({
+  ...l,
+  enabled: !UNLISTED_LOCALES.includes(l.code),
+}));
+
+type LocaleCode = (typeof LANGUAGE_BASE)[number]["code"];
 
 export function LanguageSwitcher() {
   const t = useTranslations("languageSwitcher");

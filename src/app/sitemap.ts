@@ -2,10 +2,13 @@ import type { MetadataRoute } from "next";
 import { BRANCHES } from "@/lib/branches";
 import { CLINICAL_CATEGORIES } from "@/lib/clinical-categories";
 import { supabaseServer } from "@/lib/supabase-server";
-import { routing, LOCALE_TO_LANG } from "@/i18n/routing";
+import { routing, LOCALE_TO_LANG, UNLISTED_LOCALES } from "@/i18n/routing";
 
 const BASE_URL = "https://www.roomchang.com";
-const LOCALES = routing.locales; // URL segments: ["en", "kh", "cn"]
+// Unlisted locales (under content review, e.g. /kh) are excluded from the
+// sitemap's hreflang alternates — their pages are noindexed and reachable
+// only by direct link until re-launched.
+const LOCALES = routing.locales.filter((l) => !UNLISTED_LOCALES.includes(l)); // e.g. ["en", "cn"]
 const DEFAULT_LOCALE = routing.defaultLocale; // "en"
 
 type ChangeFreq = NonNullable<MetadataRoute.Sitemap[number]["changeFrequency"]>;

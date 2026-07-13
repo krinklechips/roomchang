@@ -22,3 +22,14 @@ export const LOCALE_TO_LANG: Record<string, string> = {
   kh: "km",
   cn: "zh",
 };
+
+/**
+ * Locales hidden from the public while their content is under review
+ * (Borin's Khmer terminology pass, July 2026). An unlisted locale:
+ *  - is greyed out ("Soon") in the language switcher,
+ *  - is dropped from the sitemap's hreflang alternates,
+ *  - serves <meta name="robots" content="noindex"> on all its pages,
+ * but its routes STAY LIVE by direct URL (private review link, e.g. /kh).
+ * To re-launch a locale, just remove it from this list.
+ */
+export const UNLISTED_LOCALES: string[] = ["kh"];
