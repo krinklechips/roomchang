@@ -1,4 +1,10 @@
 import nodemailer, { type Transporter } from "nodemailer";
+import { sendTelegramAlert } from "@/lib/alert";
+
+// Best-effort throttle so a burst of failed sends can't spam Telegram. Module
+// scope = per warm serverless instance (good enough; failures are rare).
+let lastFailureAlertMs = 0;
+const FAILURE_ALERT_THROTTLE_MS = 15 * 60 * 1000;
 
 /**
  * Transactional email via SMTP (SiteGround).
@@ -85,6 +91,22 @@ export async function sendMail(opts: {
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
     console.error("[mailer] send failed:", msg);
+
+    // Instant alert: a failed transactional email means a patient enquiry /
+    // booking notification just black-holed (the July 2026 outage went
+    // unnoticed for 2 days). Fire immediately, throttled, never block/throw.
+    const now = Date.now();
+    if (now - lastFailureAlertMs > FAILURE_ALERT_THROTTLE_MS) {
+      lastFailureAlertMs = now;
+      await sendTelegramAlert(
+        `🚨 Roomchang EMAIL FAILED to send — ${msg}\n\n` +
+          `A patient enquiry/booking notification did NOT reach the clinic (the enquiry IS still saved in the database). ` +
+          `Fix: SiteGround → reset the mailbox password → update SMTP_PASS in Vercel → redeploy.`,
+      ).catch(() => {
+        // Alerting must never break email handling.
+      });
+    }
+
     return { ok: false, error: msg };
   }
 }

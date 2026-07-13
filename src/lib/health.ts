@@ -66,27 +66,37 @@ export async function checkSiteHealth(): Promise<HealthReport> {
   };
 }
 
-/**
- * Alert channel for broken-site notifications. Telegram, deliberately NOT
- * email: when the thing that's broken IS email (the usual case), an email
- * alert would never arrive. Configure with:
- *   TELEGRAM_BOT_TOKEN      from @BotFather
- *   TELEGRAM_ALERT_CHAT_ID  the chat/group to notify
- * No-op (returns ok:false with reason) when unconfigured.
- */
-export async function sendTelegramAlert(text: string): Promise<{ ok: boolean; error?: string }> {
-  const token = process.env.TELEGRAM_BOT_TOKEN;
-  const chatId = process.env.TELEGRAM_ALERT_CHAT_ID;
-  if (!token || !chatId) return { ok: false, error: "Telegram alerting not configured" };
-  try {
-    const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ chat_id: chatId, text, disable_web_page_preview: true }),
-    });
-    if (!res.ok) return { ok: false, error: `Telegram API ${res.status}: ${await res.text()}` };
-    return { ok: true };
-  } catch (e) {
-    return { ok: false, error: e instanceof Error ? e.message : String(e) };
-  }
+/** One page/proxy reachability result for the twice-daily checklist. */
+export type PageCheck = { label: string; url: string; ok: boolean; status: number | string };
+
+// The user-visible pages + the two Anabasis-proxied zones. Fetched against the
+// canonical production host so the check exercises the real path (CDN + proxy),
+// not localhost. Only run by the twice-daily cron, NOT by /api/health (which
+// stays lightweight for high-frequency external monitors).
+const MONITORED_PAGES: { label: string; url: string }[] = [
+  { label: "Homepage /en", url: "https://www.roomchang.com/en" },
+  { label: "Khmer /kh", url: "https://www.roomchang.com/kh" },
+  { label: "Chinese /cn", url: "https://www.roomchang.com/cn" },
+  { label: "Contact page", url: "https://www.roomchang.com/en/contact" },
+  { label: "Services", url: "https://www.roomchang.com/en/services" },
+  { label: "Team", url: "https://www.roomchang.com/en/team" },
+  { label: "/intl proxy", url: "https://www.roomchang.com/intl/au" },
+  { label: "/admin proxy", url: "https://www.roomchang.com/admin" },
+];
+
+export async function checkPages(): Promise<PageCheck[]> {
+  return Promise.all(
+    MONITORED_PAGES.map(async ({ label, url }) => {
+      try {
+        const res = await fetch(url, {
+          headers: { Accept: "text/html" },
+          redirect: "follow",
+          signal: AbortSignal.timeout(10_000),
+        });
+        return { label, url, ok: res.ok, status: res.status };
+      } catch (e) {
+        return { label, url, ok: false, status: e instanceof Error ? e.name : "error" };
+      }
+    }),
+  );
 }
