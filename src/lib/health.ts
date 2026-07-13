@@ -16,8 +16,10 @@ export type HealthReport = {
   checkedAt: string;
   smtp: { ok: boolean; error?: string };
   db: { ok: boolean; error?: string };
-  unreadEnquiries: number | null;
-  oldestUnreadHours: number | null;
+  // Enquiries received in the last 24h — a "the form is getting leads" signal.
+  // (The `read` flag is never set by the live flow, so an unread count would
+  // just grow forever; a rolling 24h count is the meaningful number.)
+  enquiriesLast24h: number | null;
 };
 
 // SMTP verify performs a real login — cache the result briefly so an
@@ -34,23 +36,18 @@ export async function checkSiteHealth(): Promise<HealthReport> {
   const smtp = smtpCache.result;
 
   let db: { ok: boolean; error?: string } = { ok: true };
-  let unreadEnquiries: number | null = null;
-  let oldestUnreadHours: number | null = null;
+  let enquiriesLast24h: number | null = null;
   try {
-    const { data, error, count } = await supabaseAdmin
+    const since = new Date(now - 24 * 60 * 60 * 1000).toISOString();
+    // head:true → count only, no rows fetched. Doubles as the DB reachability probe.
+    const { error, count } = await supabaseAdmin
       .from("enquiries")
-      .select("createdAt", { count: "exact" })
-      .eq("read", false)
-      .order("createdAt", { ascending: true })
-      .limit(1);
+      .select("id", { count: "exact", head: true })
+      .gte("createdAt", since);
     if (error) {
       db = { ok: false, error: error.message };
     } else {
-      unreadEnquiries = count ?? 0;
-      const oldest = data?.[0]?.createdAt;
-      if (oldest) {
-        oldestUnreadHours = Math.round((now - new Date(oldest).getTime()) / 3_600_000);
-      }
+      enquiriesLast24h = count ?? 0;
     }
   } catch (e) {
     db = { ok: false, error: e instanceof Error ? e.message : String(e) };
@@ -61,8 +58,7 @@ export async function checkSiteHealth(): Promise<HealthReport> {
     checkedAt: new Date(now).toISOString(),
     smtp,
     db,
-    unreadEnquiries,
-    oldestUnreadHours,
+    enquiriesLast24h,
   };
 }
 

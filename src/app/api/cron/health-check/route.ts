@@ -68,10 +68,9 @@ export async function GET(request: NextRequest) {
   ];
 
   const backlog =
-    health.unreadEnquiries == null
-      ? "Unread enquiries: (unknown)"
-      : `Unread enquiries: ${health.unreadEnquiries}` +
-        (health.oldestUnreadHours != null ? ` (oldest ${health.oldestUnreadHours}h)` : "");
+    health.enquiriesLast24h == null
+      ? "New enquiries (24h): (unknown)"
+      : `New enquiries (24h): ${health.enquiriesLast24h}`;
 
   const allOk = items.every((i) => i.ok);
   const checklist = items.map((i) => `${i.ok ? "✓" : "✗"} ${i.label} — ${i.detail}`).join("\n");
