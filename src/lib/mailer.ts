@@ -40,6 +40,24 @@ function getTransport(): Transporter | null {
   return transporter;
 }
 
+/**
+ * Health probe: connects to the SMTP server and performs a real AUTH login
+ * WITHOUT sending anything. Catches silently-broken credentials (e.g. the
+ * July 2026 "535 Incorrect authentication data" outage where patients saw
+ * success but the clinic received no enquiry emails for 2 days).
+ */
+export async function verifySmtp(): Promise<{ ok: boolean; error?: string }> {
+  const tx = getTransport();
+  if (!tx) return { ok: false, error: "SMTP not configured" };
+  try {
+    await tx.verify();
+    return { ok: true };
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    return { ok: false, error: msg };
+  }
+}
+
 /** Default From header — the authenticated mailbox by convention. */
 export const MAIL_FROM =
   process.env.SMTP_FROM ||
