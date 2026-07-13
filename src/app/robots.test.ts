@@ -11,7 +11,12 @@ describe("robots", () => {
         allow: "/",
         disallow: ["/admin", "/tenant-dashboard", "/api"],
       },
-      sitemap: "https://roomchang.com/sitemap.xml",
+      // Two sitemaps: the site's own + the Anabasis /intl pages' sitemap
+      // served through the reverse proxy.
+      sitemap: [
+        "https://www.roomchang.com/sitemap.xml",
+        "https://www.roomchang.com/intl/sitemap.xml",
+      ],
     });
   });
 });

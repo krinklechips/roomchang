@@ -4,6 +4,41 @@ import createNextIntlPlugin from "next-intl/plugin";
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 const nextConfig: NextConfig = {
+  // Reverse-proxy /intl/* and /admin/* to the Anabasis international + admin
+  // apps (multi-zone). MUST be `beforeFiles`: this site has a root `[locale]`
+  // dynamic segment, so an `afterFiles` rewrite (the array form in the vendor
+  // spec) would be shadowed — Next would route `/intl` and `/admin` to the
+  // [locale] page (locale="intl"/"admin") before the rewrite ran. beforeFiles
+  // runs ahead of the filesystem routes, so the proxy always wins.
+  // Paired with the `intl|admin` matcher exclusion in src/middleware.ts.
+  // The internal affiliates/pricing dashboard stays at /en/admin/* (Basic
+  // Auth); only BARE /admin/* proxies to Anabasis.
+  async rewrites() {
+    return {
+      beforeFiles: [
+        // Bare-path rules first, proxying to the SLASHED origin URL: the
+        // Anabasis origins 307 "/admin"→"/admin/" and "/intl"→"/intl/", while
+        // our Next normalizes "/x/"→"/x" (308) — proxying the bare path
+        // verbatim ping-pongs those two redirects into an infinite loop.
+        {
+          source: "/intl",
+          destination: "https://intl.roomchang.anabasisintelligence.com/intl/",
+        },
+        {
+          source: "/admin",
+          destination: "https://admin.roomchang.anabasisintelligence.com/admin/",
+        },
+        {
+          source: "/intl/:path*",
+          destination: "https://intl.roomchang.anabasisintelligence.com/intl/:path*",
+        },
+        {
+          source: "/admin/:path*",
+          destination: "https://admin.roomchang.anabasisintelligence.com/admin/:path*",
+        },
+      ],
+    };
+  },
   images: {
     // Vercel Image Optimization is ON: next/image requests route through
     // /_next/image, which resizes to the rendered size and serves WebP/AVIF

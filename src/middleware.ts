@@ -282,9 +282,13 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  // Run on all pages except Next.js internals, static files, and the root
-  // metadata routes (robots.txt / sitemap.xml must NOT be locale-prefixed).
+  // Run on all pages except Next.js internals, static files, the root
+  // metadata routes (robots.txt / sitemap.xml must NOT be locale-prefixed),
+  // and the Anabasis-proxied zones: /intl + /admin must bypass next-intl
+  // entirely (no locale 307) so the beforeFiles rewrites in next.config.ts
+  // can proxy them. NOTE: /en/admin/* and /api/admin/* still match and keep
+  // their Basic Auth — only BARE /admin/* is excluded.
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|llms.txt|llms-full.txt|.*\\.(?:png|jpg|jpeg|gif|svg|ico|webp|css|js|woff2?|otf|ttf|eot|mp4|webm)).*)",
+    "/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|llms.txt|llms-full.txt|intl|admin|.*\\.(?:png|jpg|jpeg|gif|svg|ico|webp|css|js|woff2?|otf|ttf|eot|mp4|webm)).*)",
   ],
 };
