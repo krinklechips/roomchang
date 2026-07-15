@@ -161,12 +161,13 @@ export function ContactForm({ branches, doctors }: { branches: Branch[]; doctors
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-16 lg:px-8">
       <div className="flex flex-col gap-12">
-        {/* Appointment form. Mobile: shown FIRST (people tapping "Contact/Book"
-            want the form immediately); ≥sm: below the locations, since customer
-            service shares this page for locations. The #enquiry-form CTA anchor
-            lives on the SSR wrapper in page.tsx (this form hydrates behind
-            Suspense, so a native hash scroll onto it would miss). */}
-        <div className="order-1 max-w-3xl sm:order-2 sm:border-t sm:border-[color:var(--border-strong)] sm:pt-12">
+        {/* Appointment form — shown FIRST on ALL viewports (Borin's request:
+            "Book Appointment" must land on the form, not the branch list). The
+            locations sit below. The #enquiry-form CTA anchor lives on the SSR
+            wrapper in page.tsx (this form hydrates behind Suspense, so a native
+            hash scroll onto it would miss); with the form first, that wrapper's
+            top === the form. */}
+        <div className="order-1 max-w-3xl">
           {submitted ? (
             <div className="flex flex-col items-start gap-4 rounded-3xl border border-[color:var(--border-strong)] bg-[color:var(--surface)] p-10">
               <CheckCircle2 size={48} strokeWidth={1.5} className="text-[color:var(--brand)]" aria-hidden="true" />
@@ -475,7 +476,7 @@ export function ContactForm({ branches, doctors }: { branches: Branch[]; doctors
         </div>
 
         {/* Branch info — first on ≥sm; drops below the form on mobile. */}
-        <div id="branches" className="order-2 space-y-6 sm:order-1">
+        <div id="branches" className="order-2 space-y-6 sm:border-t sm:border-[color:var(--border-strong)] sm:pt-12">
           <h2 className="font-display text-2xl text-[color:var(--text-main)]">{t("branches.heading")}</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {branches.map((branch) => (
