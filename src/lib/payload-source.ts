@@ -80,6 +80,7 @@ type PayloadService = PayloadDocBase & {
   features?: { feature?: string | null }[] | null;
   imageUrl?: string | null;
   content?: Service["content"];
+  sections?: PayloadSectionBlock[] | null;
   order?: number | null;
   published?: boolean | null;
 };
@@ -147,6 +148,7 @@ type PayloadTechnology = PayloadDocBase & {
   highlights?: { value?: string | null }[] | null;
   imageUrl?: string | null;
   content?: TechnologyItem["content"];
+  sections?: PayloadSectionBlock[] | null;
   order?: number | null;
   published?: boolean | null;
 };
@@ -460,6 +462,68 @@ const getPayloadHomepageDoc = cache(async (): Promise<PayloadHomepage | null> =>
   return docs[0] ?? null;
 });
 
+
+/**
+ * BLOCKS → legacy sections shape.
+ *
+ * The CMS's structured `sections` blocks field replaces the raw `content`
+ * JSON (same section taxonomy; block slugs equal the legacy `type` strings).
+ * Renderers keep consuming { sections: [...] }, so this maps mechanically:
+ *   blockType -> type · drop id/blockName · unwrap { item } / { url } arrays ·
+ *   twocol left/right come back as 1-element block arrays -> single section.
+ * When the blocks field is empty (not yet converted), callers fall back to
+ * the legacy JSON, so a half-migrated collection renders identically.
+ */
+type PayloadSectionBlock = {
+  blockType: string;
+  id?: string | null;
+  blockName?: string | null;
+  [k: string]: unknown;
+};
+
+const stripRowIds = (rows: unknown): unknown =>
+  Array.isArray(rows)
+    ? rows.map((r) => {
+        if (r && typeof r === "object") {
+          const { id: _id, ...rest } = r as Record<string, unknown>;
+          return rest;
+        }
+        return r;
+      })
+    : rows;
+
+function blockToSection(block: PayloadSectionBlock): Record<string, unknown> {
+  const { blockType, id: _id, blockName: _bn, ...rest } = block;
+  const section: Record<string, unknown> = { ...rest, type: blockType };
+
+  if (blockType === "list" && Array.isArray(rest.items)) {
+    section.items = (rest.items as { item?: unknown }[]).map((r) => r?.item ?? "");
+  } else if (blockType === "gallery" && Array.isArray(rest.images)) {
+    section.images = (rest.images as { url?: unknown }[]).map((r) => r?.url ?? "");
+  } else if (blockType === "twocol") {
+    const first = (side: unknown) =>
+      Array.isArray(side) && side[0] ? blockToSection(side[0] as PayloadSectionBlock) : null;
+    section.left = first(rest.left);
+    section.right = first(rest.right);
+  } else if (Array.isArray(rest.items)) {
+    section.items = stripRowIds(rest.items);
+  }
+  if (Array.isArray(rest.rows)) section.rows = stripRowIds(rest.rows);
+  if (Array.isArray(rest.stats)) section.stats = stripRowIds(rest.stats);
+
+  return section;
+}
+
+const sectionsFromPayload = <T,>(
+  blocks: PayloadSectionBlock[] | null | undefined,
+  legacy: T,
+): T => {
+  if (Array.isArray(blocks) && blocks.length > 0) {
+    return { sections: blocks.map(blockToSection) } as T;
+  }
+  return legacy;
+};
+
 const mapService = (p: PayloadService): Service => ({
   id: sourceId(p),
   name: p.name,
@@ -474,7 +538,7 @@ const mapService = (p: PayloadService): Service => ({
   published: p.published ?? true,
   eyebrow: p.eyebrow ?? null,
   heroDescription: p.heroDescription ?? null,
-  content: p.content ?? null,
+  content: sectionsFromPayload(p.sections, p.content ?? null),
 });
 
 const mapDoctor = (p: PayloadDoctor): Doctor => ({
@@ -547,7 +611,7 @@ const mapTechnology = (p: PayloadTechnology): TechnologyItem => ({
   imageSrc: p.imageUrl ?? null,
   order: p.order ?? 0,
   published: p.published ?? true,
-  content: p.content ?? null,
+  content: sectionsFromPayload(p.sections, p.content ?? null),
 });
 
 const mapClinicalCase = (p: PayloadClinicalCase): ClinicalCase => ({
