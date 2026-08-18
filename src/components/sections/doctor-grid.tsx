@@ -198,10 +198,13 @@ function DoctorCard({ doctor, onSelect }: { doctor: Doctor; onSelect: (d: Doctor
     <button
       type="button"
       onClick={() => onSelect(doctor)}
-      className="w-full cursor-pointer overflow-hidden rounded-2xl bg-white text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+      // flex-col + justify-start: a stretched <button> vertically centers its
+      // content by default, which pushed short-text cards' photos ~9px lower
+      // than long-text neighbours in the same grid row (any locale).
+      className="flex w-full cursor-pointer flex-col justify-start overflow-hidden rounded-2xl bg-white text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
     >
       {/* Portrait — fills card width, fixed height */}
-      <div className="relative h-[220px] w-full overflow-hidden bg-[color:var(--brand-soft)]">
+      <div className="relative h-[220px] w-full shrink-0 overflow-hidden bg-[color:var(--brand-soft)]">
         {doctor.photoUrl ? (
           <Image
             src={doctor.photoUrl}
