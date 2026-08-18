@@ -492,14 +492,39 @@ const stripRowIds = (rows: unknown): unknown =>
       })
     : rows;
 
+// A populated Media Library upload ({ url: "https://..." }) wins over the
+// legacy pasted-URL text next to it; an unpopulated id (depth 0) is ignored.
+const mediaUrl = (m: unknown): string | null =>
+  m && typeof m === "object" && typeof (m as { url?: unknown }).url === "string"
+    ? (m as { url: string }).url
+    : null;
+
+const imageSide = (s: unknown): unknown => {
+  if (s && typeof s === "object") {
+    const { media, ...side } = s as Record<string, unknown>;
+    const mu = mediaUrl(media);
+    if (mu) side.src = mu;
+    return side;
+  }
+  return s;
+};
+
 function blockToSection(block: PayloadSectionBlock): Record<string, unknown> {
-  const { blockType, id: _id, blockName: _bn, ...rest } = block;
+  const { blockType, id: _id, blockName: _bn, media, ...rest } = block;
   const section: Record<string, unknown> = { ...rest, type: blockType };
 
-  if (blockType === "list" && Array.isArray(rest.items)) {
+  if (blockType === "image") {
+    const mu = mediaUrl(media);
+    if (mu) section.src = mu;
+  } else if (blockType === "image_pair") {
+    section.left = imageSide(rest.left);
+    section.right = imageSide(rest.right);
+  } else if (blockType === "list" && Array.isArray(rest.items)) {
     section.items = (rest.items as { item?: unknown }[]).map((r) => r?.item ?? "");
   } else if (blockType === "gallery" && Array.isArray(rest.images)) {
-    section.images = (rest.images as { url?: unknown }[]).map((r) => r?.url ?? "");
+    section.images = (rest.images as { url?: unknown; media?: unknown }[]).map(
+      (r) => mediaUrl(r?.media) ?? r?.url ?? "",
+    );
   } else if (blockType === "twocol") {
     const first = (side: unknown) =>
       Array.isArray(side) && side[0] ? blockToSection(side[0] as PayloadSectionBlock) : null;
@@ -799,6 +824,7 @@ export async function getPayloadServices(): Promise<Service[]> {
   const docs = await payloadFind<PayloadService>("services", {
     "where[published][equals]": "true",
     sort: "order",
+    depth: "1", // populate section media uploads (Media Library picker)
   });
   return docs.map(mapService);
 }
@@ -808,6 +834,7 @@ export async function getPayloadServiceBySlug(slug: string): Promise<Service | n
     "where[slug][equals]": slug,
     "where[published][equals]": "true",
     limit: "1",
+    depth: "1",
   });
   return docs[0] ? mapService(docs[0]) : null;
 }
@@ -855,6 +882,7 @@ export async function getPayloadTechnology(): Promise<TechnologyItem[]> {
   const docs = await payloadFind<PayloadTechnology>("technology", {
     "where[published][equals]": "true",
     sort: "order",
+    depth: "1",
   });
   return docs.map(mapTechnology);
 }
@@ -864,6 +892,7 @@ export async function getPayloadTechnologyBySlug(slug: string): Promise<Technolo
     "where[slug][equals]": slug,
     "where[published][equals]": "true",
     limit: "1",
+    depth: "1",
   });
   return docs[0] ? mapTechnology(docs[0]) : null;
 }
@@ -1104,7 +1133,7 @@ export async function getPayloadCmsPage(slug: string): Promise<PayloadCmsPage | 
     "where[slug][equals]": slug,
     "where[published][equals]": "true",
     limit: "1",
-    depth: "0",
+    depth: "1", // sections may carry Media Library uploads
   });
   const d = docs[0];
   if (!d) return null;
