@@ -1076,3 +1076,44 @@ export async function getPayloadCommunityArticleBySlug(slug: string): Promise<Pa
   });
   return docs[0] ? mapCommunityArticleDetail(docs[0]) : null;
 }
+
+// ─── Custom Pages (CMS "pages" collection → /{locale}/{slug} catch-all) ─────
+
+export type PayloadCmsPage = {
+  title: string | null;
+  slug: string;
+  seoTitle: string | null;
+  seoDescription: string | null;
+  seoImage: string | null;
+  sections: { sections: Record<string, unknown>[] } | null;
+};
+
+type PayloadPageDoc = PayloadDocBase & {
+  title?: string | null;
+  slug?: string | null;
+  seoTitle?: string | null;
+  seoDescription?: string | null;
+  seoImage?: string | null;
+  sections?: PayloadSectionBlock[] | null;
+  published?: boolean | null;
+};
+
+/** One CMS-authored page by web address. Null when none exists (→ 404). */
+export async function getPayloadCmsPage(slug: string): Promise<PayloadCmsPage | null> {
+  const docs = await payloadFind<PayloadPageDoc>("pages", {
+    "where[slug][equals]": slug,
+    "where[published][equals]": "true",
+    limit: "1",
+    depth: "0",
+  });
+  const d = docs[0];
+  if (!d) return null;
+  return {
+    title: d.title ?? null,
+    slug: d.slug ?? slug,
+    seoTitle: d.seoTitle ?? null,
+    seoDescription: d.seoDescription ?? null,
+    seoImage: d.seoImage ?? null,
+    sections: sectionsFromPayload(d.sections, null),
+  };
+}

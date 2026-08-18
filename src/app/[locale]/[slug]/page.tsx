@@ -13,6 +13,8 @@ import { notFound, permanentRedirect } from "next/navigation";
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { getCmsPage } from "@/lib/cms";
+import { getPayloadCmsPage, isPayloadSource } from "@/lib/payload-source";
+import { PayloadPageContent } from "@/components/pages/PayloadPageContent";
 import { resolveLegacyPath } from "@/lib/legacy-redirects";
 import { CmsPageContent } from "@/components/pages/CmsPageContent";
 
@@ -23,6 +25,18 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
   setRequestLocale(locale);
+
+  if (isPayloadSource()) {
+    const p = await getPayloadCmsPage(slug).catch(() => null);
+    if (p) {
+      return {
+        title: p.seoTitle || p.title || p.slug,
+        description: p.seoDescription || undefined,
+        openGraph: p.seoImage ? { images: [{ url: p.seoImage }] } : undefined,
+      };
+    }
+  }
+
   const page = await getCmsPage(slug).catch(() => null);
 
   if (!page) {
@@ -41,6 +55,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function CmsPage({ params }: Props) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
+
+  // CMS-authored Custom Pages (Payload `pages` collection) — the "add a page
+  // without a developer" path. Only active in payload mode (sandbox); the
+  // live site keeps its current behavior until the CMS cutover.
+  if (isPayloadSource()) {
+    const payloadPage = await getPayloadCmsPage(slug);
+    if (payloadPage) return <PayloadPageContent page={payloadPage} />;
+  }
 
   let page;
   try {

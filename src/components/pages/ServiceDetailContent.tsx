@@ -316,7 +316,7 @@ function ServiceImage({ s }: { s: Extract<ServiceSection, { type: "image" }> }) 
   );
 }
 
-function RenderSection({
+export function RenderSection({
   s,
   pricingCtaLabel,
   pricingCtaNote,
