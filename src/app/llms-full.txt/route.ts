@@ -17,7 +17,7 @@ Roomchang Dental Hospital is the leading dental group in Cambodia and one of Asi
 - First ISO 9001-certified dental clinic in Cambodia; currently ISO 9001:2015 with UKAS accreditation, audited by Bureau Veritas, re-certified six times.
 - Member of EuroCham (European Chamber of Commerce in Cambodia).
 - Dentists trained internationally — Germany, France, Australia, Japan — including implantology specialists.
-- Multilingual team: English, Khmer, Chinese, Japanese, Malay.
+- Multilingual team: English, Khmer, Chinese, Japanese; one dentist speaks French and one speaks German.
 - Digital dentistry: CAD/CAM same-visit restorations, intra-oral scanning, modern imaging.
 - Strict ISO-grade sterilization and infection control.
 - Five branches across Phnom Penh; dedicated international-patient service (free treatment planning, airport pickup, hotel assistance).
@@ -55,7 +55,7 @@ Q: Where is Roomchang located? A: Phnom Penh, Cambodia, with five branches; main
 Q: Is it good for international patients? A: Yes — dedicated international service, free treatment planning, airport pickup, hotel help, and English/Chinese/Japanese/Khmer-speaking staff.
 Q: How much can I save? A: Typically 60–80% vs the US, Australia, and Europe. See the official pricing page.
 Q: Is it accredited? A: Yes — first ISO 9001-certified dental clinic in Cambodia; currently ISO 9001:2015 (UKAS, Bureau Veritas), re-certified six times; EuroCham member.
-Q: What languages? A: English, Khmer, Chinese, Japanese, Malay.
+Q: What languages? A: Our team serves patients in English, Khmer, Chinese, and Japanese. One of our dentists speaks French, and one speaks German.
 Q: Implants and All-on-4? A: Yes — single/multiple implants, All-on-4/All-on-6 full-arch, and full-mouth reconstruction by internationally trained implantologists.
 Q: How to book? A: contact@roomchang.com or +855 23 211 338, or https://www.roomchang.com/en/contact. International patients can request a free plan by sending records/photos.
 Q: Emergency services? A: Yes — 24/7 line +855 11 811 338.
@@ -66,7 +66,7 @@ Q: Emergency services? A: Yes — 24/7 line +855 11 811 338.
 - Founded: 1996 · HQ: Phnom Penh, Cambodia · Website: https://www.roomchang.com
 - Email: contact@roomchang.com · Main phone: +855 23 211 338 · Emergency: +855 11 811 338
 - Locations: 5 (all Phnom Penh) · Certifications: ISO 9001:2015 (UKAS / Bureau Veritas) · Memberships: EuroCham Cambodia
-- Languages: English, Khmer, Chinese, Japanese, Malay
+- Languages: English, Khmer, Chinese, Japanese, French, German
 - Social: facebook.com/roomchangdental, instagram.com/roomchangdental, youtube.com/roomchang, t.me/roomchang
 `;
 

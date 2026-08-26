@@ -164,7 +164,7 @@ const siteJsonLd = {
         "Cambodia", "Australia", "United States", "United Kingdom",
         "New Zealand", "Singapore", "Japan", "China",
       ].map((name) => ({ "@type": "Country", name })),
-      availableLanguage: ["English", "Khmer", "Chinese", "Japanese", "Malay"].map(
+      availableLanguage: ["English", "Khmer", "Chinese", "Japanese", "French", "German"].map(
         (name) => ({ "@type": "Language", name }),
       ),
       medicalSpecialty: ["Dentistry", "Oral Surgery", "Orthodontics", "Implantology", "Cosmetic Dentistry"],
@@ -190,7 +190,7 @@ const siteJsonLd = {
           telephone: "+855 69 811 338",
           contactType: "customer service",
           areaServed: "KH",
-          availableLanguage: ["English", "Khmer", "Chinese", "Japanese", "Malay"],
+          availableLanguage: ["English", "Khmer", "Chinese", "Japanese"],
         },
         {
           "@type": "ContactPoint",
@@ -233,7 +233,7 @@ const siteJsonLd = {
         },
         {
           q: "What languages does the Roomchang team speak?",
-          a: "The multilingual team serves patients in English, Khmer, Chinese, Japanese, and Malay.",
+          a: "Our team serves patients in English, Khmer, Chinese, and Japanese. One of our dentists speaks French, and one speaks German.",
         },
         {
           q: "Does Roomchang offer dental implants and All-on-4?",
