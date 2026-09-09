@@ -2,6 +2,7 @@ import "server-only";
 
 import { cache } from "react";
 import { getLocale } from "next-intl/server";
+import { draftMode } from "next/headers";
 import type {
   Branch,
   CareerPosition,
@@ -47,10 +48,31 @@ async function payloadLocale(): Promise<string> {
   }
 }
 
+/**
+ * Draft preview: when Next's draft mode is on (entered via /api/preview with
+ * the shared secret — the CMS's Live Preview iframe does this), fetch with
+ * draft=true as the CMS's preview service user so unpublished edits render.
+ * Outside draft mode the API returns published content only (enforced by the
+ * CMS's anonymous access layer, not by a filter here).
+ */
+async function previewMode(): Promise<boolean> {
+  try {
+    return (await draftMode()).isEnabled;
+  } catch {
+    return false; // outside a request scope (build-time)
+  }
+}
+
 async function payloadFind<T>(collection: string, params: Record<string, string>): Promise<T[]> {
   const locale = await payloadLocale();
+  const preview = await previewMode();
   const qs = new URLSearchParams({ locale, limit: "200", depth: "0", ...params });
-  const res = await fetch(`${API()}/api/${collection}?${qs}`, { cache: "no-store" });
+  const apiKey = process.env.PAYLOAD_PREVIEW_API_KEY;
+  if (preview) qs.set("draft", "true");
+  const res = await fetch(`${API()}/api/${collection}?${qs}`, {
+    cache: "no-store",
+    headers: preview && apiKey ? { Authorization: `users API-Key ${apiKey}` } : undefined,
+  });
   if (!res.ok) {
     console.error(`[payload-source] ${collection} fetch failed: ${res.status}`);
     return [];
@@ -560,7 +582,7 @@ const mapService = (p: PayloadService): Service => ({
   imageSrc: p.imageUrl ?? null,
   isFeatured: p.isFeatured ?? false,
   order: p.order ?? 0,
-  published: p.published ?? true,
+  published: true, // visibility is decided by the CMS (drafts model)
   eyebrow: p.eyebrow ?? null,
   heroDescription: p.heroDescription ?? null,
   content: sectionsFromPayload(p.sections, p.content ?? null),
@@ -579,7 +601,7 @@ const mapDoctor = (p: PayloadDoctor): Doctor => ({
   initials: p.initials ?? "",
   photoUrl: p.photoUrl ?? null,
   order: p.order ?? 0,
-  published: p.published ?? true,
+  published: true, // visibility is decided by the CMS (drafts model)
 });
 
 const mapBranch = (p: PayloadBranch): Branch => ({
@@ -591,7 +613,7 @@ const mapBranch = (p: PayloadBranch): Branch => ({
   email: p.email ?? null,
   hours: p.hours ?? "",
   order: p.order ?? 0,
-  published: p.published ?? true,
+  published: true, // visibility is decided by the CMS (drafts model)
   map_place_url: p.mapPlaceUrl ?? null,
 });
 
@@ -623,7 +645,7 @@ const mapTestimonial = (p: PayloadTestimonial): Testimonial => ({
   rating: p.rating ?? 5,
   isFeatured: p.isFeatured ?? false,
   order: p.order ?? 0,
-  published: p.published ?? true,
+  published: true, // visibility is decided by the CMS (drafts model)
 });
 
 const mapTechnology = (p: PayloadTechnology): TechnologyItem => ({
@@ -635,7 +657,7 @@ const mapTechnology = (p: PayloadTechnology): TechnologyItem => ({
   highlights: strings(p.highlights, "value"),
   imageSrc: p.imageUrl ?? null,
   order: p.order ?? 0,
-  published: p.published ?? true,
+  published: true, // visibility is decided by the CMS (drafts model)
   content: sectionsFromPayload(p.sections, p.content ?? null),
 });
 
@@ -652,7 +674,7 @@ const mapClinicalCase = (p: PayloadClinicalCase): ClinicalCase => ({
   fullText: p.fullText ?? null,
   images: Array.isArray(p.images) ? p.images : [],
   order: p.order ?? 0,
-  published: p.published ?? true,
+  published: true, // visibility is decided by the CMS (drafts model)
 });
 
 const mapInternationalStep = (p: PayloadInternationalStep): InternationalStep => ({
@@ -713,7 +735,7 @@ const mapVideo = (p: PayloadVideo): Video => ({
   topic: p.topic ?? null,
   treatment: p.treatment ?? null,
   order: p.order ?? 0,
-  published: p.published ?? true,
+  published: true, // visibility is decided by the CMS (drafts model)
 });
 
 const mapCareerPosition = (p: PayloadCareerPosition): CareerPosition => ({
@@ -727,7 +749,7 @@ const mapCareerPosition = (p: PayloadCareerPosition): CareerPosition => ({
   requirements: strings(p.requirements, "value"),
   benefits: strings(p.benefits, "value"),
   order: p.order ?? 0,
-  published: p.published ?? true,
+  published: true, // visibility is decided by the CMS (drafts model)
 });
 
 const mapCommunityArticle = (p: PayloadCommunityArticle): CommunityArticle => ({
@@ -738,7 +760,7 @@ const mapCommunityArticle = (p: PayloadCommunityArticle): CommunityArticle => ({
   imageAlt: p.imageAlt ?? null,
   href: p.href ?? null,
   order: p.order ?? 0,
-  published: p.published ?? true,
+  published: true, // visibility is decided by the CMS (drafts model)
 });
 
 const mapTimelineEvent = (p: PayloadTimelineEvent): TimelineEvent => ({
@@ -751,7 +773,7 @@ const mapTimelineEvent = (p: PayloadTimelineEvent): TimelineEvent => ({
   imageAlt: p.imageAlt ?? null,
   imagePosition: p.imagePosition ?? null,
   order: p.order ?? 0,
-  published: p.published ?? true,
+  published: true, // visibility is decided by the CMS (drafts model)
 });
 
 const mapPublication = (p: PayloadPublication): Publication => ({
@@ -764,7 +786,7 @@ const mapPublication = (p: PayloadPublication): Publication => ({
   url: p.url ?? null,
   abstract: p.abstract ?? null,
   order: p.order ?? 0,
-  published: p.published ?? true,
+  published: true, // visibility is decided by the CMS (drafts model)
 });
 
 const mapSiteStat = (p: PayloadSiteStat): PayloadSiteStatRow => ({
@@ -822,7 +844,6 @@ const mapCommunityArticleDetail = (p: PayloadCommunityArticleDetail): PayloadCom
 
 export async function getPayloadServices(): Promise<Service[]> {
   const docs = await payloadFind<PayloadService>("services", {
-    "where[published][equals]": "true",
     sort: "order",
     depth: "1", // populate section media uploads (Media Library picker)
   });
@@ -832,7 +853,6 @@ export async function getPayloadServices(): Promise<Service[]> {
 export async function getPayloadServiceBySlug(slug: string): Promise<Service | null> {
   const docs = await payloadFind<PayloadService>("services", {
     "where[slug][equals]": slug,
-    "where[published][equals]": "true",
     limit: "1",
     depth: "1",
   });
@@ -841,7 +861,6 @@ export async function getPayloadServiceBySlug(slug: string): Promise<Service | n
 
 export async function getPayloadDoctors(): Promise<Doctor[]> {
   const docs = await payloadFind<PayloadDoctor>("doctors", {
-    "where[published][equals]": "true",
     sort: "order",
   });
   return docs.map(mapDoctor);
@@ -849,7 +868,6 @@ export async function getPayloadDoctors(): Promise<Doctor[]> {
 
 export async function getPayloadBranches(): Promise<Branch[]> {
   const docs = await payloadFind<PayloadBranch>("branches", {
-    "where[published][equals]": "true",
     sort: "order",
   });
   return docs.map(mapBranch);
@@ -872,7 +890,6 @@ export async function getPayloadPricingCategories(): Promise<PricingCategory[]> 
 
 export async function getPayloadTestimonials(): Promise<Testimonial[]> {
   const docs = await payloadFind<PayloadTestimonial>("testimonials", {
-    "where[published][equals]": "true",
     sort: "order",
   });
   return docs.map(mapTestimonial);
@@ -880,7 +897,6 @@ export async function getPayloadTestimonials(): Promise<Testimonial[]> {
 
 export async function getPayloadTechnology(): Promise<TechnologyItem[]> {
   const docs = await payloadFind<PayloadTechnology>("technology", {
-    "where[published][equals]": "true",
     sort: "order",
     depth: "1",
   });
@@ -890,7 +906,6 @@ export async function getPayloadTechnology(): Promise<TechnologyItem[]> {
 export async function getPayloadTechnologyBySlug(slug: string): Promise<TechnologyItem | null> {
   const docs = await payloadFind<PayloadTechnology>("technology", {
     "where[slug][equals]": slug,
-    "where[published][equals]": "true",
     limit: "1",
     depth: "1",
   });
@@ -899,7 +914,6 @@ export async function getPayloadTechnologyBySlug(slug: string): Promise<Technolo
 
 export async function getPayloadClinicalCases(): Promise<ClinicalCase[]> {
   const docs = await payloadFind<PayloadClinicalCase>("clinical-cases", {
-    "where[published][equals]": "true",
     sort: "order",
   });
   return docs.map(mapClinicalCase);
@@ -908,7 +922,6 @@ export async function getPayloadClinicalCases(): Promise<ClinicalCase[]> {
 export async function getPayloadClinicalCaseBySlug(slug: string): Promise<ClinicalCase | null> {
   const docs = await payloadFind<PayloadClinicalCase>("clinical-cases", {
     "where[slug][equals]": slug,
-    "where[published][equals]": "true",
     limit: "1",
   });
   return docs[0] ? mapClinicalCase(docs[0]) : null;
@@ -948,7 +961,6 @@ export async function getPayloadHomepageSettings(): Promise<PayloadHomepageSetti
 
 export async function getPayloadFaqItems(): Promise<FaqItem[]> {
   const docs = await payloadFind<PayloadFaqItem>("faq-items", {
-    "where[published][equals]": "true",
     sort: "order",
   });
   return docs.map(mapFaqItem);
@@ -956,7 +968,6 @@ export async function getPayloadFaqItems(): Promise<FaqItem[]> {
 
 export async function getPayloadVideos(category?: string): Promise<Video[]> {
   const params: Record<string, string> = {
-    "where[published][equals]": "true",
     sort: "order",
   };
   if (category) params["where[category][equals]"] = category;
@@ -966,7 +977,6 @@ export async function getPayloadVideos(category?: string): Promise<Video[]> {
 
 export async function getPayloadCareerPositions(): Promise<CareerPosition[]> {
   const docs = await payloadFind<PayloadCareerPosition>("career-positions", {
-    "where[published][equals]": "true",
     sort: "order",
   });
   return docs.map(mapCareerPosition);
@@ -975,7 +985,6 @@ export async function getPayloadCareerPositions(): Promise<CareerPosition[]> {
 export async function getPayloadCareerPositionBySlug(slug: string): Promise<CareerPosition | null> {
   const docs = await payloadFind<PayloadCareerPosition>("career-positions", {
     "where[slug][equals]": slug,
-    "where[published][equals]": "true",
     limit: "1",
   });
   return docs[0] ? mapCareerPosition(docs[0]) : null;
@@ -983,7 +992,6 @@ export async function getPayloadCareerPositionBySlug(slug: string): Promise<Care
 
 export async function getPayloadCommunityArticles(): Promise<CommunityArticle[]> {
   const docs = await payloadFind<PayloadCommunityArticle>("community-articles", {
-    "where[published][equals]": "true",
     sort: "order",
   });
   return docs.map(mapCommunityArticle);
@@ -991,7 +999,6 @@ export async function getPayloadCommunityArticles(): Promise<CommunityArticle[]>
 
 export async function getPayloadTimelineEvents(): Promise<TimelineEvent[]> {
   const docs = await payloadFind<PayloadTimelineEvent>("timeline-events", {
-    "where[published][equals]": "true",
     sort: "order",
   });
   return docs.map(mapTimelineEvent);
@@ -999,7 +1006,6 @@ export async function getPayloadTimelineEvents(): Promise<TimelineEvent[]> {
 
 export async function getPayloadPublications(): Promise<Publication[]> {
   const docs = await payloadFind<PayloadPublication>("publications", {
-    "where[published][equals]": "true",
     sort: "-year",
   });
   return docs.map(mapPublication);
@@ -1007,7 +1013,6 @@ export async function getPayloadPublications(): Promise<Publication[]> {
 
 export async function getPayloadSiteStats(keys?: readonly string[]): Promise<PayloadSiteStatRow[]> {
   const docs = await payloadFind<PayloadSiteStat>("site-stats", {
-    "where[published][equals]": "true",
     sort: "order",
   });
   const keySet = keys ? new Set<string>(keys) : null;
@@ -1074,7 +1079,6 @@ export async function getPayloadPricingComparisonSet(
 
 export async function getPayloadNewsArticles(): Promise<PayloadNewsArticleShape[]> {
   const docs = await payloadFind<PayloadNewsArticle>("news-articles", {
-    "where[published][equals]": "true",
     sort: "order",
   });
   return docs.map(mapNewsArticle);
@@ -1083,7 +1087,6 @@ export async function getPayloadNewsArticles(): Promise<PayloadNewsArticleShape[
 export async function getPayloadNewsArticleBySlug(slug: string): Promise<PayloadNewsArticleShape | null> {
   const docs = await payloadFind<PayloadNewsArticle>("news-articles", {
     "where[slug][equals]": slug,
-    "where[published][equals]": "true",
     limit: "1",
   });
   return docs[0] ? mapNewsArticle(docs[0]) : null;
@@ -1091,7 +1094,6 @@ export async function getPayloadNewsArticleBySlug(slug: string): Promise<Payload
 
 export async function getPayloadCommunityArticleDetails(): Promise<PayloadCommunityArticleShape[]> {
   const docs = await payloadFind<PayloadCommunityArticleDetail>("community-articles", {
-    "where[published][equals]": "true",
     sort: "order",
   });
   return docs.map(mapCommunityArticleDetail);
@@ -1100,7 +1102,6 @@ export async function getPayloadCommunityArticleDetails(): Promise<PayloadCommun
 export async function getPayloadCommunityArticleBySlug(slug: string): Promise<PayloadCommunityArticleShape | null> {
   const docs = await payloadFind<PayloadCommunityArticleDetail>("community-articles", {
     "where[slug][equals]": slug,
-    "where[published][equals]": "true",
     limit: "1",
   });
   return docs[0] ? mapCommunityArticleDetail(docs[0]) : null;
@@ -1131,7 +1132,6 @@ type PayloadPageDoc = PayloadDocBase & {
 export async function getPayloadCmsPage(slug: string): Promise<PayloadCmsPage | null> {
   const docs = await payloadFind<PayloadPageDoc>("pages", {
     "where[slug][equals]": slug,
-    "where[published][equals]": "true",
     limit: "1",
     depth: "1", // sections may carry Media Library uploads
   });
