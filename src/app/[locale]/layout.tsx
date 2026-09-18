@@ -144,7 +144,7 @@ const siteJsonLd = {
       logo: `${SITE}/brand/roomchang-logo-header-padded.png`,
       image: `${SITE}/og-default.jpg`,
       description:
-        "Cambodia's leading dental hospital and a top destination for dental tourism in Asia. Founded in 1996, the first ISO 9001-certified dental clinic in Cambodia, with 5 branches in Phnom Penh and internationally trained specialists.",
+        "Cambodia's leading dental hospital and a top destination for dental tourism in Asia. Founded in 1996, ISO 9001:2015 certified, with 5 branches in Phnom Penh and internationally trained specialists.",
       slogan: "The best quality dental group practice for your choice",
       foundingDate: "1996",
       telephone: "+855 69 811 338",
@@ -229,7 +229,7 @@ const siteJsonLd = {
         },
         {
           q: "Is Roomchang Dental Hospital accredited?",
-          a: "Yes. Roomchang was the first dental clinic in Cambodia to earn ISO 9001 certification and currently holds ISO 9001:2015 (UKAS accreditation via Bureau Veritas), re-certified six times. It is also a member of EuroCham Cambodia.",
+          a: "Yes. Roomchang holds ISO 9001:2015 certification (UKAS accreditation via Bureau Veritas), re-certified six times. It is also a member of EuroCham Cambodia.",
         },
         {
           q: "What languages does the Roomchang team speak?",

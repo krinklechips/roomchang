@@ -21,7 +21,7 @@ export const NEWS_ARTICLES: NewsArticle[] = [
     imageAlt: "Roomchang Dental Hospital ISO 9001:2015 UKAS Accreditation",
     body: [
       "Roomchang Dental Hospital received its ISO 9001:2015 certification with UKAS accreditation following a comprehensive three-day evaluation conducted by Bureau Veritas, an internationally recognised standards certification body.",
-      "The hospital first achieved ISO 9001 certification in 2008, becoming the first dental clinic in Cambodia to earn this distinction. The 2018 award represents a continued commitment to maintaining the highest standards of quality management in dental care.",
+      "The hospital first achieved ISO 9001 certification in 2008. The 2018 award represents a continued commitment to maintaining the highest standards of quality management in dental care.",
       'Director Dr. Tith Hong Yoeu noted that the hospital works to maintain international-standard dental care and has gained the trust of an increasing number of patients each year.',
       "Operating from a modern 10-storey building in central Phnom Penh, Roomchang employs over 30 specialist dentists, many with overseas training in Germany, Japan, and other countries. The facility features advanced dental technologies including CAD/CAM systems, CBCT scanners, laser dentistry, digital imaging, and Class B autoclave sterilisation equipment.",
       "Since 2007, Roomchang has conducted free dental clinics throughout Cambodia, providing services to thousands of patients in underserved communities. The hospital launched its Oral Health Care Education Project in 2011 to promote proper hygiene awareness among students and professionals.",
@@ -119,7 +119,7 @@ export const NEWS_ARTICLES: NewsArticle[] = [
     body: [
       "Roomchang Dental Hospital earned its ISO 9001:2008 (UKAS Accreditation) for the sixth consecutive time, further cementing its reputation as Cambodia’s benchmark for dental quality assurance.",
       "The accreditation, awarded following assessment by an international standards body, evaluates clinical processes, patient safety protocols, infection control, and quality management systems across the entire hospital operation.",
-      "This achievement reflects nearly a decade of consistent adherence to international quality standards since Roomchang first achieved ISO certification in 2008 — the first dental clinic in Cambodia to do so.",
+      "This achievement reflects nearly a decade of consistent adherence to international quality standards since Roomchang first achieved ISO certification in 2008.",
     ],
   },
   {
