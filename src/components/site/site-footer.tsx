@@ -2,7 +2,7 @@ import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 
-type FooterLink = { tKey: string; href: string; external?: boolean };
+type FooterLink = { tKey: string; href: string; external?: boolean; plain?: boolean };
 type FooterColumn = { headingKey: string; links: FooterLink[] };
 
 const FOOTER_STRUCTURE: FooterColumn[] = [
@@ -36,6 +36,10 @@ const FOOTER_STRUCTURE: FooterColumn[] = [
   {
     headingKey: "international",
     links: [
+      // Country landing pages (Anabasis, reverse-proxied at the bare /intl
+      // path — outside the locale prefix, so a plain same-tab anchor, not
+      // the locale-aware Link). The internal link Google needs to trust them.
+      { tKey: "chooseYourCountry", href: "/intl", plain: true },
       { tKey: "comingToCambodia", href: "/international" },
       { tKey: "howItWorks", href: "/international#how-it-works" },
       { tKey: "treatmentCosts", href: "/pricing" },
@@ -154,6 +158,13 @@ export async function SiteFooter() {
                         href={link.href}
                         target="_blank"
                         rel="noopener noreferrer"
+                        className="text-sm text-[color:var(--text-soft)] transition-colors hover:text-[color:var(--brand)]"
+                      >
+                        {linkLabel(col, link)}
+                      </a>
+                    ) : link.plain ? (
+                      <a
+                        href={link.href}
                         className="text-sm text-[color:var(--text-soft)] transition-colors hover:text-[color:var(--brand)]"
                       >
                         {linkLabel(col, link)}
