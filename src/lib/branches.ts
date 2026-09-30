@@ -119,7 +119,7 @@ export const BRANCHES: Branch[] = [
     shortName: "Fun Mall — TK Avenue",
     address: "2nd Floor, Fun Mall, Street 315",
     addressLine2: "Toul Kork, Phnom Penh, Cambodia",
-    hours: "Mon–Sun 09:00–20:00",
+    hours: "Mon–Sun 09:00–18:30",
     phone: "+855 12 911 338",
     description:
       "Inside Fun Mall on TK Avenue in Toul Kork — our most recently opened branch, serving one of Phnom Penh's fastest-growing residential and commercial areas.",

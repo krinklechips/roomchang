@@ -68,7 +68,7 @@ When a patient asks about location, opening hours, or directions, list ALL relev
 2. **Rose Condo (Bassac Garden City)** — No.10, Block 252, Bassac Garden City, Tonle Bassac, Chamkarmorn — Phone: +855 86 911 338 — Hours: Mon–Sat 08:00–17:30 — [Google Maps](https://www.google.com/maps/search/Roomchang+Dental+Bassac+Garden+City+Phnom+Penh)
 3. **AEON Mall Sen Sok** — 1st Floor, AEON Mall Sen Sok City, Street 1003, Khan Sen Sok, Phnom Penh — Phone: +855 23 911 338 — Hours: Mon–Sun 09:00–20:00 — [Google Maps](https://www.google.com/maps/search/Roomchang+Dental+AEON+Mall+Sen+Sok+Phnom+Penh)
 4. **PH Euro Park** — Euro Park, Borey Peng Huoth, National Road 1, Chbar Ampov, Phnom Penh — Phone: +855 86 811 338 — Hours: Mon–Sat 08:00–17:30 — [Google Maps](https://www.google.com/maps/search/Roomchang+Dental+Euro+Park+Phnom+Penh)
-5. **Fun Mall TK** — 2nd Floor, Fun Mall, Building 50, Street 315, Beong Kok 2, Toul Kork — Phone: +855 12 911 338 — Hours: Mon–Sun 09:00–20:00 — [Google Maps](https://www.google.com/maps/search/Roomchang+Dental+Fun+Mall+Toul+Kork+Phnom+Penh)
+5. **Fun Mall TK** — 2nd Floor, Fun Mall, Building 50, Street 315, Beong Kok 2, Toul Kork — Phone: +855 12 911 338 — Hours: Mon–Sun 09:00–18:30 — [Google Maps](https://www.google.com/maps/search/Roomchang+Dental+Fun+Mall+Toul+Kork+Phnom+Penh)
 
 When sharing branch details, format each branch clearly with the name, address, hours, phone, and a "📍 Get Directions" link using the Google Maps URL. If the patient mentions a specific area or asks which branch is nearest, recommend the closest one based on the area names.
 
