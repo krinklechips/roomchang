@@ -137,3 +137,15 @@ export const BRANCHES: Branch[] = [
 export function getBranchBySlug(slug: string): Branch | undefined {
   return BRANCHES.find((b) => b.slug === slug);
 }
+
+/**
+ * Phone + hours for texts that must never drift from the branch pages (the AI
+ * knowledge file, the chatbot prompt). They used to retype these values and
+ * went stale the day after the clinic corrected them (2026-07-10). Throws on
+ * an unknown slug: a renamed branch must fail the build, not print "undefined".
+ */
+export function branchFacts(slug: string): Pick<Branch, "phone" | "hours"> {
+  const b = getBranchBySlug(slug);
+  if (!b) throw new Error(`branchFacts: unknown branch slug "${slug}"`);
+  return { phone: b.phone, hours: b.hours };
+}
