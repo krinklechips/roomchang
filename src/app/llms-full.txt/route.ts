@@ -43,10 +43,10 @@ International patients come primarily from Australia, the US, Europe, and across
 
 ## Locations (all Phnom Penh, Cambodia)
 1. Main Hospital (Daun Penh) — No. 4, Street 184, Sangkat Phsar Thmey 3, Khan Daun Penh, Phnom Penh 120203. Phone +855 23 211 338; 24/7 emergency +855 11 811 338. Mon–Sat 08:00–17:30.
-2. Rose Condo (Tonle Bassac / BKK) — No. 10, Block 252, Bassac Garden City, Tonle Bassac, Chamkarmon. Phone +855 86 911 338. Mon–Sat 08:00–17:30.
-3. AEON Mall Sen Sok City — 1st Floor, AEON Mall Sen Sok City. Phone +855 23 911 338. Mon–Sun 10:00–12:00 & 13:00–22:00.
-4. PH Euro Park (Boeung Snor) — Borey Peng Huoth Grand Star Platinum, Boeung Snor. Phone +855 86 911 338. Mon–Sun 08:00–17:30.
-5. Fun Mall (Toul Kork) — 2nd Floor, Fun Mall, Building 50, Street 315, Boeng Kak 2, Toul Kork. Phone +855 12 911 338. Mon–Sun 09:00–12:00 & 13:00–18:30.
+2. Rose Condo (Tonle Bassac / BKK) — No. 10, Block 252, Bassac Garden City, Tonle Bassac, Chamkarmon. Phone +855 78 811 338. Mon–Sat 08:00–17:30.
+3. AEON Mall Sen Sok City — 1st Floor, AEON Mall Sen Sok City. Phone +855 93 911 338. Mon–Sun 09:00–20:00.
+4. PH Euro Park (Boeung Snor) — Borey Peng Huoth Grand Star Platinum, Boeung Snor. Phone +855 86 911 338. Mon–Sat 08:00–17:30.
+5. Fun Mall (Toul Kork) — 2nd Floor, Fun Mall, Building 50, Street 315, Boeng Kak 2, Toul Kork. Phone +855 12 911 338. Mon–Sun 09:00–18:30.
 
 General contact: contact@roomchang.com — https://www.roomchang.com/en/contact
 
