@@ -389,7 +389,7 @@ type PayloadCommunityArticleDetail = PayloadNewsArticle & {
 export type PayloadSiteStatRow = {
   key: string;
   display_value: string | null;
-  original_display_value: string | null;
+  original_display_value?: string | null;
   numeric_value: number | null;
   suffix: string | null;
   label: string;
@@ -794,7 +794,7 @@ const mapPublication = (p: PayloadPublication): Publication => ({
 const mapSiteStat = (p: PayloadSiteStat): PayloadSiteStatRow => ({
   key: p.key,
   display_value: p.displayValue ?? null,
-  original_display_value: p.originalDisplayValue ?? null,
+  ...(p.originalDisplayValue !== undefined ? { original_display_value: p.originalDisplayValue } : {}),
   numeric_value: p.numericValue ?? null,
   suffix: p.suffix ?? null,
   label: p.label ?? "",

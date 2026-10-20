@@ -36,7 +36,7 @@ export function getHomepageStats(rows: HomeStatRow[] | null | undefined) {
       numeric_value: row.numeric_value,
       suffix: row.suffix ?? "",
       label: row.label,
-      ...(row.display_value && row.display_value !== row.original_display_value
+      ...(row.original_display_value !== undefined && row.display_value && row.display_value !== row.original_display_value
         ? { display_value: row.display_value }
         : {}),
     }));

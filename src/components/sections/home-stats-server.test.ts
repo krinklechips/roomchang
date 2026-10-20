@@ -2,6 +2,14 @@ import { describe, expect, it } from "vitest";
 import { getHomepageStats } from "./home-stats-data";
 
 describe("getHomepageStats", () => {
+  it("keeps old CMS responses stable during a rolling CMS deployment", () => {
+    expect(getHomepageStats([
+      { key: "years_experience", numeric_value: 30, suffix: " yrs", display_value: "30 yrs", label: "Years" },
+      { key: "specialist_dentists", numeric_value: 37, suffix: "+", display_value: "37", label: "Dentists" },
+      { key: "branches_count", numeric_value: 5, suffix: "", label: "Branches" },
+      { key: "patients_treated", numeric_value: 100000, suffix: "+", label: "Patients" },
+    ])[1]).toEqual({ numeric_value: 37, suffix: "+", label: "Dentists" });
+  });
   it("keeps pre-migration count formatting until the locale display value is edited", () => {
     expect(getHomepageStats([
       { key: "years_experience", numeric_value: 30, suffix: " yrs", display_value: "30 yrs", original_display_value: "30 yrs", label: "Years of Experience" },
@@ -12,7 +20,7 @@ describe("getHomepageStats", () => {
   });
   it("preserves a localized CMS display value instead of discarding it", () => {
     const rows = [
-      { key: "years_experience", numeric_value: 30, suffix: " yrs", display_value: "30 Khmer years", label: "Experience" },
+      { key: "years_experience", numeric_value: 30, suffix: " yrs", display_value: "30 Khmer years", original_display_value: null, label: "Experience" },
       { key: "specialist_dentists", numeric_value: 37, suffix: "+", label: "Dentists" },
       { key: "branches_count", numeric_value: 5, suffix: "", label: "Branches" },
       { key: "patients_treated", numeric_value: 100000, suffix: "+", label: "Patients" },
