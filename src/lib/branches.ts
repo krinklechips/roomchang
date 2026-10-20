@@ -29,6 +29,9 @@ export type Branch = {
    * to a keyless coordinate embed when absent.
    */
   mapEmbedSrc?: string;
+  displayName?: string;
+  shortDisplayName?: string;
+  photos?: unknown;
 };
 
 export const BRANCHES: Branch[] = [
@@ -136,6 +139,36 @@ export const BRANCHES: Branch[] = [
 
 export function getBranchBySlug(slug: string): Branch | undefined {
   return BRANCHES.find((b) => b.slug === slug);
+}
+
+const SOURCE_BRANCH_SLUGS: Readonly<Record<string, string>> = Object.freeze({
+  "fbc48bfa-9807-402f-aa7f-e0cf45d15272": "sisowath-high-school",
+  "7fcf8912-ccff-4add-8910-7c637e312473": "rose-condo",
+  "fa9eb854-e2e5-4086-b879-47d80d26200c": "aeon-mall",
+  "6da5da97-aec4-400b-a045-0df6311f78e3": "ph-euro-park",
+  "74b77631-3bd3-4bf4-bc0d-400bc4dab254": "fun-mall",
+});
+
+/** Match shared identity, never locale display text or collection order. */
+export function matchStaticBranch(branch: {
+  id?: string; slug?: string; name: string; shortName?: string; map_place_url?: string | null;
+}): Branch | undefined {
+  const sourceSlug = branch.id ? SOURCE_BRANCH_SLUGS[branch.id] : undefined;
+  if (sourceSlug) return getBranchBySlug(sourceSlug);
+  const normalize = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+  const identities = [branch.id, branch.slug, branch.name, branch.shortName].filter((value): value is string => Boolean(value)).map(normalize);
+  const aliases: Record<string, string[]> = {
+    "sisowath-high-school": ["Roomchang Dental Hospital", "Main Hospital", "Roomchang Dental Hospital Main Branch"],
+    "rose-condo": ["Roomchang Dental Clinic Rose Condo Branch", "Rose Condo Bassac Garden City"],
+    "aeon-mall": ["Roomchang Dental Clinic Aeon Mall Sen Sok City Branch", "Aeon Mall Sen Sok City"],
+    "ph-euro-park": ["Roomchang Dental Clinic PH Euro Park", "Roomchang Dental Clinic PH Euro Park Branch"],
+    "fun-mall": ["Roomchang Dental Clinic Fun Mall Branch", "Fun Mall TK Avenue"],
+  };
+  const matches = BRANCHES.filter((entry) =>
+    (branch.map_place_url && branch.map_place_url === entry.mapPlaceUrl) ||
+    [entry.slug, entry.name, entry.shortName, ...(aliases[entry.slug] ?? [])].some((value) => identities.includes(normalize(value))),
+  );
+  return matches.length === 1 ? matches[0] : undefined;
 }
 
 /**

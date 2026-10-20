@@ -368,7 +368,7 @@ export function ContactForm({ branches, doctors }: { branches: Branch[]; doctors
                     <option value="">{t("placeholder.branch")}</option>
                     {branches.map((b) => (
                       <option key={b.id} value={b.name}>
-                        {b.name}
+                        {b.displayName?.trim() ? b.displayName : b.name}
                       </option>
                     ))}
                   </select>
@@ -484,7 +484,7 @@ export function ContactForm({ branches, doctors }: { branches: Branch[]; doctors
               key={branch.id}
               className="rounded-2xl border border-[color:var(--border-strong)] bg-[color:var(--surface)] p-5"
             >
-              <p className="font-semibold text-[color:var(--text-main)]">{branch.name}</p>
+              <p className="font-semibold text-[color:var(--text-main)]">{branch.displayName?.trim() ? branch.displayName : branch.name}</p>
               <p className="mt-1 text-sm leading-6 text-[color:var(--text-soft)]">{branch.address}</p>
               <p className="mt-1 text-sm text-[color:var(--text-soft)]">{branch.phone}</p>
               {branch.mobile && (

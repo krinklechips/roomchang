@@ -10,6 +10,8 @@ import { buildSeoMetadata } from "@/lib/seo";
 import {
   CLINICAL_CATEGORIES,
   getClinicalCategoryBySlug,
+  caseCategoryKey,
+  CLINICAL_CATEGORY_LABEL_KEYS,
 } from "@/lib/clinical-categories";
 
 export const revalidate = 60;
@@ -30,12 +32,15 @@ export async function generateMetadata({
 
   const path = `/clinical-results/category/${slug}`;
   const seo = await getSeoPageMeta(path);
+  const t = await getTranslations("clinicalResults");
+  const labels = await getTranslations("clinicalResultsGrid.cat");
+  const label = labels(CLINICAL_CATEGORY_LABEL_KEYS[slug]);
 
   return buildSeoMetadata(
     {
       path,
-      title: category.metaTitle,
-      description: category.metaDescription,
+      title: locale === "en" ? category.metaTitle : `${label} | ${t("meta.title")}`,
+      description: locale === "en" ? category.metaDescription : `${label}. ${t("meta.description")}`,
     },
     seo,
   );
@@ -52,9 +57,11 @@ export default async function ClinicalResultsCategoryPage({
   if (!category) notFound();
 
   const t = await getTranslations("clinicalResults");
+  const labels = await getTranslations("clinicalResultsGrid.cat");
+  const label = locale === "en" ? category.label : labels(CLINICAL_CATEGORY_LABEL_KEYS[slug]);
 
   const cases = await getClinicalCases();
-  const categoryCases = cases.filter((c) => c.category === category.category);
+  const categoryCases = cases.filter((c) => caseCategoryKey(c) === category.slug);
 
   return (
     <SiteShell>
@@ -68,10 +75,10 @@ export default async function ClinicalResultsCategoryPage({
             <ArrowLeft size={13} strokeWidth={2.5} aria-hidden="true" /> {t("category.backToAll")}
           </Link>
           <h1 className="mt-4 font-display text-5xl leading-none text-[color:var(--text-main)] sm:text-6xl">
-            {category.label}
+            {label}
           </h1>
           <p className="mt-5 max-w-2xl text-base leading-7 text-[color:var(--text-soft)]">
-            {category.intro}
+            {locale === "en" ? category.intro : t("hero.body")}
           </p>
 
           {/* Sibling categories — real links for navigation + internal linking */}
@@ -95,7 +102,7 @@ export default async function ClinicalResultsCategoryPage({
                       : "border-[color:var(--border-strong)] bg-white text-[color:var(--text-soft)] hover:border-[color:var(--brand)] hover:text-[color:var(--brand-deep)]"
                   }`}
                 >
-                  {c.label}
+                  {locale === "en" ? c.label : labels(CLINICAL_CATEGORY_LABEL_KEYS[c.slug])}
                 </Link>
               );
             })}
@@ -108,12 +115,12 @@ export default async function ClinicalResultsCategoryPage({
         {categoryCases.length > 0 ? (
           <ClinicalResultsGrid
             cases={categoryCases}
-            initialCategory={category.category}
+            initialCategory={category.slug}
             showFilters={false}
           />
         ) : (
           <p className="text-sm text-[color:var(--text-soft)]">
-            {t("category.emptyState", { label: category.label.toLowerCase() })}{" "}
+            {t("category.emptyState", { label })}{" "}
             <Link href="/clinical-results" className="font-semibold text-[color:var(--brand)] underline">
               {t("category.browseAll")}
             </Link>

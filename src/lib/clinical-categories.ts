@@ -80,3 +80,24 @@ export const CLINICAL_CATEGORIES: ClinicalCategory[] = [
 export function getClinicalCategoryBySlug(slug: string): ClinicalCategory | undefined {
   return CLINICAL_CATEGORIES.find((c) => c.slug === slug);
 }
+
+export const CLINICAL_CATEGORY_LABEL_KEYS: Record<string, string> = {
+  "full-mouth-reconstruction": "fullMouth",
+  "implants-and-crowns": "implantsCrowns",
+  "implant-bridges": "implantBridges",
+  orthodontics: "orthodontics",
+  "cosmetic-and-emax": "cosmeticEmax",
+};
+
+/** Legacy English data must be keyed before a translation overlay is applied. */
+export function clinicalCategoryKey(category: string): string | undefined {
+  return CLINICAL_CATEGORIES.find((entry) => entry.category === category || entry.slug === category)?.slug;
+}
+
+export function caseCategoryKey(item: { category: string; categoryKey?: string }): string {
+  return item.categoryKey || clinicalCategoryKey(item.category) || item.category;
+}
+
+export function categoryKeyFromHash(hash: string): string | undefined {
+  return CLINICAL_CATEGORIES.find((entry) => entry.hashKey === hash || entry.slug === hash)?.slug;
+}

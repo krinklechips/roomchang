@@ -3,22 +3,51 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
+import type { TimelineEvent } from "@/lib/data";
 
 /** Non-translatable layout data for each era */
 const ERA_DEFS = [
-  { key: "1996",  src: "/about/history-clinic-1996.jpg",     objectPos: "object-center" },
-  { key: "2002",  src: "/about/history-clinic-2002.jpg",     objectPos: "object-center" },
-  { key: "2008",  src: "/about/certification-iso.jpg",       objectPos: "object-top" },
-  { key: "2011",  src: "/about/facilities/DJI_0387.jpg",           objectPos: "object-center" },
-  { key: "2014",  src: "/about/facilities/2014.jpg",               objectPos: "object-center" },
-  { key: "2018",  src: "/about/facilities/Aeon-Mall-2018.jpg",     objectPos: "object-center" },
-  { key: "2022a", src: "/about/facilities/T-PH-1-2022.jpg",       objectPos: "object-center" },
-  { key: "2022b", src: "/about/facilities/RCD_9243Fun Mall.jpg",   objectPos: "object-center" },
-  { key: "now",   src: "/about/facilities/EDJI_0381.jpg",          objectPos: "object-left" },
+  { key: "1996",  sourceId: "1", src: "/about/history-clinic-1996.jpg",     objectPos: "object-center" },
+  { key: "2002",  sourceId: "2", src: "/about/history-clinic-2002.jpg",     objectPos: "object-center" },
+  { key: "2008",  sourceId: "3", src: "/about/certification-iso.jpg",       objectPos: "object-top" },
+  { key: "2011",  sourceId: "4", src: "/about/facilities/DJI_0387.jpg",           objectPos: "object-center" },
+  { key: "2014",  sourceId: "5", src: "/about/facilities/2014.jpg",               objectPos: "object-center" },
+  { key: "2018",  sourceId: "6", src: "/about/facilities/Aeon-Mall-2018.jpg",     objectPos: "object-center" },
+  { key: "2022a", sourceId: "7", src: "/about/facilities/T-PH-1-2022.jpg",       objectPos: "object-center" },
+  { key: "2022b", sourceId: "8", src: "/about/facilities/RCD_9243Fun Mall.jpg",   objectPos: "object-center" },
+  { key: "now",   sourceId: "9", src: "/about/facilities/EDJI_0381.jpg",          objectPos: "object-left" },
 ] as const;
 
-export function AboutTimeline() {
+export function AboutTimeline({ events }: { events?: TimelineEvent[] }) {
   const t = useTranslations("aboutTimeline");
+  const bundled = (definition: typeof ERA_DEFS[number]) => ({
+    ...definition,
+    year: t(`${definition.key}.year`),
+    caption: t(`${definition.key}.caption`),
+    heading: t(`${definition.key}.heading`),
+    body: t(`${definition.key}.body`),
+    alt: t(`${definition.key}.alt`),
+    imagePosition: undefined as string | undefined,
+  });
+  const items = events?.length ? events.map((event) => {
+    const byIdentity = ERA_DEFS.find((era) => era.sourceId === event.id || era.key === event.id);
+    const byImage = ERA_DEFS.find((era) => event.imageSrc?.endsWith(era.src.split("/").at(-1)!));
+    const byYear = ERA_DEFS.filter((era) => era.key === event.year || era.key === `${event.year}a` || era.key === `${event.year}b`);
+    const definition = byIdentity ?? byImage ?? (byYear.length === 1 ? byYear[0] : undefined);
+    const fallback = definition ? bundled(definition) : undefined;
+    const value = (copy: string | null, fallback = "") => copy?.trim() ? copy : fallback;
+    return {
+      key: event.id,
+      year: value(event.year, fallback?.year),
+      caption: value(event.caption, fallback?.caption),
+      heading: value(event.heading, fallback?.heading),
+      body: value(event.body, fallback?.body),
+      src: value(event.imageSrc, fallback?.src),
+      alt: value(event.imageAlt, fallback?.alt),
+      objectPos: fallback?.objectPos ?? "object-center",
+      imagePosition: event.imagePosition || undefined,
+    };
+  }) : ERA_DEFS.map(bundled);
   const [visibleSet, setVisibleSet] = useState<Set<number>>(new Set());
   const refs = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -47,7 +76,7 @@ export function AboutTimeline() {
         aria-hidden="true"
       />
 
-      {ERA_DEFS.map((item, i) => {
+      {items.map((item, i) => {
         const isVisible = visibleSet.has(i);
         /* Even index → image left, text right. Odd → text left, image right. */
         const imgLeft = i % 2 === 0;
@@ -81,14 +110,15 @@ export function AboutTimeline() {
                     : "opacity-0 translate-x-6 scale-[1.02]"
                 }`}
               >
-                <Image
+                {item.src && <Image
                   src={item.src}
-                  alt={t(`${item.key}.alt`)}
+                  alt={item.alt}
                   fill
                   sizes="(min-width: 1024px) 50vw, 100vw"
                   className={`object-cover ${item.objectPos}`}
+                  style={item.imagePosition ? { objectPosition: item.imagePosition } : undefined}
                   priority={i === 0}
-                />
+                />}
                 {/* Subtle darkening vignette */}
                 <div
                   className={`absolute inset-0 ${
@@ -106,7 +136,7 @@ export function AboutTimeline() {
                   }`}
                   aria-hidden="true"
                 >
-                  {t(`${item.key}.year`)}
+                  {item.year}
                 </p>
               </div>
             </div>
@@ -126,27 +156,27 @@ export function AboutTimeline() {
               >
                 {/* Year — mobile only (desktop has spine) */}
                 <p className="mb-1 font-display text-[2.8rem] leading-none text-[color:var(--brand)] lg:hidden">
-                  {t(`${item.key}.year`)}
+                  {item.year}
                 </p>
 
                 {/* Caption pill */}
                 <p className="text-[0.6rem] font-bold uppercase tracking-[0.35em] text-[color:var(--brand)]">
-                  {t(`${item.key}.caption`)}
+                  {item.caption}
                 </p>
 
                 {/* Heading */}
                 <h3 className="mt-3 font-display text-4xl leading-tight text-[color:var(--text-main)] lg:text-5xl xl:text-6xl">
-                  {t(`${item.key}.heading`)}
+                  {item.heading}
                 </h3>
 
                 {/* Year — desktop (sits under heading, editorial ghost) */}
                 <p className="mt-2 hidden font-display text-[5rem] leading-none text-[color:var(--brand-light)] opacity-40 select-none lg:block xl:text-[6rem]">
-                  {t(`${item.key}.year`)}
+                  {item.year}
                 </p>
 
                 {/* Body */}
                 <p className="mt-5 max-w-md text-sm leading-8 text-[color:var(--text-soft)] italic">
-                  {t(`${item.key}.body`)}
+                  {item.body}
                 </p>
               </div>
             </div>

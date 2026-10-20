@@ -6,31 +6,9 @@ import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { ArrowRight } from "lucide-react";
 import type { ClinicalCase } from "@/lib/data";
+import { CLINICAL_CATEGORIES, CLINICAL_CATEGORY_LABEL_KEYS, caseCategoryKey, categoryKeyFromHash } from "@/lib/clinical-categories";
 
-const CATEGORY_ORDER = [
-  "Full Mouth",
-  "Implants & Crowns",
-  "Implant Bridges",
-  "Orthodontics",
-  "Cosmetic & E-Max",
-];
-
-const HASH_TO_CATEGORY: Record<string, string> = {
-  "full-mouth": "Full Mouth",
-  implants:     "Implants & Crowns",
-  bridges:      "Implant Bridges",
-  orthodontics: "Orthodontics",
-  cosmetic:     "Cosmetic & E-Max",
-};
-
-/** Map DB category/tag values → i18n keys */
-const CAT_I18N: Record<string, string> = {
-  "Full Mouth":       "cat.fullMouth",
-  "Implants & Crowns":"cat.implantsCrowns",
-  "Implant Bridges":  "cat.implantBridges",
-  "Orthodontics":     "cat.orthodontics",
-  "Cosmetic & E-Max": "cat.cosmeticEmax",
-};
+const CATEGORY_ORDER = CLINICAL_CATEGORIES.map((entry) => entry.slug);
 
 const TAG_I18N: Record<string, string> = {
   "Before & After": "tag.beforeAfter",
@@ -49,7 +27,7 @@ export function ClinicalResultsGrid({
   showFilters?: boolean;
 }) {
   const t = useTranslations("clinicalResultsGrid");
-  const rawCategories = Array.from(new Set(cases.map((c) => c.category)));
+  const rawCategories = Array.from(new Set(cases.map(caseCategoryKey)));
   const categories = [
     "All",
     ...CATEGORY_ORDER.filter((c) => rawCategories.includes(c)),
@@ -64,8 +42,9 @@ export function ClinicalResultsGrid({
   useEffect(() => {
     function applyHashFilter() {
       const hash = window.location.hash.replace("#", "");
-      if (hash && HASH_TO_CATEGORY[hash]) {
-        setActive(HASH_TO_CATEGORY[hash]);
+      const categoryKey = categoryKeyFromHash(hash);
+      if (categoryKey) {
+        setActive(categoryKey);
         // Scroll the matching filter pill into view
         document.getElementById(`filter-${hash}`)?.scrollIntoView({ block: "center" });
       } else if (!hash) {
@@ -97,7 +76,7 @@ export function ClinicalResultsGrid({
     };
   }, [initialCategory]);
 
-  const filtered = active === "All" ? cases : cases.filter((c) => c.category === active);
+  const filtered = active === "All" ? cases : cases.filter((c) => caseCategoryKey(c) === active);
 
   return (
     <div className="space-y-14">
@@ -105,7 +84,7 @@ export function ClinicalResultsGrid({
       {showFilters && (
       <div className="flex flex-wrap gap-2">
         {categories.map((cat) => {
-          const hashKey = Object.entries(HASH_TO_CATEGORY).find(([, v]) => v === cat)?.[0];
+          const hashKey = CLINICAL_CATEGORIES.find((entry) => entry.slug === cat)?.hashKey;
           return (
             <button
               key={cat}
@@ -118,7 +97,7 @@ export function ClinicalResultsGrid({
                   : "border-[color:var(--border-strong)] bg-white text-[color:var(--text-soft)] hover:border-[color:var(--brand)] hover:text-[color:var(--brand-deep)]"
               }`}
             >
-              {cat === "All" ? t("filterAll") : CAT_I18N[cat] ? t(CAT_I18N[cat]) : cat}
+              {cat === "All" ? t("filterAll") : CLINICAL_CATEGORY_LABEL_KEYS[cat] ? t(`cat.${CLINICAL_CATEGORY_LABEL_KEYS[cat]}`) : cat}
             </button>
           );
         })}
@@ -169,7 +148,7 @@ export function ClinicalResultsGrid({
 
       {filtered.length === 0 && (
         <p className="text-center text-sm text-[color:var(--text-soft)]">
-          {t("noResults", { category: active })}{" "}
+          {t("noResults", { category: CLINICAL_CATEGORY_LABEL_KEYS[active] ? t(`cat.${CLINICAL_CATEGORY_LABEL_KEYS[active]}`) : active })}{" "}
           <button
             onClick={() => setActive("All")}
             className="font-semibold text-[color:var(--brand)] underline"

@@ -5,6 +5,7 @@ import { supabaseServer } from "@/lib/supabase-server";
 import { getPayloadSiteStats, isPayloadSource } from "@/lib/payload-source";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
+import { resolveSiteStat } from "@/lib/site-stats";
 
 export const revalidate = 60;
 
@@ -47,7 +48,7 @@ export default async function ClinicalResultsPage({
   }
 
   const stat = (key: string) =>
-    statsData?.find((s) => s.key === key) ?? FALLBACK_STATS[key] ?? { display_value: "—", label: key };
+    resolveSiteStat(statsData?.find((s) => s.key === key), FALLBACK_STATS[key] ?? { display_value: "—", label: key });
   const cases = await getClinicalCases();
 
   return (

@@ -5,23 +5,26 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, Phone, Clock, MapPin } from "lucide-react";
 import { BRANCHES, getBranchBySlug } from "@/lib/branches";
-import { getTranslatedFields, mergeTranslation } from "@/lib/i18n-content";
+import { getBranchDetails } from "@/lib/branch-content";
+import { isPayloadSource } from "@/lib/payload-source";
 import type { Metadata } from "next";
 
 // ISR: re-render at most every 60s so Supabase content edits go live without a deploy.
 export const revalidate = 60;
 
-export function generateStaticParams() {
-  return BRANCHES.map((b) => ({ slug: b.slug }));
+export async function generateStaticParams() {
+  const branches = isPayloadSource() ? await getBranchDetails() : BRANCHES;
+  return branches.map((b) => ({ slug: b.slug }));
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
-  const branch = getBranchBySlug(slug);
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
+  const branch = isPayloadSource() ? (await getBranchDetails()).find((branch) => branch.slug === slug) : getBranchBySlug(slug);
   if (!branch) return {};
   return {
     title: `${branch.shortName} | Roomchang Dental Hospital`,
@@ -36,10 +39,9 @@ export default async function BranchPage({
 }) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
-  const baseBranch = getBranchBySlug(slug);
-  if (!baseBranch) notFound();
-  // Overlay the active-locale branch description (content_translations).
-  const branch = mergeTranslation(baseBranch, await getTranslatedFields("branch", slug));
+  const branches = await getBranchDetails();
+  const branch = branches.find((branch) => branch.slug === slug);
+  if (!branch) notFound();
 
   const t = await getTranslations("branchDetail");
 
@@ -58,7 +60,7 @@ export default async function BranchPage({
     `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(branch.mapQuery)}`;
 
   // Other branches for "Also nearby" section
-  const otherBranches = BRANCHES.filter((b) => b.slug !== slug);
+  const otherBranches = (isPayloadSource() ? branches : BRANCHES).filter((b) => b.slug !== slug);
 
   return (
     <SiteShell>

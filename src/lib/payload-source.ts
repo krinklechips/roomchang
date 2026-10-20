@@ -3,6 +3,7 @@ import "server-only";
 import { cache } from "react";
 import { getLocale } from "next-intl/server";
 import { draftMode } from "next/headers";
+import { clinicalCategoryKey } from "./clinical-categories";
 import type {
   Branch,
   CareerPosition,
@@ -124,7 +125,23 @@ type PayloadDoctor = PayloadDocBase & {
 
 type PayloadBranch = PayloadDocBase & {
   name: string;
+  slug?: string | null;
+  shortName?: string | null;
+  displayName?: string | null;
+  shortDisplayName?: string | null;
+  badge?: string | null;
+  description?: string | null;
   address?: string | null;
+  addressLine2?: string | null;
+  image?: PayloadRelation<PayloadMedia>;
+  imageUrl?: string | null;
+  imageAlt?: string | null;
+  photos?: unknown;
+  coords?: string | null;
+  mapQuery?: string | null;
+  mapDirectionsQuery?: string | null;
+  mapEmbedSrc?: string | null;
+  mapUrl?: string | null;
   phone?: string | null;
   mobile?: string | null;
   email?: string | null;
@@ -179,6 +196,7 @@ type PayloadClinicalCase = PayloadDocBase & {
   slug: string;
   title: string;
   category?: string | null;
+  categoryKey?: string | null;
   treatment?: string | null;
   duration?: string | null;
   description?: string | null;
@@ -298,6 +316,7 @@ type PayloadTimelineEvent = PayloadDocBase & {
 
 type PayloadPublication = PayloadDocBase & {
   title: string;
+  displayTitle?: string | null;
   authors?: string | null;
   journal?: string | null;
   year?: number | null;
@@ -609,6 +628,20 @@ const mapDoctor = (p: PayloadDoctor): Doctor => ({
 const mapBranch = (p: PayloadBranch): Branch => ({
   id: sourceId(p),
   name: p.name,
+  slug: p.slug ?? undefined,
+  shortName: p.shortName ?? undefined,
+  displayName: p.displayName ?? undefined,
+  shortDisplayName: p.shortDisplayName ?? undefined,
+  badge: p.badge ?? undefined,
+  description: p.description ?? undefined,
+  addressLine2: p.addressLine2 ?? undefined,
+  imageSrc: populatedMedia(p.image)?.url || p.imageUrl || undefined,
+  imageAlt: p.imageAlt || populatedMedia(p.image)?.alt || undefined,
+  photos: p.photos,
+  coords: p.coords ?? undefined,
+  mapQuery: p.mapQuery ?? undefined,
+  mapDirectionsQuery: p.mapDirectionsQuery ?? undefined,
+  mapEmbedSrc: p.mapEmbedSrc ?? undefined,
   address: p.address ?? "",
   phone: p.phone ?? "",
   mobile: p.mobile ?? null,
@@ -616,7 +649,7 @@ const mapBranch = (p: PayloadBranch): Branch => ({
   hours: p.hours ?? "",
   order: p.order ?? 0,
   published: true, // visibility is decided by the CMS (drafts model)
-  map_place_url: p.mapPlaceUrl ?? null,
+  map_place_url: p.mapPlaceUrl?.trim() ? p.mapPlaceUrl : p.mapUrl ?? null,
 });
 
 const mapPricingCategory = (p: PayloadPricingCategory, items: PricingItem[] = []): PricingCategory => ({
@@ -668,6 +701,7 @@ const mapClinicalCase = (p: PayloadClinicalCase): ClinicalCase => ({
   slug: p.slug,
   title: p.title,
   category: p.category ?? "",
+  categoryKey: p.categoryKey || clinicalCategoryKey(p.category ?? ""),
   treatment: p.treatment ?? "",
   duration: p.duration ?? "",
   description: p.description ?? null,
@@ -780,7 +814,7 @@ const mapTimelineEvent = (p: PayloadTimelineEvent): TimelineEvent => ({
 
 const mapPublication = (p: PayloadPublication): Publication => ({
   id: sourceId(p),
-  title: p.title,
+  title: p.displayTitle?.trim() ? p.displayTitle : p.title,
   authors: p.authors ?? null,
   journal: p.journal ?? null,
   year: p.year ?? 0,
@@ -872,6 +906,7 @@ export async function getPayloadDoctors(): Promise<Doctor[]> {
 export async function getPayloadBranches(): Promise<Branch[]> {
   const docs = await payloadFind<PayloadBranch>("branches", {
     sort: "order",
+    depth: "1",
   });
   return docs.map(mapBranch);
 }
@@ -1003,6 +1038,7 @@ export async function getPayloadCommunityArticles(): Promise<CommunityArticle[]>
 export async function getPayloadTimelineEvents(): Promise<TimelineEvent[]> {
   const docs = await payloadFind<PayloadTimelineEvent>("timeline-events", {
     sort: "order",
+    "fallback-locale": "none",
   });
   return docs.map(mapTimelineEvent);
 }
@@ -1017,6 +1053,7 @@ export async function getPayloadPublications(): Promise<Publication[]> {
 export async function getPayloadSiteStats(keys?: readonly string[]): Promise<PayloadSiteStatRow[]> {
   const docs = await payloadFind<PayloadSiteStat>("site-stats", {
     sort: "order",
+    "fallback-locale": "none",
   });
   const keySet = keys ? new Set<string>(keys) : null;
   return docs.filter((doc) => !keySet || keySet.has(doc.key)).map(mapSiteStat);

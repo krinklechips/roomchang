@@ -1,4 +1,6 @@
 import { cache } from "react";
+import { clinicalCategoryKey } from "./clinical-categories";
+import type { Branch as BranchDetail } from "./branches";
 import { supabase } from "./supabase";
 import { supabaseServer } from "./supabase-server";
 import { getTranslatedFields, getTranslatedFieldsBatch, mergeTranslation } from "./i18n-content";
@@ -45,7 +47,7 @@ export type Doctor = {
   published: boolean;
 };
 
-export type Branch = {
+export type Branch = Partial<Omit<BranchDetail, "name" | "address" | "hours" | "phone">> & {
   id: string;
   name: string;
   address: string;
@@ -148,6 +150,7 @@ export type ClinicalCase = {
   slug: string;
   title: string;
   category: string;
+  categoryKey?: string;
   treatment: string;
   duration: string;
   description: string | null;
@@ -389,6 +392,7 @@ export async function getClinicalCases(): Promise<ClinicalCase[]> {
   }
   const cases = (data ?? []).map((row) => ({
     ...row,
+    categoryKey: clinicalCategoryKey(row.category),
     cardImage: row.imageUrl ?? null,
     images: Array.isArray(row.images) ? row.images : [],
   }));
@@ -410,7 +414,7 @@ export const getClinicalCaseBySlug = cache(async function getClinicalCaseBySlug(
     return null;
   }
   if (!data) return null;
-  const base = { ...data, cardImage: data.imageUrl ?? null, images: Array.isArray(data.images) ? data.images : [] };
+  const base = { ...data, categoryKey: clinicalCategoryKey(data.category), cardImage: data.imageUrl ?? null, images: Array.isArray(data.images) ? data.images : [] };
   return mergeTranslation(base, await getTranslatedFields("clinical_case", data.id));
 });
 

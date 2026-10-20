@@ -25,8 +25,13 @@ function isCompleteStat(row: HomeStatRow | undefined): row is HomeStatRow & { nu
   return Boolean(row) && row?.numeric_value !== null;
 }
 
-export function getHomepageStats(rows: HomeStatRow[] | null | undefined) {
-  if (!rows?.length) return HOMEPAGE_STATS_FALLBACK;
+export function getHomepageStats(rows: HomeStatRow[] | null | undefined, fallbackLabels?: Record<string, string>) {
+  const fallback = HOMEPAGE_STATS_FALLBACK.map((stat, index) => ({
+    ...stat,
+    label: fallbackLabels?.[HOMEPAGE_STAT_KEYS[index]] ?? stat.label,
+  }));
+  const fallbackByKey = new Map<string, typeof fallback[number]>(HOMEPAGE_STAT_KEYS.map((key, index) => [key, fallback[index]]));
+  if (!rows?.length) return fallback;
 
   const byKey = new Map(rows.map((row) => [row.key, row]));
   const stats = HOMEPAGE_STAT_KEYS
@@ -35,11 +40,11 @@ export function getHomepageStats(rows: HomeStatRow[] | null | undefined) {
     .map((row) => ({
       numeric_value: row.numeric_value,
       suffix: row.suffix ?? "",
-      label: row.label,
+      label: row.label?.trim() ? row.label : fallbackByKey.get(row.key)?.label ?? "",
       ...(row.original_display_value !== undefined && row.display_value && row.display_value !== row.original_display_value
         ? { display_value: row.display_value }
         : {}),
     }));
 
-  return stats.length === HOMEPAGE_STAT_KEYS.length ? stats : HOMEPAGE_STATS_FALLBACK;
+  return stats.length === HOMEPAGE_STAT_KEYS.length ? stats : fallback;
 }

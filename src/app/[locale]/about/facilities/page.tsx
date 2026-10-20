@@ -5,11 +5,11 @@ import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, ArrowRight, Check, MapPin, Clock, Phone as PhoneIcon } from "lucide-react";
 import { supabaseServer } from "@/lib/supabase-server";
 import { cdnUrl } from "@/lib/supabase";
-import { BRANCHES } from "@/lib/branches";
-import { getTranslatedFieldsBatch, mergeTranslation } from "@/lib/i18n-content";
+import { getBranchDetails } from "@/lib/branch-content";
 import { getPayloadSiteStats, isPayloadSource } from "@/lib/payload-source";
 import { HashScroll } from "@/components/sections/hash-scroll";
 import type { Metadata } from "next";
+import { resolveSiteStat } from "@/lib/site-stats";
 
 export const revalidate = 60;
 
@@ -72,9 +72,7 @@ export default async function FacilitiesPage({
 
   const t = await getTranslations("facilities");
 
-  // Overlay active-locale branch descriptions (content_translations).
-  const branchTr = await getTranslatedFieldsBatch("branch", BRANCHES.map((b) => b.slug));
-  const branches = BRANCHES.map((b) => mergeTranslation(b, branchTr.get(b.slug) ?? {}));
+  const branches = await getBranchDetails();
 
   const { data: statsData, error } = isPayloadSource()
     ? { data: await getPayloadSiteStats(), error: null }
@@ -88,8 +86,7 @@ export default async function FacilitiesPage({
   }
 
   const stat = (key: string): DisplayStat =>
-    statsData?.find((s) => s.key === key) ??
-    (FALLBACK_STAT_VALUES[key]
+    resolveSiteStat(statsData?.find((s) => s.key === key), FALLBACK_STAT_VALUES[key]
       ? { display_value: FALLBACK_STAT_VALUES[key], label: t(`stats.${key}`) }
       : { display_value: "—", label: key });
 

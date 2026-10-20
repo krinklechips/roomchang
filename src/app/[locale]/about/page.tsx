@@ -6,6 +6,8 @@ import { Building2, Star, Mail, Stethoscope, Heart, Handshake, ImagePlay, Cpu, B
 import { supabaseServer } from "@/lib/supabase-server";
 import { getPayloadSiteStats, isPayloadSource } from "@/lib/payload-source";
 import type { Metadata } from "next";
+import { getTimelineEvents } from "@/lib/data";
+import { resolveSiteStat } from "@/lib/site-stats";
 
 export const revalidate = 60;
 
@@ -51,6 +53,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
 
   const t = await getTranslations("about");
 
+  const timelineEvents = isPayloadSource() ? await getTimelineEvents() : undefined;
   const { data: statsData, error } = isPayloadSource()
     ? { data: await getPayloadSiteStats(), error: null }
     : await supabaseServer
@@ -66,10 +69,10 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
 
   const stats = STAT_ORDER.map((key) => {
     const row = statsData?.find((s) => s.key === key);
-    return {
-      display_value: row?.display_value ?? FALLBACK_VALUES[key] ?? "—",
+    return resolveSiteStat(row, {
+      display_value: FALLBACK_VALUES[key] ?? "—",
       label: t(`stat.${STAT_KEYS[key]}`),
-    };
+    }, isPayloadSource());
   });
 
   return (
@@ -130,7 +133,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
       </div>
 
       {/* History — full-bleed timeline */}
-      <AboutTimeline />
+      <AboutTimeline events={timelineEvents} />
 
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-20 lg:px-8">
         {/* Discover facilities CTA — sits between the timeline and the section cards */}
