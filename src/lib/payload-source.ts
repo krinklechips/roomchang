@@ -815,6 +815,7 @@ const mapTimelineEvent = (p: PayloadTimelineEvent): TimelineEvent => ({
 const mapPublication = (p: PayloadPublication): Publication => ({
   id: sourceId(p),
   title: p.displayTitle?.trim() ? p.displayTitle : p.title,
+  originalTitle: p.title,
   authors: p.authors ?? null,
   journal: p.journal ?? null,
   year: p.year ?? 0,
@@ -1046,6 +1047,7 @@ export async function getPayloadTimelineEvents(): Promise<TimelineEvent[]> {
 export async function getPayloadPublications(): Promise<Publication[]> {
   const docs = await payloadFind<PayloadPublication>("publications", {
     sort: "-year",
+    "fallback-locale": "none",
   });
   return docs.map(mapPublication);
 }

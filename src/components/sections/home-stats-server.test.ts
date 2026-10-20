@@ -2,6 +2,12 @@ import { describe, expect, it } from "vitest";
 import { getHomepageStats } from "./home-stats-data";
 
 describe("getHomepageStats", () => {
+  it.each([null, "", " "])("uses the numeric count when a tracked CMS display value is %j", (display_value) => {
+    const rows = ["years_experience", "specialist_dentists", "branches_count", "patients_treated"].map((key) => ({
+      key, numeric_value: 42, suffix: "+", label: "CMS label", display_value, original_display_value: "37",
+    }));
+    expect(getHomepageStats(rows)[1]).toEqual({ numeric_value: 42, suffix: "+", label: "CMS label" });
+  });
   it("keeps old CMS responses stable during a rolling CMS deployment", () => {
     expect(getHomepageStats([
       { key: "years_experience", numeric_value: 30, suffix: " yrs", display_value: "30 yrs", label: "Years" },

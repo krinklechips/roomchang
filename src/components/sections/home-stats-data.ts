@@ -41,7 +41,7 @@ export function getHomepageStats(rows: HomeStatRow[] | null | undefined, fallbac
       numeric_value: row.numeric_value,
       suffix: row.suffix ?? "",
       label: row.label?.trim() ? row.label : fallbackByKey.get(row.key)?.label ?? "",
-      ...(row.original_display_value !== undefined && row.display_value && row.display_value !== row.original_display_value
+      ...(row.original_display_value !== undefined && row.display_value?.trim() && row.display_value !== row.original_display_value
         ? { display_value: row.display_value }
         : {}),
     }));

@@ -42,6 +42,7 @@ import { AboutTimeline } from "@/components/sections/about-timeline";
 import AboutPage from "@/app/[locale]/about/page";
 import FacilitiesPage from "@/app/[locale]/about/facilities/page";
 import ClinicalPage from "@/app/[locale]/clinical-results/page";
+import PublicationsPage from "@/app/[locale]/blog/publications/page";
 import BranchPage, { generateMetadata as branchMetadata } from "@/app/[locale]/about/branches/[slug]/page";
 import CategoryPage, { generateMetadata as categoryMetadata } from "@/app/[locale]/clinical-results/category/[category]/page";
 import { HomeStatsServer } from "@/components/sections/home-stats-server";
@@ -116,7 +117,7 @@ describe("Payload branches", () => {
   });
   it("uses CMS visitor fields on facilities/detail and preserves exact maps across legacy slug differences", async () => {
     state.docs.branches = [{
-      id: 9, name: "Roomchang Dental Clinic - Aeon Mall Sen Sok City Branch", slug: "roomchang-dental-clinic-aeon-mall-sen-sok-city-branch",
+      id: 9, sourceId: "fa9eb854-e2e5-4086-b879-47d80d26200c", name: "Roomchang Dental Clinic - Aeon Mall Sen Sok City Branch", slug: "roomchang-dental-clinic-aeon-mall-sen-sok-city-branch",
       shortName: "AEON official", displayName: "Localized AEON", shortDisplayName: "Localized short",
       address: "CMS address", hours: "CMS hours", phone: "12345", description: "CMS description",
       imageUrl: "https://example.test/branch.jpg", imageAlt: "CMS image alt",
@@ -138,6 +139,16 @@ describe("Payload branches", () => {
     const [unknown, rose] = await getBranchDetails();
     expect(unknown).toMatchObject({ slug: "new-location", name: "New official location", mapPlaceUrl: "https://maps.test/new", mapEmbedSrc: "https://maps.test/embed", imageSrc: "https://media.test/branch.jpg", imageAlt: "Upload alt", photos: [{ url: "https://media.test/photo.jpg", alt: "Photo alt" }], address: "", phone: "" });
     expect(rose).toMatchObject({ slug: "rose-condo", shortName: "Official short", mapPlaceUrl: "https://maps.app.goo.gl/vJaeFEA8ShY5LVeQ9", description: BRANCHES[1].description });
+  });
+  it("keeps canonical branch fallbacks and unknown CMS routes independent of conflicting names", async () => {
+    state.docs.branches = [
+      { id: "fresh-row", slug: "rose-condo", name: "AEON Mall Sen Sok", displayName: "Localized Rose" },
+      { id: "new-row", slug: "new-location", name: "AEON Mall Sen Sok", displayName: "Localized new location" },
+    ];
+    const [rose, unknown] = await getBranchDetails();
+    expect(rose).toMatchObject({ slug: "rose-condo", name: "Localized Rose", address: BRANCHES[1].address, phone: BRANCHES[1].phone, imageSrc: BRANCHES[1].imageSrc, mapPlaceUrl: BRANCHES[1].mapPlaceUrl });
+    expect(unknown).toMatchObject({ slug: "new-location", name: "Localized new location", address: "", phone: "", imageSrc: "" });
+    expect(unknown.mapPlaceUrl).toBeUndefined();
   });
 });
 
@@ -179,6 +190,21 @@ describe("CMS timeline and stat copy", () => {
     expect(html).toContain("42");
     if (_name === "About") expect(html).toContain(zh.about.stat.dentalChairs);
     if (_name === "Facilities") expect(html).toContain(zh.facilities.stats.dental_chairs);
+  });
+  it.each(["en", "kh", "cn"].flatMap((locale) => [null, "", " "].map((displayValue) => ({ locale, displayValue }))))("uses the current numeric stat across Home/About/Facilities/Clinical for $locale with displayValue=$displayValue", async ({ locale, displayValue }) => {
+    state.locale = locale;
+    state.docs["site-stats"] = ["years_experience", "specialist_dentists", "branches_count", "patients_treated"].map((key, id) => ({
+      id, key, numericValue: key === "specialist_dentists" ? 42 : 1, suffix: "+",
+      displayValue, originalDisplayValue: "37", label: "CMS specialist label",
+    }));
+    const home = await HomeStatsServer();
+    expect(home.props.stats[1]).toMatchObject({ numeric_value: 42, suffix: "+", label: "CMS specialist label" });
+    expect(home.props.stats[1]).not.toHaveProperty("display_value");
+    for (const Page of [AboutPage, FacilitiesPage, ClinicalPage]) {
+      const html = renderToStaticMarkup(await Page({ params: Promise.resolve({ locale }) }));
+      expect(html).toContain(">42+<");
+      expect(html).toContain("CMS specialist label");
+    }
   });
   it("does not hide missing stat translations behind API English fallback", async () => {
     state.locale = "kh";
@@ -238,4 +264,33 @@ it("preserves localized visitor fields without rewriting CMS values", async () =
 it("uses localized publication displayTitle without changing citation metadata or losing abstract", async () => {
   state.docs.publications = [{ id: 1, title: "Citation title", displayTitle: "Localized title", abstract: "Localized abstract", authors: "Authors", doi: "doi" }, { id: 2, title: "Citation fallback", displayTitle: " " }];
   expect(await payload.getPayloadPublications()).toMatchObject([{ title: "Localized title", abstract: "Localized abstract", authors: "Authors", doi: "doi" }, { title: "Citation fallback" }]);
+});
+
+describe("publication page content source", () => {
+  it.each(["en", "kh", "cn"])("renders %s CMS display titles, original citations, and title fallbacks in the existing layout", async (locale) => {
+    state.locale = locale;
+    state.docs.publications = [
+      { id: 1, sourceId: "cms-publication", title: "Original citation title", displayTitle: `CMS visitor title ${locale}`, authors: "CMS Authors", journal: "CMS Journal", year: 2026, doi: "10.1234/cms-study" },
+      { id: 2, title: "Original fallback title", displayTitle: " ", year: 2024, url: "https://example.test/paper" },
+      { id: 3, title: "Citation without a link", year: 2023 },
+    ];
+    const html = renderToStaticMarkup(await PublicationsPage({ params: Promise.resolve({ locale }) }));
+    for (const value of [`CMS visitor title ${locale}`, "Original citation title", "Original fallback title", "Citation without a link", "CMS Authors", "CMS Journal", 'href="https://doi.org/10.1234/cms-study"', 'href="https://example.test/paper"']) expect(html).toContain(value);
+    expect(html.match(/<article/g)).toHaveLength(3);
+    expect(html).not.toContain("1714360");
+    const url = new URL(vi.mocked(fetch).mock.calls[0][0] as string);
+    expect(url.pathname).toBe("/api/publications");
+    expect(url.searchParams.get("locale")).toBe(locale);
+    expect(url.searchParams.get("fallback-locale")).toBe("none");
+  });
+  it("keeps the bundled production publications without fetching CMS or Supabase", async () => {
+    vi.stubEnv("CONTENT_SOURCE", "supabase");
+    state.docs.publications = [{ id: 1, title: "CMS-only title", year: 2026 }];
+    const html = renderToStaticMarkup(await PublicationsPage({ params: Promise.resolve({ locale: "en" }) }));
+    expect(html.match(/<article/g)).toHaveLength(8);
+    for (const item of Object.values(en.publications.items)) expect(html).toContain(item.title.replaceAll("&", "&amp;"));
+    expect(html).toContain("1714360");
+    expect(html).not.toContain("CMS-only title");
+    expect(fetch).not.toHaveBeenCalled();
+  });
 });

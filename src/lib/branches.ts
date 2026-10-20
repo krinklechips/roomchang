@@ -155,8 +155,10 @@ export function matchStaticBranch(branch: {
 }): Branch | undefined {
   const sourceSlug = branch.id ? SOURCE_BRANCH_SLUGS[branch.id] : undefined;
   if (sourceSlug) return getBranchBySlug(sourceSlug);
+  if (branch.slug?.trim()) return getBranchBySlug(branch.slug);
+  if (branch.id?.trim()) return undefined;
   const normalize = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
-  const identities = [branch.id, branch.slug, branch.name, branch.shortName].filter((value): value is string => Boolean(value)).map(normalize);
+  const identities = [branch.name, branch.shortName].filter((value): value is string => Boolean(value)).map(normalize);
   const aliases: Record<string, string[]> = {
     "sisowath-high-school": ["Roomchang Dental Hospital", "Main Hospital", "Roomchang Dental Hospital Main Branch"],
     "rose-condo": ["Roomchang Dental Clinic Rose Condo Branch", "Rose Condo Bassac Garden City"],

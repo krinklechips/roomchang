@@ -743,6 +743,7 @@ export async function getTimelineEvents(): Promise<TimelineEvent[]> {
 export type Publication = {
   id: string;
   title: string;
+  originalTitle?: string;
   authors: string | null;
   journal: string | null;
   year: number;

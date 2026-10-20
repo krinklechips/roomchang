@@ -48,25 +48,26 @@ export function AboutTimeline({ events }: { events?: TimelineEvent[] }) {
       imagePosition: event.imagePosition || undefined,
     };
   }) : ERA_DEFS.map(bundled);
-  const [visibleSet, setVisibleSet] = useState<Set<number>>(new Set());
-  const refs = useRef<(HTMLDivElement | null)[]>([]);
+  const [visibleSet, setVisibleSet] = useState<Set<string>>(new Set());
+  const refs = useRef(new Map<string, HTMLDivElement>());
+  const itemIds = JSON.stringify(items.map((item) => item.key));
 
   useEffect(() => {
     const obs: IntersectionObserver[] = [];
-    const reveal = (i: number) => setVisibleSet((prev) => new Set([...prev, i]));
+    const reveal = (id: string) => setVisibleSet((prev) => prev.has(id) ? prev : new Set([...prev, id]));
 
-    const observe = (el: HTMLDivElement, i: number) => {
+    const observe = (el: HTMLDivElement, id: string) => {
       const o = new IntersectionObserver(
-        ([entry]) => entry.isIntersecting && reveal(i),
+        ([entry]) => entry.isIntersecting && reveal(id),
         { threshold: 0.08 },
       );
       o.observe(el);
       obs.push(o);
     };
 
-    refs.current.forEach((el, i) => { if (el) observe(el, i); });
+    refs.current.forEach((el, id) => observe(el, id));
     return () => obs.forEach((o) => o.disconnect());
-  }, []);
+  }, [itemIds]);
 
   return (
     <section className="relative overflow-hidden border-y border-[color:var(--border-strong)]">
@@ -77,7 +78,7 @@ export function AboutTimeline({ events }: { events?: TimelineEvent[] }) {
       />
 
       {items.map((item, i) => {
-        const isVisible = visibleSet.has(i);
+        const isVisible = visibleSet.has(item.key);
         /* Even index → image left, text right. Odd → text left, image right. */
         const imgLeft = i % 2 === 0;
 
@@ -85,7 +86,8 @@ export function AboutTimeline({ events }: { events?: TimelineEvent[] }) {
           <div
             key={item.key}
             ref={(el) => {
-              refs.current[i] = el;
+              if (el) refs.current.set(item.key, el);
+              else refs.current.delete(item.key);
             }}
             className="relative flex flex-col border-b border-[color:var(--border-strong)] last:border-b-0 lg:flex-row lg:min-h-[42rem]"
           >

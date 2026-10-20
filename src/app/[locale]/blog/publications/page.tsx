@@ -4,6 +4,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import type { Metadata } from "next";
+import { isPayloadSource } from "@/lib/payload-source";
 
 // ISR: re-render at most every 60s so Supabase content edits go live without a deploy.
 export const revalidate = 60;
@@ -23,6 +24,7 @@ export async function generateMetadata({
 
 type Publication = {
   id: string;
+  title?: string;
   year: number;
   citation: ReactNode;
   doi: string;
@@ -143,7 +145,28 @@ export default async function PublicationsPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("publications");
-  const grouped = groupByYear(PUBLICATIONS);
+  let publications = PUBLICATIONS;
+  if (isPayloadSource()) {
+    const { getPublications } = await import("@/lib/data");
+    publications = (await getPublications()).map((pub) => {
+      const rawDoi = pub.doi?.trim();
+      const doi = rawDoi ? (/^https?:\/\//.test(rawDoi) ? rawDoi : `https://doi.org/${rawDoi}`) : "";
+      return {
+        id: pub.id,
+        title: pub.title,
+        year: pub.year,
+        doi: pub.url?.trim() || doi,
+        citation: (
+          <>
+            {pub.authors ? `${pub.authors} ` : ""}{pub.year ? `(${pub.year}). ` : ""}
+            {pub.originalTitle ?? pub.title}. {pub.journal && <><em>{pub.journal}</em>. </>}
+            {doi && <a href={doi} target="_blank" rel="noopener noreferrer" className="text-[color:var(--brand-deep)] underline decoration-[color:var(--brand-light)] underline-offset-2 transition hover:text-[color:var(--brand)]">{doi}</a>}
+          </>
+        ),
+      };
+    });
+  }
+  const grouped = groupByYear(publications);
   const years = Array.from(grouped.keys()).sort((a, b) => b - a);
 
   return (
@@ -182,12 +205,12 @@ export default async function PublicationsPage({
                       {t("peerReviewed")}
                     </span>
                     <h3 className="mt-3 font-display text-lg leading-snug text-[color:var(--text-main)]">
-                      {t(`items.${pub.id}.title`)}
+                      {pub.title ?? t(`items.${pub.id}.title`)}
                     </h3>
                     <p className="mt-3 text-sm leading-7 text-[color:var(--text-soft)]">
                       {pub.citation}
                     </p>
-                    <a
+                    {pub.doi && <a
                       href={pub.doi}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -195,7 +218,7 @@ export default async function PublicationsPage({
                     >
                       {t("readFullPaper")}
                       <ExternalLink size={13} strokeWidth={2} aria-hidden="true" />
-                    </a>
+                    </a>}
                   </article>
                 ))}
               </div>
