@@ -10,6 +10,8 @@ export type HomeStatRow = {
   numeric_value: number | null;
   suffix: string | null;
   label: string;
+  display_value?: string | null;
+  original_display_value?: string | null;
 };
 
 export const HOMEPAGE_STATS_FALLBACK = [
@@ -34,6 +36,9 @@ export function getHomepageStats(rows: HomeStatRow[] | null | undefined) {
       numeric_value: row.numeric_value,
       suffix: row.suffix ?? "",
       label: row.label,
+      ...(row.display_value && row.display_value !== row.original_display_value
+        ? { display_value: row.display_value }
+        : {}),
     }));
 
   return stats.length === HOMEPAGE_STAT_KEYS.length ? stats : HOMEPAGE_STATS_FALLBACK;

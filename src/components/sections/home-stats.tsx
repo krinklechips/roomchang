@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-export type StatItem = { numeric_value: number; suffix: string; label: string };
+export type StatItem = { numeric_value: number; suffix: string; label: string; display_value?: string | null };
 
 function easeOut(t: number) {
   return 1 - Math.pow(1 - t, 3);
@@ -68,7 +68,7 @@ export function HomeStats({ stats }: { stats: StatItem[] }) {
               className="flex flex-col items-center justify-center gap-0.5 bg-[color:var(--surface)] px-3 py-5 text-center sm:gap-1 sm:px-6 sm:py-8"
             >
               <p className="font-display text-[2rem] leading-none text-[color:var(--brand-deep)] sm:text-[2.6rem] lg:text-[3rem]">
-                <CountUp target={stat.numeric_value} suffix={stat.suffix} started={started} />
+                {stat.display_value ?? <CountUp target={stat.numeric_value} suffix={stat.suffix} started={started} />}
               </p>
               <p className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
                 {stat.label}

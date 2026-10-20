@@ -22,6 +22,17 @@ class MockIntersectionObserver {
 }
 
 describe("HomeStats", () => {
+  it("renders the localized display value when it differs from the shared numeric count", () => {
+    vi.stubGlobal("IntersectionObserver", MockIntersectionObserver);
+    vi.stubGlobal("requestAnimationFrame", () => 1);
+    vi.stubGlobal("cancelAnimationFrame", () => {});
+    try {
+      render(<HomeStats stats={[{ numeric_value: 30, suffix: " yrs", display_value: "30 Khmer years", label: "Khmer experience" }]} />);
+      expect(screen.getByText("30 Khmer years")).toBeInTheDocument();
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
   it("shows the updated trust metrics and keeps the last stat clean on mobile", () => {
     const originalObserver = globalThis.IntersectionObserver;
     const originalRaf = globalThis.requestAnimationFrame;
