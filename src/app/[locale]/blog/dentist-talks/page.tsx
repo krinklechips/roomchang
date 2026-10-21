@@ -3,6 +3,8 @@ import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { isPayloadSource } from "@/lib/payload-source";
+import { safeYouTubeEmbedUrl } from "@/lib/dentist-talks-media";
 
 // ISR: re-render at most every 60s so Supabase content edits go live without a deploy.
 export const revalidate = 60;
@@ -58,6 +60,27 @@ export default async function DentistTalksPage({
   setRequestLocale(locale);
 
   const t = await getTranslations("dentistTalks");
+  const payloadMode = isPayloadSource();
+  const videos = payloadMode
+    ? (await (await import("@/lib/data")).getVideos("dentist-talk")).flatMap((video) => {
+        const src = safeYouTubeEmbedUrl(video.url);
+        return src ? [{
+          id: video.id,
+          src,
+          title: video.title?.trim() || t("videos.heading"),
+          topic: video.topic,
+          description: video.description,
+          source: video.doctor || t("videos.cardSource"),
+        }] : [];
+      })
+    : DENTIST_TALKS.map((video) => ({
+        id: video.id,
+        src: `https://www.youtube-nocookie.com/embed/${video.id}?list=${YOUTUBE_PLAYLIST_ID}&rel=0`,
+        title: t(`items.${video.id}.title`),
+        topic: t(`items.${video.id}.topic`),
+        description: t("videos.cardDescription"),
+        source: t("videos.cardSource"),
+      }));
 
   return (
     <SiteShell>
@@ -113,7 +136,7 @@ export default async function DentistTalksPage({
           </p>
 
           <div className="mt-10 grid gap-8 sm:grid-cols-2">
-            {DENTIST_TALKS.map((video) => (
+            {videos.map((video) => (
               <div
                 key={video.id}
                 className="overflow-hidden rounded-3xl border border-[color:var(--border-strong)] bg-white shadow-[0_12px_40px_rgba(57,28,45,0.06)]"
@@ -121,8 +144,8 @@ export default async function DentistTalksPage({
                 {/* Video embed */}
                 <div className="aspect-video w-full">
                   <iframe
-                    src={`https://www.youtube-nocookie.com/embed/${video.id}?list=${YOUTUBE_PLAYLIST_ID}&rel=0`}
-                    title={t(`items.${video.id}.title`)}
+                    src={video.src}
+                    title={video.title}
                     className="h-full w-full"
                     loading="lazy"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -132,22 +155,22 @@ export default async function DentistTalksPage({
 
                 {/* Card content */}
                 <div className="px-6 py-5">
-                  <div className="flex items-start justify-between gap-4">
+                  <div className="flex flex-wrap items-start justify-between gap-4">
                     <div className="min-w-0">
-                      <p className="font-display text-lg leading-snug text-[color:var(--text-main)]">
-                        {t(`items.${video.id}.title`)}
+                      <p className="break-words font-display text-lg leading-snug text-[color:var(--text-main)]">
+                        {video.title}
                       </p>
                       <p className="mt-1 text-xs font-semibold text-[color:var(--brand)]">
-                        {t("videos.cardSource")}
+                        {video.source}
                       </p>
                     </div>
-                    <span className="mt-0.5 shrink-0 rounded-full bg-[color:var(--brand-soft)] px-2.5 py-0.5 text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-[color:var(--brand-deep)]">
-                      {t(`items.${video.id}.topic`)}
-                    </span>
+                    {video.topic && <span className="mt-0.5 max-w-full break-words rounded-full bg-[color:var(--brand-soft)] px-2.5 py-0.5 text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-[color:var(--brand-deep)]">
+                      {video.topic}
+                    </span>}
                   </div>
-                  <p className="mt-3 text-sm leading-6 text-[color:var(--text-soft)]">
-                    {t("videos.cardDescription")}
-                  </p>
+                  {video.description && <p className="mt-3 whitespace-pre-line break-words text-sm leading-6 text-[color:var(--text-soft)]">
+                    {video.description}
+                  </p>}
                 </div>
               </div>
             ))}

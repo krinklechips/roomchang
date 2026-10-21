@@ -70,7 +70,7 @@ export function HomeStats({ stats }: { stats: StatItem[] }) {
               <p className="font-display text-[2rem] leading-none text-[color:var(--brand-deep)] sm:text-[2.6rem] lg:text-[3rem]">
                 {stat.display_value ?? <CountUp target={stat.numeric_value} suffix={stat.suffix} started={started} />}
               </p>
-              <p className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
+              <p className="home-stat-label font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
                 {stat.label}
               </p>
             </div>

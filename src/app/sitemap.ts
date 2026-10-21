@@ -3,6 +3,10 @@ import { BRANCHES } from "@/lib/branches";
 import { CLINICAL_CATEGORIES } from "@/lib/clinical-categories";
 import { supabaseServer } from "@/lib/supabase-server";
 import { routing, LOCALE_TO_LANG, UNLISTED_LOCALES } from "@/i18n/routing";
+import { isPayloadSource } from "@/lib/payload-source";
+import { getPublishedPayloadPaths } from "@/lib/payload-discovery";
+
+export const dynamic = 'force-dynamic';
 
 const BASE_URL = "https://www.roomchang.com";
 // Unlisted locales (under content review, e.g. /kh) are excluded from the
@@ -84,6 +88,16 @@ async function getPublishedSlugs(
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  if (isPayloadSource()) {
+    const paths = [...new Set([
+      ...STATIC_ROUTES.map((route) => route.path),
+      '/pricing/implants-comparison', '/international/price-comparison',
+      '/about/news', '/about/careers', '/blog', '/blog/faq', '/blog/publications', '/blog/dentist-talks',
+      ...CLINICAL_CATEGORIES.map((category) => `/clinical-results/category/${category.slug}`),
+      ...await getPublishedPayloadPaths(),
+    ])];
+    return paths.map((path) => localized(path, 'weekly', path === '/' ? 1 : 0.7));
+  }
   const [serviceSlugs, technologySlugs, clinicalCaseSlugs] = await Promise.all([
     getPublishedSlugs("services"),
     getPublishedSlugs("technology", { requireSlug: true }),

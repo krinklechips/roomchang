@@ -139,7 +139,7 @@ export function SiteHeader() {
         </Link>
 
         {/* Desktop nav */}
-        <div className="hidden items-center gap-3 xl:gap-4 2xl:gap-6 lg:flex">
+        <div className="site-desktop-nav hidden items-center gap-6 2xl:flex">
           <nav ref={navRef} aria-label={tHeader("primaryNavAriaLabel")} className="flex items-center gap-px xl:gap-0.5 2xl:gap-1">
             {NAV_ITEMS.map((item) =>
               item.children ? (
@@ -159,7 +159,7 @@ export function SiteHeader() {
                         setOpenKey(item.tKey);
                       }
                     }}
-                    className="flex items-center gap-0.5 rounded-lg px-1.5 py-2 text-[11px] font-semibold text-[color:var(--text-soft)] transition-colors hover:bg-[color:var(--brand-soft)] hover:text-[color:var(--brand-deep)] xl:gap-1 xl:px-2 xl:text-[13px] 2xl:px-3 2xl:text-sm"
+                    className="site-nav-link flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-semibold text-[color:var(--text-soft)] transition-colors hover:bg-[color:var(--brand-soft)] hover:text-[color:var(--brand-deep)]"
                   >
                     {t(item.tKey)}
                     <svg
@@ -186,7 +186,7 @@ export function SiteHeader() {
                           key={child.tKey}
                           href={child.href}
                           onClick={() => setOpenKey(null)}
-                          className="flex items-center rounded-xl px-3 py-2.5 text-sm font-medium text-[color:var(--text-main)] transition-colors hover:bg-[color:var(--brand-soft)] hover:text-[color:var(--brand-deep)]"
+                          className="site-nav-link flex items-center rounded-xl px-3 py-2.5 text-sm font-medium text-[color:var(--text-main)] transition-colors hover:bg-[color:var(--brand-soft)] hover:text-[color:var(--brand-deep)]"
                         >
                           {t(child.tKey)}
                         </Link>
@@ -198,7 +198,7 @@ export function SiteHeader() {
                 <Link
                   key={item.tKey}
                   href={item.href}
-                  className="rounded-lg px-1.5 py-2 text-[11px] font-semibold text-[color:var(--text-soft)] transition-colors hover:bg-[color:var(--brand-soft)] hover:text-[color:var(--brand-deep)] xl:px-2 xl:text-[13px] 2xl:px-3 2xl:text-sm"
+                  className="site-nav-link rounded-lg px-3 py-2 text-sm font-semibold text-[color:var(--text-soft)] transition-colors hover:bg-[color:var(--brand-soft)] hover:text-[color:var(--brand-deep)]"
                 >
                   {t(item.tKey)}
                 </Link>
@@ -212,7 +212,7 @@ export function SiteHeader() {
         </div>
 
         {/* Mobile nav */}
-        <div className="flex items-center gap-3 lg:hidden">
+        <div className="site-compact-nav flex items-center gap-3 2xl:hidden">
           <LanguageSwitcher />
           <MobileNav />
         </div>

@@ -11,6 +11,7 @@ import {
   getPayloadClinicalCaseBySlug,
   getPayloadClinicalCases,
   getPayloadCommunityArticles,
+  getPayloadCmsPage,
   getPayloadDoctors,
   getPayloadFaqItems,
   getPayloadHeroSlides,
@@ -489,6 +490,25 @@ export async function getHeroSlides(): Promise<HeroSlideDb[]> {
 }
 
 export const getSeoPageMeta = cache(async function getSeoPageMeta(path: string): Promise<SeoPageMeta | null> {
+  if (isPayloadSource()) {
+    // Detail routes derive defaults from their CMS records; never overlay the legacy database.
+    if (!/^\/[a-z0-9]+(?:-[a-z0-9]+)*$/i.test(path)) return null;
+    const page = await getPayloadCmsPage(path.slice(1));
+    if (!page) return null;
+    return {
+      path,
+      title: page.seoTitle,
+      description: page.seoDescription,
+      ogTitle: page.seoTitle,
+      ogDescription: page.seoDescription,
+      ogImage: page.seoImage,
+      twitterTitle: page.seoTitle,
+      twitterDescription: page.seoDescription,
+      twitterImage: page.seoImage,
+      canonicalUrl: null,
+      noIndex: false,
+    };
+  }
   const { data, error } = await supabaseServer
     .from("seo_page_meta")
     .select(`

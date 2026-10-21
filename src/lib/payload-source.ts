@@ -3,7 +3,9 @@ import "server-only";
 import { cache } from "react";
 import { getLocale } from "next-intl/server";
 import { draftMode } from "next/headers";
+import { unstable_rethrow } from "next/navigation";
 import { clinicalCategoryKey } from "./clinical-categories";
+import { CmsContentError } from "./cms-content-error";
 import type {
   Branch,
   CareerPosition,
@@ -70,16 +72,21 @@ async function payloadFind<T>(collection: string, params: Record<string, string>
   const qs = new URLSearchParams({ locale, limit: "200", depth: "0", ...params });
   const apiKey = process.env.PAYLOAD_PREVIEW_API_KEY;
   if (preview) qs.set("draft", "true");
-  const res = await fetch(`${API()}/api/${collection}?${qs}`, {
-    cache: "no-store",
-    headers: preview && apiKey ? { Authorization: `users API-Key ${apiKey}` } : undefined,
-  });
-  if (!res.ok) {
-    console.error(`[payload-source] ${collection} fetch failed: ${res.status}`);
-    return [];
+  try {
+    const res = await fetch(`${API()}/api/${collection}?${qs}`, {
+      cache: "no-store",
+      signal: AbortSignal.timeout(15000),
+      headers: preview && apiKey ? { Authorization: `users API-Key ${apiKey}` } : undefined,
+    });
+    if (!res.ok) throw new CmsContentError(collection, res.status);
+    const json = (await res.json()) as { docs?: T[] };
+    if (!Array.isArray(json.docs)) throw new CmsContentError(collection);
+    return json.docs;
+  } catch (error) {
+    unstable_rethrow(error);
+    if (error instanceof CmsContentError) throw error;
+    throw new CmsContentError(collection);
   }
-  const json = (await res.json()) as { docs: T[] };
-  return json.docs ?? [];
 }
 
 // ── mappers: Payload doc → live-site types ──────────────────────────────────
@@ -488,10 +495,17 @@ const strings = (
 ): string[] =>
   (arr ?? []).map((x) => x?.[key]).filter((v): v is string => typeof v === "string" && v.trim() !== "");
 
-const relationSourceId = <T extends PayloadDocBase>(relation: PayloadRelation<T>): string | null => {
-  if (relation == null) return null;
+const relationSourceId = <T extends PayloadDocBase>(
+  relation: PayloadRelation<T>,
+  legacySourceId: string | null | undefined,
+  targets: readonly T[],
+): string | null => {
+  // Only pre-relationship fixtures may use the imported source reference.
+  if (relation === undefined) return legacySourceId ?? null;
+  if (relation === null) return null;
   if (typeof relation === "object") return sourceId(relation);
-  return String(relation);
+  const target = targets.find((doc) => String(doc.id) === String(relation));
+  return target ? sourceId(target) : null;
 };
 
 const populatedMedia = (relation: PayloadRelation<PayloadMedia>): PayloadMedia | null =>
@@ -660,7 +674,7 @@ const mapPricingCategory = (p: PayloadPricingCategory, items: PricingItem[] = []
   items,
 });
 
-const mapPricingItem = (p: PayloadPricingItem): PricingItem => ({
+const mapPricingItem = (p: PayloadPricingItem, categories: readonly PayloadPricingCategory[]): PricingItem => ({
   id: sourceId(p),
   name: p.name,
   price: p.price ?? "",
@@ -668,7 +682,7 @@ const mapPricingItem = (p: PayloadPricingItem): PricingItem => ({
   ada: p.ada ?? null,
   aus: p.aus ?? null,
   order: p.order ?? 0,
-  categoryId: p.sourceCategoryId ?? relationSourceId(p.category) ?? "",
+  categoryId: relationSourceId(p.category, p.sourceCategoryId, categories) ?? "",
 });
 
 const mapTestimonial = (p: PayloadTestimonial): Testimonial => ({
@@ -917,7 +931,7 @@ export async function getPayloadPricingCategories(): Promise<PricingCategory[]> 
     payloadFind<PayloadPricingCategory>("pricing-categories", { sort: "order" }),
     payloadFind<PayloadPricingItem>("pricing-items", { sort: "order", depth: "1" }),
   ]);
-  const mappedItems = items.map(mapPricingItem);
+  const mappedItems = items.map((item) => mapPricingItem(item, categories));
   return categories.map((category) => {
     const id = sourceId(category);
     return mapPricingCategory(
@@ -1084,7 +1098,7 @@ export async function getPayloadPartnerGroups(): Promise<PayloadPartnerGroup[]> 
       title: category.name,
       sortOrder: category.order ?? 0,
       partners: partners
-        .filter((partner) => (partner.sourceCategoryId ?? relationSourceId(partner.category)) === id)
+        .filter((partner) => relationSourceId(partner.category, partner.sourceCategoryId, [category]) === id)
         .map((partner) => ({
           name: partner.name,
           ...(partner.logoUrl ? { logo: partner.logoUrl } : {}),
@@ -1114,7 +1128,7 @@ export async function getPayloadPricingComparisonSet(
     exchange_rate: set.exchangeRate ?? null,
     source_note: set.sourceNote ?? null,
     pricing_comparison_rows: rows
-      .filter((row) => (row.sourceSetId ?? relationSourceId(row.set)) === setId)
+      .filter((row) => relationSourceId(row.set, row.sourceSetId, [set]) === setId)
       .map(mapPricingComparisonRow),
   };
 }

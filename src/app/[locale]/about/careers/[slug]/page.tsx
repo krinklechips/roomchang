@@ -4,22 +4,38 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, Check, Mail, Phone } from "lucide-react";
 import { POSITIONS, getPositionBySlug } from "@/lib/careers";
+import { careerPagePosition, type CareerPagePosition } from "@/lib/career-page-content";
+import { isPayloadSource } from "@/lib/payload-source";
 import { getTranslatedFields, mergeTranslation } from "@/lib/i18n-content";
 import type { Metadata } from "next";
 
 // ISR: re-render at most every 60s so Supabase content edits go live without a deploy.
 export const revalidate = 60;
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  if (isPayloadSource()) {
+    const { getCareerPositions } = await import("@/lib/data");
+    return (await getCareerPositions()).map((p) => ({ slug: p.slug }));
+  }
   return POSITIONS.map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
+  const { locale, slug } = await params;
+  if (isPayloadSource()) {
+    setRequestLocale(locale);
+    const { getCareerPositionBySlug } = await import("@/lib/data");
+    const pos = await getCareerPositionBySlug(slug);
+    if (!pos) return {};
+    return {
+      title: `${pos.title} | Careers | Roomchang Dental Hospital`,
+      description: pos.description ?? "",
+    };
+  }
   const pos = getPositionBySlug(slug);
   if (!pos) return {};
   return {
@@ -35,10 +51,22 @@ export default async function CareerDetailPage({
 }) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
-  const basePos = getPositionBySlug(slug);
-  if (!basePos) notFound();
-  // Overlay the active-locale job translation (content_translations).
-  const pos = mergeTranslation(basePos, await getTranslatedFields("career_position", slug));
+  const payloadMode = isPayloadSource();
+  let pos: CareerPagePosition;
+  let otherPositions: CareerPagePosition[];
+  if (payloadMode) {
+    const { getCareerPositionBySlug, getCareerPositions } = await import("@/lib/data");
+    const current = await getCareerPositionBySlug(slug);
+    if (!current) notFound();
+    pos = careerPagePosition(current);
+    otherPositions = (await getCareerPositions()).map(careerPagePosition).filter((p) => p.slug !== slug);
+  } else {
+    const basePos = getPositionBySlug(slug);
+    if (!basePos) notFound();
+    pos = mergeTranslation(basePos, await getTranslatedFields("career_position", slug));
+    otherPositions = POSITIONS.filter((p) => p.slug !== slug);
+  }
+  const applicationEmail = pos.applicationEmail || "hr@roomchang.com";
 
   const t = await getTranslations("careersDetail");
 
@@ -53,44 +81,49 @@ export default async function CareerDetailPage({
           >
             <ArrowLeft size={13} strokeWidth={2.5} aria-hidden="true" /> {t("backLink")}
           </Link>
-          <div className="mt-4 flex items-center gap-3">
-            <span className="rounded-full bg-[color:var(--brand-soft)] px-3 py-1 text-[0.65rem] font-bold uppercase tracking-[0.2em] text-[color:var(--brand-deep)]">
+          {pos.category && <div className="mt-4 flex items-center gap-3">
+            <span className="min-w-0 break-words rounded-full bg-[color:var(--brand-soft)] px-3 py-1 text-[0.65rem] font-bold uppercase tracking-[0.2em] text-[color:var(--brand-deep)]">
               {pos.category}
             </span>
-          </div>
-          <h1 className="mt-3 font-display text-5xl leading-none text-[color:var(--text-main)] sm:text-6xl">
+          </div>}
+          <h1 className="mt-3 break-words font-display text-5xl leading-none text-[color:var(--text-main)] sm:text-6xl">
             {pos.title}
           </h1>
-          <p className="mt-5 max-w-2xl text-base leading-7 text-[color:var(--text-soft)]">
+          {!payloadMode && <p className="mt-5 max-w-2xl text-base leading-7 text-[color:var(--text-soft)]">
             {pos.shortDescription}
-          </p>
+          </p>}
         </div>
       </div>
 
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-16 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-[1fr_340px]">
           {/* Main content */}
-          <div>
+          <div className="min-w-0">
+            {payloadMode && pos.shortDescription && <p className="mb-8 whitespace-pre-line break-words text-base leading-7 text-[color:var(--text-soft)]">{pos.shortDescription}</p>}
             {/* Requirements */}
-            <h2 className="text-xs font-bold uppercase tracking-[0.28em] text-[color:var(--brand)]">
-              {t("requirementsHeading")}
-            </h2>
-            <ul className="mt-5 space-y-3">
-              {pos.requirements.map((req) => (
-                <li
-                  key={req}
-                  className="flex items-start gap-3 text-sm leading-7 text-[color:var(--text-soft)]"
-                >
-                  <span className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[color:var(--brand-soft)] text-[color:var(--brand-deep)]">
-                    <Check size={11} strokeWidth={3} aria-hidden="true" />
-                  </span>
-                  {req}
-                </li>
-              ))}
-            </ul>
+            {pos.requirements.length > 0 && (
+              <>
+                <h2 className="text-xs font-bold uppercase tracking-[0.28em] text-[color:var(--brand)]">
+                  {t("requirementsHeading")}
+                </h2>
+                <ul className="mt-5 space-y-3">
+                  {pos.requirements.map((req) => (
+                    <li
+                      key={req}
+                      className="flex items-start gap-3 text-sm leading-7 text-[color:var(--text-soft)]"
+                    >
+                      <span className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[color:var(--brand-soft)] text-[color:var(--brand-deep)]">
+                        <Check size={11} strokeWidth={3} aria-hidden="true" />
+                      </span>
+                      {req}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
 
             {/* Benefits */}
-            {pos.benefits && (
+            {pos.benefits && pos.benefits.length > 0 && (
               <>
                 <h2 className="mt-10 text-xs font-bold uppercase tracking-[0.28em] text-[color:var(--brand)]">
                   {t("benefitsHeading")}
@@ -122,16 +155,16 @@ export default async function CareerDetailPage({
 
               <div className="mt-6 space-y-4">
                 <div className="flex items-center gap-3">
-                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[color:var(--brand-soft)] text-[color:var(--brand-deep)]">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[color:var(--brand-soft)] text-[color:var(--brand-deep)]">
                     <Mail size={15} strokeWidth={2} aria-hidden="true" />
                   </span>
-                  <div>
+                  <div className="min-w-0">
                     <p className="text-[0.65rem] font-bold uppercase tracking-[0.18em] text-[color:var(--text-soft)]">
                       {t("emailLabel")}
                     </p>
-                    <p className="text-sm font-semibold text-[color:var(--text-main)]">
-                      hr@roomchang.com
-                    </p>
+                    {pos.applicationEmail ? <a href={`mailto:${applicationEmail}`} className="break-all text-sm font-semibold text-[color:var(--text-main)]">
+                      {applicationEmail}
+                    </a> : <p className="text-sm font-semibold text-[color:var(--text-main)]">hr@roomchang.com</p>}
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
@@ -157,21 +190,21 @@ export default async function CareerDetailPage({
         </div>
 
         {/* Other positions */}
-        <div className="mt-16 border-t border-[color:var(--border-strong)] pt-12">
+        {otherPositions.length > 0 && <div className="mt-16 border-t border-[color:var(--border-strong)] pt-12">
           <h2 className="font-display text-2xl text-[color:var(--text-main)]">
             {t("otherPositionsHeading")}
           </h2>
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {POSITIONS.filter((p) => p.slug !== pos.slug).map((other) => (
+            {otherPositions.map((other) => (
               <Link
                 key={other.slug}
                 href={`/about/careers/${other.slug}`}
-                className="group rounded-2xl border border-[color:var(--border-strong)] bg-white px-6 py-5 transition hover:border-[color:var(--brand-light)] hover:shadow-[0_8px_24px_rgba(57,28,45,0.08)]"
+                className="group min-w-0 rounded-2xl border border-[color:var(--border-strong)] bg-white px-6 py-5 transition hover:border-[color:var(--brand-light)] hover:shadow-[0_8px_24px_rgba(57,28,45,0.08)]"
               >
-                <span className="rounded-full bg-[color:var(--surface)] px-2 py-0.5 text-[0.6rem] font-bold uppercase tracking-[0.15em] text-[color:var(--text-soft)]">
+                {other.category && <span className="break-words rounded-full bg-[color:var(--surface)] px-2 py-0.5 text-[0.6rem] font-bold uppercase tracking-[0.15em] text-[color:var(--text-soft)]">
                   {other.category}
-                </span>
-                <h3 className="mt-2 font-display text-lg text-[color:var(--text-main)] group-hover:text-[color:var(--brand-deep)]">
+                </span>}
+                <h3 className="mt-2 break-words font-display text-lg text-[color:var(--text-main)] group-hover:text-[color:var(--brand-deep)]">
                   {other.title}
                 </h3>
                 <p className="mt-1 line-clamp-2 text-xs leading-5 text-[color:var(--text-soft)]">
@@ -180,7 +213,7 @@ export default async function CareerDetailPage({
               </Link>
             ))}
           </div>
-        </div>
+        </div>}
       </div>
     </SiteShell>
   );

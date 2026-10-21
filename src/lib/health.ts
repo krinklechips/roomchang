@@ -16,6 +16,7 @@ export type HealthReport = {
   checkedAt: string;
   smtp: { ok: boolean; error?: string };
   db: { ok: boolean; error?: string };
+  content: { source: 'payload' | 'supabase'; ok: boolean; error?: string };
   // Enquiries received in the last 24h — a "the form is getting leads" signal.
   // (The `read` flag is never set by the live flow, so an unread count would
   // just grow forever; a rolling 24h count is the meaningful number.)
@@ -53,11 +54,26 @@ export async function checkSiteHealth(): Promise<HealthReport> {
     db = { ok: false, error: e instanceof Error ? e.message : String(e) };
   }
 
+  const content: HealthReport['content'] = process.env.CONTENT_SOURCE === 'payload'
+    ? { source: 'payload', ok: false }
+    : { source: 'supabase', ...db };
+  if (content.source === 'payload') {
+    try {
+      const qs = new URLSearchParams({ locale: 'en', limit: '1', depth: '0', 'where[_status][equals]': 'published', 'select[id]': 'true' });
+      const res = await fetch(`${process.env.PAYLOAD_API_URL || 'http://localhost:3100'}/api/site-stats?${qs}`, { cache: 'no-store', signal: AbortSignal.timeout(5000) });
+      content.ok = res.ok && Array.isArray((await res.json()).docs);
+      if (!content.ok) content.error = 'Published CMS content is unavailable.';
+    } catch {
+      content.error = 'Published CMS content is unavailable.';
+    }
+  }
+
   return {
-    ok: smtp.ok && db.ok,
+    ok: smtp.ok && db.ok && content.ok,
     checkedAt: new Date(now).toISOString(),
     smtp,
     db,
+    content,
     enquiriesLast24h,
   };
 }

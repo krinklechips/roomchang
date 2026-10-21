@@ -32,6 +32,42 @@ function generateCode(name: string): string {
     Math.floor(Math.random() * 100).toString().padStart(2, "0");
 }
 
+async function fetchAgents(): Promise<Agent[] | null> {
+  const { data: agentRows } = await supabase
+    .from("referral_agents")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (!agentRows) return null;
+
+  // Get visit counts per agent
+  const { data: visitCounts } = await supabase
+    .from("referral_visits")
+    .select("agent_code");
+
+  // Get lead counts per agent
+  const { data: leadCounts } = await supabase
+    .from("enquiries")
+    .select("agent_code")
+    .not("agent_code", "is", null);
+
+  const visitMap: Record<string, number> = {};
+  const leadMap: Record<string, number> = {};
+
+  visitCounts?.forEach(({ agent_code }) => {
+    visitMap[agent_code] = (visitMap[agent_code] ?? 0) + 1;
+  });
+  leadCounts?.forEach(({ agent_code }) => {
+    if (agent_code) leadMap[agent_code] = (leadMap[agent_code] ?? 0) + 1;
+  });
+
+  return agentRows.map((a) => ({
+    ...a,
+    visits: visitMap[a.code] ?? 0,
+    leads: leadMap[a.code] ?? 0,
+  }));
+}
+
 export default function AffiliatesPage() {
   const [agents, setAgents] = useState<Agent[]>([]);
   const [loading, setLoading] = useState(true);
@@ -40,48 +76,17 @@ export default function AffiliatesPage() {
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [form, setForm] = useState({ name: "", code: "", notes: "" });
 
-  const loadAgents = useCallback(async () => {
-    setLoading(true);
-
-    const { data: agentRows } = await supabase
-      .from("referral_agents")
-      .select("*")
-      .order("created_at", { ascending: false });
-
-    if (!agentRows) { setLoading(false); return; }
-
-    // Get visit counts per agent
-    const { data: visitCounts } = await supabase
-      .from("referral_visits")
-      .select("agent_code");
-
-    // Get lead counts per agent
-    const { data: leadCounts } = await supabase
-      .from("enquiries")
-      .select("agent_code")
-      .not("agent_code", "is", null);
-
-    const visitMap: Record<string, number> = {};
-    const leadMap: Record<string, number> = {};
-
-    visitCounts?.forEach(({ agent_code }) => {
-      visitMap[agent_code] = (visitMap[agent_code] ?? 0) + 1;
-    });
-    leadCounts?.forEach(({ agent_code }) => {
-      if (agent_code) leadMap[agent_code] = (leadMap[agent_code] ?? 0) + 1;
-    });
-
-    setAgents(
-      agentRows.map((a) => ({
-        ...a,
-        visits: visitMap[a.code] ?? 0,
-        leads: leadMap[a.code] ?? 0,
-      }))
-    );
+  const applyAgents = useCallback((loaded: Agent[] | null) => {
+    if (loaded) setAgents(loaded);
     setLoading(false);
   }, []);
 
-  useEffect(() => { loadAgents(); }, [loadAgents]);
+  useEffect(() => { void fetchAgents().then(applyAgents); }, [applyAgents]);
+
+  async function loadAgents() {
+    setLoading(true);
+    applyAgents(await fetchAgents());
+  }
 
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();

@@ -47,13 +47,14 @@ export default function AdminPricingPage() {
   const [activeTab, setActiveTab] = useState(0);
   const [error, setError] = useState("");
 
-  const load = useCallback(async () => {
-    const res = await fetch("/api/admin/pricing");
+  const applyPricingResponse = useCallback(async (res: Response) => {
     if (res.ok) setData(await res.json());
     else setError("Could not load pricing data.");
   }, []);
 
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => {
+    void fetch("/api/admin/pricing").then(applyPricingResponse);
+  }, [applyPricingResponse]);
 
   async function save() {
     if (!data) return;
@@ -73,7 +74,7 @@ export default function AdminPricingPage() {
       setTimeout(() => setSaved(false), 3000);
       // Pull the canonical rows back so newly-added items pick up their DB ids
       // (otherwise a second save would insert duplicates instead of updating).
-      load();
+      void fetch("/api/admin/pricing").then(applyPricingResponse);
     } else {
       const json = await res.json().catch(() => null);
       setError(json?.error ?? "Save failed.");

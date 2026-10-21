@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 
@@ -19,6 +19,11 @@ declare global {
 
 function hasChoice(): boolean {
   return document.cookie.split("; ").some((c) => c.startsWith(`${COOKIE}=`));
+}
+
+// Cookie changes here are local; choose() supplies the client rerender.
+function subscribeToChoice() {
+  return () => {};
 }
 
 /** Persist the choice and push a Google Consent Mode v2 update to GTM. */
@@ -43,18 +48,16 @@ function applyConsent(value: "granted" | "denied") {
 export function ConsentBanner() {
   const t = useTranslations("consent");
   const locale = useLocale();
-  const [show, setShow] = useState(false);
+  const [dismissed, setDismissed] = useState(false);
 
   // Only decide visibility on the client (the cookie isn't known at SSG time).
-  useEffect(() => {
-    if (!hasChoice()) setShow(true);
-  }, []);
+  const hasConsentChoice = useSyncExternalStore(subscribeToChoice, hasChoice, () => true);
 
-  if (!show) return null;
+  if (hasConsentChoice || dismissed) return null;
 
   const choose = (value: "granted" | "denied") => {
     applyConsent(value);
-    setShow(false);
+    setDismissed(true);
   };
 
   return (

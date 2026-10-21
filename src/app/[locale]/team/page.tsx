@@ -1,6 +1,9 @@
 import { SiteShell } from "@/components/site/site-shell";
 import { DoctorGrid } from "@/components/sections/doctor-grid";
 import { getDoctors } from "@/lib/data";
+import { getPayloadSiteStats, isPayloadSource } from "@/lib/payload-source";
+import { supabaseServer } from "@/lib/supabase-server";
+import { TEAM_STAT_KEYS, teamTrustStats } from "@/lib/team-stats";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 
@@ -26,12 +29,14 @@ export default async function TeamPage({
   const t = await getTranslations("team");
   const tStat = await getTranslations("team.stat");
 
-  const HERO_TRUST = [
-    { value: "37",   label: tStat("doctors") },
-    { value: "6",    label: tStat("languages") },
-    { value: "30+",  label: tStat("yearsExp") },
-    { value: "5",    label: tStat("branches") },
-  ];
+  const payload = isPayloadSource();
+  const { data: statRows, error: statError } = payload
+    ? { data: await getPayloadSiteStats(TEAM_STAT_KEYS), error: null }
+    : await supabaseServer.from('site_stats').select('key, display_value, numeric_value, suffix, label').in('key', [...TEAM_STAT_KEYS]);
+  if (statError) throw new Error('Team statistics could not be loaded.');
+  const HERO_TRUST = teamTrustStats(statRows ?? [], doctors, {
+    doctors: tStat('doctors'), languages: tStat('languages'), years: tStat('yearsExp'), branches: tStat('branches'),
+  }, payload);
 
   return (
     <SiteShell>

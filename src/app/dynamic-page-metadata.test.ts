@@ -1,3 +1,4 @@
+import "@/test/english-intl-server";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 afterEach(() => {
@@ -30,7 +31,7 @@ describe("dynamic page generateMetadata", () => {
 
     const { generateMetadata } = await import("./[locale]/services/[slug]/page");
     const metadata = await generateMetadata({
-      params: Promise.resolve({ slug: "dental-implants" }),
+      params: Promise.resolve({ locale: "en", slug: "dental-implants" }),
     });
 
     expect(metadata.title).toBe("CMS Service Title");
@@ -67,7 +68,7 @@ describe("dynamic page generateMetadata", () => {
 
     const { generateMetadata } = await import("./[locale]/technology/[slug]/page");
     const metadata = await generateMetadata({
-      params: Promise.resolve({ slug: "cbct-scanner" }),
+      params: Promise.resolve({ locale: "en", slug: "cbct-scanner" }),
     });
 
     expect(metadata.title).toBe("CBCT Scanner | Roomchang Dental Hospital");
@@ -98,7 +99,7 @@ describe("dynamic page generateMetadata", () => {
 
     const { generateMetadata } = await import("./[locale]/clinical-results/[slug]/page");
     const metadata = await generateMetadata({
-      params: Promise.resolve({ slug: "all-on-4" }),
+      params: Promise.resolve({ locale: "en", slug: "all-on-4" }),
     });
 
     expect(metadata.title).toBe("CMS Case Title");

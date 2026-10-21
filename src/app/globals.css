@@ -109,24 +109,27 @@ a {
   /* Khmer stacks vowels/subscripts above and below the consonant, so it needs
      more vertical room than Latin — a comfortable default keeps body text from
      looking cramped. Elements with their own leading-* class still override. */
-  line-height: 1.7;
+  line-height: 1.8;
+}
+:lang(km) body {
+  font-size: 1.125rem;
 }
 :lang(km) .font-display {
   font-family: var(--font-khmer), var(--font-gotham), sans-serif;
 }
-:lang(km) * {
-  letter-spacing: normal !important;
+:is(:lang(km), :lang(zh)) {
+  letter-spacing: 0 !important;
 }
 :lang(km) :is(h1, h2, h3, h4, h5, h6) {
-  line-height: 1.45;
+  line-height: 1.7;
 }
 /* The design's ultra-tight display leading (leading-none/tight) clips Khmer
    stacked glyphs into a cluttered smear — relax just those utilities for Khmer. */
 :lang(km) .leading-none {
-  line-height: 1.25 !important;
+  line-height: 1.7 !important;
 }
 :lang(km) .leading-tight {
-  line-height: 1.4 !important;
+  line-height: 1.7 !important;
 }
 
 /* Chinese (lang=zh, served at /cn). The Latin fonts don't cover CJK, so use
@@ -137,6 +140,32 @@ a {
 }
 :lang(zh) .font-display {
   font-family: var(--font-chinese), var(--font-gotham), sans-serif;
+}
+
+.home-stat-label {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+:lang(zh) body {
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+:lang(zh) :is(.text-sm, .text-xs, .home-stat-label, .site-nav-link, .btn-primary, .btn-secondary) {
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+:lang(km) :is(.text-base, .text-sm, .text-xs, .home-stat-label, .site-nav-link, .btn-primary, .btn-secondary) {
+  font-size: 1.125rem;
+  line-height: 1.8;
+}
+
+@media (width < 1800px) {
+  :lang(km) .site-desktop-nav { display: none; }
+  :lang(km) .site-compact-nav { display: flex; }
 }
 
 .btn-primary,

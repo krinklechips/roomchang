@@ -2,6 +2,8 @@ import { Link } from "@/i18n/navigation";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, ArrowRight, Briefcase, Mail, Phone } from "lucide-react";
 import { POSITIONS } from "@/lib/careers";
+import { careerPagePosition, type CareerPagePosition } from "@/lib/career-page-content";
+import { isPayloadSource } from "@/lib/payload-source";
 import { getTranslatedFieldsBatch, mergeTranslation } from "@/lib/i18n-content";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
@@ -31,9 +33,15 @@ export default async function CareersPage({
   setRequestLocale(locale);
   const t = await getTranslations("careers");
 
-  // Overlay active-locale job translations (content_translations).
-  const posTr = await getTranslatedFieldsBatch("career_position", POSITIONS.map((p) => p.slug));
-  const positions = POSITIONS.map((p) => mergeTranslation(p, posTr.get(p.slug) ?? {}));
+  const payloadMode = isPayloadSource();
+  let positions: CareerPagePosition[];
+  if (payloadMode) {
+    const { getCareerPositions } = await import("@/lib/data");
+    positions = (await getCareerPositions()).map(careerPagePosition);
+  } else {
+    const posTr = await getTranslatedFieldsBatch("career_position", POSITIONS.map((p) => p.slug));
+    positions = POSITIONS.map((p) => mergeTranslation(p, posTr.get(p.slug) ?? {}));
+  }
   return (
     <SiteShell>
       <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--surface)]">
@@ -81,24 +89,25 @@ export default async function CareersPage({
             <Link
               key={pos.slug}
               href={`/about/careers/${pos.slug}`}
-              className="group flex flex-col rounded-3xl border border-[color:var(--border-strong)] bg-white p-8 shadow-[0_12px_40px_rgba(57,28,45,0.05)] transition hover:border-[color:var(--brand-light)] hover:shadow-[0_16px_48px_rgba(57,28,45,0.10)]"
+              className="group flex min-w-0 flex-col rounded-3xl border border-[color:var(--border-strong)] bg-white p-8 shadow-[0_12px_40px_rgba(57,28,45,0.05)] transition hover:border-[color:var(--brand-light)] hover:shadow-[0_16px_48px_rgba(57,28,45,0.10)]"
             >
               <div className="flex items-center gap-3">
                 <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[color:var(--brand-soft)] text-[color:var(--brand-deep)]">
                   <Briefcase size={18} strokeWidth={2} aria-hidden="true" />
                 </span>
-                <span className="rounded-full bg-[color:var(--surface)] px-2.5 py-0.5 text-[0.65rem] font-bold uppercase tracking-[0.18em] text-[color:var(--text-soft)]">
-                  {t(`category.${pos.category.toLowerCase()}`)}
-                </span>
+                {pos.category && <span className="min-w-0 break-words rounded-full bg-[color:var(--surface)] px-2.5 py-0.5 text-[0.65rem] font-bold uppercase tracking-[0.18em] text-[color:var(--text-soft)]">
+                  {payloadMode ? pos.category : t(`category.${pos.category.toLowerCase()}`)}
+                </span>}
               </div>
 
-              <h2 className="mt-4 font-display text-2xl text-[color:var(--text-main)] group-hover:text-[color:var(--brand-deep)]">
+              <h2 className="mt-4 break-words font-display text-2xl text-[color:var(--text-main)] group-hover:text-[color:var(--brand-deep)]">
                 {pos.title}
               </h2>
 
-              <p className="mt-3 flex-1 text-sm leading-7 text-[color:var(--text-soft)]">
+              <p className="mt-3 flex-1 whitespace-pre-line break-words text-sm leading-7 text-[color:var(--text-soft)]">
                 {pos.shortDescription}
               </p>
+              {pos.applicationEmail && <p className="mt-3 break-all text-sm text-[color:var(--text-soft)]">{pos.applicationEmail}</p>}
 
               <div className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-[color:var(--brand-deep)] transition group-hover:text-[color:var(--brand)]">
                 {t("viewDetails")} <ArrowRight size={14} strokeWidth={2} aria-hidden="true" className="transition-transform group-hover:translate-x-1" />

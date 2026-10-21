@@ -1,10 +1,18 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import "@/test/english-intl-server";
+import { act, screen } from "@testing-library/react";
+import { render } from "@/test/render";
+import { describe, expect, it, vi } from "vitest";
 import { HomeHero } from "./home-hero";
 
+vi.mock("@/lib/data", () => ({ getHeroSlides: vi.fn(async () => []) }));
+vi.mock("@/lib/payload-source", () => ({
+  isPayloadSource: () => false,
+  getPayloadHomepageSettings: vi.fn(async () => null),
+}));
+
 describe("HomeHero", () => {
-  it("renders a minimal full-width hero with slideshow and centered actions", () => {
-    render(<HomeHero />);
+  it("renders a minimal full-width hero with slideshow and centered booking actions", async () => {
+    render(await HomeHero());
 
     const primaryAction = screen.getByRole("link", { name: /request an appointment/i });
 
@@ -13,8 +21,9 @@ describe("HomeHero", () => {
     ).toBeInTheDocument();
     expect(primaryAction).toBeInTheDocument();
     expect(primaryAction.className).toContain("justify-center");
-    expect(primaryAction.className).toContain("text-center");
-    expect(screen.getByRole("link", { name: /explore services/i })).toBeInTheDocument();
+    expect(primaryAction).toHaveAttribute("href", "/en/contact#enquiry-form");
+    expect(screen.getByRole("link", { name: /explore services/i })).toHaveAttribute("href", "/en/services");
+    expect(screen.getByRole("link", { name: /our doctors/i })).toHaveAttribute("href", "/en/team");
     expect(
       screen.queryByRole("heading", {
         name: /a calmer, more modern front door for roomchang/i,
@@ -22,74 +31,75 @@ describe("HomeHero", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("keeps a single trust pill over the image without slideshow status badges", () => {
-    render(<HomeHero />);
+  it("keeps a single trust pill over the image without slideshow status badges", async () => {
+    render(await HomeHero());
 
     expect(screen.getAllByText(/trusted since 1996/i)).toHaveLength(1);
     expect(screen.queryByText(/multilingual care/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/auto slideshow/i)).not.toBeInTheDocument();
   });
 
-  it("shows the trust pill above the image on mobile and over the image on larger screens", () => {
-    render(<HomeHero />);
+  it("keeps the trust pill legible and overlaid on the image at every breakpoint", async () => {
+    render(await HomeHero());
 
-    const trustPill = screen.getByTestId("hero-trust-pill");
     const trustPillText = screen.getByText(/trusted since 1996/i);
+    const trustPill = trustPillText.parentElement;
 
-    expect(trustPill.className).toContain("relative");
-    expect(trustPill.className).toContain("sm:absolute");
-    expect(trustPill.className).toContain("mb-3");
+    expect(trustPill).toHaveClass("absolute", "top-3", "sm:top-7", "z-20");
     expect(trustPillText.className).not.toContain("sm:text-white");
-    expect(trustPillText.className).toContain("sm:bg-white/94");
+    expect(trustPillText).toHaveClass("bg-white/96");
     expect(trustPillText.className).toContain("text-[color:var(--text-main)]");
   });
 
-  it("keeps the hero CTA dock below the image on mobile and floating on larger screens", () => {
-    render(<HomeHero />);
+  it("keeps the hero CTA dock below the image until the desktop full-bleed breakpoint", async () => {
+    render(await HomeHero());
 
-    const shell = screen.getByTestId("hero-mobile-shell");
-    const dock = screen.getByTestId("hero-cta-dock");
-    const dockSurface = screen.getByTestId("hero-cta-surface");
+    const primaryAction = screen.getByRole("link", { name: /request an appointment/i });
+    const dockSurface = primaryAction.parentElement;
+    const dock = dockSurface?.parentElement;
+    const heroSection = screen.getByRole("region", { name: /roomchang hero slideshow/i }).parentElement?.parentElement;
 
-    expect(shell.className).toContain("overflow-hidden");
-    expect(shell.className).toContain("rounded-2xl");
-    expect(dock.className).toContain("mt-0");
-    expect(dock.className).toContain("sm:absolute");
-    expect(dock.className).not.toContain("mt-4");
+    expect(heroSection).toHaveClass("overflow-hidden");
+    expect(dock).toHaveClass("relative", "pt-2", "xl:absolute", "xl:bottom-10");
+    expect(dock).not.toHaveClass("sm:absolute", "lg:absolute");
+    expect(dockSurface).toHaveClass("flex-col", "xl:flex-row");
     expect(dockSurface).not.toHaveClass("bg-white");
   });
 
-  it("uses the team image as the fixed hero stage reference", () => {
-    render(<HomeHero />);
+  it("uses the team image in a 16:9 stage that fills the desktop hero", async () => {
+    render(await HomeHero());
 
-    const shell = screen.getByTestId("hero-mobile-shell");
-    const heroSection = shell.closest("section");
-    const heroImage = screen.getByRole("img", { name: /roomchang dental hospital team portrait/i });
+    const slideshow = screen.getByRole("region", { name: /roomchang hero slideshow/i });
+    const heroSection = slideshow.parentElement?.parentElement;
+    const heroImage = screen.getByRole("img", { name: /roomchang dental hospital full team photo/i });
     const heroStage = screen.getByTestId("hero-stage");
     const foregroundImage = screen.getByTestId("hero-foreground-image");
 
-    expect(heroSection?.className).toContain("lg:h-[calc(100svh-7.3125rem)]");
-    expect(shell.className).toContain("lg:h-full");
-    expect(shell.className).toContain("lg:flex");
-    expect(heroStage.className).toContain("aspect-[2325/950]");
-    expect(heroStage.className).toContain("lg:aspect-auto");
-    expect(heroStage.className).toContain("lg:h-full");
+    expect(heroSection).toHaveClass("xl:min-h-[calc(100svh-7.25rem)]");
+    expect(slideshow.parentElement).toHaveClass("relative", "xl:absolute", "xl:inset-0");
+    expect(slideshow).toHaveClass("xl:h-full");
+    expect(heroStage).toHaveClass("aspect-[16/9]", "xl:aspect-auto", "xl:h-full");
     expect(heroStage.className).not.toContain("100svh");
-    expect(foregroundImage.getAttribute("style")).toContain("/hero/roomchang-team-hero.jpg");
-    expect(foregroundImage.getAttribute("style")).toContain("--hero-mobile-image-position");
-    expect(foregroundImage.getAttribute("style")).toContain("--hero-mobile-image-size");
-    expect(heroImage).toHaveStyle({ backgroundSize: "cover" });
+    expect(heroImage).toBe(foregroundImage);
+    expect(heroImage).toHaveAttribute("src", expect.stringContaining("hero-team-photo.jpg"));
+    expect(heroImage).toHaveAttribute("sizes", "100vw");
+    expect(heroImage).toHaveClass("object-contain", "sm:object-cover");
+    expect(heroImage).toHaveStyle({ "--hero-mobile-image-position": "center center" });
   });
 
-  it("keeps all hero slides unzoomed on mobile", () => {
-    render(<HomeHero />);
+  it("keeps all fallback hero slides unzoomed on mobile", async () => {
+    render(await HomeHero());
 
     const stage = screen.getByTestId("hero-stage");
-    const foregroundImage = screen.getByTestId("hero-foreground-image");
 
     expect(stage.className).not.toContain("aspect-[16/11]");
-    expect(stage.className).toContain("aspect-[2325/950]");
-    expect(foregroundImage.getAttribute("style")).toContain("--hero-mobile-image-position: center top");
-    expect(foregroundImage.getAttribute("style")).toContain("--hero-mobile-image-size: 100% auto");
+    expect(stage).toHaveClass("aspect-[16/9]");
+    for (const filename of ["hero-team-photo.jpg", "hero-patient-care.jpeg", "hero-all-staff.jpg", "roomchang-digital-lab.jpeg"]) {
+      const image = screen.getByTestId("hero-foreground-image");
+      expect(image).toHaveAttribute("src", expect.stringContaining(filename));
+      expect(image).toHaveClass("object-contain");
+      expect(image).not.toHaveClass("scale-105", "scale-110");
+      act(() => screen.getByRole("button", { name: /show next slide/i }).click());
+    }
   });
 });

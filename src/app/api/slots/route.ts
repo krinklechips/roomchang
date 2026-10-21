@@ -46,11 +46,12 @@ export async function GET(request: NextRequest) {
       return NextResponse.json([]);
     }
 
-    let { data, error } = await supabaseAdmin
+    const { data: initialData, error } = await supabaseAdmin
       .from("booking_slots")
       .select("time,is_available,status")
       .eq("date", date)
       .order("time", { ascending: true });
+    let data = initialData;
 
     if (error) {
       console.error("[slots] Supabase select error:", error);
