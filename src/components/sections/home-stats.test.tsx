@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { HomeStats } from "./home-stats";
+import { getHomepageStats } from "./home-stats-data";
 
 class MockIntersectionObserver {
   constructor(
@@ -22,6 +23,21 @@ class MockIntersectionObserver {
 }
 
 describe("HomeStats", () => {
+  it.each(["37", "37+", "\u17e3\u17e7", "37 \u4f4d"])("renders CMS text %j exactly through the homepage mapping", (display_value) => {
+    vi.stubGlobal("IntersectionObserver", MockIntersectionObserver);
+    vi.stubGlobal("requestAnimationFrame", () => 1);
+    vi.stubGlobal("cancelAnimationFrame", () => {});
+    try {
+      const rows = ["years_experience", "specialist_dentists", "branches_count", "patients_treated"].map((key) => ({
+        key, numeric_value: 37, suffix: "+", display_value, original_display_value: display_value, label: key,
+      }));
+      const { container } = render(<HomeStats stats={getHomepageStats(rows)} />);
+      const values = [...container.querySelectorAll("p.font-display")].map((element) => element.textContent);
+      expect(values).toEqual([display_value, display_value, display_value, display_value]);
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
   it("renders the localized display value when it differs from the shared numeric count", () => {
     vi.stubGlobal("IntersectionObserver", MockIntersectionObserver);
     vi.stubGlobal("requestAnimationFrame", () => 1);

@@ -4,6 +4,9 @@ import { resolveSiteStat } from "./site-stats";
 const fallback = { display_value: "37", label: "Bundled label" };
 
 describe("resolveSiteStat", () => {
+  it.each(["37", "37+", "\u17e3\u17e7", "37 \u4f4d", "0", " 37 "])("shows explicit text %j unchanged on the other statistic pages", (display_value) => {
+    expect(resolveSiteStat({ display_value, numeric_value: 42, suffix: "+", label: "CMS label" }, fallback)).toEqual({ display_value, label: "CMS label" });
+  });
   it.each([null, "", " "])("uses the current number and suffix when display copy is %j", (display_value) => {
     expect(resolveSiteStat({ display_value, numeric_value: 42, suffix: "+", label: "CMS label" }, fallback)).toEqual({ display_value: "42+", label: "CMS label" });
   });
