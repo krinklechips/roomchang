@@ -87,11 +87,14 @@ export type ServiceSection =
   | { type: "list"; heading?: string; items: string[] }
   | { type: "cards"; heading: string; subheading?: string; numbered?: boolean; columns?: number; items: { title: string; body: string; tag?: string; icon?: string; badge?: string; spec?: string; link?: string }[] }
   | { type: "steps"; heading: string; subheading?: string; items: { step: string; detail: string }[] }
-  | { type: "pricing"; heading?: string; subheading?: string; rows: { treatment: string; price: string }[] }
+  | { type: "pricing"; heading?: string; subheading?: string; rows?: { treatment: string; price: string }[] | null }
   | { type: "pricetable"; heading?: string; subheading?: string; rows: { treatment: string; price: string }[] }
   | { type: "gallery"; heading?: string; subheading?: string; images: string[] }
   | { type: "image"; heading?: string; subheading?: string; src: string; alt: string; caption?: string; size?: "small" | "medium" | "large" | "full"; width?: number; height?: number }
-  | { type: "twocol"; left: ServiceSection; right: ServiceSection };
+  | { type: "video"; heading?: string; subheading?: string; videoId: string }
+  | { type: "self_video"; src: string; heading?: string; caption?: string }
+  | { type: "image_pair"; left?: { src: string; alt: string; caption?: string } | null; right?: { src: string; alt: string; caption?: string } | null }
+  | { type: "twocol"; left?: ServiceSection | null; right?: ServiceSection | null };
 
 export type Service = {
   id: string;
@@ -122,16 +125,8 @@ export type Testimonial = {
   published: boolean;
 };
 
-export type TechSection =
-  | { type: "callout"; icon?: string; title: string; body: string }
-  | { type: "text"; heading: string; body: string; card?: boolean }
-  | { type: "cards"; heading: string; subheading?: string; columns?: number; items: { title: string; body: string; icon?: string }[] }
-  | { type: "steps"; heading: string; subheading?: string; items: { step: string; detail: string }[] }
-  | { type: "video"; heading?: string; subheading?: string; videoId: string }
-  | { type: "image"; src: string; alt: string; caption?: string; size?: "small" | "medium" | "full" }
-  | { type: "image_pair"; left: { src: string; alt: string; caption?: string }; right: { src: string; alt: string; caption?: string } }
-  | { type: "self_video"; src: string; heading?: string; caption?: string }
-  | { type: "twocol"; left: TechSection; right: TechSection };
+// Both CMS collections offer the same section blocks, including nested columns.
+export type TechSection = ServiceSection;
 
 export type TechnologyItem = {
   id: string;

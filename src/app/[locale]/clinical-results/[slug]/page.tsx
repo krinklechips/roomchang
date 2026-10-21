@@ -51,6 +51,10 @@ export default async function ClinicalCaseDetailPage({
   if (!c) notFound();
 
   const t = await getTranslations("caseDetail");
+  const images = (Array.isArray(c.images) ? c.images : []).flatMap((image) => {
+    if (!image || typeof image.src !== "string" || !image.src.trim()) return [];
+    return [{ src: image.src, caption: typeof image.caption === "string" ? image.caption : undefined }];
+  });
 
   // Adjacent cases for prev/next navigation
   const allCases = await getClinicalCases();
@@ -111,7 +115,7 @@ export default async function ClinicalCaseDetailPage({
 
             {/* Image gallery — full natural size, no cropping */}
             <div className="flex flex-col gap-4">
-              {c.images.map(({ src, caption }, i) => {
+              {images.map(({ src, caption }, i) => {
                 const imageAlt = caption ?? `${c.title} — image ${i + 1}`;
                 return (
                   <figure key={src} className="overflow-hidden rounded-3xl border border-[color:var(--border-strong)] shadow-[0_12px_40px_rgba(57,28,45,0.07)]">

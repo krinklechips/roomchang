@@ -28,7 +28,7 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import type { Icon as PhosphorIcon } from "@phosphor-icons/react/dist/lib/types";
 import { SiteShell } from "@/components/site/site-shell";
-import { CommunityGallery } from "@/components/sections/community-gallery";
+import { BulletList, Gallery, PriceTable, ImagePair, SelfVideo, VideoEmbed, hasMediaSource } from "./detail-section-blocks";
 import type { Service, ServiceSection } from "@/lib/data";
 import { cdnUrl } from "@/lib/supabase";
 import { getTranslations } from "next-intl/server";
@@ -106,7 +106,7 @@ function TextBlock({ s }: { s: Extract<ServiceSection, { type: "text" }> }) {
     <>
       <h2 className="font-display text-3xl text-[color:var(--text-main)]">{s.heading}</h2>
       <div className="mt-3 text-sm leading-7 text-[color:var(--text-soft)] space-y-3">
-        {String(s.body).split("\n\n").map((para, i) => (
+        {String(s.body ?? "").split("\n\n").map((para, i) => (
           <p key={i}>{para}</p>
         ))}
       </div>
@@ -116,22 +116,6 @@ function TextBlock({ s }: { s: Extract<ServiceSection, { type: "text" }> }) {
     <div className="rounded-3xl border border-[color:var(--border-strong)] bg-white p-8">{inner}</div>
   ) : (
     <div>{inner}</div>
-  );
-}
-
-function BulletList({ s }: { s: Extract<ServiceSection, { type: "list" }> }) {
-  return (
-    <div>
-      {s.heading && <h2 className="font-display text-3xl text-[color:var(--text-main)] mb-6">{s.heading}</h2>}
-      <div className="grid gap-3 sm:grid-cols-2">
-        {s.items.map((item) => (
-          <div key={item} className="flex items-start gap-3 rounded-2xl border border-[color:var(--border-strong)] bg-white px-5 py-4">
-            <span className="mt-0.5 h-4 w-4 shrink-0 rounded-full bg-[color:var(--brand)] text-white flex items-center justify-center"><CheckCircle size={9} weight="bold" aria-hidden="true" /></span>
-            <span className="text-sm leading-6 text-[color:var(--text-soft)]">{item}</span>
-          </div>
-        ))}
-      </div>
-    </div>
   );
 }
 
@@ -146,7 +130,7 @@ function Cards({ s }: { s: Extract<ServiceSection, { type: "cards" }> }) {
       <h2 className="font-display text-3xl text-[color:var(--text-main)]">{s.heading}</h2>
       {s.subheading && <p className="mt-3 text-sm text-[color:var(--text-soft)]">{s.subheading}</p>}
       <div className={`mt-8 grid gap-6 ${gridClass}`}>
-        {s.items.map((item, i) => (
+        {s.items?.map((item, i) => (
           <div key={item.title} className="rounded-2xl border border-[color:var(--border-strong)] bg-white p-6">
             {s.numbered && (
               <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-full bg-[color:var(--brand)] text-white text-sm font-bold">
@@ -195,7 +179,7 @@ function Steps({ s }: { s: Extract<ServiceSection, { type: "steps" }> }) {
       )}
       {/* Vertical numbered timeline (same treatment as the International "How It Works") */}
       <InteractiveSteps
-        steps={s.items.map((item, i) => ({
+        steps={(s.items ?? []).map((item, i) => ({
           step_label: String(i + 1).padStart(2, "0"),
           title: item.step,
           description: item.detail,
@@ -243,51 +227,8 @@ function PricingCTA({
   );
 }
 
-async function Gallery({ s }: { s: Extract<ServiceSection, { type: "gallery" }> }) {
-  const t = await getTranslations("services.detail");
-  return (
-    <div>
-      {s.heading && <h2 className="font-display text-3xl text-[color:var(--text-main)]">{s.heading}</h2>}
-      {s.subheading && <p className="mt-3 max-w-2xl text-sm leading-7 text-[color:var(--text-soft)]">{s.subheading}</p>}
-      <div className={s.heading || s.subheading ? "mt-8" : ""}>
-        {/* 4-up grid keeps thumbnails small (these diagrams are low-res) */}
-        <CommunityGallery images={s.images} title={s.heading ?? t("galleryTitle")} columns={4} />
-      </div>
-    </div>
-  );
-}
-
-async function PriceTable({ s }: { s: Extract<ServiceSection, { type: "pricetable" }> }) {
-  const t = await getTranslations("services.detail");
-  return (
-    <div>
-      {s.heading && <h2 className="font-display text-3xl text-[color:var(--text-main)]">{s.heading}</h2>}
-      {s.subheading && <p className="mt-3 max-w-2xl text-sm leading-7 text-[color:var(--text-soft)]">{s.subheading}</p>}
-      <div className="mt-8 overflow-hidden rounded-3xl border border-[color:var(--brand-soft)] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)]">
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[480px] text-sm">
-            <thead>
-              <tr className="border-b border-[color:var(--brand-soft)] bg-[color:var(--surface)]">
-                <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">{t("priceTableTreatment")}</th>
-                <th className="px-6 py-4 text-right text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--brand-deep)]">{t("priceTablePriceUsd")}</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-[color:var(--brand-soft)]">
-              {s.rows.map((row) => (
-                <tr key={row.treatment} className="transition hover:bg-[color:var(--surface)]">
-                  <td className="px-6 py-4 font-medium text-[color:var(--text-main)]">{row.treatment}</td>
-                  <td className="px-6 py-4 text-right font-bold text-[color:var(--brand-deep)]">{row.price}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function ServiceImage({ s }: { s: Extract<ServiceSection, { type: "image" }> }) {
+  if (!hasMediaSource(s.src)) return null;
   const sizeClass =
     s.size === "small" ? "max-w-md" :
     s.size === "large" ? "max-w-4xl" :
@@ -298,11 +239,11 @@ function ServiceImage({ s }: { s: Extract<ServiceSection, { type: "image" }> }) 
       {s.heading && <h2 className="font-display text-3xl text-[color:var(--text-main)]">{s.heading}</h2>}
       {s.subheading && <p className="mt-3 max-w-2xl text-sm leading-7 text-[color:var(--text-soft)]">{s.subheading}</p>}
       <figure className={`${s.heading || s.subheading ? "mt-8" : ""} ${sizeClass}`}>
-        <ZoomableImage src={s.src} alt={s.alt} caption={s.caption}>
+        <ZoomableImage src={s.src} alt={s.alt ?? ""} caption={s.caption}>
           <div className="overflow-hidden rounded-3xl border border-[color:var(--border-strong)] bg-white shadow-[0_16px_48px_rgba(57,28,45,0.06)]">
             <Image
               src={s.src}
-              alt={s.alt}
+              alt={s.alt ?? ""}
               width={s.width ?? 1200}
               height={s.height ?? 750}
               className="h-auto w-full"
@@ -322,11 +263,12 @@ export function RenderSection({
   pricingCtaNote,
   pricingHref,
 }: {
-  s: ServiceSection;
+  s: ServiceSection | null | undefined;
   pricingCtaLabel: string;
   pricingCtaNote: string;
   pricingHref: string;
 }) {
+  if (!s) return null;
   if (s.type === "callout") return <Callout s={s} />;
   if (s.type === "text") return <TextBlock s={s} />;
   if (s.type === "list") return <BulletList s={s} />;
@@ -334,13 +276,22 @@ export function RenderSection({
   if (s.type === "steps") return <Steps s={s} />;
   if (s.type === "gallery") return <Gallery s={s} />;
   if (s.type === "image") return <ServiceImage s={s} />;
+  if (s.type === "video") return <VideoEmbed s={s} />;
+  if (s.type === "self_video") return <SelfVideo s={s} />;
+  if (s.type === "image_pair") return <ImagePair s={s} />;
   if (s.type === "pricetable") return <PriceTable s={s} />;
-  if (s.type === "pricing") return <PricingCTA s={s} ctaLabel={pricingCtaLabel} ctaNote={pricingCtaNote} href={pricingHref} />;
+  if (s.type === "pricing") return s.rows?.length
+    ? <PriceTable s={s} />
+    : <PricingCTA s={s} ctaLabel={pricingCtaLabel} ctaNote={pricingCtaNote} href={pricingHref} />;
   if (s.type === "twocol") {
     return (
       <div className="grid gap-8 lg:grid-cols-2">
-        <RenderSection s={s.left} pricingCtaLabel={pricingCtaLabel} pricingCtaNote={pricingCtaNote} pricingHref={pricingHref} />
-        <RenderSection s={s.right} pricingCtaLabel={pricingCtaLabel} pricingCtaNote={pricingCtaNote} pricingHref={pricingHref} />
+        <div className="min-w-0 break-words">
+          <RenderSection s={s.left} pricingCtaLabel={pricingCtaLabel} pricingCtaNote={pricingCtaNote} pricingHref={pricingHref} />
+        </div>
+        <div className="min-w-0 break-words">
+          <RenderSection s={s.right} pricingCtaLabel={pricingCtaLabel} pricingCtaNote={pricingCtaNote} pricingHref={pricingHref} />
+        </div>
       </div>
     );
   }

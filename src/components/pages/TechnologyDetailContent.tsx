@@ -9,7 +9,7 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import type { Icon as PhosphorIcon } from "@phosphor-icons/react/dist/lib/types";
 import { InteractiveSteps } from "@/components/sections/interactive-steps";
-import { LazyVideo } from "@/components/ui/lazy-video";
+import { BulletList, Gallery, PriceTable, ImagePair, SelfVideo, VideoEmbed, hasMediaSource } from "./detail-section-blocks";
 import { SiteShell } from "@/components/site/site-shell";
 import type { TechnologyItem, TechSection } from "@/lib/data";
 
@@ -42,6 +42,20 @@ function Callout({ s }: { s: Extract<TechSection, { type: "callout" }> }) {
           <p className="mt-1 text-sm leading-7 text-[color:var(--text-soft)]">{s.body}</p>
         </div>
       </div>
+      {s.stats && (
+        <div className={`mt-6 grid gap-4 ${
+          s.stats.length === 1 ? "grid-cols-1" :
+          s.stats.length === 2 ? "grid-cols-2" :
+          s.stats.length === 3 ? "grid-cols-3" : "grid-cols-2 sm:grid-cols-4"
+        }`}>
+          {s.stats.map((stat, i) => (
+            <div key={i} className="flex flex-col items-center justify-center rounded-2xl bg-white/60 px-4 py-4 text-center">
+              <p className="text-xl font-bold text-[color:var(--brand-deep)]">{stat.value}</p>
+              <p className="mt-1 text-xs text-[color:var(--text-soft)]">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -51,7 +65,7 @@ function TextBlock({ s }: { s: Extract<TechSection, { type: "text" }> }) {
     <>
       <h2 className="font-display text-2xl text-[color:var(--text-main)]">{s.heading}</h2>
       <div className="mt-3 text-sm leading-7 text-[color:var(--text-soft)] space-y-3">
-        {String(s.body).split("\n\n").map((para, i) => <p key={i}>{para}</p>)}
+        {String(s.body ?? "").split("\n\n").map((para, i) => <p key={i}>{para}</p>)}
       </div>
     </>
   );
@@ -73,14 +87,28 @@ function Cards({ s }: { s: Extract<TechSection, { type: "cards" }> }) {
       <h2 className="font-display text-3xl text-[color:var(--text-main)]">{s.heading}</h2>
       {s.subheading && <p className="mt-3 text-sm text-[color:var(--text-soft)]">{s.subheading}</p>}
       <div className={`mt-8 grid gap-6 ${gridClass}`}>
-        {s.items.map((item) => (
+        {s.items?.map((item, i) => (
           <div key={item.title} className="rounded-2xl border border-[color:var(--border-strong)] bg-white p-6">
-            {item.icon && (
+            {s.numbered && (
+              <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-full bg-[color:var(--brand)] text-white text-sm font-bold">{i + 1}</div>
+            )}
+            {item.icon && !s.numbered && (
               <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-[color:var(--brand-soft)] text-[color:var(--brand-deep)]">
                 <TechIcon name={item.icon} />
               </div>
             )}
-            <h3 className="font-display text-xl text-[color:var(--text-main)]">{item.title}</h3>
+            {item.badge && (
+              <span className="mb-2 inline-block rounded-full bg-[color:var(--brand-soft)] px-2.5 py-0.5 text-xs font-semibold text-[color:var(--brand-deep)]">{item.badge}</span>
+            )}
+            <h3 className="font-display text-xl text-[color:var(--text-main)]">
+              {item.link ? (
+                <Link href={item.link} className="underline decoration-[color:var(--brand-soft)] underline-offset-2 hover:decoration-[color:var(--brand)] transition-colors">{item.title}</Link>
+              ) : item.title}
+            </h3>
+            {item.spec && <p className="mt-1 text-xs font-semibold text-[color:var(--brand)]">{item.spec}</p>}
+            {item.tag && (
+              <span className="mt-1 inline-block rounded-full bg-[color:var(--brand-soft)] px-2 py-0.5 text-xs font-medium text-[color:var(--brand-deep)]">{item.tag}</span>
+            )}
             <p className="mt-2 text-sm leading-7 text-[color:var(--text-soft)]">{item.body}</p>
           </div>
         ))}
@@ -95,7 +123,7 @@ function Steps({ s }: { s: Extract<TechSection, { type: "steps" }> }) {
       <h2 className="font-display text-3xl text-[color:var(--text-main)]">{s.heading}</h2>
       {s.subheading && <p className="mt-3 text-sm text-[color:var(--text-soft)]">{s.subheading}</p>}
       <InteractiveSteps
-        steps={s.items.map((item, index) => ({
+        steps={(s.items ?? []).map((item, index) => ({
           step_label: String(index + 1).padStart(2, "0"),
           title: item.step,
           description: item.detail,
@@ -106,123 +134,61 @@ function Steps({ s }: { s: Extract<TechSection, { type: "steps" }> }) {
 }
 
 function InlineImage({ s }: { s: Extract<TechSection, { type: "image" }> }) {
+  if (!hasMediaSource(s.src)) return null;
   // Inline images are contained + centered by default so a single photo never
   // spans the full content width. `size: "full"` opts back into full width.
   const sizeClass =
     s.size === "small"  ? "max-w-md mx-auto" :
     s.size === "medium" ? "max-w-2xl mx-auto" :
+    s.size === "large"  ? "max-w-4xl mx-auto" :
     s.size === "full"   ? "" :
     "max-w-3xl mx-auto";
   return (
-    <figure className={sizeClass}>
-      <ZoomableImage src={s.src} alt={s.alt} caption={s.caption}>
-        <div className="overflow-hidden rounded-2xl border border-[color:var(--border-strong)] shadow-[0_16px_48px_rgba(57,28,45,0.08)]">
-          <Image
-            src={s.src}
-            alt={s.alt}
-            width={1200}
-            height={700}
-            className="w-full h-auto"
-            sizes="(min-width: 768px) 768px, 100vw"
-          />
-        </div>
-      </ZoomableImage>
-      {s.caption && (
-        <figcaption className="mt-3 text-center text-xs text-[color:var(--text-soft)]">{s.caption}</figcaption>
-      )}
-    </figure>
-  );
-}
-
-function ImagePair({ s }: { s: Extract<TechSection, { type: "image_pair" }> }) {
-  const isVideo = (src: string) => /\.(mp4|webm)$/i.test(src);
-
-  return (
-    <div className="grid gap-6 sm:grid-cols-2">
-      {[s.left, s.right].map((img) => {
-        const mediaWrap = "relative aspect-video overflow-hidden rounded-2xl border border-[color:var(--border-strong)] bg-[color:var(--surface)] shadow-[0_16px_48px_rgba(57,28,45,0.08)]";
-        return (
-          <figure key={img.src}>
-            {isVideo(img.src) ? (
-              <div className={mediaWrap}>
-                <LazyVideo
-                  src={img.src}
-                  className="absolute inset-0 h-full w-full object-cover"
-                />
-              </div>
-            ) : (
-              <ZoomableImage src={img.src} alt={img.alt} caption={img.caption}>
-                <div className={mediaWrap}>
-                  <Image
-                    src={img.src}
-                    alt={img.alt}
-                    fill
-                    className="object-cover"
-                    sizes="(min-width: 640px) 50vw, 100vw"
-                  />
-                </div>
-              </ZoomableImage>
-            )}
-            {img.caption && (
-              <figcaption className="mt-2 text-center text-xs text-[color:var(--text-soft)]">{img.caption}</figcaption>
-            )}
-          </figure>
-        );
-      })}
-    </div>
-  );
-}
-
-function SelfVideo({ s }: { s: Extract<TechSection, { type: "self_video" }> }) {
-  return (
-    <figure>
-      {s.heading && <h2 className="mb-6 font-display text-3xl text-[color:var(--text-main)]">{s.heading}</h2>}
-      <div className="overflow-hidden rounded-2xl border border-[color:var(--border-strong)] shadow-[0_16px_48px_rgba(57,28,45,0.08)]">
-        <LazyVideo src={s.src} className="w-full h-auto" />
-      </div>
-      {s.caption && (
-        <figcaption className="mt-3 text-center text-xs text-[color:var(--text-soft)]">{s.caption}</figcaption>
-      )}
-    </figure>
-  );
-}
-
-async function VideoEmbed({ s }: { s: Extract<TechSection, { type: "video" }> }) {
-  const t = await getTranslations("technologyDetail");
-  return (
     <div>
       {s.heading && <h2 className="font-display text-3xl text-[color:var(--text-main)]">{s.heading}</h2>}
-      {s.subheading && <p className="mt-3 text-sm text-[color:var(--text-soft)]">{s.subheading}</p>}
-      <div className={`${s.heading ? "mt-8" : ""} relative aspect-video overflow-hidden rounded-2xl border border-[color:var(--border-strong)] shadow-[0_16px_48px_rgba(57,28,45,0.08)]`}>
-        <iframe
-          src={`https://www.youtube.com/embed/${s.videoId}`}
-          title={s.heading ?? t("video")}
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-          className="absolute inset-0 h-full w-full"
-        />
-      </div>
+      {s.subheading && <p className="mt-3 text-sm leading-7 text-[color:var(--text-soft)]">{s.subheading}</p>}
+      <figure className={`${sizeClass} ${s.heading || s.subheading ? "mt-8" : ""}`}>
+        <ZoomableImage src={s.src} alt={s.alt ?? ""} caption={s.caption}>
+          <div className="overflow-hidden rounded-2xl border border-[color:var(--border-strong)] shadow-[0_16px_48px_rgba(57,28,45,0.08)]">
+            <Image
+              src={s.src}
+              alt={s.alt ?? ""}
+              width={s.width ?? 1200}
+              height={s.height ?? 700}
+              className="w-full h-auto"
+              sizes="(min-width: 768px) 768px, 100vw"
+            />
+          </div>
+        </ZoomableImage>
+        {s.caption && (
+          <figcaption className="mt-3 text-center text-xs text-[color:var(--text-soft)]">{s.caption}</figcaption>
+        )}
+      </figure>
     </div>
   );
 }
 
-function RenderSection({ s }: { s: TechSection }) {
+function RenderSection({ s }: { s: TechSection | null | undefined }) {
+  if (!s) return null;
   if (s.type === "callout")    return <Callout s={s} />;
   if (s.type === "text")       return <TextBlock s={s} />;
   if (s.type === "cards")      return <Cards s={s} />;
   if (s.type === "steps")      return <Steps s={s} />;
+  if (s.type === "list")       return <BulletList s={s} />;
+  if (s.type === "pricing" || s.type === "pricetable") return <PriceTable s={s} />;
+  if (s.type === "gallery")    return <Gallery s={s} />;
   if (s.type === "video")      return <VideoEmbed s={s} />;
   if (s.type === "image")      return <InlineImage s={s} />;
   if (s.type === "image_pair") return <ImagePair s={s} />;
   if (s.type === "self_video") return <SelfVideo s={s} />;
   if (s.type === "twocol") {
     return (
-      <div className="overflow-hidden rounded-3xl border border-[color:var(--border-strong)] bg-white">
-        <div className="grid lg:grid-cols-[1fr_auto] lg:items-center">
-          <div className="p-8">
+      <div className="rounded-3xl border border-[color:var(--border-strong)] bg-white">
+        <div className="grid lg:grid-cols-2 lg:items-center">
+          <div className="min-w-0 break-words p-8">
             <RenderSection s={s.left} />
           </div>
-          <div className="max-h-[320px] max-w-[360px] overflow-hidden">
+          <div className="min-w-0 break-words">
             <RenderSection s={s.right} />
           </div>
         </div>
