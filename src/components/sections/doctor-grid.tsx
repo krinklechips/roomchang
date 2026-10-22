@@ -6,6 +6,7 @@ import { useState, useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { X } from "lucide-react";
 import type { Doctor } from "@/lib/data";
+import { matchesDoctorLanguage } from "@/lib/doctor-languages";
 
 /** Filter pills — `value` drives the filter logic, `key` maps to the lang.* translation */
 const LANGUAGES: { value: string; key: string }[] = [
@@ -242,11 +243,11 @@ export function DoctorGrid({ doctors }: { doctors: Doctor[] }) {
   const [activeLanguage, setActiveLanguage] = useState<string | null>(null);
   const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null);
   const t = useTranslations("doctorGrid");
+  const activeLanguageKey = LANGUAGES.find((lang) => lang.value === activeLanguage)?.key;
+  const activeLanguageLabel = activeLanguageKey ? t(`lang.${activeLanguageKey}`) : "";
 
   const filtered = activeLanguage
-    ? doctors.filter((d) =>
-        d.languages.some((l) => l.toLowerCase() === activeLanguage.toLowerCase())
-      )
+    ? doctors.filter((d) => matchesDoctorLanguage(d.languages, activeLanguage))
     : doctors;
 
   // Group by department (only when not filtering)
@@ -301,7 +302,7 @@ export function DoctorGrid({ doctors }: { doctors: Doctor[] }) {
           </div>
           {activeLanguage && (
             <p className="mt-2 text-xs text-[color:var(--text-soft)]">
-              {t("filterResult", { count: filtered.length, language: activeLanguage })}
+              {t("filterResult", { count: filtered.length, language: activeLanguageLabel })}
             </p>
           )}
         </div>
@@ -333,7 +334,7 @@ export function DoctorGrid({ doctors }: { doctors: Doctor[] }) {
         {filtered.length === 0 && (
           <div className="py-10 sm:py-20 text-center">
             <p className="text-base text-[color:var(--text-soft)]">
-              {t("noResults", { language: activeLanguage ?? "" })}
+              {t("noResults", { language: activeLanguageLabel })}
             </p>
             <button
               onClick={() => setActiveLanguage(null)}
