@@ -2,8 +2,11 @@ import { Link } from "@/i18n/navigation";
 import { ArrowLeft } from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { SiteShell } from "@/components/site/site-shell";
-import { getTestimonials } from "@/lib/data";
+import { getTestimonials, getVideos } from "@/lib/data";
 import { abbreviateName } from "@/lib/format-name";
+import { isPayloadSource } from "@/lib/payload-source";
+import { safeYouTubeEmbedUrl } from "@/lib/dentist-talks-media";
+import { CmsVideoPlayer } from "@/components/sections/testimonial-video-media";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -58,6 +61,26 @@ export default async function TestimonialsPage({
   setRequestLocale(locale);
   const t = await getTranslations("testimonialsPage");
   const testimonials = await getTestimonials();
+  const videos = isPayloadSource()
+    ? (await getVideos("testimonial")).flatMap((video) => {
+        const src = safeYouTubeEmbedUrl(video.url);
+        return src ? [{
+          id: video.id,
+          src,
+          title: video.title?.trim() || t("video.title"),
+          description: video.description,
+          treatment: video.treatment,
+          thumbnail: video.thumbnail,
+        }] : [];
+      })
+    : VIDEO_TESTIMONIALS.map((video) => ({
+        id: video.id,
+        src: `https://www.youtube-nocookie.com/embed/${video.id}`,
+        title: t(`video.items.${video.id}.title`),
+        description: t(`video.items.${video.id}.description`),
+        treatment: t(`video.items.${video.id}.treatment`),
+        thumbnail: null,
+      }));
 
   return (
     <SiteShell>
@@ -138,36 +161,33 @@ export default async function TestimonialsPage({
           </p>
 
           <div className="mt-10 grid gap-8 sm:grid-cols-2">
-            {VIDEO_TESTIMONIALS.map((video) => (
+            {videos.map((video) => (
               <div
                 key={video.id}
                 className="overflow-hidden rounded-3xl border border-[color:var(--border-strong)] bg-white shadow-[0_12px_40px_rgba(57,28,45,0.06)]"
               >
                 {/* Video embed */}
                 <div className="aspect-video w-full">
-                  <iframe
-                    src={`https://www.youtube-nocookie.com/embed/${video.id}`}
-                    title={t(`video.items.${video.id}.title`)}
-                    className="h-full w-full"
-                    loading="lazy"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
+                  <CmsVideoPlayer
+                    src={video.src}
+                    title={video.title}
+                    thumbnail={video.thumbnail}
                   />
                 </div>
 
                 {/* Card content */}
-                <div className="flex items-start justify-between gap-4 px-6 py-5">
+                <div className="flex flex-wrap items-start justify-between gap-4 px-6 py-5">
                   <div className="min-w-0">
-                    <p className="font-display text-lg leading-snug text-[color:var(--text-main)]">
-                      {t(`video.items.${video.id}.title`)}
+                    <p className="break-words font-display text-lg leading-snug text-[color:var(--text-main)]">
+                      {video.title}
                     </p>
-                    <p className="mt-1.5 text-sm leading-6 text-[color:var(--text-soft)]">
-                      {t(`video.items.${video.id}.description`)}
-                    </p>
+                    {video.description && <p className="mt-1.5 whitespace-pre-line break-words text-sm leading-6 text-[color:var(--text-soft)]">
+                      {video.description}
+                    </p>}
                   </div>
-                  <span className="mt-0.5 shrink-0 rounded-full bg-[color:var(--brand-soft)] px-2.5 py-0.5 text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-[color:var(--brand-deep)]">
-                    {t(`video.items.${video.id}.treatment`)}
-                  </span>
+                  {video.treatment && <span className="mt-0.5 max-w-full break-words rounded-full bg-[color:var(--brand-soft)] px-2.5 py-0.5 text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-[color:var(--brand-deep)]">
+                    {video.treatment}
+                  </span>}
                 </div>
               </div>
             ))}

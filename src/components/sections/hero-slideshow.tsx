@@ -5,12 +5,17 @@ import { startTransition, useEffect, useState } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Link } from "@/i18n/navigation";
+import { contentLink } from "@/lib/content-link";
 
 export type HeroSlide = {
   id: string;
   title: string;
+  subtitle?: string;
   eyebrow: string;
   description: string;
+  ctaText?: string;
+  ctaUrl?: string;
   imageSrc: string;
   imageAlt: string;
   imagePosition?: string;
@@ -67,7 +72,10 @@ export function HeroSlideshow({
     return () => window.clearInterval(intervalId);
   }, [autoRotateMs, isPaused, slides.length]);
 
-  const activeSlide = slides[activeIndex];
+  if (!slides.length) return null;
+  const currentIndex = activeIndex % slides.length;
+  const activeSlide = slides[currentIndex];
+  const actionUrl = contentLink(activeSlide.ctaUrl);
   const shouldPreserveFullImage = Boolean(activeSlide.preserveFullImage);
   // object-position is responsive: mobile var by default, desktop var at sm+.
   const mobileImagePosition = activeSlide.mobileImagePosition ?? activeSlide.imagePosition ?? "center center";
@@ -80,7 +88,7 @@ export function HeroSlideshow({
   const dots = (
     <div className="flex items-center gap-2">
       {slides.map((slide, index) => {
-        const isActive = index === activeIndex;
+        const isActive = index === currentIndex;
         return (
           <button
             key={slide.id}
@@ -126,7 +134,7 @@ export function HeroSlideshow({
         // matching ~2.4:1 box ONLY at lg. Mobile/tablet keep the natural 16/9
         // hero (Aliza feedback round 2). No role="img" — the nested <Image>
         // carries the alt text, so a wrapper label would double-announce.
-        className={`relative min-h-0 overflow-hidden rounded-[1.6rem] sm:min-h-[28rem] ${shouldPreserveFullImage ? "bg-white lg:!aspect-[12/5] lg:!min-h-0" : "bg-[color:var(--surface-strong)]"} xl:min-h-[31rem] xl:!aspect-auto ${mediaClassName}`}
+        className={`relative min-h-0 overflow-hidden rounded-[1.6rem] sm:min-h-[28rem] ${shouldPreserveFullImage ? "bg-white lg:!aspect-[12/5] lg:!min-h-0" : "bg-[color:var(--surface-strong)]"} xl:min-h-[31rem] ${showCaption ? "" : "xl:!aspect-auto"} ${mediaClassName}`}
       >
         {/* Slide image via next/image (resized + WebP/AVIF instead of a raw R2
             background download). preserveFullImage → object-contain on the white
@@ -150,22 +158,6 @@ export function HeroSlideshow({
         {/* Depth overlay — only on photo slides for text readability */}
         {!shouldPreserveFullImage && (
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(255,255,255,0.35),_transparent_34%),linear-gradient(180deg,_rgba(255,249,250,0.04)_0%,_rgba(44,26,40,0.22)_100%)]" />
-        )}
-
-        {showCaption && (
-          <div className="absolute inset-x-0 bottom-0 p-4 sm:p-6">
-            <div className="rounded-[1.5rem] border border-white/25 bg-[color:rgba(36,20,31,0.56)] p-4 text-white shadow-2xl backdrop-blur-md sm:p-5">
-              <p className="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-white/70">
-                {activeSlide.eyebrow}
-              </p>
-              <p className="mt-2 font-display text-3xl leading-none sm:text-[2.6rem]">
-                {activeSlide.title}
-              </p>
-              <p className="mt-3 max-w-md text-sm leading-6 text-white/82 sm:text-[0.95rem]">
-                {activeSlide.description}
-              </p>
-            </div>
-          </div>
         )}
 
         {/* Prev / Next controls */}
@@ -194,12 +186,24 @@ export function HeroSlideshow({
         )}
       </div>
 
+      {showCaption && (
+        <div data-testid="hero-caption" className="bg-[color:var(--surface)] px-4 py-5 text-[color:var(--text-main)] sm:px-6">
+          <div className="mx-auto max-w-7xl break-words">
+            {activeSlide.eyebrow && <p className="text-xs font-semibold uppercase text-[color:var(--brand)]">{activeSlide.eyebrow}</p>}
+            {activeSlide.title && <h2 className="mt-2 font-display text-3xl leading-tight">{activeSlide.title}</h2>}
+            {activeSlide.subtitle && <p className="mt-2 text-lg font-medium">{activeSlide.subtitle}</p>}
+            {activeSlide.description && <p className="mt-3 max-w-3xl whitespace-pre-line text-base leading-7 text-[color:var(--text-soft)]">{activeSlide.description}</p>}
+            {activeSlide.ctaText && actionUrl && <Link href={actionUrl} className="btn-primary mt-4 max-w-full whitespace-normal text-center">{activeSlide.ctaText}</Link>}
+          </div>
+        </div>
+      )}
+
       {/* Dots below image in non-flush (card) mode */}
       {!flush && (
         <div className="mt-4 flex items-center justify-between gap-4 px-1">
           <div className="flex items-center gap-2">
             {slides.map((slide, index) => {
-              const isActive = index === activeIndex;
+              const isActive = index === currentIndex;
               return (
                 <button
                   key={slide.id}

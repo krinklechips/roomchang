@@ -18,6 +18,7 @@ type HomepageFeatureCardRow = {
 
 export async function HomeFeatured() {
   const t = await getTranslations("homeHighlights.card");
+  const payload = isPayloadSource();
 
   // Fallback cards use translation keys; DB cards use their own text
   const FALLBACK_CARDS = [
@@ -50,7 +51,7 @@ export async function HomeFeatured() {
     },
   ];
 
-  const { data, error } = isPayloadSource()
+  const { data, error } = payload
     ? { data: await getPayloadFeatureCards(), error: null }
     : await supabaseServer
         .from("homepage_feature_cards")
@@ -62,13 +63,13 @@ export async function HomeFeatured() {
   }
 
   const rows = (data ?? []) as HomepageFeatureCardRow[];
-  const tr = isPayloadSource()
+  const tr = payload
     ? new Map<string, Record<string, unknown>>()
     : await getTranslatedFieldsBatch(
         "homepage_feature_card",
         rows.map((r) => r.slug),
       );
-  const cards = rows.length
+  const cards = rows.length || payload
     ? rows.map((row) => {
         const card = mergeTranslation(row, tr.get(row.slug) ?? {});
         return {
@@ -82,6 +83,8 @@ export async function HomeFeatured() {
         };
       })
     : FALLBACK_CARDS;
+
+  if (!cards.length) return null;
 
   return (
     <section className="border-t border-[color:var(--border-strong)] bg-[color:var(--surface)]">

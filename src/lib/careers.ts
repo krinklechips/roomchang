@@ -3,6 +3,8 @@ export type Position = {
   title: string;
   shortDescription: string;
   category: "Clinical" | "Support";
+  type?: string | null;
+  location?: string | null;
   requirements: string[];
   benefits?: string[];
 };

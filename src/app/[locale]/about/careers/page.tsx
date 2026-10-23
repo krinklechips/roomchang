@@ -1,6 +1,6 @@
 import { Link } from "@/i18n/navigation";
 import { SiteShell } from "@/components/site/site-shell";
-import { ArrowLeft, ArrowRight, Briefcase, Mail, Phone } from "lucide-react";
+import { ArrowLeft, ArrowRight, Briefcase, Clock, Mail, MapPin, Phone } from "lucide-react";
 import { POSITIONS } from "@/lib/careers";
 import { careerPagePosition, type CareerPagePosition } from "@/lib/career-page-content";
 import { isPayloadSource } from "@/lib/payload-source";
@@ -103,6 +103,17 @@ export default async function CareersPage({
               <h2 className="mt-4 break-words font-display text-2xl text-[color:var(--text-main)] group-hover:text-[color:var(--brand-deep)]">
                 {pos.title}
               </h2>
+
+              {(pos.type || pos.location) && <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-sm text-[color:var(--text-soft)]">
+                {pos.type && <span className="inline-flex min-w-0 max-w-full items-start gap-2">
+                  <Clock size={14} className="mt-1 shrink-0" aria-hidden="true" />
+                  <span className="min-w-0 break-words">{pos.type}</span>
+                </span>}
+                {pos.location && <span className="inline-flex min-w-0 max-w-full items-start gap-2">
+                  <MapPin size={14} className="mt-1 shrink-0" aria-hidden="true" />
+                  <span className="min-w-0 break-words">{pos.location}</span>
+                </span>}
+              </div>}
 
               <p className="mt-3 flex-1 whitespace-pre-line break-words text-sm leading-7 text-[color:var(--text-soft)]">
                 {pos.shortDescription}

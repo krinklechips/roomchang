@@ -189,7 +189,8 @@ export default async function PartnershipsPage({
 
   const t = await getTranslations("partnerships");
 
-  const { data, error } = isPayloadSource()
+  const payload = isPayloadSource();
+  const { data, error } = payload
     ? { data: await getPayloadPartnerGroups(), error: null }
     : await supabaseServer
         .from("partners")
@@ -203,7 +204,7 @@ export default async function PartnershipsPage({
   // DB partner-category names match the fallback titles; translate via their key.
   const categoryKeyByTitle = new Map(PARTNER_CATEGORIES.map((c) => [c.title, c.id]));
   const categoryMap = new Map<string, PartnerCategory & { sortOrder: number }>();
-  if (isPayloadSource()) {
+  if (payload) {
     ((data as Awaited<ReturnType<typeof getPayloadPartnerGroups>> | null) ?? []).forEach((category) => {
       const title = categoryKeyByTitle.has(category.title)
         ? t(`categories.${categoryKeyByTitle.get(category.title)}`)
@@ -230,7 +231,7 @@ export default async function PartnershipsPage({
       categoryMap.set(category.name, existing);
     });
   }
-  const partnerCategories = categoryMap.size
+  const partnerCategories = categoryMap.size || payload
     ? Array.from(categoryMap.values())
         .sort((a, b) => a.sortOrder - b.sortOrder)
         .map((category) => ({

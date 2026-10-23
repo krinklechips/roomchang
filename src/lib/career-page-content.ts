@@ -12,6 +12,8 @@ export function careerPagePosition(position: CareerPosition & { applicationEmail
     title: position.title,
     shortDescription: position.description ?? "",
     category: position.department ?? "",
+    type: typeof position.type === "string" && position.type.trim() ? position.type : undefined,
+    location: typeof position.location === "string" && position.location.trim() ? position.location : undefined,
     requirements: position.requirements ?? [],
     benefits: position.benefits ?? [],
     applicationEmail: position.applicationEmail?.trim() || null,

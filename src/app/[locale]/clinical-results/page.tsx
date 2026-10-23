@@ -5,7 +5,7 @@ import { supabaseServer } from "@/lib/supabase-server";
 import { getPayloadSiteStats, isPayloadSource } from "@/lib/payload-source";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
-import { resolveSiteStat } from "@/lib/site-stats";
+import { hasSiteStatValue, resolveSiteStat } from "@/lib/site-stats";
 
 export const revalidate = 60;
 
@@ -36,7 +36,8 @@ export default async function ClinicalResultsPage({
     patients_treated: { display_value: "100,000+", label: tStat("patientsTreated") },
   };
 
-  const { data: statsData, error } = isPayloadSource()
+  const payload = isPayloadSource();
+  const { data: statsData, error } = payload
     ? { data: await getPayloadSiteStats(), error: null }
     : await supabaseServer
         .from("site_stats")
@@ -47,8 +48,14 @@ export default async function ClinicalResultsPage({
     console.error("[ClinicalResultsPage] site_stats fetch failed:", error.message);
   }
 
-  const stat = (key: string) =>
-    resolveSiteStat(statsData?.find((s) => s.key === key), FALLBACK_STATS[key] ?? { display_value: "—", label: key });
+  const stat = (key: string) => {
+    const row = statsData?.find((s) => s.key === key);
+    return payload && !hasSiteStatValue(row)
+      ? null
+      : resolveSiteStat(row, FALLBACK_STATS[key] ?? { display_value: "—", label: key });
+  };
+  const stats = [stat("clinical_experience"), stat("specialist_dentists"), stat("patients_treated")]
+    .filter((item) => item !== null);
   const cases = await getClinicalCases();
 
   return (
@@ -73,7 +80,7 @@ export default async function ClinicalResultsPage({
                 stat("patients_treated"),
                 stat("clinical_experience"),
                 stat("specialist_dentists"),
-              ].map((item) => (
+              ].filter((item) => item !== null).map((item) => (
                 <div key={item.label} className="rounded-2xl border border-[color:var(--border-strong)] bg-white px-5 py-4 shadow-[0_8px_24px_rgba(57,28,45,0.06)]">
                   <p className="font-display text-2xl text-[color:var(--brand-deep)]">{item.display_value}</p>
                   <p className="mt-0.5 text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--text-soft)]">{item.label}</p>
@@ -85,14 +92,10 @@ export default async function ClinicalResultsPage({
       </div>
 
       {/* Stats band */}
-      <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--brand)]">
+      {stats.length > 0 && <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--brand)]">
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
           <div className="grid grid-cols-3 gap-8">
-            {[
-              stat("clinical_experience"),
-              stat("specialist_dentists"),
-              stat("patients_treated"),
-            ].map((item) => (
+            {stats.map((item) => (
               <div key={item.label} className="text-center">
                 <p className="font-display text-4xl font-bold text-white sm:text-5xl">{item.display_value}</p>
                 <p className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-white/70">
@@ -102,7 +105,7 @@ export default async function ClinicalResultsPage({
             ))}
           </div>
         </div>
-      </div>
+      </div>}
 
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-20 lg:px-8">
         <ClinicalResultsGrid cases={cases} />

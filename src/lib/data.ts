@@ -162,7 +162,10 @@ export type HeroSlideDb = {
   id: string;
   eyebrow: string | null;
   title: string | null;
+  subtitle?: string | null;
   description: string | null;
+  ctaText?: string | null;
+  ctaUrl?: string | null;
   imageSrc: string;
   imageAlt: string | null;
   imagePosition: string | null;

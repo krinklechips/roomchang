@@ -3,6 +3,7 @@ import { Link } from "@/i18n/navigation";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { SiteShell } from "@/components/site/site-shell";
+import { BranchPhotoGallery } from "@/components/sections/branch-photo-gallery";
 import { ArrowLeft, Phone, Clock, MapPin } from "lucide-react";
 import { BRANCHES, getBranchBySlug } from "@/lib/branches";
 import { getBranchDetails } from "@/lib/branch-content";
@@ -121,6 +122,8 @@ export default async function BranchPage({
                 priority
               />
             </div>
+
+            <BranchPhotoGallery photos={branch.photos} />
 
             {/* Google Map embed */}
             <div className="overflow-hidden rounded-3xl border border-[color:var(--border-strong)] shadow-[0_8px_32px_rgba(57,28,45,0.06)]">

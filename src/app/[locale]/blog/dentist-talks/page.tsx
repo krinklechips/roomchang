@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { isPayloadSource } from "@/lib/payload-source";
 import { safeYouTubeEmbedUrl } from "@/lib/dentist-talks-media";
+import { CmsVideoPlayer } from "@/components/sections/testimonial-video-media";
 
 // ISR: re-render at most every 60s so Supabase content edits go live without a deploy.
 export const revalidate = 60;
@@ -69,6 +70,8 @@ export default async function DentistTalksPage({
           src,
           title: video.title?.trim() || t("videos.heading"),
           topic: video.topic,
+          treatment: video.treatment,
+          thumbnail: video.thumbnail,
           description: video.description,
           source: video.doctor || t("videos.cardSource"),
         }] : [];
@@ -78,6 +81,8 @@ export default async function DentistTalksPage({
         src: `https://www.youtube-nocookie.com/embed/${video.id}?list=${YOUTUBE_PLAYLIST_ID}&rel=0`,
         title: t(`items.${video.id}.title`),
         topic: t(`items.${video.id}.topic`),
+        treatment: null,
+        thumbnail: null,
         description: t("videos.cardDescription"),
         source: t("videos.cardSource"),
       }));
@@ -143,13 +148,10 @@ export default async function DentistTalksPage({
               >
                 {/* Video embed */}
                 <div className="aspect-video w-full">
-                  <iframe
+                  <CmsVideoPlayer
                     src={video.src}
                     title={video.title}
-                    className="h-full w-full"
-                    loading="lazy"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
+                    thumbnail={video.thumbnail}
                   />
                 </div>
 
@@ -164,9 +166,14 @@ export default async function DentistTalksPage({
                         {video.source}
                       </p>
                     </div>
-                    {video.topic && <span className="mt-0.5 max-w-full break-words rounded-full bg-[color:var(--brand-soft)] px-2.5 py-0.5 text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-[color:var(--brand-deep)]">
-                      {video.topic}
-                    </span>}
+                    <div className="flex max-w-full flex-wrap gap-2">
+                      {video.topic && <span className="mt-0.5 max-w-full break-words rounded-full bg-[color:var(--brand-soft)] px-2.5 py-0.5 text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-[color:var(--brand-deep)]">
+                        {video.topic}
+                      </span>}
+                      {video.treatment && <span className="mt-0.5 max-w-full break-words rounded-full bg-[color:var(--brand-soft)] px-2.5 py-0.5 text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-[color:var(--brand-deep)]">
+                        {video.treatment}
+                      </span>}
+                    </div>
                   </div>
                   {video.description && <p className="mt-3 whitespace-pre-line break-words text-sm leading-6 text-[color:var(--text-soft)]">
                     {video.description}

@@ -18,10 +18,11 @@ export default async function Home({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const payload = isPayloadSource();
 
   const [testimonials, homepageSettings] = await Promise.all([
     getTestimonials(),
-    isPayloadSource() ? getPayloadHomepageSettings() : Promise.resolve(null),
+    payload ? getPayloadHomepageSettings() : Promise.resolve(null),
   ]);
 
   return (
@@ -29,12 +30,13 @@ export default async function Home({
       <HomeHero
         heroPill={homepageSettings?.heroPill ?? null}
         heroButtons={homepageSettings?.heroButtons ?? null}
+        showCaptions={homepageSettings?.showCaptions ?? false}
       />
       <HomeBrands />
       <HomeStatsServer />
       <HomeServices />
       <HomeFeatured />
-      <HomeTestimonials testimonials={testimonials} />
+      <HomeTestimonials testimonials={testimonials} filterFeatured={payload} />
     </SiteShell>
   );
 }

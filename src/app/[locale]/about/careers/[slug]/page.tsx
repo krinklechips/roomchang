@@ -2,7 +2,7 @@ import { Link } from "@/i18n/navigation";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { SiteShell } from "@/components/site/site-shell";
-import { ArrowLeft, Check, Mail, Phone } from "lucide-react";
+import { ArrowLeft, Check, Clock, Mail, MapPin, Phone } from "lucide-react";
 import { POSITIONS, getPositionBySlug } from "@/lib/careers";
 import { careerPagePosition, type CareerPagePosition } from "@/lib/career-page-content";
 import { isPayloadSource } from "@/lib/payload-source";
@@ -89,6 +89,16 @@ export default async function CareerDetailPage({
           <h1 className="mt-3 break-words font-display text-5xl leading-none text-[color:var(--text-main)] sm:text-6xl">
             {pos.title}
           </h1>
+          {(pos.type || pos.location) && <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-sm text-[color:var(--text-soft)]">
+            {pos.type && <span className="inline-flex min-w-0 max-w-full items-start gap-2">
+              <Clock size={14} className="mt-1 shrink-0" aria-hidden="true" />
+              <span className="min-w-0 break-words">{pos.type}</span>
+            </span>}
+            {pos.location && <span className="inline-flex min-w-0 max-w-full items-start gap-2">
+              <MapPin size={14} className="mt-1 shrink-0" aria-hidden="true" />
+              <span className="min-w-0 break-words">{pos.location}</span>
+            </span>}
+          </div>}
           {!payloadMode && <p className="mt-5 max-w-2xl text-base leading-7 text-[color:var(--text-soft)]">
             {pos.shortDescription}
           </p>}
@@ -207,6 +217,10 @@ export default async function CareerDetailPage({
                 <h3 className="mt-2 break-words font-display text-lg text-[color:var(--text-main)] group-hover:text-[color:var(--brand-deep)]">
                   {other.title}
                 </h3>
+                {(other.type || other.location) && <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-[color:var(--text-soft)]">
+                  {other.type && <span className="min-w-0 max-w-full break-words">{other.type}</span>}
+                  {other.location && <span className="min-w-0 max-w-full break-words">{other.location}</span>}
+                </div>}
                 <p className="mt-1 line-clamp-2 text-xs leading-5 text-[color:var(--text-soft)]">
                   {other.shortDescription}
                 </p>

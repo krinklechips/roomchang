@@ -25,6 +25,7 @@ export async function generateMetadata({
 type Publication = {
   id: string;
   title?: string;
+  abstract?: string;
   year: number;
   citation: ReactNode;
   doi: string;
@@ -154,6 +155,7 @@ export default async function PublicationsPage({
       return {
         id: pub.id,
         title: pub.title,
+        abstract: typeof pub.abstract === "string" && pub.abstract.trim() ? pub.abstract : undefined,
         year: pub.year,
         doi: pub.url?.trim() || doi,
         citation: (
@@ -196,9 +198,9 @@ export default async function PublicationsPage({
             <section key={year}>
               <h2 className="font-display text-3xl text-[color:var(--text-main)]">{year}</h2>
               <div className="mt-6 space-y-6">
-                {grouped.get(year)!.map((pub, i) => (
+                {grouped.get(year)!.map((pub) => (
                   <article
-                    key={i}
+                    key={pub.id}
                     className="rounded-2xl border border-[color:var(--border-strong)] bg-white p-6 sm:p-8"
                   >
                     <span className="inline-block rounded-full bg-[color:var(--brand-soft)] px-2.5 py-0.5 text-[0.6rem] font-bold uppercase tracking-[0.2em] text-[color:var(--brand-deep)]">
@@ -210,6 +212,9 @@ export default async function PublicationsPage({
                     <p className="mt-3 text-sm leading-7 text-[color:var(--text-soft)]">
                       {pub.citation}
                     </p>
+                    {pub.abstract && <p className="mt-3 whitespace-pre-line break-words text-sm leading-7 text-[color:var(--text-soft)]">
+                      {pub.abstract}
+                    </p>}
                     {pub.doi && <a
                       href={pub.doi}
                       target="_blank"

@@ -1,7 +1,14 @@
 type DisplayStat = { display_value: string; label: string };
+type SiteStatRow = { display_value?: string | null; numeric_value?: number | null; suffix?: string | null; label?: string | null };
+
+export function hasSiteStatValue(row: SiteStatRow | undefined): boolean {
+  return Boolean(row?.display_value?.trim() || (
+    typeof row?.numeric_value === "number" && Number.isFinite(row.numeric_value)
+  ));
+}
 
 export function resolveSiteStat(
-  row: { display_value?: string | null; numeric_value?: number | null; suffix?: string | null; label?: string | null } | undefined,
+  row: SiteStatRow | undefined,
   fallback: DisplayStat,
   preferContentLabel = true,
 ): DisplayStat {

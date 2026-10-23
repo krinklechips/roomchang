@@ -4,6 +4,7 @@ import { getDoctors } from "@/lib/data";
 import { getPayloadSiteStats, isPayloadSource } from "@/lib/payload-source";
 import { supabaseServer } from "@/lib/supabase-server";
 import { TEAM_STAT_KEYS, teamTrustStats } from "@/lib/team-stats";
+import { hasSiteStatValue } from "@/lib/site-stats";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 
@@ -34,9 +35,16 @@ export default async function TeamPage({
     ? { data: await getPayloadSiteStats(TEAM_STAT_KEYS), error: null }
     : await supabaseServer.from('site_stats').select('key, display_value, numeric_value, suffix, label').in('key', [...TEAM_STAT_KEYS]);
   if (statError) throw new Error('Team statistics could not be loaded.');
+  const trustStatKeys = [TEAM_STAT_KEYS[0], null, TEAM_STAT_KEYS[1], TEAM_STAT_KEYS[2]];
   const HERO_TRUST = teamTrustStats(statRows ?? [], doctors, {
     doctors: tStat('doctors'), languages: tStat('languages'), years: tStat('yearsExp'), branches: tStat('branches'),
-  }, payload);
+  }, payload).filter((item, index) => {
+    if (!payload) return true;
+    const key = trustStatKeys[index];
+    return key === null
+      ? Number(item.value) > 0
+      : hasSiteStatValue(statRows?.find((row) => row.key === key));
+  });
 
   return (
     <SiteShell>

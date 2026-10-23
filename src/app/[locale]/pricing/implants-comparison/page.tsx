@@ -5,6 +5,7 @@ import { Package, FlaskConical, Building2 } from "lucide-react";
 import { SiteShell } from "@/components/site/site-shell";
 import { supabaseServer } from "@/lib/supabase-server";
 import { getPayloadPricingComparisonSet, isPayloadSource } from "@/lib/payload-source";
+import { ComparisonUpdatedAt } from "@/components/sections/comparison-updated-at";
 
 export const revalidate = 60;
 
@@ -50,8 +51,10 @@ export default async function ImplantsComparisonPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("implantsComparison");
+  const tComparison = await getTranslations("pricing.comparison");
+  const payload = isPayloadSource();
 
-  const { data, error } = isPayloadSource()
+  const { data, error } = payload
     ? { data: await getPayloadPricingComparisonSet("implants-comparison"), error: null }
     : await supabaseServer
         .from("pricing_comparison_sets")
@@ -78,7 +81,12 @@ export default async function ImplantsComparisonPage({
     roomchang: row.roomchang,
     australia: row.australia,
   }));
-  const implantPrices = rows.length ? rows : fallbackPrices;
+  const implantPrices = rows.length || payload ? rows : fallbackPrices;
+  const comparisonMeta = payload ? data as {
+    exchange_rate: number | null;
+    source_note: string | null;
+    last_updated?: string | null;
+  } | null : null;
 
   return (
     <SiteShell>
@@ -186,6 +194,21 @@ export default async function ImplantsComparisonPage({
               </table>
             </div>
           </div>
+          {comparisonMeta?.source_note?.trim() && (
+            <p className="mt-3 text-xs leading-relaxed text-[color:var(--text-soft)]">
+              {comparisonMeta.source_note}
+            </p>
+          )}
+          {comparisonMeta?.exchange_rate != null && (
+            <p className="mt-3 text-xs leading-relaxed text-[color:var(--text-soft)]">
+              {tComparison("exchangeRateLabel")} {comparisonMeta.exchange_rate}
+            </p>
+          )}
+          <ComparisonUpdatedAt
+            lastUpdated={comparisonMeta?.last_updated}
+            locale={locale}
+            label={t.has?.("table.lastUpdatedLabel") ? t("table.lastUpdatedLabel") : undefined}
+          />
         </section>
 
         {/* CTA */}

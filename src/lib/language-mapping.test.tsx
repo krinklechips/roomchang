@@ -198,8 +198,9 @@ describe("CMS timeline and stat copy", () => {
       displayValue, originalDisplayValue: "37", label: "CMS specialist label",
     }));
     const home = await HomeStatsServer();
-    expect(home.props.stats[1]).toMatchObject({ numeric_value: 42, suffix: "+", label: "CMS specialist label" });
-    expect(home.props.stats[1]).not.toHaveProperty("display_value");
+    expect(home).not.toBeNull();
+    expect(home!.props.stats[1]).toMatchObject({ numeric_value: 42, suffix: "+", label: "CMS specialist label" });
+    expect(home!.props.stats[1]).not.toHaveProperty("display_value");
     for (const Page of [AboutPage, FacilitiesPage, ClinicalPage]) {
       const html = renderToStaticMarkup(await Page({ params: Promise.resolve({ locale }) }));
       expect(html).toContain(">42+<");

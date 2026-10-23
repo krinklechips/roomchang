@@ -7,7 +7,7 @@ import { supabaseServer } from "@/lib/supabase-server";
 import { getPayloadSiteStats, isPayloadSource } from "@/lib/payload-source";
 import type { Metadata } from "next";
 import { getTimelineEvents } from "@/lib/data";
-import { resolveSiteStat } from "@/lib/site-stats";
+import { hasSiteStatValue, resolveSiteStat } from "@/lib/site-stats";
 
 export const revalidate = 60;
 
@@ -53,8 +53,9 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
 
   const t = await getTranslations("about");
 
-  const timelineEvents = isPayloadSource() ? await getTimelineEvents() : undefined;
-  const { data: statsData, error } = isPayloadSource()
+  const payload = isPayloadSource();
+  const timelineEvents = payload ? await getTimelineEvents() : undefined;
+  const { data: statsData, error } = payload
     ? { data: await getPayloadSiteStats(), error: null }
     : await supabaseServer
         .from("site_stats")
@@ -67,12 +68,13 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
 
   const STAT_ORDER = ["year_established", "branches_count", "specialist_dentists", "dental_chairs"] as const;
 
-  const stats = STAT_ORDER.map((key) => {
+  const stats = STAT_ORDER.flatMap((key) => {
     const row = statsData?.find((s) => s.key === key);
-    return resolveSiteStat(row, {
+    if (payload && !hasSiteStatValue(row)) return [];
+    return [resolveSiteStat(row, {
       display_value: FALLBACK_VALUES[key] ?? "—",
       label: t(`stat.${STAT_KEYS[key]}`),
-    }, isPayloadSource());
+    }, payload)];
   });
 
   return (
@@ -105,7 +107,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
       </div>
 
       {/* Stats */}
-      <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--brand)]">
+      {stats.length > 0 && <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--brand)]">
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
             {stats.map((item) => (
@@ -118,7 +120,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
             ))}
           </div>
         </div>
-      </div>
+      </div>}
 
       <div className="mx-auto max-w-7xl px-4 pt-14 pb-14 sm:px-6 sm:pt-20 sm:pb-20 lg:px-8">
         {/* History */}

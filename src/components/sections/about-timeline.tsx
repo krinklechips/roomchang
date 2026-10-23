@@ -29,7 +29,7 @@ export function AboutTimeline({ events }: { events?: TimelineEvent[] }) {
     alt: t(`${definition.key}.alt`),
     imagePosition: undefined as string | undefined,
   });
-  const items = events?.length ? events.map((event) => {
+  const items = events ? events.map((event) => {
     const byIdentity = ERA_DEFS.find((era) => era.sourceId === event.id || era.key === event.id);
     const byImage = ERA_DEFS.find((era) => event.imageSrc?.endsWith(era.src.split("/").at(-1)!));
     const byYear = ERA_DEFS.filter((era) => era.key === event.year || era.key === `${event.year}a` || era.key === `${event.year}b`);
@@ -68,6 +68,8 @@ export function AboutTimeline({ events }: { events?: TimelineEvent[] }) {
     refs.current.forEach((el, id) => observe(el, id));
     return () => obs.forEach((o) => o.disconnect());
   }, [itemIds]);
+
+  if (!items.length) return null;
 
   return (
     <section className="relative overflow-hidden border-y border-[color:var(--border-strong)]">

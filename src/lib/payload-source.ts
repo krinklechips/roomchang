@@ -70,18 +70,40 @@ async function payloadFind<T>(collection: string, params: Record<string, string>
   const locale = await payloadLocale();
   const preview = await previewMode();
   const qs = new URLSearchParams({ locale, limit: "200", depth: "0", ...params });
+  if (!params.limit) {
+    const sort = (params.sort || "id").split(",");
+    if (!sort.some(field => field.replace(/^-/, "") === "id")) sort.push("id");
+    qs.set("sort", sort.join(","));
+  }
   const apiKey = process.env.PAYLOAD_PREVIEW_API_KEY;
   if (preview) qs.set("draft", "true");
   try {
-    const res = await fetch(`${API()}/api/${collection}?${qs}`, {
-      cache: "no-store",
-      signal: AbortSignal.timeout(15000),
-      headers: preview && apiKey ? { Authorization: `users API-Key ${apiKey}` } : undefined,
-    });
-    if (!res.ok) throw new CmsContentError(collection, res.status);
-    const json = (await res.json()) as { docs?: T[] };
-    if (!Array.isArray(json.docs)) throw new CmsContentError(collection);
-    return json.docs;
+    const docs: T[] = [];
+    const ids = new Set<string>();
+    let page = 1;
+    while (true) {
+      if (page > 1) qs.set("page", String(page));
+      const res = await fetch(`${API()}/api/${collection}?${qs}`, {
+        cache: "no-store",
+        signal: AbortSignal.timeout(15000),
+        headers: preview && apiKey ? { Authorization: `users API-Key ${apiKey}` } : undefined,
+      });
+      if (!res.ok) throw new CmsContentError(collection, res.status);
+      const json = (await res.json()) as { docs?: T[]; hasNextPage?: boolean; nextPage?: number | null };
+      if (!Array.isArray(json.docs)) throw new CmsContentError(collection);
+      for (const doc of json.docs) {
+        const id = doc && typeof doc === "object" && "id" in doc ? String(doc.id) : null;
+        if (id !== null) {
+          if (ids.has(id)) throw new CmsContentError(collection);
+          ids.add(id);
+        }
+        docs.push(doc);
+      }
+      // Explicit single-record queries must not turn into unbounded list reads.
+      if (params.limit || !json.hasNextPage) return docs;
+      if (!json.docs.length || json.nextPage !== page + 1 || page >= 1000) throw new CmsContentError(collection);
+      page++;
+    }
   } catch (error) {
     unstable_rethrow(error);
     if (error instanceof CmsContentError) throw error;
@@ -239,7 +261,10 @@ type PayloadHeroSlide = {
   image?: PayloadRelation<PayloadMedia>;
   eyebrow?: string | null;
   title?: string | null;
+  subtitle?: string | null;
   description?: string | null;
+  ctaText?: string | null;
+  ctaUrl?: string | null;
   imageUrl?: string | null;
   imageAlt?: string | null;
   imagePosition?: string | null;
@@ -255,12 +280,14 @@ type PayloadMedia = PayloadDocBase & {
 };
 
 type PayloadHomepage = PayloadDocBase & {
+  showCaptions?: boolean | null;
   heroPill?: string | null;
   heroButtons?: { label?: string | null; url?: string | null }[] | null;
   slides?: PayloadHeroSlide[] | null;
 };
 
 export type PayloadHomepageSettings = {
+  showCaptions: boolean;
   heroPill: string | null;
   heroButtons: { label: string; url: string }[];
 };
@@ -463,6 +490,7 @@ export type PayloadPricingComparisonRowShape = {
 export type PayloadPricingComparisonSetShape = {
   exchange_rate: number | null;
   source_note: string | null;
+  last_updated?: string | null;
   pricing_comparison_rows: PayloadPricingComparisonRowShape[];
 };
 
@@ -755,7 +783,10 @@ const mapHeroSlide = (p: PayloadHeroSlide, index: number): HeroSlideDb => {
     id: `slide-${index + 1}`,
     eyebrow: p.eyebrow ?? null,
     title: p.title ?? null,
+    subtitle: p.subtitle ?? null,
     description: p.description ?? null,
+    ctaText: p.ctaText ?? null,
+    ctaUrl: p.ctaUrl ?? null,
     imageSrc: image?.url ?? p.imageUrl ?? "",
     imageAlt: image?.alt ?? p.imageAlt ?? p.title ?? null,
     imagePosition: p.imagePosition ?? null,
@@ -1005,6 +1036,7 @@ export async function getPayloadHomepageSettings(): Promise<PayloadHomepageSetti
   if (!doc) return null;
 
   return {
+    showCaptions: doc.showCaptions === true,
     heroPill: doc.heroPill ?? null,
     heroButtons: (doc.heroButtons ?? []).flatMap((button) =>
       button.label && button.url ? [{ label: button.label, url: button.url }] : [],
@@ -1060,7 +1092,7 @@ export async function getPayloadTimelineEvents(): Promise<TimelineEvent[]> {
 
 export async function getPayloadPublications(): Promise<Publication[]> {
   const docs = await payloadFind<PayloadPublication>("publications", {
-    sort: "-year",
+    sort: "-year,order",
     "fallback-locale": "none",
   });
   return docs.map(mapPublication);
@@ -1127,6 +1159,7 @@ export async function getPayloadPricingComparisonSet(
   return {
     exchange_rate: set.exchangeRate ?? null,
     source_note: set.sourceNote ?? null,
+    last_updated: set.lastUpdated ?? null,
     pricing_comparison_rows: rows
       .filter((row) => relationSourceId(row.set, row.sourceSetId, [set]) === setId)
       .map(mapPricingComparisonRow),

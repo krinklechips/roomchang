@@ -9,7 +9,7 @@ import { getBranchDetails } from "@/lib/branch-content";
 import { getPayloadSiteStats, isPayloadSource } from "@/lib/payload-source";
 import { HashScroll } from "@/components/sections/hash-scroll";
 import type { Metadata } from "next";
-import { resolveSiteStat } from "@/lib/site-stats";
+import { hasSiteStatValue, resolveSiteStat } from "@/lib/site-stats";
 
 export const revalidate = 60;
 
@@ -25,8 +25,6 @@ export async function generateMetadata({
     description: t("meta.description"),
   };
 }
-
-type DisplayStat = { display_value: string; label: string };
 
 const FALLBACK_STAT_VALUES: Record<string, string> = {
   building_storeys: "10",
@@ -74,7 +72,8 @@ export default async function FacilitiesPage({
 
   const branches = await getBranchDetails();
 
-  const { data: statsData, error } = isPayloadSource()
+  const payload = isPayloadSource();
+  const { data: statsData, error } = payload
     ? { data: await getPayloadSiteStats(), error: null }
     : await supabaseServer
         .from("site_stats")
@@ -85,10 +84,13 @@ export default async function FacilitiesPage({
     console.error("[FacilitiesPage] site_stats fetch failed:", error.message);
   }
 
-  const stat = (key: string): DisplayStat =>
-    resolveSiteStat(statsData?.find((s) => s.key === key), FALLBACK_STAT_VALUES[key]
+  const stats = Object.keys(FALLBACK_STAT_VALUES).flatMap((key) => {
+    const row = statsData?.find((s) => s.key === key);
+    if (payload && !hasSiteStatValue(row)) return [];
+    return [resolveSiteStat(row, FALLBACK_STAT_VALUES[key]
       ? { display_value: FALLBACK_STAT_VALUES[key], label: t(`stats.${key}`) }
-      : { display_value: "—", label: key });
+      : { display_value: "—", label: key })];
+  });
 
   return (
     <SiteShell>
@@ -112,15 +114,10 @@ export default async function FacilitiesPage({
       </div>
 
       {/* Building stats — fix: use [color:var(--brand)] not [--brand] */}
-      <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--brand)]">
+      {stats.length > 0 && <div className="border-b border-[color:var(--border-strong)] bg-[color:var(--brand)]">
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
-            {[
-              stat("building_storeys"),
-              stat("dental_chairs"),
-              stat("surgical_theatres"),
-              stat("specialist_dentists"),
-            ].map((stat) => (
+            {stats.map((stat) => (
               <div key={stat.label} className="text-center">
                 <p className="font-display text-5xl font-bold text-white">{stat.display_value}</p>
                 <p className="mt-1 text-sm font-semibold uppercase tracking-[0.18em] text-white/70">
@@ -130,7 +127,7 @@ export default async function FacilitiesPage({
             ))}
           </div>
         </div>
-      </div>
+      </div>}
 
       {/* Building hero — full-bleed tall portrait */}
       <div className="border-b border-[color:var(--border-strong)]">

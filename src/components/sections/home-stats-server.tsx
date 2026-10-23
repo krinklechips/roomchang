@@ -36,7 +36,7 @@ export async function HomeStatsServer() {
   }
 
   const fallbackLabels = Object.fromEntries(HOMEPAGE_STAT_KEYS.map((key) => [key, t(STAT_KEY_LABEL_KEYS[key])]));
-  const stats = getHomepageStats(data as HomeStatRow[] | null, fallbackLabels);
+  const stats = getHomepageStats(data as HomeStatRow[] | null, fallbackLabels, payload);
 
   // Translate known stat labels (fallback labels and DB labels with matching keys)
   const translatedStats = stats.map((stat) => {
@@ -44,5 +44,5 @@ export async function HomeStatsServer() {
     return !payload && tKey ? { ...stat, label: t(tKey) } : stat;
   });
 
-  return <HomeStats stats={translatedStats} />;
+  return translatedStats.length ? <HomeStats stats={translatedStats} /> : null;
 }

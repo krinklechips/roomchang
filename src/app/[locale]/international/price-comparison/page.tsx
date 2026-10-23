@@ -3,6 +3,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { SiteShell } from "@/components/site/site-shell";
 import { supabaseServer } from "@/lib/supabase-server";
 import { getPayloadPricingComparisonSet, isPayloadSource } from "@/lib/payload-source";
+import { ComparisonUpdatedAt } from "@/components/sections/comparison-updated-at";
 import type { Metadata } from "next";
 
 // Re-fetch comparison rows from Supabase at most every 60s so CMS edits go live.
@@ -34,9 +35,10 @@ export default async function PriceComparisonPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const payload = isPayloadSource();
 
   const [comparisonResult, tComp] = await Promise.all([
-    isPayloadSource()
+    payload
       ? Promise.resolve({ data: await getPayloadPricingComparisonSet("full-comparison"), error: null })
       : supabaseServer
           .from("pricing_comparison_sets")
@@ -97,10 +99,11 @@ export default async function PriceComparisonPage({
     }));
 
   const comparisonMeta = {
-    exchangeRate: comparisonResult.data?.exchange_rate ?? FALLBACK_COMPARISON.exchangeRate,
-    sourceNote: comparisonResult.data?.source_note ?? FALLBACK_COMPARISON.sourceNote,
+    exchangeRate: comparisonResult.data?.exchange_rate ?? (payload ? null : FALLBACK_COMPARISON.exchangeRate),
+    sourceNote: comparisonResult.data?.source_note ?? (payload ? "" : FALLBACK_COMPARISON.sourceNote),
+    lastUpdated: payload ? (comparisonResult.data as { last_updated?: string | null } | null)?.last_updated : null,
   };
-  const comparisonRows: ComparisonRow[] = cmsRows?.length ? cmsRows : FALLBACK_COMPARISON.rows;
+  const comparisonRows: ComparisonRow[] = cmsRows?.length || payload ? cmsRows ?? [] : FALLBACK_COMPARISON.rows;
 
   // Split the combined source note into numbered footnotes: ¹ Australia, ² Singapore.
   // Anchored on the Latin proper noun "Singapore" (kept untranslated across locales)
@@ -123,9 +126,9 @@ export default async function PriceComparisonPage({
           <p className="mt-5 max-w-2xl text-base leading-7 text-[color:var(--text-soft)]">
             {tComp("subheading")}
           </p>
-          <p className="mt-3 text-sm text-[color:var(--text-soft)]">
+          {(!payload || (comparisonMeta.exchangeRate != null && comparisonMeta.exchangeRate !== "")) && <p className="mt-3 text-sm text-[color:var(--text-soft)]">
             {tComp("exchangeRateLabel")} {comparisonMeta.exchangeRate}
-          </p>
+          </p>}
           <div className="mt-8 flex flex-wrap gap-4">
             <Link href="/contact#enquiry-form" className="btn-primary">{tComp("ctaPrimary")}</Link>
             <Link href="/pricing/implants-comparison" className="btn-secondary">
@@ -154,11 +157,11 @@ export default async function PriceComparisonPage({
                     </th>
                     <th className="px-5 py-4 text-right text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
                       {tComp("colAustralia")}
-                      <sup className="ml-0.5 font-bold text-[color:var(--brand)]">1</sup>
+                      {(!payload || australiaNote) && <sup className="ml-0.5 font-bold text-[color:var(--brand)]">1</sup>}
                     </th>
                     <th className="px-5 py-4 text-right text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
                       {tComp("colSingapore")}
-                      <sup className="ml-0.5 font-bold text-[color:var(--brand)]">2</sup>
+                      {(!payload || singaporeNote) && <sup className="ml-0.5 font-bold text-[color:var(--brand)]">2</sup>}
                     </th>
                   </tr>
                 </thead>
@@ -175,19 +178,24 @@ export default async function PriceComparisonPage({
                 </tbody>
               </table>
             </div>
-            <div className="border-t border-[color:var(--brand-soft)] bg-[color:var(--brand-soft)] px-6 py-4 space-y-1.5">
-              <p className="text-xs leading-relaxed text-[color:var(--text-soft)]">
+            {(!payload || australiaNote || singaporeNote) && <div className="border-t border-[color:var(--brand-soft)] bg-[color:var(--brand-soft)] px-6 py-4 space-y-1.5">
+              {(!payload || australiaNote) && <p className="text-xs leading-relaxed text-[color:var(--text-soft)]">
                 <span className="mr-1 font-bold text-[color:var(--brand)]">1.</span>
                 {australiaNote}
-              </p>
+              </p>}
               {singaporeNote && (
                 <p className="text-xs leading-relaxed text-[color:var(--text-soft)]">
                   <span className="mr-1 font-bold text-[color:var(--brand)]">2.</span>
                   {singaporeNote}
                 </p>
               )}
-            </div>
+            </div>}
           </div>
+          <ComparisonUpdatedAt
+            lastUpdated={comparisonMeta.lastUpdated}
+            locale={locale}
+            label={tComp.has?.("lastUpdatedLabel") ? tComp("lastUpdatedLabel") : undefined}
+          />
         </section>
 
         {/* CTA */}
