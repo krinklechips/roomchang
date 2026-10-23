@@ -28,6 +28,30 @@ const doctor = (id: string, languages: string[]): Doctor => ({
   order: 0, published: true,
 });
 
+describe("unassigned doctor department fallback", () => {
+  it.each(["", "   "])("keeps department %j in General before and after language filtering without changing data", (department) => {
+    const unassigned = { ...doctor("unassigned", ["English"]), department };
+    const general = doctor("general", ["Khmer"]);
+    const specialist = { ...doctor("specialist", ["English"]), department: "ORTHODONTICS" };
+    const doctors = [unassigned, general, specialist];
+    const before = structuredClone(doctors);
+    render(<NextIntlClientProvider locale="en" messages={en} timeZone="Asia/Phnom_Penh">
+      <DoctorGrid doctors={doctors} />
+    </NextIntlClientProvider>);
+
+    const generalSection = () => screen.getByRole("heading", { name: en.doctorGrid.dept.general }).closest("section")!;
+    expect(within(generalSection()).getAllByRole("button").map((button) => button.textContent)).toEqual([unassigned.name, general.name]);
+    expect(within(screen.getByRole("heading", { name: en.doctorGrid.dept.orthodontics }).closest("section")!).getByRole("button", { name: specialist.name })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: en.doctorGrid.lang.english }));
+    expect(screen.getByRole("button", { name: unassigned.name })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: general.name })).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: en.doctorGrid.dept.general })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: en.doctorGrid.filterAll }));
+    expect(within(generalSection()).getByRole("button", { name: unassigned.name })).toBeInTheDocument();
+    expect(doctors).toEqual(before);
+  });
+});
+
 describe.each([["en", en], ["kh", km], ["cn", zh]] as const)("%s doctor language filters", (locale, messages) => {
   it.each(publishedLabels)("matches published $key labels without altering the doctor's displayed languages", (labels) => {
     const matching = doctor("matching", [labels[locale]]);

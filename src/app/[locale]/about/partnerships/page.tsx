@@ -201,15 +201,15 @@ export default async function PartnershipsPage({
     console.error("[PartnershipsPage] partners fetch failed:", error.message);
   }
 
-  // DB partner-category names match the fallback titles; translate via their key.
+  // Only missing Payload locales and legacy DB labels use bundled category translations.
   const categoryKeyByTitle = new Map(PARTNER_CATEGORIES.map((c) => [c.title, c.id]));
   const categoryMap = new Map<string, PartnerCategory & { sortOrder: number }>();
   if (payload) {
     ((data as Awaited<ReturnType<typeof getPayloadPartnerGroups>> | null) ?? []).forEach((category) => {
-      const title = categoryKeyByTitle.has(category.title)
+      const title = category.titleIsFallback && categoryKeyByTitle.has(category.title)
         ? t(`categories.${categoryKeyByTitle.get(category.title)}`)
         : category.title;
-      categoryMap.set(category.title, { ...category, title });
+      categoryMap.set(category.id, { ...category, title });
     });
   } else {
     ((data as PartnerRow[] | null) ?? []).forEach((row) => {
@@ -231,9 +231,10 @@ export default async function PartnershipsPage({
       categoryMap.set(category.name, existing);
     });
   }
+  const orderedCategories = Array.from(categoryMap.values());
+  if (!payload) orderedCategories.sort((a, b) => a.sortOrder - b.sortOrder);
   const partnerCategories = categoryMap.size || payload
-    ? Array.from(categoryMap.values())
-        .sort((a, b) => a.sortOrder - b.sortOrder)
+    ? orderedCategories
         .map((category) => ({
           id: category.id,
           title: category.title,
@@ -266,7 +267,7 @@ export default async function PartnershipsPage({
 
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-20 lg:px-8 space-y-8 sm:space-y-16">
         {partnerCategories.map((category) => (
-          <section key={category.title}>
+          <section key={category.id}>
             <div className="mb-6 flex items-baseline gap-3">
               <h2 className="font-display text-2xl text-[color:var(--text-main)]">{category.title}</h2>
               <span className="text-xs font-semibold text-[color:var(--text-soft)]">

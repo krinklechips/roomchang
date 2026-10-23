@@ -6,6 +6,7 @@ import {
   ArrowLeft, CheckCircle, ArrowRight,
   Star, ShieldCheck, Sparkle, Lightning, Clock, CurrencyDollar,
   Heart, Bone, Crosshair, ArrowCounterClockwise,
+  Tooth, Smiley, Barbell, Eye, FirstAidKit,
 } from "@phosphor-icons/react/dist/ssr";
 import type { Icon as PhosphorIcon } from "@phosphor-icons/react/dist/lib/types";
 import { InteractiveSteps } from "@/components/sections/interactive-steps";
@@ -18,6 +19,7 @@ import type { TechnologyItem, TechSection } from "@/lib/data";
 const ICON_MAP: Record<string, PhosphorIcon> = {
   Star, Shield: ShieldCheck, Sparkles: Sparkle, Zap: Lightning, Clock, DollarSign: CurrencyDollar,
   Heart, Bone, CircleDot: Crosshair, RotateCcw: ArrowCounterClockwise, Check: CheckCircle, ArrowRight,
+  Tooth, Smile: Smiley, Dumbbell: Barbell, Eye, FirstAidKit,
 };
 
 function TechIcon({ name, size = 22 }: { name: string; size?: number }) {

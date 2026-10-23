@@ -25,6 +25,8 @@ import {
   Tooth,
   Eye,
   FirstAidKit,
+  ArrowCounterClockwise,
+  ArrowRight,
 } from "@phosphor-icons/react/dist/ssr";
 import type { Icon as PhosphorIcon } from "@phosphor-icons/react/dist/lib/types";
 import { SiteShell } from "@/components/site/site-shell";
@@ -50,6 +52,8 @@ const ICON_MAP: Record<string, PhosphorIcon> = {
   Tooth,
   Eye,
   FirstAidKit,
+  RotateCcw: ArrowCounterClockwise,
+  ArrowRight,
 };
 
 function ServiceIcon({ name, className }: { name: string; className?: string }) {

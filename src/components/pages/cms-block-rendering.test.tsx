@@ -136,6 +136,37 @@ async function renderSections(renderer: Renderer, sections: Section[], format: F
 }
 
 describe.each<Renderer>(["service", "technology"])("%s CMS block rendering", (renderer) => {
+  // Existing shared SECTION_BLOCKS choices, including names mapped from Lucide to Phosphor.
+  describe.each(["callout", "cards"])("%s icons", (type) => {
+    it.each([
+      "DollarSign", "Bone", "Sparkles", "Dumbbell", "Smile", "Clock", "CircleDot",
+      "Heart", "Shield", "Star", "Zap", "Check", "Tooth", "Eye", "FirstAidKit",
+      "RotateCcw", "ArrowRight",
+    ])("renders the selected %s icon", async (icon) => {
+      await renderSections(renderer, [{
+        type, title: "Icon fixture", body: "Stored body", icon,
+        heading: "Icon cards", items: [{ title: "Icon fixture", body: "Stored body", icon }],
+      }]);
+      const title = screen.getByText("Icon fixture");
+      const iconContainer = type === "cards" ? title.parentElement! : title.parentElement!.parentElement!;
+      const svg = iconContainer.querySelector("svg");
+      expect(svg).not.toBeNull();
+      expect(svg).toHaveAttribute("aria-hidden", "true");
+      expect(svg!.querySelector("path, circle, rect, line, polyline, polygon")).not.toBeNull();
+    });
+
+    it("keeps unknown icons absent without losing the block content", async () => {
+      await renderSections(renderer, [{
+        type, title: "Unknown icon fixture", body: "Stored body", icon: "FutureIcon",
+        heading: "Icon cards", items: [{ title: "Unknown icon fixture", body: "Stored body", icon: "FutureIcon" }],
+      }]);
+      const title = screen.getByText("Unknown icon fixture");
+      const iconContainer = type === "cards" ? title.parentElement! : title.parentElement!.parentElement!;
+      expect(iconContainer.querySelector("svg")).toBeNull();
+      expect(screen.getByText("Stored body")).toBeInTheDocument();
+    });
+  });
+
   describe.each<Format>(["blocks", "legacy"])("%s source", (format) => {
     it.each(leaves)("renders the persisted $type block and its fields", async ({ type, fields, check }) => {
       const { container } = await renderSections(renderer, [{ type, ...fields }], format);

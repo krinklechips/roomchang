@@ -391,7 +391,7 @@ type PayloadBrandLogo = PayloadDocBase & {
 };
 
 type PayloadPartnerCategory = PayloadDocBase & {
-  name: string;
+  name: string | Record<string, string | null | undefined> | null;
   order?: number | null;
 };
 
@@ -474,6 +474,7 @@ export type PayloadPartnerLink = {
 export type PayloadPartnerGroup = {
   id: string;
   title: string;
+  titleIsFallback: boolean;
   partners: PayloadPartnerLink[];
   sortOrder: number;
 };
@@ -1118,16 +1119,22 @@ export async function getPayloadBrandLogos(): Promise<PayloadBrandLogoRow[]> {
 }
 
 export async function getPayloadPartnerGroups(): Promise<PayloadPartnerGroup[]> {
+  const locale = await payloadLocale();
   const [categories, partners] = await Promise.all([
-    payloadFind<PayloadPartnerCategory>("partner-categories", { sort: "order" }),
+    payloadFind<PayloadPartnerCategory>("partner-categories", { sort: "order", locale: "all", "fallback-locale": "none" }),
     payloadFind<PayloadPartner>("partners", { sort: "order", depth: "1" }),
   ]);
 
   return categories.map((category) => {
     const id = sourceId(category);
+    // Raw locale values distinguish explicit English-looking text from an English fallback.
+    const names = category.name;
+    const selectedTitle = typeof names === "string" ? null : names?.[locale];
+    const hasSelectedTitle = Boolean(selectedTitle?.trim());
     return {
       id,
-      title: category.name,
+      title: hasSelectedTitle ? selectedTitle! : (typeof names === "string" ? names : names?.en) ?? "",
+      titleIsFallback: !hasSelectedTitle,
       sortOrder: category.order ?? 0,
       partners: partners
         .filter((partner) => relationSourceId(partner.category, partner.sourceCategoryId, [category]) === id)

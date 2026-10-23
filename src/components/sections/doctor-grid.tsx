@@ -256,7 +256,7 @@ export function DoctorGrid({ doctors }: { doctors: Doctor[] }) {
     : DEPARTMENT_GROUPS
         .map(({ key, depts }) => ({
           key,
-          docs: filtered.filter((d) => depts.includes(d.department ?? "")),
+          docs: filtered.filter((d) => depts.includes(d.department?.trim() ? d.department : "GENERAL")),
         }))
         .filter((g) => g.docs.length > 0);
 
