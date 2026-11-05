@@ -10,6 +10,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { routing, LOCALE_TO_LANG, UNLISTED_LOCALES } from "@/i18n/routing";
 import { CmsPreviewInteractionGuard } from "@/components/site/cms-preview-interaction-guard";
 import { BRANCHES } from "@/lib/branches";
+import { isStagingDeployment } from "@/lib/content-rollout";
 import "../globals.css";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -91,7 +92,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  if (UNLISTED_LOCALES.includes(locale)) {
+  if (isStagingDeployment() || UNLISTED_LOCALES.includes(locale)) {
     return { ...BASE_METADATA, robots: { index: false, follow: false } };
   }
   return BASE_METADATA;

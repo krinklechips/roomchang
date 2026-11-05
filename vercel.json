@@ -1,5 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "git": { "deploymentEnabled": { "codex/publications-pilot-20261105": false } },
   "regions": ["sin1"],
   "crons": [
     { "path": "/api/cron/health-check", "schedule": "0 1 * * *" },

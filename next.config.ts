@@ -14,6 +14,7 @@ const nextConfig: NextConfig = {
   // The internal affiliates/pricing dashboard stays at /en/admin/* (Basic
   // Auth); only BARE /admin/* proxies to Anabasis.
   async rewrites() {
+    if (process.env.SITE_VISIBILITY === "staging") return { beforeFiles: [] };
     return {
       beforeFiles: [
         // Bare-path rules first, proxying to the SLASHED origin URL: the
@@ -80,10 +81,14 @@ const nextConfig: NextConfig = {
       "fonts", "hero", "services", "technology", "doctors", "brand",
       "about", "chatbot",
     ];
-    return staticDirs.map((dir) => ({
+    const rules = staticDirs.map((dir) => ({
       source: `/${dir}/:path*`,
       headers: [immutable],
     }));
+    if (process.env.SITE_VISIBILITY === "staging") {
+      rules.push({ source: "/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }] });
+    }
+    return rules;
   },
 };
 

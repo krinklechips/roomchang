@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import type { SeoPageMeta } from "./data";
+import { UNLISTED_LOCALES } from "@/i18n/routing";
+import { isStagingDeployment } from "./content-rollout";
 
 type SeoMetadataDefaults = {
+  locale: string;
   path: string;
   title: string;
   description: string | null;
@@ -19,6 +22,7 @@ export function buildSeoMetadata(
   const twitterDescription = seo?.twitterDescription ?? openGraphDescription;
   const image = seo?.ogImage ?? undefined;
   const twitterImage = seo?.twitterImage ?? image;
+  const restricted = isStagingDeployment() || UNLISTED_LOCALES.includes(defaults.locale);
 
   return {
     title: seo?.title ?? defaults.title,
@@ -28,12 +32,8 @@ export function buildSeoMetadata(
           canonical: seo.canonicalUrl,
         }
       : undefined,
-    robots: seo
-      ? {
-          index: !seo.noIndex,
-          follow: true,
-        }
-      : undefined,
+    ...(restricted ? { robots: { index: false, follow: false } }
+      : seo ? { robots: { index: !seo.noIndex, follow: true } } : {}),
     openGraph: {
       title: openGraphTitle,
       description: openGraphDescription,

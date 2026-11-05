@@ -30,6 +30,7 @@ export async function generateMetadata({
 
   return buildSeoMetadata(
     {
+      locale,
       path: `/services/${slug}`,
       title: `${service.name} | Roomchang Dental Hospital`,
       description: service.description ?? null,

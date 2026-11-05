@@ -1,12 +1,28 @@
 import { Link } from "@/i18n/navigation";
-import type { ReactNode } from "react";
+import { cache, type ReactNode } from "react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { SiteShell } from "@/components/site/site-shell";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import type { Metadata } from "next";
+import { connection } from "next/server";
+import { unstable_rethrow } from "next/navigation";
+import { resolveContentSource } from "@/lib/content-rollout";
+import { readPublishedPublications } from "@/lib/pilot-publications";
 
 // ISR: re-render at most every 60s so Supabase content edits go live without a deploy.
 export const revalidate = 60;
+
+const pagePublications = cache(async (locale: string) => {
+  if (resolveContentSource({ locale, path: "/blog/publications" }) === "legacy") return { state: "legacy" } as const;
+  await connection();
+  try {
+    const records = await readPublishedPublications({ origin: process.env.PAYLOAD_API_URL || "", locale });
+    return { state: "ready", records } as const;
+  } catch (error) {
+    unstable_rethrow(error);
+    return { state: "unavailable" } as const;
+  }
+});
 
 export async function generateMetadata({
   params,
@@ -15,14 +31,18 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "publications" });
+  const content = await pagePublications(locale);
   return {
     title: t("meta.title"),
     description: t("meta.description"),
+    ...(content.state === "unavailable" ? { robots: { index: false, follow: false } } : {}),
   };
 }
 
 type Publication = {
   id: string;
+  title?: string;
+  abstract?: string | null;
   year: number;
   citation: ReactNode;
   doi: string;
@@ -143,7 +163,26 @@ export default async function PublicationsPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("publications");
-  const grouped = groupByYear(PUBLICATIONS);
+  const content = await pagePublications(locale);
+  if (content.state === "unavailable") {
+    return (
+      <SiteShell>
+        <section data-publications-state="unavailable" className="mx-auto max-w-4xl px-4 py-16 sm:px-6">
+          <h1 className="font-display text-3xl text-[color:var(--text-main)]">Publications are temporarily unavailable</h1>
+          <p className="mt-4 text-base text-[color:var(--text-soft)]">Please try again shortly.</p>
+        </section>
+      </SiteShell>
+    );
+  }
+  const publications: Publication[] = content.state === "legacy" ? PUBLICATIONS : content.records.map(record => ({
+    id: record.id, year: record.year, title: record.title, abstract: record.abstract,
+    doi: (record.url || record.doi)!,
+    citation: <>
+      {record.authors ? `${record.authors} ` : ""}({record.year}). {record.originalTitle}. {record.journal && <><em>{record.journal}</em>. </>}
+      {record.doi && <a href={record.doi} target="_blank" rel="noopener noreferrer" className="text-[color:var(--brand-deep)] underline decoration-[color:var(--brand-light)] underline-offset-2 transition hover:text-[color:var(--brand)]">{record.doi}</a>}
+    </>,
+  }));
+  const grouped = groupByYear(publications);
   const years = Array.from(grouped.keys()).sort((a, b) => b - a);
 
   return (
@@ -166,7 +205,7 @@ export default async function PublicationsPage({
         </div>
       </div>
 
-      <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-20 lg:px-8">
+      <div data-publications-state={content.state} className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-20 lg:px-8">
         {/* Publications by year */}
         <div className="space-y-14">
           {years.map((year) => (
@@ -182,11 +221,12 @@ export default async function PublicationsPage({
                       {t("peerReviewed")}
                     </span>
                     <h3 className="mt-3 font-display text-lg leading-snug text-[color:var(--text-main)]">
-                      {t(`items.${pub.id}.title`)}
+                      {pub.title ?? t(`items.${pub.id}.title`)}
                     </h3>
                     <p className="mt-3 text-sm leading-7 text-[color:var(--text-soft)]">
                       {pub.citation}
                     </p>
+                    {pub.abstract && <p className="mt-3 whitespace-pre-line text-sm leading-7 text-[color:var(--text-soft)]">{pub.abstract}</p>}
                     <a
                       href={pub.doi}
                       target="_blank"

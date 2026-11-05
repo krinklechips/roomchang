@@ -17,6 +17,7 @@
 
 # testing
 /coverage
+/.artifacts/publications-pilot/
 
 # next.js
 /.next/

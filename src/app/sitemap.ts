@@ -3,6 +3,7 @@ import { BRANCHES } from "@/lib/branches";
 import { CLINICAL_CATEGORIES } from "@/lib/clinical-categories";
 import { supabaseServer } from "@/lib/supabase-server";
 import { routing, LOCALE_TO_LANG, UNLISTED_LOCALES } from "@/i18n/routing";
+import { pilotSitemapEntries } from "@/lib/content-rollout";
 
 const BASE_URL = "https://www.roomchang.com";
 // Unlisted locales (under content review, e.g. /kh) are excluded from the
@@ -91,6 +92,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ]);
 
   return [
+    ...pilotSitemapEntries(),
     ...STATIC_ROUTES.map((r) => localized(r.path, r.changeFrequency, r.priority)),
     ...serviceSlugs.map((slug) => localized(`/services/${slug}`, "weekly", 0.8)),
     ...technologySlugs.map((slug) => localized(`/technology/${slug}`, "monthly", 0.7)),

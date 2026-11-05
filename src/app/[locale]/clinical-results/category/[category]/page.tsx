@@ -33,6 +33,7 @@ export async function generateMetadata({
 
   return buildSeoMetadata(
     {
+      locale,
       path,
       title: category.metaTitle,
       description: category.metaDescription,

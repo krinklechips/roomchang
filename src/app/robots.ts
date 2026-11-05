@@ -1,6 +1,8 @@
 import type { MetadataRoute } from "next";
+import { isStagingDeployment } from "@/lib/content-rollout";
 
 export default function robots(): MetadataRoute.Robots {
+  if (isStagingDeployment()) return { rules: { userAgent: "*", disallow: "/" } };
   return {
     rules: {
       userAgent: "*",

@@ -1,10 +1,17 @@
-import { render, screen } from "@testing-library/react";
+import "@/test/english-intl-server";
+import { screen } from "@testing-library/react";
+import { renderServer } from "@/test/render";
+import { SiteShell } from "@/components/site/site-shell";
+import { SiteFooter } from "@/components/site/site-footer";
 import { describe, expect, it } from "vitest";
 import DentistTalksPage, { DENTIST_TALKS } from "./page";
 
 describe("DentistTalksPage", () => {
-  it("embeds the official playlist videos instead of stale placeholder IDs", () => {
-    render(<DentistTalksPage />);
+  it("embeds the official playlist videos instead of stale placeholder IDs", async () => {
+    await renderServer(
+      await DentistTalksPage({ params: Promise.resolve({ locale: "en" }) }),
+      [SiteShell, SiteFooter],
+    );
 
     const frames = screen.getAllByTitle(/.+/).filter((node) => node.tagName === "IFRAME");
     const sources = frames.map((frame) => frame.getAttribute("src"));

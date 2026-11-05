@@ -1,4 +1,5 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
+import { render } from "@/test/render";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 import { MobileNav } from "./mobile-nav";
@@ -13,13 +14,13 @@ describe("MobileNav", () => {
 
     const serviceLinks = screen
       .getAllByRole("link")
-      .filter((link) => link.getAttribute("href")?.startsWith("/services/"));
+      .filter((link) => link.getAttribute("href")?.startsWith("/en/services/"));
     const labels = serviceLinks.map((link) => link.textContent);
     const periodonticsIndex = labels.indexOf("Periodontal Dentistry");
     const denturesIndex = labels.indexOf("Dentures");
     const implantsIndex = labels.indexOf("Dental Implants");
 
-    expect(serviceLinks[denturesIndex]).toHaveAttribute("href", "/services/dentures");
+    expect(serviceLinks[denturesIndex]).toHaveAttribute("href", "/en/services/dentures");
     expect(denturesIndex).toBe(periodonticsIndex + 1);
     expect(implantsIndex).toBe(denturesIndex + 1);
   });

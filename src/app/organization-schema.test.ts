@@ -1,8 +1,9 @@
 import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
 const layoutSource = readFileSync(
-  new URL("./[locale]/layout.tsx", import.meta.url),
+  join(__dirname, "[locale]/layout.tsx"),
   "utf8",
 );
 

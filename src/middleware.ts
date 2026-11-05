@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import createIntlMiddleware from "next-intl/middleware";
 import { routing } from "./i18n/routing";
+import { isStagingDeployment } from "./lib/content-rollout";
 
 const COOKIE_NAME = "rc_ref";
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 30; // 30 days
@@ -252,13 +253,17 @@ function applyReferralCookie(request: NextRequest, response: NextResponse, clean
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const staging = isStagingDeployment();
+  const cleanPath = pathname.replace(/^\/(en|kh|cn)/, "") || "/";
+  if (staging && (cleanPath.startsWith("/api") || cleanPath.startsWith("/admin") || !["GET", "HEAD"].includes(request.method))) {
+    return new NextResponse("Submissions and operational endpoints are disabled on this test deployment.", { status: 403 });
+  }
 
   const special = handleSpecialRoutes(request, pathname);
   if (special) return special;
 
   const isApi = pathname.startsWith("/api");
   // Strip locale prefix for auth checks
-  const cleanPath = pathname.replace(/^\/(en|kh|cn)/, "") || "/";
 
   // Protect all /admin/* pages and /api/admin/* routes
   if (cleanPath.startsWith("/admin") || cleanPath.startsWith("/api/admin")) {
@@ -276,7 +281,7 @@ export async function middleware(request: NextRequest) {
   const response = isApi ? NextResponse.next() : intlMiddleware(request);
 
   if (!isApi) applySeoLinkHeaders(response, pathname);
-  applyReferralCookie(request, response, cleanPath);
+  if (!staging) applyReferralCookie(request, response, cleanPath);
 
   return response;
 }
