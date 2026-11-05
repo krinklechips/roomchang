@@ -63,16 +63,16 @@
 - [x] Build and run a legacy control and selected pilot against the same production source/config.
 - [x] Compare nonpilot visible text/links in EN/KH/CN; compare pilot records and citations against both sources.
 - [x] Exercise timeout, HTTP failure, malformed, empty, recovery and explicit rollback using a local fixture server.
-- [ ] Compare legacy rollback body hashes, unrelated page hashes and CMS editorial snapshots.
-- [ ] Verify all three languages, desktop/mobile, metadata, external link policy and read-only navigation.
+- [x] Compare legacy rollback body hashes, unrelated page hashes and CMS editorial snapshots.
+- [x] Verify all three languages, desktop/mobile, metadata, external link policy and read-only navigation.
 
 ## Task 5: Independent Review And Preview Release
 
 - [x] Obtain fresh scoped code review and address important findings with regression tests.
-- [ ] Clean install, tests, typecheck/build, whitespace and configured-secret scan.
-- [ ] Commit/push only `codex/publications-pilot-20261105`; deploy separate Vercel preview artifacts with pilot/staging settings, not stable aliases.
-- [ ] Verify hosted pilot and rollback artifacts read-only, retain stable sandbox and production refs/aliases, and repeat editorial fingerprints.
-- [ ] Report pilot URL, rollback evidence, protected content state and unresolved editorial citation differences. No production-ready claim until those are approved.
+- [x] Clean install, tests, typecheck/build, whitespace and configured-secret scan.
+- [x] Commit/push only `codex/publications-pilot-20261105`; deploy separate Vercel preview artifacts with pilot/staging settings, not stable aliases.
+- [x] Verify hosted pilot and rollback artifacts read-only, retain stable sandbox and production refs/aliases, and repeat editorial fingerprints.
+- [x] Report pilot URL, rollback evidence, protected content state and unresolved editorial citation differences. No production-ready claim until those are approved.
 
 ## Execution Ledger
 
@@ -93,3 +93,10 @@
 - Native local build with a selected pilot and `VERCEL_ENV=production` failed with the intended guard. No hosted production deployment was attempted.
 - Editorial comparison: eight titles match, all eight citations differ, including three year differences. The runbook records the approval gate; no citation, translation, draft or CMS record was changed.
 - Preview preparation initially failed safely: Vercel cannot create branch-specific environment settings until the GitHub branch exists. No environment writes succeeded. Disable automatic Git deployment for this exact pilot branch in `vercel.json`, then push, configure only its preview settings and manually deploy explicit pilot/rollback configurations. Other branches remain enabled as before.
+- Release code is `2f9c96715e685d219b5e8b47e4c7062f3ad5a817`; final complete suite is 140 passed in 28 files, zero failed. All 44 staged release files passed the configured-secret scan. The later commit updates this execution ledger only, not deployed runtime code.
+- Three immutable Vercel preview targets are READY with no aliases: selected `roomchang-sandbox-4xcoqkhse-krinklechips-projects.vercel.app`, legacy rollback `roomchang-sandbox-6x4ynsylt-krinklechips-projects.vercel.app`, isolated outage `roomchang-sandbox-l2i9uu8oc-krinklechips-projects.vercel.app`. The outage artifact has only a deployment-specific unreachable loopback CMS origin; the real CMS was never interrupted.
+- Hosted browser observations cover 15 desktop pilot pages, three mobile Publications checks and eight rollback pages. All eight selected citations match the CMS fixture; all eight rollback citations match original production source. Seven completed nonpilot hosted body/link/language comparisons match exactly. Full 14-page exact preservation is a local production-build result, not a claimed full hosted comparison.
+- Chrome network instrumentation and some broader rollback navigation were interrupted. Native full accessibility trees and a screenshot verify the hosted English unavailable message, with Khmer and Chinese Publications still visible. Earlier missing integration and URL-test errors were corrected; failed attempts remain recorded, not counted as final passes.
+- Final TLS read-only snapshot at `2026-11-05T10:02:25.015Z`: all 531 editorial table fingerprints unchanged, zero new audit events. No editorial or R2 writes, translations, draft restores, publications or real submissions occurred.
+- Production Publications probes in EN/KH/CN each returned HTTP 200, correct HTML language and eight original citations. Main and cms-sandbox refs remain at the recorded baseline. Stable sandbox deployment, three aliases and Vercel Authentication are unchanged; no automation bypass secret was created.
+- Verification and full citation comparison: `/Users/enochphan/.codex/visualizations/2026/11/05/roomchang-publications-pilot/report.html`. The in-app browser rejected file-URL navigation; the file is available as a local deliverable without bypassing that policy.
