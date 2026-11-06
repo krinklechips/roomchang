@@ -184,15 +184,16 @@ function RenderSection({ s }: { s: TechSection | null | undefined }) {
   if (s.type === "image_pair") return <ImagePair s={s} />;
   if (s.type === "self_video") return <SelfVideo s={s} />;
   if (s.type === "twocol") {
+    if (!s.left && !s.right) return null;
     return (
       <div className="rounded-3xl border border-[color:var(--border-strong)] bg-white">
         <div className="grid lg:grid-cols-2 lg:items-center">
-          <div className="min-w-0 break-words p-8">
+          {s.left && <div className="min-w-0 break-words p-8">
             <RenderSection s={s.left} />
-          </div>
-          <div className="min-w-0 break-words">
+          </div>}
+          {s.right && <div className="min-w-0 break-words">
             <RenderSection s={s.right} />
-          </div>
+          </div>}
         </div>
       </div>
     );

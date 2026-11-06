@@ -288,14 +288,15 @@ export function RenderSection({
     ? <PriceTable s={s} />
     : <PricingCTA s={s} ctaLabel={pricingCtaLabel} ctaNote={pricingCtaNote} href={pricingHref} />;
   if (s.type === "twocol") {
+    if (!s.left && !s.right) return null;
     return (
       <div className="grid gap-8 lg:grid-cols-2">
-        <div className="min-w-0 break-words">
+        {s.left && <div className="min-w-0 break-words">
           <RenderSection s={s.left} pricingCtaLabel={pricingCtaLabel} pricingCtaNote={pricingCtaNote} pricingHref={pricingHref} />
-        </div>
-        <div className="min-w-0 break-words">
+        </div>}
+        {s.right && <div className="min-w-0 break-words">
           <RenderSection s={s.right} pricingCtaLabel={pricingCtaLabel} pricingCtaNote={pricingCtaNote} pricingHref={pricingHref} />
-        </div>
+        </div>}
       </div>
     );
   }

@@ -168,6 +168,20 @@ describe.each<Renderer>(["service", "technology"])("%s CMS block rendering", (re
   });
 
   describe.each<Format>(["blocks", "legacy"])("%s source", (format) => {
+    it("does not reserve space for an empty two-column block before the next section", async () => {
+      await renderSections(renderer, [
+        { type: "twocol", left: null, right: null },
+        { type: "text", heading: "Following section", body: "Existing content stays intact." },
+      ], format);
+      const following = screen.getByRole("heading", { name: "Following section" }).parentElement!;
+      expect(following.parentElement!.children).toHaveLength(1);
+      expect(screen.getByText("Existing content stays intact.")).toBeInTheDocument();
+    });
+    it.each(["left", "right"])("does not render an empty sibling for a %s-only two-column block", async (side) => {
+      await renderSections(renderer, [{ type: "twocol", [side]: { type: "text", heading: "Single column", body: "Stored column content" } }], format);
+      const textBlock = screen.getByRole("heading", { name: "Single column" }).parentElement!;
+      expect(textBlock.parentElement!.parentElement!.children).toHaveLength(1);
+    });
     it.each(leaves)("renders the persisted $type block and its fields", async ({ type, fields, check }) => {
       const { container } = await renderSections(renderer, [{ type, ...fields }], format);
       check(container);
