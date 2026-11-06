@@ -9,6 +9,23 @@ const response = (value: unknown) => ({ ok: true, status: 200, json: async () =>
 
 describe.each(["en", "kh", "cn"])("published reader contract in %s", locale => {
   beforeEach(() => { state.locale = locale; });
+  it('reads only this language of the Services Section without locale fallback or draft credentials', async () => {
+    const doc = { id: 1, heading: `${locale} section heading` };
+    const fetcher = vi.fn(async (input: string, init: RequestInit) => {
+      const url = new URL(input);
+      expect(url.pathname).toBe('/api/home-services');
+      expect(url.searchParams.get('locale')).toBe(locale);
+      expect(url.searchParams.get('fallback-locale')).toBe('none');
+      expect(url.searchParams.get('limit')).toBe('1');
+      expect(url.searchParams.has('draft')).toBe(false);
+      expect(init.headers).toBeUndefined();
+      return response({ docs: [doc] });
+    });
+    vi.stubGlobal('fetch', fetcher);
+    const { getPayloadHomeServices } = await import('./payload-source');
+    expect(await getPayloadHomeServices()).toEqual(doc);
+    expect(fetcher).toHaveBeenCalledTimes(1);
+  });
   it("reads every published page without losing the selected language or filters", async () => {
     const first = Array.from({ length: 200 }, (_, i) => ({ id: i + 1, name: `${locale} doctor ${i + 1}` }));
     const second = [{ id: 201, name: `${locale} last doctor` }];

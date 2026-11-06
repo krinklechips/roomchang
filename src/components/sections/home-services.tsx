@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
+import { getPayloadHomeServices, isPayloadSource, type HomeServicesText } from '@/lib/payload-source';
 import {
   Tooth,
   CrownSimple,
@@ -11,7 +12,7 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import type { Icon as PhosphorIcon } from "@phosphor-icons/react/dist/lib/types";
 
-const SERVICES: { id: string; tKey: string; href: string; Icon: PhosphorIcon }[] = [
+const SERVICES: { id: string; tKey: keyof HomeServicesText; href: string; Icon: PhosphorIcon }[] = [
   { id: "implants", tKey: "implants", href: "/services/dental-implants", Icon: Tooth },
   { id: "crowns", tKey: "crowns", href: "/services/dental-crowns", Icon: CrownSimple },
   { id: "aligners", tKey: "aligners", href: "/services/orthodontics", Icon: Crosshair },
@@ -22,23 +23,25 @@ const SERVICES: { id: string; tKey: string; href: string; Icon: PhosphorIcon }[]
 
 export async function HomeServices() {
   const t = await getTranslations("homeServices");
+  const content = isPayloadSource() ? await getPayloadHomeServices() : null;
+  const text = (key: keyof HomeServicesText) => content?.[key] ?? t(key);
 
   return (
     <section id="services" className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-20 lg:px-8">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--brand)]">
-            {t("eyebrow")}
+            {text("eyebrow")}
           </p>
           <h2 className="mt-2 font-display text-3xl text-[color:var(--text-main)] sm:text-5xl">
-            {t("heading")}
+            {text("heading")}
           </h2>
         </div>
         <Link
           href="/services"
           className="inline-flex items-center gap-2 text-sm font-semibold text-[color:var(--brand-deep)] transition hover:text-[color:var(--brand)]"
         >
-          {t("seeAll")} <ArrowRight size={14} weight="bold" aria-hidden="true" />
+          {text("seeAll")} <ArrowRight size={14} weight="bold" aria-hidden="true" />
         </Link>
       </div>
 
@@ -53,7 +56,7 @@ export async function HomeServices() {
               <service.Icon size={24} weight="duotone" aria-hidden="true" className="sm:!h-7 sm:!w-7" />
             </div>
             <p className="text-[0.7rem] font-semibold leading-snug text-[color:var(--text-main)] sm:text-[0.82rem]">
-              {t(service.tKey)}
+              {text(service.tKey)}
             </p>
           </Link>
         ))}

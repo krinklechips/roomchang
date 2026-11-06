@@ -292,6 +292,11 @@ export type PayloadHomepageSettings = {
   heroButtons: { label: string; url: string }[];
 };
 
+export type HomeServicesText = Partial<Record<
+  'eyebrow' | 'heading' | 'seeAll' | 'implants' | 'crowns' | 'aligners' | 'cosmetic' | 'whitening' | 'surgery',
+  string | null
+>>;
+
 type PayloadFaqItem = PayloadDocBase & {
   question: string;
   answer?: string | null;
@@ -1043,6 +1048,11 @@ export async function getPayloadHomepageSettings(): Promise<PayloadHomepageSetti
       button.label && button.url ? [{ label: button.label, url: button.url }] : [],
     ),
   };
+}
+
+export async function getPayloadHomeServices(): Promise<HomeServicesText | null> {
+  const docs = await payloadFind<HomeServicesText>('home-services', { limit: '1', sort: 'id', 'fallback-locale': 'none' });
+  return docs[0] ?? null;
 }
 
 export async function getPayloadFaqItems(): Promise<FaqItem[]> {
