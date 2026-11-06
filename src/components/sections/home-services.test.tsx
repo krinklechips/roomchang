@@ -24,6 +24,7 @@ describe('Home Services section', () => {
     source.getPayloadHomeServices.mockResolvedValue(doc);
     render(await HomeServices());
     for (const key of keys) expect(screen.getByText(doc[key])).toBeInTheDocument();
+    expect(screen.getByRole('heading').closest('section')).toHaveClass('scroll-mt-24');
     expect(screen.getAllByRole('link').map(link => link.getAttribute('href'))).toEqual(links);
     expect(source.getPayloadHomeServices).toHaveBeenCalledTimes(1);
   });

@@ -27,7 +27,7 @@ export async function HomeServices() {
   const text = (key: keyof HomeServicesText) => content?.[key] ?? t(key);
 
   return (
-    <section id="services" className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-20 lg:px-8">
+    <section id="services" className="mx-auto max-w-7xl scroll-mt-24 px-4 py-10 sm:px-6 sm:py-20 lg:px-8">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--brand)]">
