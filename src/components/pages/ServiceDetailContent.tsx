@@ -371,10 +371,14 @@ export async function ServiceDetailContent({ service }: { service: Service }) {
 
       {/* Sections */}
       {sections.length > 0 && (
-        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-16 lg:px-8 space-y-8 sm:space-y-16">
-          {sections.map((s, i) => (
-            <RenderSection key={i} s={s} pricingCtaLabel={pricingCtaLabel} pricingCtaNote={pricingCtaNote} pricingHref={pricingHref} />
-          ))}
+        <div className="mx-auto max-w-7xl px-4 pb-8 sm:px-6 sm:pb-16 lg:px-8">
+          {sections.map((s, i) => {
+            const content = RenderSection({ s, pricingCtaLabel, pricingCtaNote, pricingHref });
+            if (!content) return null;
+            const spacing = s.sectionSpacing === "none" ? "pt-0"
+              : s.sectionSpacing === "compact" ? "pt-4 sm:pt-8" : "pt-8 sm:pt-16";
+            return <div key={i} data-service-section className={`empty:hidden ${spacing}`}>{content}</div>;
+          })}
         </div>
       )}
 

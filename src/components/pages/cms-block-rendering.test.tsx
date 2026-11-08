@@ -7,17 +7,19 @@ import ClinicalCaseDetailPage from "@/app/[locale]/clinical-results/[slug]/page"
 import { getPayloadServiceBySlug, getPayloadTechnologyBySlug } from "@/lib/payload-source";
 import { renderCmsContent } from "@/test/render-cms-content";
 
+const testLocale = vi.hoisted(() => ({ value: "en" as "en" | "kh" | "cn" }));
+
 vi.mock("@/components/site/site-shell", () => ({ SiteShell: ({ children }: { children: ReactNode }) => <>{children}</> }));
 vi.mock("@/i18n/navigation", () => ({ Link: ({ children, ...props }: ComponentProps<"a">) => <a {...props}>{children}</a> }));
 vi.mock("@/lib/supabase-server", () => ({ supabaseServer: {} }));
 vi.mock("next/headers", () => ({ draftMode: async () => ({ isEnabled: false }) }));
 vi.mock("next-intl/server", async () => {
   const { createTranslator } = await import("next-intl");
-  const { default: messages } = await import("../../../messages/en.json");
+  const messages = { en: () => import("../../../messages/en.json"), kh: () => import("../../../messages/km.json"), cn: () => import("../../../messages/zh.json") };
   return {
-    getLocale: async () => "en",
+    getLocale: async () => testLocale.value,
     setRequestLocale: () => {},
-    getTranslations: async (namespace?: string) => createTranslator({ locale: "en", messages: messages as import("next-intl").AbstractIntlMessages, namespace }),
+    getTranslations: async (namespace?: string) => createTranslator({ locale: { en: "en", kh: "km", cn: "zh" }[testLocale.value], messages: (await messages[testLocale.value]()).default as import("next-intl").AbstractIntlMessages, namespace }),
   };
 });
 
@@ -27,6 +29,7 @@ type Renderer = "service" | "technology";
 let collections: Record<string, Section[]>;
 
 beforeEach(() => {
+  testLocale.value = "en";
   collections = {};
   vi.stubEnv("CONTENT_SOURCE", "payload");
   vi.stubEnv("PAYLOAD_API_URL", "https://cms.test");
@@ -136,6 +139,43 @@ async function renderSections(renderer: Renderer, sections: Section[], format: F
 }
 
 describe.each<Renderer>(["service", "technology"])("%s CMS block rendering", (renderer) => {
+  if (renderer === "service") describe.each(["en", "kh", "cn"] as const)("%s Service spacing", locale => {
+    it.each<Format>(["blocks", "legacy"])("keeps text and section order with bounded spacing for %s input", async format => {
+      testLocale.value = locale;
+      const { container } = await renderSections("service", [
+        { type: "text", heading: `${locale} first`, body: `${locale} original one` },
+        { type: "text", heading: `${locale} second`, body: `${locale} original two`, sectionSpacing: "compact" },
+        { type: "twocol", left: null, right: null, sectionSpacing: "default" },
+        { type: "text", heading: `${locale} third`, body: `${locale} original three`, sectionSpacing: "none" },
+      ], format);
+      const sections = [...container.querySelectorAll<HTMLElement>("[data-service-section]")];
+      expect(sections).toHaveLength(3);
+      expect(sections.map(section => section.querySelector("h2")?.textContent)).toEqual([`${locale} first`, `${locale} second`, `${locale} third`]);
+      expect(sections[0]).toHaveClass("pt-8", "sm:pt-16");
+      expect(sections[1]).toHaveClass("pt-4", "sm:pt-8");
+      expect(sections[2]).toHaveClass("pt-0");
+      expect(sections[2]).not.toHaveClass("sm:pt-16");
+      const requests = vi.mocked(fetch).mock.calls.map(([input]) => new URL(String(input))).filter(url => url.pathname === "/api/services");
+      expect(requests.length).toBeGreaterThan(0);
+      expect(requests.every(url => url.searchParams.get("locale") === locale)).toBe(true);
+    });
+    it("uses unchanged default spacing for unknown persisted values", async () => {
+      testLocale.value = locale;
+      const { container } = await renderSections("service", [{ type: "text", body: `${locale} stored text`, sectionSpacing: "p-96" }]);
+      expect(container.querySelector("[data-service-section]")).toHaveClass("pt-8", "sm:pt-16");
+      expect(container.innerHTML).not.toContain("p-96");
+    });
+    it("does not reserve padding when a media component renders nothing", async () => {
+      testLocale.value = locale;
+      const { container } = await renderSections("service", [
+        { type: "image", src: " " }, { type: "self_video", src: "" },
+        { type: "text", heading: `${locale} following`, body: `${locale} retained wording` },
+      ]);
+      const empty = [...container.querySelectorAll("[data-service-section]")].filter(section => !section.hasChildNodes());
+      expect(empty).toHaveLength(2);
+      for (const section of empty) expect(section).toHaveClass("empty:hidden");
+    });
+  });
   // Existing shared SECTION_BLOCKS choices, including names mapped from Lucide to Phosphor.
   describe.each(["callout", "cards"])("%s icons", (type) => {
     it.each([

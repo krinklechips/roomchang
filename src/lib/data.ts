@@ -81,7 +81,7 @@ export type PricingItem = {
   categoryId: string;
 };
 
-export type ServiceSection =
+export type ServiceSection = { sectionSpacing?: "default" | "compact" | "none" | null } & (
   | { type: "callout"; icon?: string; title: string; body: string; stats?: { value: string; label: string }[] }
   | { type: "text"; heading: string; body: string; card?: boolean }
   | { type: "list"; heading?: string; items: string[] }
@@ -94,7 +94,7 @@ export type ServiceSection =
   | { type: "video"; heading?: string; subheading?: string; videoId: string }
   | { type: "self_video"; src: string; heading?: string; caption?: string }
   | { type: "image_pair"; left?: { src: string; alt: string; caption?: string } | null; right?: { src: string; alt: string; caption?: string } | null }
-  | { type: "twocol"; left?: ServiceSection | null; right?: ServiceSection | null };
+  | { type: "twocol"; left?: ServiceSection | null; right?: ServiceSection | null });
 
 export type Service = {
   id: string;
