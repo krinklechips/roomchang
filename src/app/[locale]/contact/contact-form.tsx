@@ -138,7 +138,7 @@ export function ContactForm({ branches, doctors }: { branches: Branch[]; doctors
       wechat:    (form.elements.namedItem("wechat")  as HTMLInputElement).value,
       treatment: (form.elements.namedItem("service") as HTMLSelectElement).value,
       branch:    (form.elements.namedItem("branch")  as HTMLSelectElement).value,
-      doctor:    (form.elements.namedItem("doctor")  as HTMLInputElement).value,
+      doctor:    preferredDoctor,
       date:      (form.elements.namedItem("date")    as HTMLInputElement).value,
       message:   (form.elements.namedItem("message") as HTMLTextAreaElement).value,
     };

@@ -26,6 +26,7 @@ describe.each([["en", en], ["kh", kh], ["cn", cn]] as const)("%s stale doctor fo
     fireEvent.change(input("message"), { target: { value: "Keep this text" } });
     fireEvent.submit(form);
     await waitFor(() => expect(alert).toHaveBeenCalledWith(messages.contactForm.error.generic));
+    expect(JSON.parse(fetcher.mock.calls[0][1].body)).toMatchObject({ doctor: "Dr. Thiv Samora" });
     expect(input("name").value).toBe("Non-patient fixture");
     expect(input("message").value).toBe("Keep this text");
     expect(input("doctor").value).toBe("Dr. Thiv Samora");
