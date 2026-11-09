@@ -19,6 +19,8 @@ describe.each([["en", en], ["kh", kh], ["cn", cn]] as const)("%s stale doctor fo
     const { container } = render(<NextIntlClientProvider locale={locale} messages={messages} timeZone="Asia/Phnom_Penh">
       <ContactForm branches={[]} doctors={[]} />
     </NextIntlClientProvider>);
+    const scrollDoctor = vi.fn();
+    Object.defineProperty(container.querySelector("#doctor"), "scrollIntoView", { value: scrollDoctor });
     const form = container.querySelector("form")!;
     const input = (name: string) => form.querySelector<HTMLInputElement>(`[name="${name}"]`)!;
     fireEvent.change(input("name"), { target: { value: "Non-patient fixture" } });
@@ -30,7 +32,10 @@ describe.each([["en", en], ["kh", kh], ["cn", cn]] as const)("%s stale doctor fo
     expect(input("name").value).toBe("Non-patient fixture");
     expect(input("message").value).toBe("Keep this text");
     expect(input("doctor").value).toBe("Dr. Thiv Samora");
-    if (code === "DOCTOR_UNAVAILABLE") expect(container.querySelector("#doctor")).toHaveFocus();
+    if (code === "DOCTOR_UNAVAILABLE") {
+      expect(container.querySelector("#doctor")).toHaveFocus();
+      expect(scrollDoctor).toHaveBeenCalledWith({ block: "center" });
+    }
     fireEvent.change(container.querySelector("#doctor")!, { target: { value: "" } });
     expect(input("doctor").value).toBe("");
     expect(input("message").value).toBe("Keep this text");
