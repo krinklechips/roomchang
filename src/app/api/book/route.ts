@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sendMail } from "@/lib/mailer";
 import { supabaseAdmin } from "@/lib/supabase-admin";
+import { validatePreferredDoctor } from "@/lib/doctor-availability";
 import {
   SLOT_TIMES,
   isValidDate,
@@ -8,7 +9,6 @@ import {
   isBookableDate,
   normalizeTime,
   sanitizeBranch,
-  sanitizeDoctor,
 } from "@/lib/booking-validation";
 
 function escHtml(str: string): string {
@@ -23,23 +23,6 @@ function escHtml(str: string): string {
 function trunc(str: unknown, maxLen: number): string {
   if (typeof str !== "string") return "";
   return str.slice(0, maxLen);
-}
-
-/** Published resident dentists' names (excludes visiting consultants, whose
- *  department is SENIOR_CONSULTANT) — the allow-list for a booked doctor. */
-async function fetchResidentDoctorNames(): Promise<string[]> {
-  const { data, error } = await supabaseAdmin
-    .from("doctors")
-    .select("name, department")
-    .eq("published", true);
-  if (error) {
-    console.error("[book] Could not load doctors for validation:", error.message);
-    return [];
-  }
-  return (data ?? [])
-    .filter((d) => d.department !== "SENIOR_CONSULTANT")
-    .map((d) => d.name as string)
-    .filter(Boolean);
 }
 
 function buildRows(rows: [string, string][]): string {
@@ -206,12 +189,12 @@ export async function POST(request: NextRequest) {
     }
     const booking = result.data;
 
-    // Sanitize the optional preferred branch/doctor against ground truth: a
-    // hallucinated branch or a visiting consultant is dropped (not recorded)
-    // rather than blocking the booking, which still proceeds.
-    const residentNames = await fetchResidentDoctorNames();
+    const doctor = await validatePreferredDoctor(body.doctor, true);
+    if ("error" in doctor) {
+      return NextResponse.json({ error: doctor.error, code: doctor.code }, { status: doctor.status });
+    }
     booking.cleanBranch = sanitizeBranch(booking.cleanBranch);
-    booking.cleanDoctor = sanitizeDoctor(booking.cleanDoctor, residentNames);
+    booking.cleanDoctor = doctor.doctor;
 
     const { data: bookingId, error: bookingError } = await supabaseAdmin.rpc(
       "book_appointment_slot",

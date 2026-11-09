@@ -66,9 +66,9 @@ async function previewMode(): Promise<boolean> {
   }
 }
 
-async function payloadFind<T>(collection: string, params: Record<string, string>): Promise<T[]> {
+async function payloadFind<T>(collection: string, params: Record<string, string>, allowDrafts = true): Promise<T[]> {
   const locale = await payloadLocale();
-  const preview = await previewMode();
+  const preview = allowDrafts && await previewMode();
   const qs = new URLSearchParams({ locale, limit: "200", depth: "0", ...params });
   if (!params.limit) {
     const sort = (params.sort || "id").split(",");
@@ -953,6 +953,14 @@ export async function getPayloadDoctors(): Promise<Doctor[]> {
     sort: "order",
   });
   return docs.map(mapDoctor);
+}
+
+/** Appointment validation must ignore draft-mode cookies and preview credentials. */
+export async function getPublishedPayloadDoctorNames(): Promise<{
+  name: string | Record<string, string | null>;
+  department: string;
+}[]> {
+  return payloadFind("doctors", { locale: "all", draft: "false" }, false);
 }
 
 export async function getPayloadBranches(): Promise<Branch[]> {

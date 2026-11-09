@@ -149,7 +149,14 @@ export function ContactForm({ branches, doctors }: { branches: Branch[]; doctors
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      if (!res.ok) throw new Error("Request failed");
+      if (!res.ok) {
+        const failure = await res.json().catch(() => ({}));
+        if (failure.code === "DOCTOR_UNAVAILABLE") {
+          doctorInputRef.current?.focus();
+          doctorInputRef.current?.select();
+        }
+        throw new Error("Request failed");
+      }
       setSubmitted(true);
     } catch {
       alert(t("error.generic"));
