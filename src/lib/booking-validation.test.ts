@@ -84,9 +84,11 @@ describe("sanitizeBranch — drop invented branches, canonicalize real ones", ()
 });
 
 describe("sanitizeDoctor — never record a visiting consultant", () => {
-  it("keeps a real resident dentist (incl. partial name)", () => {
+  it("keeps a full resident name but rejects a partial name", () => {
     expect(sanitizeDoctor("Dr. Meng Sally", RESIDENTS)).toBe("Dr. Meng Sally");
-    expect(sanitizeDoctor("Dr. Aliza", RESIDENTS)).toBe("Dr. Tithphit Aliza");
+    expect(sanitizeDoctor("Dr. Aliza", RESIDENTS)).toBe("");
+    expect(sanitizeDoctor("Dr. Meng Stranger", RESIDENTS)).toBe("");
+    expect(sanitizeDoctor("  meng   sally  ", RESIDENTS)).toBe("Dr. Meng Sally");
   });
   it("DROPS visiting consultants (the explicit 'never book' rule)", () => {
     for (const v of VISITING) {
@@ -119,9 +121,9 @@ describe("guardrail regression eval (model-output scenarios)", () => {
       expect: { dateOk: false, timeOk: true, branchOut: "Main Hospital — Sisowath High School", doctorOut: "Dr. Meng Sally" },
     },
     {
-      name: "valid future booking with partial names",
+      name: "a partial model-generated doctor name is not an appointment choice",
       date: "2026-09-14", time: "10:00", branch: "AEON Mall", doctor: "Dr. Aliza",
-      expect: { dateOk: true, timeOk: true, branchOut: "AEON Mall Sen Sok", doctorOut: "Dr. Tithphit Aliza" },
+      expect: { dateOk: true, timeOk: true, branchOut: "AEON Mall Sen Sok", doctorOut: "" },
     },
     {
       name: "model tries to book a visiting consultant + invented branch",

@@ -67,7 +67,7 @@ export function isBookableTime(value: string): boolean {
   return SLOT_TIMES.has(normalizeTime(value));
 }
 
-// ─── Optional fields: sanitize (don't block the patient), never record junk ──
+// ─── Branch sanitization and full doctor-name matching ───────────────────────
 
 const normName = (s: string): string => s.toLowerCase().replace(/[^a-z0-9]/g, "");
 
@@ -88,28 +88,17 @@ export function sanitizeBranch(raw: string): string {
   return hit ? hit.name : "";
 }
 
-// Distinctive name tokens (≥4 chars), dropping titles like "Dr"/"Prof".
-function nameTokens(s: string): string[] {
-  return s
+function normalizeDoctorName(s: string): string {
+  return s.normalize("NFKC").trim()
     .toLowerCase()
-    .split(/[^a-z]+/)
-    .filter((t) => t.length >= 4 && t !== "prof" && t !== "doctor");
+    .replace(/^(?:(?:prof|professor)\.?\s+)?(?:dr|doctor)\.?\s+/u, "")
+    .replace(/\s+/gu, " ");
 }
 
-/**
- * Keep an optional preferred doctor only if it shares a distinctive name token
- * with one of the given resident dentists — so a visiting consultant or an
- * unknown/invented name is dropped (""), never recorded. Pass ONLY resident
- * names (exclude visiting consultants, i.e. department === "SENIOR_CONSULTANT").
- * Token matching survives "Dr." prefixes and partial names like "Dr. Aliza".
- * Returns the canonical resident name on a match.
- */
+/** Match a complete published name, never a shared token or partial name. */
 export function sanitizeDoctor(raw: string, residentNames: string[]): string {
-  const qTokens = nameTokens(raw);
-  if (qTokens.length === 0) return "";
-  const hit = residentNames.find((n) => {
-    const nTokens = nameTokens(n);
-    return qTokens.some((qt) => nTokens.includes(qt));
-  });
-  return hit ?? "";
+  const q = normalizeDoctorName(raw);
+  if (!q) return "";
+  const matches = residentNames.filter(n => normalizeDoctorName(n) === q);
+  return matches.length === 1 ? matches[0] : "";
 }

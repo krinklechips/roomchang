@@ -138,7 +138,7 @@ export function ContactForm({ branches, doctors }: { branches: Branch[]; doctors
       wechat:    (form.elements.namedItem("wechat")  as HTMLInputElement).value,
       treatment: (form.elements.namedItem("service") as HTMLSelectElement).value,
       branch:    (form.elements.namedItem("branch")  as HTMLSelectElement).value,
-      doctor:    (form.elements.namedItem("doctor")  as HTMLInputElement).value,
+      doctor:    preferredDoctor,
       date:      (form.elements.namedItem("date")    as HTMLInputElement).value,
       message:   (form.elements.namedItem("message") as HTMLTextAreaElement).value,
     };
@@ -149,7 +149,15 @@ export function ContactForm({ branches, doctors }: { branches: Branch[]; doctors
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      if (!res.ok) throw new Error("Request failed");
+      if (!res.ok) {
+        const failure = await res.json().catch(() => ({}));
+        if (failure.code === "DOCTOR_UNAVAILABLE") {
+          doctorInputRef.current?.focus();
+          doctorInputRef.current?.scrollIntoView({ block: "center" });
+          doctorInputRef.current?.select();
+        }
+        throw new Error("Request failed");
+      }
       setSubmitted(true);
     } catch {
       alert(t("error.generic"));

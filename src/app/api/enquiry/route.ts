@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sendMail } from "@/lib/mailer";
 import { supabaseAdmin } from "@/lib/supabase-admin";
+import { validatePreferredDoctor } from "@/lib/doctor-availability";
 
 /** Escape user-supplied strings before interpolating into HTML email. */
 function escHtml(str: string): string {
@@ -54,7 +55,6 @@ export async function POST(request: NextRequest) {
         : "";
     const cleanTreat   = trunc(treatment, 120).trim();
     const cleanBranch  = trunc(branch, 120).trim();
-    const cleanDoctor  = trunc(doctor, 120).trim();
     const cleanDate    = trunc(date, 20).trim();
     const cleanMsg     = trunc(message, 2000).trim();
 
@@ -80,6 +80,12 @@ export async function POST(request: NextRequest) {
         );
       }
     }
+
+    const preferredDoctor = await validatePreferredDoctor(doctor, false);
+    if ("error" in preferredDoctor) {
+      return NextResponse.json({ error: preferredDoctor.error, code: preferredDoctor.code }, { status: preferredDoctor.status });
+    }
+    const cleanDoctor = preferredDoctor.doctor;
 
     // Read referral cookie if present
     const agent_code = request.cookies.get("rc_ref")?.value ?? null;

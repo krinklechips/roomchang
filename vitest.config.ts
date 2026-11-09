@@ -8,6 +8,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(rootDir, "src"),
+      "server-only": path.resolve(rootDir, "node_modules/next/dist/compiled/server-only/empty.js"),
     },
   },
   test: {
@@ -15,5 +16,6 @@ export default defineConfig({
     exclude: ["**/node_modules/**", "**/.next/**", "**/.claude/**", "**/.worktrees/**"],
     globals: true,
     setupFiles: ["./src/test/setup.ts"],
+    server: { deps: { inline: ["next-intl"] } },
   },
 });
