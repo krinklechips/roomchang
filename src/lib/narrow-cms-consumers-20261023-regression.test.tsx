@@ -118,6 +118,28 @@ describe("narrow career consumers", () => {
 });
 
 describe("narrow publication consumers", () => {
+  it.each(["en", "kh", "cn"])("keeps existing journal details without replacing CMS edits or disputed years in %s", async (locale) => {
+    state.publications = freeze([publication({
+      title: `Reviewed display title ${locale}`, originalTitle: "Reviewed citation title", authors: "Reviewed CMS authors",
+      journal: "Frontiers in Dental Medicine", year: 2024, doi: "10.3389/fdmed.2025.1714360", url: "https://example.test/reviewed",
+    })]);
+    const before=structuredClone(state.publications);
+    const {container}=show(await PublicationsPage(params("unused",locale)));
+    const article=container.querySelector('article')!;
+    for(const text of [`Reviewed display title ${locale}`,"Reviewed citation title","Reviewed CMS authors","(2024)","6, Article 1714360"]){
+      expect(article.textContent).toContain(text);
+    }
+    expect(article.querySelector('a[href="https://example.test/reviewed"]')).not.toBeNull();
+    expect(state.publications).toEqual(before);
+  });
+
+  it("does not attach a known paper's journal details to an edited journal or unknown DOI", async () => {
+    state.publications=[publication({journal:"Edited journal",doi:"10.3389/fdmed.2025.1714360"}),publication({id:"unknown",journal:"Frontiers in Dental Medicine",doi:"10.1234/unknown"})];
+    const {container}=show(await PublicationsPage(params()));
+    expect(container.textContent).not.toContain("Article 1714360");
+    expect(container.textContent).toContain("Edited journal");
+  });
+
   it.each(["en", "kh", "cn"])("shows the full abstract as text while preserving citation and URLs in %s", async (locale) => {
     state.publications[0].abstract += "\n<script>not markup</script>";
     freeze(state.publications);

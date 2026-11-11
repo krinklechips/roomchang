@@ -29,6 +29,8 @@ type Publication = {
   year: number;
   citation: ReactNode;
   doi: string;
+  journal?: string;
+  journalDetails?: string;
 };
 
 // Roomchang-affiliated author names to highlight in bold
@@ -40,6 +42,8 @@ const PUBLICATIONS: Publication[] = [
   {
     id: "soft-tissue-cephalometric",
     year: 2025,
+    journal: "Frontiers in Dental Medicine",
+    journalDetails: "6, Article 1714360",
     citation: (
       <>
         <B>Sonita, E.</B>, <B>Sally, M.</B>, Kimheng, C., Marya, A., Nalabothu, P., Ryna, L., Kanetaka, H., Kurniawan, A., Tabnjh, A. K., &amp; Selvaraj, S. (2025). Preliminary orthodontic insights into facial soft tissue thickness measurements using semi-automated cephalometric analysis in a Cambodian cohort. <em>Frontiers in Dental Medicine</em>, 6, Article 1714360.{" "}
@@ -51,6 +55,8 @@ const PUBLICATIONS: Publication[] = [
   {
     id: "maxillary-anterior-tooth",
     year: 2025,
+    journal: "Oral",
+    journalDetails: "5(4), 99",
     citation: (
       <>
         <B>Tithphit, A.</B>, Schneider, B., Othman, A., <B>Phit, V.</B>, <B>Tith, H. Y.</B>, &amp; von See, C. (2025). Analysis of Maxillary Anterior Tooth Dimensions and Proportions in Young Cambodians: A Cross-Sectional Study. <em>Oral</em>, 5(4), 99.{" "}
@@ -62,6 +68,8 @@ const PUBLICATIONS: Publication[] = [
   {
     id: "sella-turcica-morphology",
     year: 2024,
+    journal: "Oral Radiology",
+    journalDetails: "41, 169–179",
     citation: (
       <>
         Schwab, J., Stucki, L., Fitzek, S., <B>Tithphit, A.</B>, Hönigl, A., Stackmann, S., Horn, I., Thenner, H., Dasser, P., Woitek, R., Choi, K.-E., Hatamikia, S., &amp; Furtner, J. (2025). Radiological assessment of Sella Turcica morphology correlates with skeletal classes in an Austrian population: An observational study. <em>Oral Radiology</em>, 41, 169–179.{" "}
@@ -73,6 +81,8 @@ const PUBLICATIONS: Publication[] = [
   {
     id: "lactoferrin-oscc-invasion",
     year: 2023,
+    journal: "Pharmaceutics",
+    journalDetails: "15(2), Article 562",
     citation: (
       <>
         Chea, C., Miyauchi, M., Inubushi, T., Okamoto, K., <B>Haing, S.</B>, &amp; Takata, T. (2023). Molecular mechanisms of inhibitory effects of bovine lactoferrin on invasion of oral squamous cell carcinoma. <em>Pharmaceutics</em>, 15(2), Article 562.{" "}
@@ -84,6 +94,8 @@ const PUBLICATIONS: Publication[] = [
   {
     id: "mini-screw-histomorphometric",
     year: 2020,
+    journal: "European Journal of Orthodontics",
+    journalDetails: "43(1), 86–93",
     citation: (
       <>
         <B>Keo, P.</B>, Matsumoto, Y., Shimizu, Y., Nagahiro, S., Ikeda, M., Aoki, K., &amp; Ono, T. (2021). A pilot study to investigate the histomorphometric changes of murine maxillary bone around the site of mini-screw insertion in regenerated bone induced by anabolic reagents. <em>European Journal of Orthodontics</em>, 43(1), 86–93.{" "}
@@ -95,6 +107,8 @@ const PUBLICATIONS: Publication[] = [
   {
     id: "lactoferrin-osteosarcoma",
     year: 2018,
+    journal: "Biochemical and Biophysical Research Communications",
+    journalDetails: "508(3), 946–952",
     citation: (
       <>
         Chea, C., <B>Haing, S.</B>, Miyauchi, M., Shrestha, M., Imanaka, H., &amp; Takata, T. (2019). Molecular mechanisms underlying the inhibitory effects of bovine lactoferrin on osteosarcoma. <em>Biochemical and Biophysical Research Communications</em>, 508(3), 946–952.{" "}
@@ -106,6 +120,8 @@ const PUBLICATIONS: Publication[] = [
   {
     id: "lactoferrin-emt-met",
     year: 2018,
+    journal: "Biochemical and Biophysical Research Communications",
+    journalDetails: "507(1–4), 142–147",
     citation: (
       <>
         Chea, C., Miyauchi, M., Inubushi, T., Okamoto, K., <B>Haing, S.</B>, Nguyen, P. T., Imanaka, H., &amp; Takata, T. (2018). Bovine lactoferrin reverses programming of epithelial-to-mesenchymal transition to mesenchymal-to-epithelial transition in oral squamous cell carcinoma. <em>Biochemical and Biophysical Research Communications</em>, 507(1–4), 142–147.{" "}
@@ -117,6 +133,8 @@ const PUBLICATIONS: Publication[] = [
   {
     id: "lactoferrin-oscc-growth",
     year: 2018,
+    journal: "PLOS ONE",
+    journalDetails: "13(1), Article e0191683",
     citation: (
       <>
         Chea, C., Miyauchi, M., Inubushi, T., Ayuningtyas, N. F., Subarnbhesaj, A., Nguyen, P. T., Shrestha, M., <B>Haing, S.</B>, Ohta, K., Yamada, S., &amp; Takata, T. (2018). Molecular mechanism of inhibitory effects of bovine lactoferrin on the growth of oral squamous cell carcinoma. <em>PLOS ONE</em>, 13(1), Article e0191683.{" "}
@@ -152,6 +170,8 @@ export default async function PublicationsPage({
     publications = (await getPublications()).map((pub) => {
       const rawDoi = pub.doi?.trim();
       const doi = rawDoi ? (/^https?:\/\//.test(rawDoi) ? rawDoi : `https://doi.org/${rawDoi}`) : "";
+      // Retain existing bibliography details, without replacing any CMS fields.
+      const reference = PUBLICATIONS.find(item => item.doi === doi && item.journal === pub.journal);
       return {
         id: pub.id,
         title: pub.title,
@@ -161,7 +181,7 @@ export default async function PublicationsPage({
         citation: (
           <>
             {pub.authors ? `${pub.authors} ` : ""}{pub.year ? `(${pub.year}). ` : ""}
-            {pub.originalTitle ?? pub.title}. {pub.journal && <><em>{pub.journal}</em>. </>}
+            {pub.originalTitle ?? pub.title}. {pub.journal && <><em>{pub.journal}</em>{reference?.journalDetails ? `, ${reference.journalDetails}` : ""}. </>}
             {doi && <a href={doi} target="_blank" rel="noopener noreferrer" className="text-[color:var(--brand-deep)] underline decoration-[color:var(--brand-light)] underline-offset-2 transition hover:text-[color:var(--brand)]">{doi}</a>}
           </>
         ),
